@@ -5,8 +5,11 @@ import {
   ScreeningError,
   authorizeTool,
   createSecurity,
+  segmentText,
   withToolGate,
   type ModelArmorAssessment,
+  type ScreeningAssessment,
+  type TextScreeningProvider,
 } from "../src/index.js";
 
 const clean: ModelArmorAssessment = {
@@ -61,6 +64,91 @@ describe("untrusted source screening", () => {
     const security = createSecurity({ provider: { assess: async () => { throw new Error("offline"); } } });
     await expect(security.screen({ type: "text", content: "untrusted" }))
       .rejects.toBeInstanceOf(ScreeningError);
+  });
+});
+
+describe("screening configuration", () => {
+  const recorder = (judge: (text: string) => ScreeningAssessment) => {
+    const seen: string[] = [];
+    const provider: TextScreeningProvider = { assess: async (parts) => { seen.push(parts.join("\n")); return judge(parts.join("\n")); } };
+    return { seen, provider };
+  };
+  const words = (count: number) => Array.from({ length: count }, (_, i) => `w${i}`).join(" ");
+
+  test("applies the app-wide technique and lets a call override it", async () => {
+    const { seen, provider } = recorder(() => clean);
+    const security = createSecurity({ provider, screening: { technique: { kind: "sliding_word_window", windowWords: 4, strideWords: 4 } } });
+    const result = await security.screen({ type: "text", content: words(10) });
+    expect(seen).toEqual(["w0 w1 w2 w3", "w4 w5 w6 w7", "w8 w9"]);
+    expect(result.assessment?.chunkCount).toBe(3);
+    seen.length = 0;
+    await security.screen({ type: "text", content: words(10) }, { technique: { kind: "full_text" } });
+    expect(seen).toEqual([words(10)]);
+  });
+
+  test("uses every model by default and a named subset when overridden", async () => {
+    const a = recorder(() => clean);
+    const b = recorder(() => injection);
+    const security = createSecurity({ providers: { a: a.provider, b: b.provider } });
+    const both = await security.screen({ type: "text", content: "text" });
+    expect(both.decision).toBe("block");
+    expect(both.assessments?.map(({ model }) => model)).toEqual(["a", "b"]);
+    expect((await security.screen({ type: "text", content: "text" }, { models: ["a"] })).decision).toBe("allow");
+    await expect(security.screen({ type: "text", content: "text" }, { models: ["c"] })).rejects.toThrow("Unknown screening model: c");
+  });
+
+  test("aggregates across segments and models", async () => {
+    const a = recorder((text) => text.includes("w5") ? injection : clean);
+    const b = recorder(() => clean);
+    const security = createSecurity({
+      providers: { a: a.provider, b: b.provider },
+      screening: { technique: { kind: "sliding_word_window", windowWords: 4, strideWords: 4 }, aggregator: "all" },
+    });
+    const all = await security.screen({ type: "text", content: words(8) });
+    expect(all).toMatchObject({ decision: "allow", assessment: { flagged: false, blocked: false, matchedFilters: [] } });
+    const any = await security.screen({ type: "text", content: words(8) }, { aggregator: "any" });
+    expect(any).toMatchObject({ decision: "block", assessment: { flagged: true, maliciousChunkIndex: 1 } });
+    const twoModels = (results: readonly { model: string; assessment: ScreeningAssessment }[]) =>
+      new Set(results.filter(({ assessment }) => assessment.flagged).map(({ model }) => model)).size >= 2;
+    expect((await security.screen({ type: "text", content: words(8) }, { aggregator: twoModels })).decision).toBe("allow");
+  });
+
+  test("thresholds a reduced provider score", async () => {
+    const scores = [0.2, 0.5, 0.9];
+    const security = createSecurity({
+      provider: { assess: async () => ({ ...clean, score: scores.shift()! }) },
+      screening: { technique: { kind: "sliding_word_window", windowWords: 1, strideWords: 1 }, aggregator: { kind: "score", reduce: "mean", threshold: 0.5 } },
+    });
+    expect((await security.screen({ type: "text", content: "x y z" })).assessment?.score).toBeCloseTo(0.5333);
+    scores.push(0.2, 0.5, 0.8);
+    expect((await security.screen({ type: "text", content: "x y z" })).decision).toBe("allow");
+  });
+
+  test("a non-injection content match blocks even when the injection vote fails", async () => {
+    const security = createSecurity({
+      providers: {
+        a: { assess: async () => ({ ...clean, blocked: true, label: "CONTENT_BLOCKED", matchedFilters: ["rai"] }) },
+        b: { assess: async () => clean },
+      },
+      screening: { aggregator: "all" },
+    });
+    expect(await security.screen({ type: "text", content: "text", origin: "operator" }))
+      .toMatchObject({ decision: "block", assessment: { flagged: false, label: "CONTENT_BLOCKED", matchedFilters: ["rai"] } });
+  });
+
+  test("rejects invalid config when the client is created", () => {
+    const provider = { assess: async () => clean };
+    expect(() => createSecurity({})).toThrow("At least one screening provider");
+    expect(() => createSecurity({ provider, screening: { models: ["missing"] } })).toThrow("Unknown screening model");
+    expect(() => createSecurity({ provider, screening: { technique: { kind: "random_word_chunks", minWords: 5, maxWords: 2 } } })).toThrow("chunk bounds");
+    expect(() => createSecurity({ provider, screening: { aggregator: { kind: "score", reduce: "max", threshold: 2 } } })).toThrow("aggregator");
+  });
+
+  test("random chunks cover every word once and a seed makes them reproducible", () => {
+    const technique = { kind: "random_word_chunks", minWords: 2, maxWords: 5, seed: 7 } as const;
+    const chunks = segmentText(words(40), technique);
+    expect(chunks.map(({ text }) => text).join(" ")).toBe(words(40));
+    expect(segmentText(words(40), technique)).toEqual(chunks);
   });
 });
 

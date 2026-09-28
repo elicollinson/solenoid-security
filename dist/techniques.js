@@ -1,0 +1,69 @@
+export function seededRandom(seed) {
+    let state = seed >>> 0;
+    return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 0x100000000; };
+}
+export function validateTechnique(technique) {
+    if (technique.kind === "random_word_chunks") {
+        if (!Number.isInteger(technique.minWords) || !Number.isInteger(technique.maxWords) || technique.minWords < 1 || technique.maxWords < technique.minWords)
+            throw new Error("Invalid chunk bounds");
+        if (technique.seed !== undefined && !Number.isInteger(technique.seed))
+            throw new Error("Non-integer segmentation seed");
+    }
+    else if (technique.kind === "sliding_word_window") {
+        if (!Number.isInteger(technique.windowWords) || !Number.isInteger(technique.strideWords) || technique.windowWords < 1 || technique.strideWords < 1)
+            throw new Error("Invalid sliding window");
+    }
+    else if (technique.kind !== "full_text") {
+        throw new Error(`Unknown screening technique: ${technique.kind}`);
+    }
+}
+export function validateAggregator(aggregator) {
+    if (aggregator === "any" || aggregator === "all" || typeof aggregator === "function")
+        return;
+    if (aggregator?.kind !== "score" || !["max", "mean", "min"].includes(aggregator.reduce) || ![undefined, ">", ">="].includes(aggregator.comparator) ||
+        typeof aggregator.threshold !== "number" || aggregator.threshold < 0 || aggregator.threshold > 1) {
+        throw new Error("Invalid screening aggregator");
+    }
+}
+/** Splits text into the segments a technique screens. Whitespace-only text has none. */
+export function segmentText(text, technique) {
+    validateTechnique(technique);
+    if (!text.trim())
+        return [];
+    if (technique.kind === "full_text")
+        return [{ index: 0, text }];
+    const words = text.trim().split(/\s+/).filter(Boolean);
+    const random = technique.kind === "random_word_chunks"
+        ? technique.seed === undefined ? Math.random : seededRandom(technique.seed)
+        : undefined;
+    const output = [];
+    let start = 0;
+    while (start < words.length) {
+        const remaining = words.length - start;
+        const length = technique.kind === "random_word_chunks"
+            ? (() => { const upper = Math.min(technique.maxWords, remaining); const lower = Math.min(technique.minWords, remaining); return lower >= upper ? lower : lower + Math.floor(random() * (upper - lower + 1)); })()
+            : Math.min(remaining, technique.windowWords);
+        const end = start + length;
+        output.push({ index: output.length, text: words.slice(start, end).join(" "), startWord: start, endWord: end });
+        start = technique.kind === "random_word_chunks" ? end : start + technique.strideWords;
+    }
+    return output;
+}
+/** Applies an aggregator, returning the case flag and the score that summarizes it. */
+export function aggregate(results, aggregator) {
+    const scores = results.map(({ assessment }) => assessment.score);
+    const max = Math.max(0, ...scores);
+    if (aggregator === "any")
+        return { flagged: results.some(({ assessment }) => assessment.flagged), score: max };
+    if (aggregator === "all")
+        return { flagged: results.length > 0 && results.every(({ assessment }) => assessment.flagged), score: max };
+    if (typeof aggregator === "function")
+        return { flagged: aggregator(results) === true, score: max };
+    if (scores.some((value) => typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1)) {
+        throw new Error("Score aggregation requires provider scores from 0 to 1");
+    }
+    const score = aggregator.reduce === "max" ? max
+        : aggregator.reduce === "min" ? Math.min(...scores)
+            : scores.reduce((sum, value) => sum + value, 0) / scores.length;
+    return { flagged: aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold, score };
+}

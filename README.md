@@ -28,6 +28,43 @@ if (result.decision === "block" || result.decision === "quarantine") {
 
 `content` can be one string or an array of strings screened together. Use a separate call for each independent source so one quarantined item does not stop unrelated work. Unknown origins default to `external`, even if the content is placed in the first message of a conversation.
 
+## Screening configuration
+
+A screen has three settings: the **technique** that decides what text each provider call sees, the **models** that judge it, and the **aggregator** that turns their verdicts into one flag. Register named providers and set app-wide defaults once:
+
+```ts
+const security = createSecurity({
+  providers: {
+    armor: new ModelArmorScanner({ projectId, templateId: "base-detector" }),
+    armorHigh: new ModelArmorScanner({ projectId, templateId: "high-detector" }),
+  },
+  screening: {
+    technique: { kind: "random_word_chunks", minWords: 50, maxWords: 150 },
+    models: ["armor"],
+    aggregator: "any",
+  },
+});
+```
+
+Any setting can be overridden for one call. Omitted settings keep the app-wide value.
+
+```ts
+await security.screen(
+  { type: "text", content: webPage, boundary: "tool_output" },
+  { models: ["armor", "armorHigh"], aggregator: "all" },
+);
+```
+
+| Setting | Options | Default |
+| --- | --- | --- |
+| `technique` | `{ kind: "full_text" }`; `{ kind: "random_word_chunks", minWords, maxWords, seed? }`; `{ kind: "sliding_word_window", windowWords, strideWords }` | `full_text` |
+| `models` | Names from `providers`. A single `provider` is named `"default"`. | Every configured provider |
+| `aggregator` | `"any"`, `"all"`, `{ kind: "score", reduce: "max" \| "mean" \| "min", threshold, comparator?: ">" \| ">=" }`, or a function over every segment-by-model assessment | `"any"` |
+
+Every model screens every segment, and the aggregator sees the whole matrix, so a function can express rules such as "two of three models agree". The score comparator defaults to `>`. Without a `seed`, random chunk boundaries are unpredictable; pass one only when you need reproducible chunks. The chunk techniques split on the same code as the [eval workspace](evals/README.md) input strategies of the same `kind`, so evaluate a technique, model, and threshold together before adopting them. A Model Armor PI verdict is binary and scores 1 or 0.
+
+The aggregator decides only prompt injection. A match on any other content filter from any model or segment still blocks. `result.assessment` is the aggregated assessment and `result.assessments` lists each model's result for each segment. Any provider failure fails the whole screen with `ScreeningError`. Chunking multiplies provider calls by the number of segments, and the calls run concurrently.
+
 ## Decisions
 
 | Decision | Meaning |

@@ -38,7 +38,7 @@ First inspect the planned volume without making provider calls:
 bun evals/scripts/run-suite.ts --suite=evals/suites/prompt-injection-direct-chat-v1.json --test=benign-false-positives --condition=jev-full
 ```
 
-To run a condition, add `--execute`. Live runs require the relevant `OPENROUTER_API_KEY` or Model Armor Google credentials and project settings. They checkpoint each dispatch, raw response, and observation in ignored `evals/runs/`. A previously dispatched segment without a scored result requires inspection and an explicit `--retry-uncertain` choice before resending. The runner caps dispatches and records explicit HTTP 429 retries.
+To run a condition, add `--execute`. For a smoke test, `--limit=N` takes the first N selected cases and writes a separate `-limitN` checkpoint that `analyze-run.ts` replays over the same N cases. Live runs require the relevant `OPENROUTER_API_KEY` or Model Armor Google credentials and project settings. They checkpoint each dispatch, raw response, and observation in ignored `evals/runs/`. A previously dispatched segment without a scored result requires inspection and an explicit `--retry-uncertain` choice before resending. The runner caps dispatches and records explicit HTTP 429 retries.
 
 After a run, replay one or more score thresholds without network calls:
 

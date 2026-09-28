@@ -1,5 +1,7 @@
 export { createSecurity, ScreeningError } from "./screen.js";
-export type { ScreeningAssessment, ScreeningBoundary, ScreeningDecision, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
+export type { ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningDecision, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
+export { segmentText } from "./techniques.js";
+export type { ScreeningAggregator, ScreeningTechnique, SegmentAssessment, TextSegment } from "./techniques.js";
 export { ModelArmorScanner } from "./modelArmor.js";
 export type { ModelArmorAssessment, ModelArmorFilterVerdict, ModelArmorScannerOptions, PromptTextParts, FetchLike } from "./modelArmor.js";
 export { AuthoredTextRegistry, MIN_AUTHORED_LENGTH, authoredText } from "./authoredText.js";

@@ -35,13 +35,17 @@ const liveEngine: EngineSpec = engine.kind === "model_armor"
   : engine;
 const manifestPath = resolve(root, `evals/datasets/${test.datasetId === "llmail-phase2-positive-400" ? "llmail-phase2-positive-400" : test.datasetId === "notinject-benign-339" ? "notinject-benign-339" : test.datasetId}.json`);
 const manifest = JSON.parse(readFileSync(manifestPath, "utf8")) as DatasetManifest;
-const cases = selectTestCases(loadDataset(manifest, root), manifest, test);
+const limitArg = option("limit");
+const caseLimit = limitArg ? Number(limitArg) : undefined;
+if (caseLimit !== undefined && (!Number.isInteger(caseLimit) || caseLimit < 1)) throw new Error("--limit must be a positive integer");
+const cases = selectTestCases(loadDataset(manifest, root), manifest, test).slice(0, caseLimit);
+const limitSuffix = caseLimit === undefined ? "" : `-limit${caseLimit}`;
 const tasks = cases.flatMap(item => segmentCase(item, strategy).map(segment => ({ item, segment })));
 const taskMap = new Map(tasks.map(task => [task.segment.id, task]));
-const output = resolve(root, option("output", `evals/runs/${suite.id}/${test.id}/${condition.id}.jsonl`));
+const output = resolve(root, option("output", `evals/runs/${suite.id}/${test.id}/${condition.id}${limitSuffix}.jsonl`));
 if (!output.startsWith(resolve(root, "evals/runs") + "/")) throw new Error("Output must be inside ignored evals/runs");
-const runId = option("run-id", `${suite.id}/${test.id}/${condition.id}`);
-const metadata = { schemaVersion: "security-eval-run/v1", runId, suiteId: suite.id, suiteSha256: sha256(suiteText), datasetId: manifest.id, datasetRevision: manifest.revision, datasetSha256: manifest.source.sha256, testId: test.id, conditionId: condition.id, engine: liveEngine, inputStrategy: strategy, decisionRule: rule, expectedCases: cases.length, expectedSegments: tasks.length };
+const runId = option("run-id", `${suite.id}/${test.id}/${condition.id}${limitSuffix}`);
+const metadata = { schemaVersion: "security-eval-run/v1", runId, suiteId: suite.id, suiteSha256: sha256(suiteText), datasetId: manifest.id, datasetRevision: manifest.revision, datasetSha256: manifest.source.sha256, testId: test.id, conditionId: condition.id, engine: liveEngine, inputStrategy: strategy, decisionRule: rule, expectedCases: cases.length, expectedSegments: tasks.length, ...(caseLimit === undefined ? {} : { caseLimit }) };
 if (!args.includes("--execute")) {
   console.log(JSON.stringify({ dryRun: true, runId, testId, conditionId, engineKind: engine.kind, cases: cases.length, plannedCalls: tasks.length, output }, null, 2));
   process.exit(0);

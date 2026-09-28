@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "llmail-phase2-positive-400",
+  "revision": "sha256:46d0267fc7f555161eb22e7ec67ec994ac931b6cbf679b146b5aa212def16d51",
+  "source": {
+    "path": "evals/private/sources/phase2-positive-400.jsonl",
+    "sha256": "46d0267fc7f555161eb22e7ec67ec994ac931b6cbf679b146b5aa212def16d51",
+    "format": "llmail-jsonl",
+    "visibility": "private"
+  },
+  "expectedCases": 400,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": ["injection"],
+  "negativeValues": ["benign"]
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "notinject-benign-339",
+  "revision": "sha256:f8d28adfb5895e33a6e28270fe13c21c3739b5a6fb02f565bf71c4756d9cca61",
+  "source": {
+    "path": "evals/archive/research/datasets/notinject-source-v1.json",
+    "sha256": "f8d28adfb5895e33a6e28270fe13c21c3739b5a6fb02f565bf71c4756d9cca61",
+    "format": "notinject-json",
+    "visibility": "public"
+  },
+  "expectedCases": 339,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": ["injection"],
+  "negativeValues": ["benign"]
+}

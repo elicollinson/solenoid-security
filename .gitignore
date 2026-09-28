@@ -3,3 +3,5 @@ coverage/
 *.log
 .env
 .local/
+evals/private/
+evals/runs/

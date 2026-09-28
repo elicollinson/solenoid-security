@@ -22,7 +22,12 @@
     "build": "tsc -p tsconfig.json",
     "prepack": "npm run build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "bun test"
+    "test": "bun test",
+    "eval:typecheck": "tsc -p evals/tsconfig.json --noEmit",
+    "eval:test": "bun test evals/tests",
+    "eval:import": "bun evals/scripts/import-assistant-2026-09.ts",
+    "eval:run": "bun evals/scripts/run-suite.ts",
+    "eval:analyze": "bun evals/scripts/analyze-run.ts"
   },
   "dependencies": {
     "google-auth-library": "^9.15.1"

@@ -1,5 +1,7 @@
 # Solenoid Security
 
+The separate [evaluation workspace](evals/README.md) holds prompt-injection datasets, engine/input-strategy experiments, raw-score checkpoints, and historical comparisons. It is not part of the published runtime package.
+
 Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. The first release supports text through Google Cloud Model Armor; the input API can grow to images and documents in later releases.
 
 ```ts

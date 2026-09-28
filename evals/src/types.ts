@@ -1,0 +1,131 @@
+/** Evaluation types are separate from the runtime screening API. */
+export type AnnotationValue = string | number | boolean | null;
+export type FacetValue = string | number | boolean | readonly string[];
+
+export interface DatasetTurn {
+  id: string;
+  role: "system" | "operator" | "user" | "assistant" | "tool" | "document";
+  text: string;
+  /** Whose instruction hierarchy this text belongs to, independent of role. */
+  origin?: "operator" | "agent" | "external";
+}
+
+export interface EvalCase {
+  id: string;
+  ordinal?: number;
+  /** A single text is represented as one source turn; dialogues can have many. */
+  turns: readonly DatasetTurn[];
+  annotations: Readonly<Record<string, AnnotationValue>>;
+  facets: Readonly<Record<string, FacetValue>>;
+  textSha256: string;
+}
+
+export interface DatasetManifest {
+  schemaVersion: "security-eval-dataset/v1";
+  id: string;
+  revision: string;
+  source: {
+    path: string;
+    sha256: string;
+    format: "llmail-jsonl" | "notinject-json" | "canonical-jsonl";
+    visibility: "public" | "private";
+  };
+  expectedCases: number;
+  annotationKey: string;
+  /** Dataset labels can cover positives, negatives, or both. */
+  positiveValues: readonly AnnotationValue[];
+  negativeValues: readonly AnnotationValue[];
+}
+
+export interface EvalTest {
+  id: string;
+  datasetId: string;
+  datasetRevision: string;
+  annotationKey: string;
+  /** A test may select only one class, or both. */
+  caseSelector: "positive" | "negative" | "all";
+  metrics: readonly ("detection_rate" | "false_positive_rate" | "confusion_matrix")[];
+}
+
+export type EngineSpec =
+  | { id: string; kind: "jev"; model: string; provider: string; questionId: string; questionSha256: string; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: string; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> };
+
+export type InputStrategy =
+  | { id: string; kind: "full_text"; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "random_word_chunks"; maxWords: number; minWords: number; seed: number; seedDerivation: "fixed" | "xor_case_ordinal_v1" | "legacy_notinject_v1"; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "sliding_word_window"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" };
+
+export type DecisionRule =
+  | { id: string; kind: "score_threshold"; aggregation: "max" | "mean" | "min"; comparator: ">" | ">="; threshold: number }
+  | { id: string; kind: "binary_verdict"; aggregation: "any" | "all"; positiveVerdict: string };
+
+/** An explicit condition binds model-specific strategy and decision dials. */
+export interface EvalCondition {
+  id: string;
+  testIds?: readonly string[];
+  engine: EngineSpec;
+  inputStrategy: InputStrategy;
+  decisionRule: DecisionRule;
+  repeat: number;
+}
+
+export interface InputSegment {
+  id: string;
+  caseId: string;
+  turnIds: readonly string[];
+  index: number;
+  text: string;
+  textSha256: string;
+  startWord?: number;
+  endWord?: number;
+}
+
+/** One provider score for one strategy-produced segment. Never collapse it at capture time. */
+export interface InferenceObservation {
+  schemaVersion: "security-eval-observation/v1";
+  runId: string;
+  datasetId: string;
+  datasetRevision: string;
+  testId: string;
+  conditionId: string;
+  caseId: string;
+  segmentId: string;
+  segmentIndex: number;
+  sourceTurnIds: readonly string[];
+  inputSha256: string;
+  engineId: string;
+  engineKind: EngineSpec["kind"];
+  engineConfigSha256: string;
+  inputStrategyId: string;
+  inputStrategySha256: string;
+  /** Jev noul and LLM concernScore live here. A binary filter need not invent a probability. */
+  rawScore: number | null;
+  rawVerdict: string | null;
+  provider: string;
+  resolvedModel: string | null;
+  responseIds: readonly string[];
+  /** Null when a historical checkpoint did not record a request ID. */
+  requestId: string | null;
+  requestTurn: number;
+  startedAt: string;
+  durationMs: number | null;
+  usage: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null };
+  status: "scored" | "error";
+  errorKind?: string;
+  sourceArtifact?: string;
+}
+
+export interface CaseDecision {
+  runId: string;
+  datasetId: string;
+  testId: string;
+  conditionId: string;
+  caseId: string;
+  ruleId: string;
+  aggregatedScore: number | null;
+  flagged: boolean | null;
+  scoredSegments: number;
+  expectedSegments: number;
+}

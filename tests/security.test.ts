@@ -141,6 +141,7 @@ describe("screening configuration", () => {
     expect(() => createSecurity({})).toThrow("At least one screening provider");
     expect(() => createSecurity({ provider, screening: { models: ["missing"] } })).toThrow("Unknown screening model");
     expect(() => createSecurity({ provider, screening: { technique: { kind: "random_word_chunks", minWords: 5, maxWords: 2 } } })).toThrow("chunk bounds");
+    expect(() => createSecurity({ provider, screening: { technique: { kind: "sliding_word_window", windowWords: 50, strideWords: 100 } } })).toThrow("Invalid sliding window");
     expect(() => createSecurity({ provider, screening: { aggregator: { kind: "score", reduce: "max", threshold: 2 } } })).toThrow("aggregator");
   });
 

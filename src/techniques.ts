@@ -14,7 +14,7 @@ export type ScreeningTechnique =
    * straddle them; pass a seed only when you need reproducible chunks.
    */
   | { kind: "random_word_chunks"; minWords: number; maxWords: number; seed?: number }
-  /** Windows of `windowWords` words starting every `strideWords` words. */
+  /** Windows of `windowWords` words starting every `strideWords` words. A stride longer than the window would skip text, so it is rejected. */
   | { kind: "sliding_word_window"; windowWords: number; strideWords: number };
 
 export interface TextSegment {
@@ -55,7 +55,7 @@ export function validateTechnique(technique: ScreeningTechnique): void {
     if (!Number.isInteger(technique.minWords) || !Number.isInteger(technique.maxWords) || technique.minWords < 1 || technique.maxWords < technique.minWords) throw new Error("Invalid chunk bounds");
     if (technique.seed !== undefined && !Number.isInteger(technique.seed)) throw new Error("Non-integer segmentation seed");
   } else if (technique.kind === "sliding_word_window") {
-    if (!Number.isInteger(technique.windowWords) || !Number.isInteger(technique.strideWords) || technique.windowWords < 1 || technique.strideWords < 1) throw new Error("Invalid sliding window");
+    if (!Number.isInteger(technique.windowWords) || !Number.isInteger(technique.strideWords) || technique.windowWords < 1 || technique.strideWords < 1 || technique.strideWords > technique.windowWords) throw new Error("Invalid sliding window: strideWords must be from 1 to windowWords");
   } else if (technique.kind !== "full_text") {
     throw new Error(`Unknown screening technique: ${(technique as { kind: unknown }).kind}`);
   }

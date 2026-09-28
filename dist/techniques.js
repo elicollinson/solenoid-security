@@ -10,8 +10,8 @@ export function validateTechnique(technique) {
             throw new Error("Non-integer segmentation seed");
     }
     else if (technique.kind === "sliding_word_window") {
-        if (!Number.isInteger(technique.windowWords) || !Number.isInteger(technique.strideWords) || technique.windowWords < 1 || technique.strideWords < 1)
-            throw new Error("Invalid sliding window");
+        if (!Number.isInteger(technique.windowWords) || !Number.isInteger(technique.strideWords) || technique.windowWords < 1 || technique.strideWords < 1 || technique.strideWords > technique.windowWords)
+            throw new Error("Invalid sliding window: strideWords must be from 1 to windowWords");
     }
     else if (technique.kind !== "full_text") {
         throw new Error(`Unknown screening technique: ${technique.kind}`);

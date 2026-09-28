@@ -15,7 +15,7 @@ export type ScreeningTechnique =
     maxWords: number;
     seed?: number;
 }
-/** Windows of `windowWords` words starting every `strideWords` words. */
+/** Windows of `windowWords` words starting every `strideWords` words. A stride longer than the window would skip text, so it is rejected. */
  | {
     kind: "sliding_word_window";
     windowWords: number;

@@ -47,3 +47,7 @@ bun evals/scripts/analyze-run.ts --input=evals/runs/RUN.jsonl --thresholds=0.3,0
 ```
 
 For a new dataset, add a SHA-pinned dataset manifest and a source adapter or canonical JSONL source, then add tests specifying the annotation and selected cohort. For a new engine or segmentation method, implement it behind the engine or strategy interface and give it a new versioned ID. Keep private inputs, provider responses, and case-level scores in ignored paths. Commit aggregate reports only after validating coverage and provenance.
+
+## Agent workflows
+
+Repository skills guide additions to the eval framework: [`add-eval-dataset`](../.agents/skills/add-eval-dataset/SKILL.md), [`add-eval-model`](../.agents/skills/add-eval-model/SKILL.md), and [`add-eval-technique`](../.agents/skills/add-eval-technique/SKILL.md). Codex discovers them under `.agents/skills/`; Claude Code discovers links to the same files under `.claude/skills/`.

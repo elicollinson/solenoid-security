@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-detector-candidates-v1",
+  "tests": [
+    {
+      "id": "web-mixed",
+      "datasetId": "in-page-wild-sample-v1",
+      "datasetRevision": "sha256:ddb2aea2f235040bf06101b4da12c1f6cd2e5aed115a7431b3929a4625d0ff1e",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": ["detection_rate", "false_positive_rate", "confusion_matrix"]
+    },
+    {
+      "id": "agent-injection-bench-mixed",
+      "datasetId": "agent-injection-bench-v1",
+      "datasetRevision": "sha256:b2728d62dcf32c17570446d694152c2500531e96146e083d767de80d94875175",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": ["detection_rate", "false_positive_rate", "confusion_matrix"]
+    },
+    {
+      "id": "agentdojo-travel-mixed",
+      "datasetId": "agentdojo-travel-v1",
+      "datasetRevision": "sha256:0de1eebe5a0efe605cfece925fbcf5ab87a02eaf556b1be04f98320fcd9361da",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": ["detection_rate", "false_positive_rate", "confusion_matrix"]
+    }
+  ],
+  "engines": {
+    "jev": {
+      "id": "jev-1.13-typesafe",
+      "kind": "jev",
+      "model": "typesafe/jev-1.13",
+      "provider": "typesafe",
+      "questionId": "assistant-fragment-question-2026-09",
+      "questionSha256": "288a70547fce6ac674d9f6ca9b49cd4b128e7bcd903cfb360d0be7517dd0fd90"
+    },
+    "gemma3-task-context": {
+      "id": "gemma-3-4b-deepinfra-task-context-v1",
+      "kind": "task_context_llm",
+      "model": "google/gemma-3-4b-it",
+      "provider": "deepinfra",
+      "promptId": "security-eval-task-context-v1",
+      "promptSha256": "c56bffbd814ac204d70b6e1384e7ba8a13300cb15ff4ab8d90bd0a486ed02f80",
+      "schemaId": "task-context-score-rationale-v1"
+    }
+  },
+  "inputStrategies": {
+    "source-spans-96-64": {
+      "id": "external-source-spans-w96-s64-v1",
+      "kind": "source_spans",
+      "windowWords": 96,
+      "strideWords": 64,
+      "turnSelection": "all_external"
+    }
+  },
+  "decisionRules": {
+    "score05-exploratory": {
+      "id": "max-native-score-gt-0.5-exploratory-v1",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "comparator": ">",
+      "threshold": 0.5
+    }
+  },
+  "conditions": [
+    { "id": "jev-source-spans-web", "testIds": ["web-mixed"], "engine": "jev", "inputStrategy": "source-spans-96-64", "decisionRule": "score05-exploratory", "repeat": 1 },
+    { "id": "jev-source-spans-aib", "testIds": ["agent-injection-bench-mixed"], "engine": "jev", "inputStrategy": "source-spans-96-64", "decisionRule": "score05-exploratory", "repeat": 1 },
+    { "id": "jev-source-spans-agentdojo", "testIds": ["agentdojo-travel-mixed"], "engine": "jev", "inputStrategy": "source-spans-96-64", "decisionRule": "score05-exploratory", "repeat": 1 },
+    { "id": "gemma3-task-context-aib", "testIds": ["agent-injection-bench-mixed"], "engine": "gemma3-task-context", "inputStrategy": "source-spans-96-64", "decisionRule": "score05-exploratory", "repeat": 1 },
+    { "id": "gemma3-task-context-agentdojo", "testIds": ["agentdojo-travel-mixed"], "engine": "gemma3-task-context", "inputStrategy": "source-spans-96-64", "decisionRule": "score05-exploratory", "repeat": 1 }
+  ]
+}

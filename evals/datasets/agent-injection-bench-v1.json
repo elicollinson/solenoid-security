@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "agent-injection-bench-v1",
+  "revision": "sha256:b2728d62dcf32c17570446d694152c2500531e96146e083d767de80d94875175",
+  "source": {
+    "path": "evals/datasets/agent-injection-bench-v1.jsonl",
+    "sha256": "b2728d62dcf32c17570446d694152c2500531e96146e083d767de80d94875175",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 182,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": ["injection"],
+  "negativeValues": ["benign"],
+  "provenance": {
+    "repository": "https://github.com/ppradyoth/AgentInjectionBench",
+    "commit": "5adb09800170683793b4e4d015e42e2002fa5adf",
+    "sourceFiles": {
+      "data/agent_injection_bench.jsonl": "sha256:606cb74f5ce874dba45d9cdf591af678d7c6bd8a92ff3189d0f522fb39fb941e"
+    },
+    "license": "Apache-2.0",
+    "selection": "All 142 unsafe cases and 40 safe controls. Preserve system, tool definitions, and conversation through the last tool result; exclude subsequent illustrative assistant continuation.",
+    "labelMeaning": "Source ground_truth unsafe/safe denotes an injected instruction versus a benign control, not observed attack success."
+  }
+}

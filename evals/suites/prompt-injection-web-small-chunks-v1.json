@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-web-small-chunks-v1",
+  "tests": [
+    {"id": "web-mixed", "datasetId": "in-page-wild-sample-v1", "datasetRevision": "sha256:ddb2aea2f235040bf06101b4da12c1f6cd2e5aed115a7431b3929a4625d0ff1e", "annotationKey": "prompt_injection_attempt", "caseSelector": "all", "metrics": ["detection_rate", "false_positive_rate", "confusion_matrix"]}
+  ],
+  "engines": {
+    "jev": {"id": "jev-1.13-typesafe", "kind": "jev", "model": "typesafe/jev-1.13", "provider": "typesafe", "questionId": "assistant-fragment-question-2026-09", "questionSha256": "288a70547fce6ac674d9f6ca9b49cd4b128e7bcd903cfb360d0be7517dd0fd90"},
+    "gemma": {"id": "gemma-4-31b-direct-chat-v1", "kind": "llm", "model": "google/gemma-4-31b-it", "provider": "deepinfra/turbo", "promptId": "security-eval-direct-chat-v1", "promptSha256": "8a636c496201fb648b74aa949c0d47f394a13e31976700a0d420d93a6170fa37", "schemaId": "concern-score-rationale-v1"}
+  },
+  "inputStrategies": {
+    "chunks7": {"id": "web-random-nonoverlap-min2-max7-seed20260926-v1", "kind": "random_word_chunks", "maxWords": 7, "minWords": 2, "seed": 20260926, "seedDerivation": "xor_case_ordinal_v1", "turnSelection": "last_external"},
+    "chunks14": {"id": "web-random-nonoverlap-min2-max14-seed20260926-v1", "kind": "random_word_chunks", "maxWords": 14, "minWords": 2, "seed": 20260926, "seedDerivation": "xor_case_ordinal_v1", "turnSelection": "last_external"},
+    "chunks21": {"id": "web-random-nonoverlap-min2-max21-seed20260926-v1", "kind": "random_word_chunks", "maxWords": 21, "minWords": 2, "seed": 20260926, "seedDerivation": "xor_case_ordinal_v1", "turnSelection": "last_external"}
+  },
+  "decisionRules": {
+    "score05": {"id": "max-score-gt-0.5", "kind": "score_threshold", "aggregation": "max", "comparator": ">", "threshold": 0.5}
+  },
+  "conditions": [
+    {"id": "jev-web-chunks7", "engine": "jev", "inputStrategy": "chunks7", "decisionRule": "score05", "repeat": 1},
+    {"id": "jev-web-chunks14", "engine": "jev", "inputStrategy": "chunks14", "decisionRule": "score05", "repeat": 1},
+    {"id": "jev-web-chunks21", "engine": "jev", "inputStrategy": "chunks21", "decisionRule": "score05", "repeat": 1},
+    {"id": "gemma-web-chunks7", "engine": "gemma", "inputStrategy": "chunks7", "decisionRule": "score05", "repeat": 1},
+    {"id": "gemma-web-chunks14", "engine": "gemma", "inputStrategy": "chunks14", "decisionRule": "score05", "repeat": 1},
+    {"id": "gemma-web-chunks21", "engine": "gemma", "inputStrategy": "chunks21", "decisionRule": "score05", "repeat": 1}
+  ]
+}

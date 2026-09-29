@@ -50,12 +50,16 @@ export interface EvalTest {
 export type EngineSpec =
   | { id: string; kind: "jev"; model: string; provider: string; questionId: string; questionSha256: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: string; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "llm_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-rationale-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "llm_score_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-only-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "task_context_llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "task-context-score-rationale-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> };
 
 export type InputStrategy =
   | { id: string; kind: "full_text"; turnSelection: "all" | "last_external" }
   | { id: string; kind: "random_word_chunks"; maxWords: number; minWords: number; seed: number; seedDerivation: "fixed" | "xor_case_ordinal_v1" | "legacy_notinject_v1"; turnSelection: "all" | "last_external" }
-  | { id: string; kind: "sliding_word_window"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" };
+  | { id: string; kind: "sliding_word_window"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "source_spans"; windowWords: number; strideWords: number; turnSelection: "all_external" };
 
 export type DecisionRule =
   | { id: string; kind: "score_threshold"; aggregation: "max" | "mean" | "min"; comparator: ">" | ">="; threshold: number }
@@ -95,6 +99,8 @@ export interface InferenceObservation {
   segmentIndex: number;
   sourceTurnIds: readonly string[];
   inputSha256: string;
+  /** For task-context engines, hashes the trusted task and source provenance sent with the segment. */
+  contextSha256?: string;
   engineId: string;
   engineKind: EngineSpec["kind"];
   engineConfigSha256: string;

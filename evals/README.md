@@ -21,6 +21,9 @@ The score threshold is recorded with the decision rule, even when it is tuned al
 - [`datasets/notinject-benign-339.json`](datasets/notinject-benign-339.json) points to the 339-case public [NotInject](https://huggingface.co/datasets/leolee99/NotInject) snapshot, whose dataset card marks it MIT licensed. It contributes false-positive observations.
 - [`suites/prompt-injection-baselines.json`](suites/prompt-injection-baselines.json) describes the **historical** engine versions, both historical chunk plans, full text, and threshold 0.5. The two chunked datasets used different case-seed derivations; the distinction is explicit in the suite.
 - [`suites/prompt-injection-direct-chat-v1.json`](suites/prompt-injection-direct-chat-v1.json) is a **new** runnable protocol for Gemma. Its direct chat prompt and tool-call protocol are versioned separately from the assistant's historical Agent protocol. Do not merge their results as if the prompts were identical.
+- [`datasets/PUBLIC_SOURCES.md`](datasets/PUBLIC_SOURCES.md) documents the three public detection cohorts. Run `bun run eval:fetch-public` to retrieve pinned upstream sources and build their ignored JSONL inputs before running those suites.
+- [`WEB_SMALL_CHUNKS.md`](WEB_SMALL_CHUNKS.md) records the 7/14/21-word in-page web chunk plans, runnable suites, and the distinct Gemma score-only protocol used for complete chunked comparisons.
+- [`reports/public-detector-comparison-2026-09-28.md`](reports/public-detector-comparison-2026-09-28.md) contains aggregate findings from the completed runs; raw observations and generated inputs remain ignored.
 
 The suite model also supports a dataset with both positive and benign labels: use `caseSelector: "all"` and request both detection and false-positive metrics. Facets such as technique, category, split, or future attack surface remain case metadata rather than new engine types.
 

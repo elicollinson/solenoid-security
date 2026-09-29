@@ -27,7 +27,8 @@
     "eval:test": "bun test evals/tests",
     "eval:import": "bun evals/scripts/import-assistant-2026-09.ts",
     "eval:run": "bun evals/scripts/run-suite.ts",
-    "eval:analyze": "bun evals/scripts/analyze-run.ts"
+    "eval:analyze": "bun evals/scripts/analyze-run.ts",
+    "eval:fetch-public": "python3 evals/scripts/fetch-public-datasets.py"
   },
   "dependencies": {
     "google-auth-library": "^9.15.1"

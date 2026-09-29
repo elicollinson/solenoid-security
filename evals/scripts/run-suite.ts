@@ -4,7 +4,7 @@ import { appendFileSync, existsSync, mkdirSync, readFileSync, truncateSync } fro
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadDataset, selectTestCases } from "../src/datasets.js";
-import { inferText } from "../src/engines.js";
+import { inferText, taskContextForCase, TASK_CONTEXT_PROMPT_ID, TASK_CONTEXT_PROMPT_SHA256 } from "../src/engines.js";
 import { RateGate } from "../src/rateGate.js";
 import { segmentCase, sha256 } from "../src/strategies.js";
 import type { DatasetManifest, DecisionRule, EngineSpec, EvalTest, InferenceObservation, InputStrategy } from "../src/types.js";
@@ -41,6 +41,9 @@ if (caseLimit !== undefined && (!Number.isInteger(caseLimit) || caseLimit < 1)) 
 const cases = selectTestCases(loadDataset(manifest, root), manifest, test).slice(0, caseLimit);
 const limitSuffix = caseLimit === undefined ? "" : `-limit${caseLimit}`;
 const tasks = cases.flatMap(item => segmentCase(item, strategy).map(segment => ({ item, segment })));
+if (engine.kind === "task_context_llm" && (engine.promptId !== TASK_CONTEXT_PROMPT_ID || engine.promptSha256 !== TASK_CONTEXT_PROMPT_SHA256 || engine.schemaId !== "task-context-score-rationale-v1")) throw new Error("Unknown task-context LLM prompt/protocol");
+if (engine.kind === "task_context_llm") for (const task of tasks) taskContextForCase(task.item, task.segment);
+const contextHash = (task: (typeof tasks)[number]) => engine.kind === "task_context_llm" ? sha256(JSON.stringify(taskContextForCase(task.item, task.segment))) : undefined;
 const taskMap = new Map(tasks.map(task => [task.segment.id, task]));
 const output = resolve(root, option("output", `evals/runs/${suite.id}/${test.id}/${condition.id}${limitSuffix}.jsonl`));
 if (!output.startsWith(resolve(root, "evals/runs") + "/")) throw new Error("Output must be inside ignored evals/runs");
@@ -70,7 +73,7 @@ for (const event of events.slice(1)) {
   else if (event.type === "observation") {
     const observation = event.value as InferenceObservation;
     const task = taskMap.get(observation.segmentId);
-    if (!task || observation.status !== "scored" || done.has(observation.segmentId) || observation.caseId !== task.item.id || observation.segmentIndex !== task.segment.index || observation.inputSha256 !== task.segment.textSha256 || observation.engineConfigSha256 !== sha256(JSON.stringify(liveEngine)) || observation.inputStrategySha256 !== sha256(JSON.stringify(strategy))) throw new Error("Invalid or duplicate saved observation");
+    if (!task || observation.status !== "scored" || done.has(observation.segmentId) || observation.caseId !== task.item.id || observation.segmentIndex !== task.segment.index || observation.inputSha256 !== task.segment.textSha256 || observation.contextSha256 !== contextHash(task) || observation.engineConfigSha256 !== sha256(JSON.stringify(liveEngine)) || observation.inputStrategySha256 !== sha256(JSON.stringify(strategy))) throw new Error("Invalid or duplicate saved observation");
     done.add(observation.segmentId);
   } else if (event.type === "error" && (event as { issue?: { kind?: string } }).issue?.kind === "provenance_or_validation_failure") throw new Error("Provenance failure in checkpoint; inspect before any resume");
   else if (!["response", "error", "rateLimit", "complete"].includes(event.type)) throw new Error("Unknown checkpoint event");
@@ -116,12 +119,12 @@ async function worker(): Promise<void> {
       throw new Error("Unreachable retry state");
     };
     try {
-      const result = await inferText(liveEngine, task.segment.text, { fetchFn: send });
+      const result = await inferText(liveEngine, task.segment.text, { fetchFn: send, ...(liveEngine.kind === "task_context_llm" ? { taskContext: taskContextForCase(task.item, task.segment) } : {}) });
       append({ type: "response", caseId: task.item.id, segmentId: task.segment.id, requestId, raw: result.rawResponse });
       const observation: InferenceObservation = {
         schemaVersion: "security-eval-observation/v1", runId, datasetId: manifest.id, datasetRevision: manifest.revision, testId: test!.id,
         conditionId: condition!.id, caseId: task.item.id, segmentId: task.segment.id, segmentIndex: task.segment.index,
-        sourceTurnIds: task.segment.turnIds, inputSha256: task.segment.textSha256,
+        sourceTurnIds: task.segment.turnIds, inputSha256: task.segment.textSha256, ...(liveEngine.kind === "task_context_llm" ? { contextSha256: contextHash(task) } : {}),
         engineId: liveEngine.id, engineKind: liveEngine.kind, engineConfigSha256: sha256(JSON.stringify(liveEngine)),
         inputStrategyId: strategy!.id, inputStrategySha256: sha256(JSON.stringify(strategy)), rawScore: result.rawScore,
         rawVerdict: result.rawVerdict, provider: result.provider, resolvedModel: result.resolvedModel,

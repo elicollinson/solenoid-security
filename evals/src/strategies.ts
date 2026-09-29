@@ -7,6 +7,11 @@ export function sha256(text: string): string { return createHash("sha256").updat
 
 function selectedTurns(item: EvalCase, selection: InputStrategy["turnSelection"]) {
   if (selection === "all") return item.turns;
+  if (selection === "all_external") {
+    const turns = item.turns.filter(entry => entry.origin === "external");
+    if (!turns.length) throw new Error(`Case ${item.id} has no external turn`);
+    return turns;
+  }
   const turn = [...item.turns].reverse().find(entry => entry.origin === "external");
   if (!turn) throw new Error(`Case ${item.id} has no external turn`);
   return [turn];
@@ -15,6 +20,21 @@ function selectedTurns(item: EvalCase, selection: InputStrategy["turnSelection"]
 /** Segmentation is independent of the engine and the threshold. The runtime SDK shares the word splitter. */
 export function segmentCase(item: EvalCase, strategy: InputStrategy): InputSegment[] {
   const turns = selectedTurns(item, strategy.turnSelection);
+  if (strategy.kind === "source_spans") {
+    if (!Number.isInteger(strategy.windowWords) || !Number.isInteger(strategy.strideWords) || strategy.windowWords < 1 || strategy.strideWords < 1 || strategy.strideWords > strategy.windowWords) throw new Error("Invalid source span window");
+    const spans: InputSegment[] = [];
+    for (const turn of turns) {
+      const words = turn.text.trim().split(/\s+/).filter(Boolean);
+      for (let start = 0; start < words.length; start += strategy.strideWords) {
+        const end = Math.min(start + strategy.windowWords, words.length);
+        const text = words.slice(start, end).join(" ");
+        spans.push({ id: `${item.id}/${spans.length}`, caseId: item.id, turnIds: [turn.id], index: spans.length, text, textSha256: sha256(text), startWord: start, endWord: end });
+        if (end === words.length) break;
+      }
+    }
+    if (!spans.length) throw new Error(`Case ${item.id} has empty selected text`);
+    return spans;
+  }
   const text = turns.map(turn => turn.text).join("\n");
   if (!text.trim()) throw new Error(`Case ${item.id} has empty selected text`);
   const turnIds = turns.map(turn => turn.id);

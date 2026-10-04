@@ -19,8 +19,11 @@ export function loadDataset(manifest: DatasetManifest, root = process.cwd()): Ev
   else records = (JSON.parse(raw) as { cases: Record<string, unknown>[] }).cases;
   if (records.length !== manifest.expectedCases) throw new Error(`Dataset ${manifest.id} case count mismatch`);
   const cases = records.map((record, ordinal): EvalCase => {
-    if (typeof record.id !== "string" || !record.id.trim()) throw new Error(`Invalid case ID in ${manifest.id}`);
-    const id = record.id;
+    // Historical LLMail/NotInject sources can use numeric IDs; canonical IDs are strings.
+    const id = manifest.source.format !== "canonical-jsonl" && typeof record.id === "number" && Number.isSafeInteger(record.id) && record.id >= 0
+      ? String(record.id)
+      : record.id;
+    if (typeof id !== "string" || !id.trim()) throw new Error(`Invalid case ID in ${manifest.id}`);
     const label = record.label;
     if (!id || classify(label, manifest) === null) throw new Error(`Invalid case label or ID in ${manifest.id}`);
     const text = record.text;

@@ -47,18 +47,35 @@ export interface EvalTest {
   metrics: readonly ("detection_rate" | "false_positive_rate" | "confusion_matrix")[];
 }
 
-export type EngineSpec =
+/** Local relay only. Device/artifact identity is checked through lms before and after inference. */
+export interface LMStudioConfig {
+  baseUrl: string;
+  modelKey: string;
+  indexedModelIdentifier: string;
+  deviceIdentifier: string;
+  format: "gguf" | "safetensors";
+  quantization: string;
+  sizeBytes: number;
+  contextLength: number;
+  parallel: number;
+  timeoutMs: number;
+}
+
+export type EngineSpec = (
   | { id: string; kind: "jev"; model: string; provider: string; questionId: string; questionSha256: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-rationale-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm_score_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-only-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
-  | { id: string; kind: "task_context_llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "task-context-score-rationale-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
-  | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> };
+  | { id: string; kind: "task_context_llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "task-context-score-rationale-v1" | "task-context-score-rationale-neutral-v2"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> }
+) & { lmStudio?: LMStudioConfig };
 
 export type InputStrategy =
-  | { id: string; kind: "full_text"; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "decoded_preview_v1"; turnSelection: "all" | "last_external" | "all_external" }
+  | { id: string; kind: "full_text"; turnSelection: "all" | "last_external" | "all_external" }
   | { id: string; kind: "random_word_chunks"; maxWords: number; minWords: number; seed: number; seedDerivation: "fixed" | "xor_case_ordinal_v1" | "legacy_notinject_v1"; turnSelection: "all" | "last_external" }
   | { id: string; kind: "sliding_word_window"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "sliding_word_window_preserve_v1"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" }
   | { id: string; kind: "source_spans"; windowWords: number; strideWords: number; turnSelection: "all_external" };
 
 export type DecisionRule =

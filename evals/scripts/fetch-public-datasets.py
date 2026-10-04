@@ -43,13 +43,19 @@ def pinned_checkout(name, alias, override, cache_dir):
         if git("-C", path, "rev-parse", "--verify", f"{expected}^{{commit}}", check=False).returncode:
             git("-C", path, "fetch", "--quiet", "origin", expected)
         head = git("-C", path, "rev-parse", "HEAD", check=False)
-        if head.returncode or head.stdout.strip() != expected:
-            if not created and git("-C", path, "status", "--porcelain").stdout.strip():
+        # --no-checkout can already put HEAD at the pinned commit while leaving
+        # both the index and worktree empty, including after an interrupted fetch.
+        empty_checkout = not git("-C", path, "ls-files", "-z").stdout and not any(entry.name != ".git" for entry in path.iterdir())
+        if created or empty_checkout or head.returncode or head.stdout.strip() != expected:
+            if not created and not empty_checkout and git("-C", path, "status", "--porcelain").stdout.strip():
                 raise ValueError(f"Cached source has local changes; inspect before checkout: {path}")
             git("-C", path, "checkout", "--quiet", "--detach", expected)
     head = git("-C", path, "rev-parse", "HEAD").stdout.strip()
     if head != expected:
         raise ValueError(f"Wrong upstream commit for {name}: expected {expected}, found {head}")
+    missing_sources = [source for source in manifest["provenance"].get("sourceFiles", {}) if not (path / source).is_file()]
+    if missing_sources:
+        raise ValueError(f"Missing pinned source files for {name}: {missing_sources}; inspect checkout before retrying: {path}")
     return path, manifest
 
 

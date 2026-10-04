@@ -24,10 +24,15 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test",
     "eval:typecheck": "tsc -p evals/tsconfig.json --noEmit",
-    "eval:test": "bun test evals/tests",
+    "eval:test": "bun test ./evals/tests",
     "eval:import": "bun evals/scripts/import-assistant-2026-09.ts",
     "eval:run": "bun evals/scripts/run-suite.ts",
+    "eval:budget": "bun evals/scripts/check-budget.ts",
     "eval:analyze": "bun evals/scripts/analyze-run.ts",
+    "eval:local": "bun evals/scripts/run-lmstudio-matrix.ts",
+    "eval:research": "bun evals/scripts/run-research-matrix.ts",
+    "eval:research-analyze": "bun evals/scripts/analyze-research.ts",
+    "eval:fetch-bipia": "python3 -B evals/scripts/import-bipia-email.py --fetch",
     "eval:fetch-public": "python3 evals/scripts/fetch-public-datasets.py"
   },
   "dependencies": {

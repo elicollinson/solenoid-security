@@ -1,0 +1,112 @@
+/** Serial LM Link research driver. No cloud calls; exact completed cells are validated and skipped. */
+import { spawn, execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { appendFileSync, closeSync, existsSync, mkdirSync, openSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
+import { relative, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { lmsJson, validateLMStudioConfig, validateLoadedModel } from "../src/lmStudio.js";
+import { validateMatrixSuite, readCompleteJsonl } from "../src/researchMatrix.js";
+import { analyzeCheckpoint, auditPartialCheckpoint, readNativeInputSource, type Event } from "./analyze-research.js";
+const exec = promisify(execFile);
+const root = fileURLToPath(new URL("../..", import.meta.url));
+const args = process.argv.slice(2);
+const option = (key: string, fallback = "") => args.find(a => a.startsWith(`--${key}=`))?.slice(key.length + 3) ?? fallback;
+const suiteArg = option("suite", "evals/suites/prompt-injection-lmstudio-v1.json");
+const conditions = option("conditions").split(",").filter(Boolean), tests = option("tests").split(",").filter(Boolean);
+const suite = validateMatrixSuite(JSON.parse(readFileSync(resolve(root, suiteArg), "utf8")), conditions, tests);
+const outputDir = resolve(root, option("output-dir", "evals/runs/lmstudio-research-2026-10-03"));
+if (!outputDir.startsWith(resolve(root, "evals/runs") + "/")) throw new Error("Output must stay in ignored evals/runs");
+const cells = suite.conditions.filter(c => !conditions.length || conditions.includes(c.id)).flatMap(condition => suite.tests.filter(test => (!tests.length || tests.includes(test.id)) && (!condition.testIds || condition.testIds.includes(test.id))).map(test => ({ condition, test, engine: suite.engines[condition.engine]! })));
+for (const {engine} of cells) { if (!engine.lmStudio) throw new Error("Local matrix refuses cloud engines"); validateLMStudioConfig(engine); }
+const limit = option("limit"), tranche = option("max-new-segments"), maxCells = Number(option("max-cells", "100000"));
+const reuseSource = option("reuse-from");
+const inputReuseSource = option("reuse-inputs-from");
+const deduplicate = args.includes("--deduplicate-inputs");
+if (deduplicate && (reuseSource || cells.some(c => c.engine.kind !== "llm_score_json") || args.includes("--continue-after-output-errors") || args.includes("--continue-after-length-errors"))) throw new Error("Within-run reuse requires local score-only inference without external reuse or error continuation");
+if (reuseSource && (cells.length !== 1 || limit)) throw new Error("--reuse-from requires one full-cohort local matrix cell");
+if (inputReuseSource) {
+  if (!deduplicate || cells.length !== 1 || limit) throw new Error("--reuse-inputs-from requires one full-cohort cell with --deduplicate-inputs");
+  readNativeInputSource(relative(root, resolve(root, inputReuseSource)), cells[0]!.engine, root);
+}
+if (!Number.isInteger(maxCells) || maxCells < 1 || [limit, tranche].some(v => v && (!Number.isSafeInteger(Number(v)) || Number(v) < 1))) throw new Error("Invalid limit");
+const suffix = limit ? `-limit${limit}` : "";
+if (!args.includes("--execute")) { console.log(JSON.stringify({dryRun: true, cells: cells.map(c => [c.engine.id, c.test.id, c.condition.id]), outputDir}, null, 2)); process.exit(0); }
+mkdirSync(outputDir, {recursive: true});
+const lock = resolve(root, "evals/runs/lmstudio-device.lock");
+const fd = openSync(lock, "wx"); writeFileSync(fd, JSON.stringify({pid: process.pid, outputDir, at: new Date().toISOString()})); closeSync(fd);
+const log = (value: unknown) => appendFileSync(resolve(outputDir, "driver.ndjson"), JSON.stringify({at: new Date().toISOString(), value}) + "\n");
+let active: (typeof cells)[number]["engine"] | undefined;
+let child: ReturnType<typeof spawn> | undefined;
+let stopping = false;
+for (const signal of ["SIGINT", "SIGTERM"] as const) process.on(signal, () => { stopping = true; child?.kill(signal); });
+async function command(argv: string[]) {
+  try {
+    const result = await exec("lms", argv, {timeout: 300000, maxBuffer: 8 * 1024 * 1024});
+    log({command: ["lms", ...argv], stdout: result.stdout, stderr: result.stderr});
+  } catch (error) {
+    const failure = error as Error & {code?: string | number; signal?: string; stdout?: string; stderr?: string};
+    log({event: "command_failed", command: ["lms", ...argv], message: failure.message ?? String(error),
+      code: failure.code ?? null, signal: failure.signal ?? null, stdout: failure.stdout ?? "", stderr: failure.stderr ?? ""});
+    throw error;
+  }
+}
+async function unloadOwned() {
+  if (!active || !("model" in active)) return;
+  const owned = active;
+  const ps = await lmsJson("ps");
+  if (Array.isArray(ps) && ps.some(m => m.identifier === owned.model)) {
+    validateLoadedModel(active, ps);
+    await command(["unload", active.model]);
+  }
+  active = undefined;
+}
+try {
+  log({event: "start", suite: suite.id, cells: cells.length});
+  const inventory = await lmsJson("ls"); log({event: "inventory", inventory});
+  let executed = 0;
+  for (const cell of cells) {
+    if (stopping || executed >= maxCells) break;
+    const {condition, test, engine} = cell;
+    const output = resolve(outputDir, test.id, `${condition.id}${suffix}.jsonl`);
+    if (existsSync(output)) {
+      const state = readCompleteJsonl(readFileSync(output, "utf8"));
+      const captured = state.events[0]?.value as {conditionId?: string; testId?: string; suiteId?: string; caseLimit?: number; reuseFrom?: {sourceCheckpoint?: string}; inputReuseFrom?: {sourceCheckpoint?: string}; deduplication?: string};
+      if (captured?.conditionId !== condition.id || captured.testId !== test.id || captured.suiteId !== suite.id || captured.caseLimit !== (limit ? Number(limit) : undefined)) throw new Error("Existing local checkpoint identity mismatch");
+      if (captured.reuseFrom?.sourceCheckpoint !== (reuseSource ? relative(root, resolve(root, reuseSource)) : undefined)) throw new Error("Existing local checkpoint reuse source differs; resume with the same --reuse-from");
+      if (captured.deduplication !== (deduplicate ? "exact-input/v1" : undefined)) throw new Error("Existing local checkpoint input reuse differs; resume with the same --deduplicate-inputs setting");
+      if (captured.inputReuseFrom?.sourceCheckpoint !== (inputReuseSource ? relative(root, resolve(root, inputReuseSource)) : undefined)) throw new Error("Existing local checkpoint native source differs; resume with the same --reuse-inputs-from");
+      if (state.events.some(e => e.type === "complete")) {
+        analyzeCheckpoint(state.events as Event[], root); log({event: "skip_complete", output}); continue;
+      }
+      const partial = auditPartialCheckpoint(state.events as Event[], root);
+      if (args.includes("--continue-after-output-errors") && [...partial.cases.values()].every(c => ["scored", "length_abstention", "output_abstention"].includes(c.status))) { log({event:"skip_finished_with_abstentions", output}); continue; }
+    }
+    if (active?.id !== engine.id) {
+      await unloadOwned();
+      const ps = await lmsJson("ps");
+      if (!Array.isArray(ps) || ps.length) throw new Error("Another model is loaded; refusing to evict user models or stack memory allocations");
+      const c = engine.lmStudio!;
+      if (!("model" in engine) || !Array.isArray(inventory) || inventory.filter(m => m.modelKey === c.modelKey && m.deviceIdentifier === c.deviceIdentifier && m.indexedModelIdentifier === c.indexedModelIdentifier && m.quantization?.name === c.quantization && m.sizeBytes === c.sizeBytes && m.format === c.format).length !== 1) throw new Error("Pinned LM Studio inventory provenance mismatch");
+      await command(["link", "set-preferred-device", c.deviceIdentifier]);
+      await command(["load", c.modelKey, "--context-length", String(c.contextLength), "--parallel", String(c.parallel), "--ttl", "600", "--identifier", engine.model, "-y"]);
+      active = engine;
+      validateLoadedModel(engine, await lmsJson("ps"));
+    }
+    const argv = [resolve(root, "evals/scripts/run-suite.ts"), `--suite=${suiteArg}`, `--test=${test.id}`, `--condition=${condition.id}`, `--output=${output}`, "--concurrency=1", "--execute", ...(limit ? [`--limit=${limit}`] : []), ...(tranche ? [`--max-new-segments=${tranche}`] : []), ...(reuseSource ? [`--reuse-from=${reuseSource}`] : []), ...(inputReuseSource ? [`--reuse-inputs-from=${inputReuseSource}`] : []), ...["--deduplicate-inputs", "--retry-uncertain", "--continue-after-length-errors", "--continue-after-output-errors"].filter(flag => args.includes(flag))];
+    log({event: "cell_start", test: test.id, condition: condition.id});
+    const code = await new Promise<number>((done, reject) => {
+      child = spawn(process.execPath, argv, {cwd: root, stdio: ["ignore", "pipe", "pipe"]});
+      child.stdout?.on("data", chunk => { process.stdout.write(chunk); appendFileSync(resolve(outputDir,"console.log"), chunk); });
+      child.stderr?.on("data", chunk => { process.stderr.write(chunk); appendFileSync(resolve(outputDir,"console.log"), chunk); });
+      child.once("error", reject); child.once("exit", code => done(code ?? 1));
+    });
+    child = undefined; executed++;
+    log({event: "cell_exit", test: test.id, condition: condition.id, code});
+    if (code !== 0) throw new Error("Local cell stopped; inspect retained failure before resuming");
+    const state = readCompleteJsonl(readFileSync(output,"utf8"));
+    if (state.events.some(e => e.type === "complete")) log({event:"validated", aggregate:analyzeCheckpoint(state.events as Event[],root).aggregate});
+    else auditPartialCheckpoint(state.events as Event[],root);
+  }
+} finally {
+  try { await unloadOwned(); } finally { unlinkSync(lock); }
+}

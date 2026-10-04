@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { DIRECT_JSON_PROMPT_ID, DIRECT_LLM_PROMPT_ID, DIRECT_LLM_PROMPT_SHA256, inferText, LEGACY_JEV_QUESTION, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_PROMPT_SHA256 } from "../src/engines.js";
+import { DIRECT_JSON_PROMPT_ID, DIRECT_LLM_PROMPT_ID, DIRECT_LLM_PROMPT_SHA256, inferText, isLengthLimitedResponse, LEGACY_JEV_QUESTION, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_PROMPT_SHA256 } from "../src/engines.js";
 import { sha256 } from "../src/strategies.js";
 import type { EngineSpec } from "../src/types.js";
 
@@ -9,6 +9,18 @@ const gemmaJson: EngineSpec = { id: "gemma-json", kind: "llm_json", model: "goog
 const gemmaScoreOnly: EngineSpec = { id: "gemma-score-only", kind: "llm_score_json", model: "google/gemma-4-31b-it", provider: "deepinfra/turbo", promptId: SCORE_ONLY_PROMPT_ID, promptSha256: SCORE_ONLY_PROMPT_SHA256, schemaId: "concern-score-only-json-v1" };
 
 describe("versioned engine adapters", () => {
+  it("distinguishes token-limit abstentions from network failures and valid scores", () => {
+    expect(isLengthLimitedResponse({ choices: [{ finish_reason: "length" }] })).toBe(true);
+    for (const raw of [null, {}, { choices: [] }, { choices: [{ finish_reason: "error", error: { code: 502 } }] }, { choices: [{ finish_reason: "stop" }] }]) expect(isLengthLimitedResponse(raw)).toBe(false);
+  });
+  it("sends the recorded reasoning setting and rejects malformed settings before dispatch", async () => {
+    const engine = { ...gemmaScoreOnly, parameters: { reasoning_enabled: false } };
+    await inferText(engine, "sample", { openRouterApiKey: "test", fetchFn: async (_url, init) => {
+      expect(JSON.parse(String(init?.body)).reasoning).toEqual({ enabled: false });
+      return Response.json({ id: "reasoning-off", model: engine.model, provider: "DeepInfra", choices: [{ message: { content: '{"concernScore":0.1}' } }] });
+    } });
+    await expect(inferText({ ...engine, parameters: { reasoning_enabled: "false" } }, "sample", { openRouterApiKey: "test", fetchFn: async () => { throw new Error("must not dispatch"); } })).rejects.toThrow("reasoning_enabled must be boolean");
+  });
   it("pins Jev and retains its raw noul score", async () => {
     let body: Record<string, unknown> | undefined;
     const result = await inferText(jev, "sample", { openRouterApiKey: "test", fetchFn: async (_url, init) => {
@@ -64,5 +76,6 @@ describe("versioned engine adapters", () => {
     });
     expect(result.rawScore).toBeNull();
     expect(result.rawVerdict).toBe("MATCH_FOUND");
+    expect((result.rawResponse as { nativeResponse: unknown }).nativeResponse).toHaveProperty("sanitizationResult");
   });
 });

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "longpibench-paper-method-v1",
+  "revision": "sha256:cbdfe7646b351367ebb5aa3cb76550c179c51465716b7277149f242f41690c33",
+  "source": {
+    "path": "evals/private/sources/longpibench-paper-method-v1.jsonl",
+    "sha256": "cbdfe7646b351367ebb5aa3cb76550c179c51465716b7277149f242f41690c33",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 300,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/liu00222/LongPIBench",
+    "commit": "c7b80114ae56f65fb8019ec82afdb3df91e4ed65",
+    "datasetRevision": "cdfdfdba8838911ec3d120d5bbf584c0afb280f2",
+    "license": "MIT synthetic data",
+    "selection": "All100 papers,3 exact upstream default-goal attack templates, appended to specified section using pinned builder. No selection by detection outcome. Reuse existing identical clean source predictions.",
+    "labelMeaning": "Constructed attack attempts, not compromise. Paired positions on same100 document families; not independent from default-position cohort.",
+    "builderHashes": {
+      "benchmark.py": "cf7f06e36dea747b038f35af9fcaf8bfacd756bf1ac21c9437fb77a687c429c3",
+      "attacks.py": "9edfc687950befac7f1fd22e50f0231c7d42f24caf71d6b58312886740aa2ea8",
+      "prompts.py": "d75883ce33a94f589793ee4509843bf2657681a7b268be1b1c4a0d25c2851755",
+      "data.py": "55856653925b5dba4c11e4c8801e301a11b83c23134263659ce67c10c23748cf"
+    }
+  }
+}

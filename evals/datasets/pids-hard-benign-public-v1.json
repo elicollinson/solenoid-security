@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "pids-hard-benign-public-v1",
+  "revision": "sha256:254db8c56dc61487007493ac01dfbde15238529d1ebacca8821d9cf1d287b926",
+  "source": {
+    "path": "evals/private/sources/pids-hard-benign-public-v1.jsonl",
+    "sha256": "254db8c56dc61487007493ac01dfbde15238529d1ebacca8821d9cf1d287b926",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 808,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/ShirePyDev/Prompt-Injection-Detection-System",
+    "commit": "caa329e1cd9fc3a7fb448fa6f413420d9885f4a1",
+    "sourceFile": "data/pids_bench_v3/eval_subsets/hard_benign_test.csv",
+    "sourceSha256": "e3ddb1e6e9e04e1097b7bcf9a6f5e05b0a8d73e8d71b8d867f7ed85b89472cee",
+    "upstreamRows": 1472,
+    "excludedUnavailableRows": 664,
+    "license": "Inherited source terms; research/noncommercial only overall. See pinned upstream DATA_LICENSES.md. Curated templates MIT, OASST/deepset Apache-2.0, Dolly CC BY-SA 3.0, SPML MIT, Qualifire CC BY-NC 4.0. No withheld LMSYS text is reconstructed.",
+    "selection": "Every nonempty publicly released row, original order and exact text; no model-driven selection or relabeling. Preserve source and seed family facets. Not a complete PIDS-Bench reproduction.",
+    "labelMeaning": "Upstream gateway injection/benign labels, not measured compromise. External-source detector semantics may differ for legitimate imperative requests. Obfuscated rows derive from upstream test split; do not pool with that split as independent evidence."
+  }
+}

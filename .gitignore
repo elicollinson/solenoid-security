@@ -8,3 +8,6 @@ evals/runs/
 evals/datasets/in-page-wild-sample-v1.jsonl
 evals/datasets/agent-injection-bench-v1.jsonl
 evals/datasets/agentdojo-travel-v1.jsonl
+
+# macOS Finder metadata
+.DS_Store

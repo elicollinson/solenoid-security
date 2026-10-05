@@ -1,6 +1,6 @@
 # Dense and MoE models: full-input baselines
 
-Updated 2026-10-05T12:44:30.626Z. New chunking runs are deferred under the user's full-input-first instruction.
+Updated 2026-10-05T19:55:10.636Z. New chunking runs are deferred under the user's full-input-first instruction.
 
 Qualified panel (log L119): MoE = Gemma26 (MLX8 and GGUF Q8_0 builds of the same model), Ornith1.5, Laguna XS2.1; dense = Muse Glimmer Q4, Qwen3.8 27B Q8, Gemma 4 31B-it Q8. Nemotron 3.5 Lightning failed qualification and is shown only as not started / partial. Group-level comparison and confounds are in the [MoE-vs-dense panel report](lmstudio-moe-dense-panel-2026-10-05.md); this page reports per-model counts only.
 
@@ -81,14 +81,14 @@ Complete 400-case cohort: 100 source families, one clean and three attack varian
 
 | Model | Architecture | Coverage | Attack flags / valid | Clean flags / valid | Abstentions | Mean valid request seconds | Mean reasoning tokens (zero) |
 |---|---|---|---:|---:|---:|---:|---:|
-| Muse Glimmer Q4 | dense | not started | — | — | — | — | — |
-| Qwen3.8 27B Q8 | dense | not started | — | — | — | — | — |
+| Muse Glimmer Q4 | dense | selected cohort fully attempted: {"scored":400} | 207/300 | 0/100 | 0 | 30.22 | 342 (0) |
+| Qwen3.8 27B Q8 | dense | selected cohort fully attempted: {"scored":398,"length_abstention":2} | 271/298 | 0/100 | 2 | 27.22 | 275 (0) |
 | Gemma26 MLX8 | MoE | selected cohort fully attempted: {"scored":400} | 198/300 | 0/100 | 0 | 1.22 | 0 (400) |
 | Ornith1.5 Q8 | MoE | selected cohort fully attempted: {"scored":400} | 288/300 | 0/100 | 0 | 5.10 | 205 (0) |
 | Gemma26 GGUF Q8 | MoE | selected cohort fully attempted: {"scored":353,"length_abstention":47} | 244/253 | 0/100 | 47 | 8.73 | 393 (0) |
 | Laguna XS2.1 Q8 | MoE | selected cohort fully attempted: {"scored":396,"length_abstention":4} | 64/300 | 1/96 | 4 | 1.84 | 47 (354) |
 | Nemotron3.5 Lightning Q8 | MoE | not started | — | — | — | — | — |
-| Gemma31-it Q8 | dense | in progress / partial: {"scored":313,"length_abstention":12,"unresolved":1,"unattempted":74} | — | — | — | — | — |
+| Gemma31-it Q8 | dense | selected cohort fully attempted: {"scored":386,"length_abstention":14} | 225/286 | 0/100 | 14 | 36.64 | 286 (0) |
 
 ## Original-paper protocol tranche
 
@@ -139,6 +139,13 @@ These counts restrict each finished cohort to cases with a valid score from ever
 | BIPIA paired emails | 146/156 | Gemma26 GGUF Q8 | 57/68 | 0/78 |
 | BIPIA paired emails | 146/156 | Laguna XS2.1 Q8 | 2/68 | 0/78 |
 | BIPIA paired emails | 146/156 | Gemma31-it Q8 | 54/68 | 0/78 |
+| LongPI code review | 339/400 | Muse Glimmer Q4 | 202/243 | 0/96 |
+| LongPI code review | 339/400 | Qwen3.8 27B Q8 | 230/243 | 0/96 |
+| LongPI code review | 339/400 | Gemma26 MLX8 | 198/243 | 0/96 |
+| LongPI code review | 339/400 | Ornith1.5 Q8 | 238/243 | 0/96 |
+| LongPI code review | 339/400 | Gemma26 GGUF Q8 | 237/243 | 0/96 |
+| LongPI code review | 339/400 | Laguna XS2.1 Q8 | 63/243 | 1/96 |
+| LongPI code review | 339/400 | Gemma31-it Q8 | 213/243 | 0/96 |
 | Original-paper protocol tranche | 24/24 | Muse Glimmer Q4 | 16/18 | 0/6 |
 | Original-paper protocol tranche | 24/24 | Qwen3.8 27B Q8 | 18/18 | 0/6 |
 | Original-paper protocol tranche | 24/24 | Gemma26 MLX8 | 12/18 | 0/6 |

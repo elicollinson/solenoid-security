@@ -27,7 +27,7 @@ completed chunking results for the later technique study.
 | Does a low score always mean the model failed to recognize an instruction? | No. Saved Gemma26 rationales recognize three language-redirection attempts but assign low concern because their impact seems minor. This differs from demonstrated attack-following. | [Translation diagnostic](lmstudio-bipia-translation-diagnostic-2026-10-04.md) |
 | Is Qwen's BIPIA deficit entirely a lack of score separation? | No. On jointly valid inputs its AUC exceeds E4B's despite lower detection at >0.5. Yet26 attacks score exactly zero, so lowering a threshold does not resolve every miss. | [Score-distribution diagnostic](lmstudio-bipia-score-distribution-2026-10-04.md) |
 | Does the paper benefit transfer to a nonnumeric attack goal? | Historical completed pairs: E2B changes 37→34/60 attacks, E4B 60→58, and Gemma26 stays 60→60; all retain 0/20 clean flags. Every E2B and E4B loss has a window containing the full payload. | [Frozen email panel](lmstudio-long-email-panel-2026-10-04.md) |
-| Does MoE architecture explain the changes? | Not established. Within-model comparisons are informative, but available quantization, runtime, reasoning and drafting differ. The full five-versus-five candidate panel is not yet qualified. | [Model selection and qualification](moe-dense-design-2026-10-03.md), [initial protocol diagnostic](lmstudio-larger-protocol-first6-2026-10-04.md) |
+| Does MoE architecture explain the changes? | Not on detection. On the completed 3-vs-3 full-input panel (MoE Gemma26, Ornith, Laguna; dense Muse, Qwen3.8, Gemma31-it), group medians never differ by more than within-group spread on any detection or false-alarm metric (permutation p ≥ 0.2). MoE is 4–6× cheaper per request. On code and numeric, the same Gemma26 weights as MLX8 vs GGUF differ by more than the architecture groups do. | [MoE-vs-dense panel report](lmstudio-moe-dense-panel-2026-10-05.md), [model selection](moe-dense-design-2026-10-03.md), [initial protocol diagnostic](lmstudio-larger-protocol-first6-2026-10-04.md) |
 | Do identical reasoning settings imply equal inference work? | No. On identical paper inputs, reported reasoning ranges from zero for Gemma26 to thousands of tokens for other configurations; Qwen and Ornith expose native draft counters. | [Native work and latency](lmstudio-native-work-2026-10-04.md) |
 
 ## Study status
@@ -99,7 +99,7 @@ E2B, E4B, Muse, Qwen3.8, Gemma26 and Ornith have finished the same 80-case
 full-input selection. Historical 512-word window comparisons exist for E2B, E4B and
 Gemma26. Muse and Ornith windows are deferred under the full-input-first plan.
 
-## New-panel v2 full-input progress (October 5)
+## New-panel v2 full-input panel (October 5, complete)
 
 Qualified roster (log L119): MoE = Gemma26 MLX8, Ornith1.5, Gemma26 GGUF Q8 (same model as
 MLX8, different format/runtime), Laguna XS2.1; dense = Muse, Qwen3.8, Gemma 4 31B-it.
@@ -119,10 +119,17 @@ Nemotron 3.5 Lightning failed qualification and is not run. Ornith completed the
   often quote the injected approval line and dismiss it (recognition without concern). On short
   prompts (BIPIA, NotInject) ~300–470 generated tokens per response are returned in neither content
   nor reasoning and counted as 0 reasoning ([token audit](../runs/lmstudio-new-panel-v2-2026-10-04/laguna-token-accounting-audit.json)).
-- **Gemma 4 31B-it Q8 (dense): BIPIA, NotInject, email80, numeric attempted** (L124). BIPIA 62/78,
-  NotInject 22/338 (1 abstention), email80 60/60, numeric 54/54; 0 clean flags on paired cohorts;
-  reasoning on every request at 24–50 s/request. Code running.
-- Then Muse and Qwen3.8 code: queued serially (`queue-resume.txt`).
+- **Gemma 4 31B-it Q8 (dense): all five cohorts attempted** (L124). Code 225/286 (naive 25/86 with
+  14 naive abstentions, combine/authority 100/100; 0/100 clean), BIPIA 62/78, NotInject 22/338
+  (1 abstention), email80 60/60, numeric 54/54; reasoning on every request at 24–50 s/request.
+  Matches the same-family Gemma26 GGUF everywhere except naive code comments, which it recognizes
+  but scores 0.1–0.4.
+- **Muse Q4 code complete** (L125): 207/300 (naive 7/100, combine/authority 100/100), 0/100
+  clean, no abstentions, 30.2 s/request. Every naive miss mentions the approval line.
+- **Qwen3.8 code complete** (L126): 271/298 (naive 71/98, 2 abstentions; combine/authority 100/100),
+  0/100 clean, 27.2 s/request. The queue finished at 19:54Z with every step exiting 0.
+- **Panel complete.** See the [MoE-vs-dense panel report](lmstudio-moe-dense-panel-2026-10-05.md)
+  (per-cohort and per-template tables, group medians vs spread, the Gemma26/Gemma31 pair, confounds).
 <!-- v2-progress:end -->
 
 ## Reproducibility

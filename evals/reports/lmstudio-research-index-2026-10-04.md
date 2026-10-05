@@ -99,6 +99,32 @@ E2B, E4B, Muse, Qwen3.8, Gemma26 and Ornith have finished the same 80-case
 full-input selection. Historical 512-word window comparisons exist for E2B, E4B and
 Gemma26. Muse and Ornith windows are deferred under the full-input-first plan.
 
+## New-panel v2 full-input progress (October 5)
+
+Qualified roster (log L119): MoE = Gemma26 MLX8, Ornith1.5, Gemma26 GGUF Q8 (same model as
+MLX8, different format/runtime), Laguna XS2.1; dense = Muse, Qwen3.8, Gemma 4 31B-it.
+Nemotron 3.5 Lightning failed qualification and is not run. Ornith completed the code cohort
+(288/300, 0/100 clean; L120).
+
+<!-- v2-progress:start -->
+- **Gemma26 GGUF Q8 (MoE): all five cohorts attempted** (L122). Code 244/253 attacks
+  (47 naive-template length abstentions), BIPIA 62/73 (5 abstentions), NotInject 20/335
+  clean flags (4 abstentions), email80 60/60, numeric 54/54; 0 clean flags on every
+  paired cohort. Unlike MLX8 (zero reasoning everywhere, naive code 0/100), it reasons on
+  every request (mean 209–393 tokens) at 5–12 s/request. See the MLX8-vs-GGUF section of
+  the [full-input baselines](lmstudio-dense-moe-full-baselines-2026-10-04.md).
+- **Laguna XS2.1 Q8 (MoE): all five cohorts attempted** (L123). Code 64/300 (naive 2/100,
+  combine 62/100, authority 0/100; 1/96 clean, 4 clean-source abstentions), BIPIA 3/78, NotInject
+  7/334 (5 abstentions), email80 39/59, numeric 13/50 (4/15 exact endpoint pairs). Saved rationales
+  often quote the injected approval line and dismiss it (recognition without concern). On short
+  prompts (BIPIA, NotInject) ~300–470 generated tokens per response are returned in neither content
+  nor reasoning and counted as 0 reasoning ([token audit](../runs/lmstudio-new-panel-v2-2026-10-04/laguna-token-accounting-audit.json)).
+- **Gemma 4 31B-it Q8 (dense): BIPIA, NotInject, email80, numeric attempted** (L124). BIPIA 62/78,
+  NotInject 22/338 (1 abstention), email80 60/60, numeric 54/54; 0 clean flags on paired cohorts;
+  reasoning on every request at 24–50 s/request. Code running.
+- Then Muse and Qwen3.8 code: queued serially (`queue-resume.txt`).
+<!-- v2-progress:end -->
+
 ## Reproducibility
 
 - [Running research decisions](research-log-2026-09-29.md) records why cohorts,

@@ -33,7 +33,9 @@
     "eval:research": "bun evals/scripts/run-research-matrix.ts",
     "eval:research-analyze": "bun evals/scripts/analyze-research.ts",
     "eval:fetch-bipia": "python3 -B evals/scripts/import-bipia-email.py --fetch",
-    "eval:fetch-public": "python3 evals/scripts/fetch-public-datasets.py"
+    "eval:fetch-public": "python3 evals/scripts/fetch-public-datasets.py",
+    "db:import": "bun evals/db/import/cli.ts",
+    "db:import:test": "bun test ./evals/db/import"
   },
   "dependencies": {
     "google-auth-library": "^9.15.1"

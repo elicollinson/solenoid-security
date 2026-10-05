@@ -11,3 +11,4 @@ evals/datasets/agentdojo-travel-v1.jsonl
 
 # macOS Finder metadata
 .DS_Store
+supabase/.temp/

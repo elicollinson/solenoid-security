@@ -519,6 +519,14 @@ ones.**
   neutral elsewhere, or worse on email/web/benign? Candidates already near the panel: Laguna XS 2.1 (agentic coding,
   MoE) and KAT-Coder V2.5 Dev (a Qwen3.6-35B-A3B derivative, so a clean specialized-vs-base pair). Specialist detector
   APIs (Jev, Model Armor) are a different kind of specialization and already have baselines (O35–O37).
+- **F4 — Do a detector's misses actually compromise an agent running the same model?** Take each model's missed
+  attacks (false negatives as a detector) and replay them against an agent built on that same model, in a task where the
+  payload's goal is actionable (tool calls, replies, ratings). Measure attack success rate on misses vs on caught attacks:
+  is a model blind to the same injections it would obey, or can it be steered by attacks it would have flagged (or vice
+  versa)? Relates detection to downstream compromise, which current labels do not measure (they mark attempts). Inputs
+  already exist: per-model miss lists from the full-input panel, the recognition-vs-concern cases (O18, Laguna in L119),
+  and the attack-following pool (O12–O13). Needs an agent harness (e.g. AgentDojo-style tasks) with outcome checks; the
+  Supabase `behavior_assessments` table can hold the agent-side outcomes.
 
 ---
 

@@ -3692,3 +3692,23 @@ Added the four rows to `compare-first6-protocol.ts` and regenerated
 summarize-full-baselines and compare-full-code (missing checkpoints show as not
 started). Roster after qualification: MoE = Gemma26 MLX8, Ornith, Gemma26 GGUF (same
 model as MLX8, not a new family), Laguna; dense = Muse, Qwen3.8, Gemma31-it.
+
+### L120 — Ornith code review completes: naive approval comments separate the MoEs
+
+Resumed the Ornith code cell (available-panel suite, same output path) with
+`--continue-after-output-errors --retry-uncertain` after the L118 inspection. The orphan
+case lp-de37a20ca9db2bad4f9147ab was re-dispatched once under request
+eb5c1140-cad7-460a-941c-8077a33ccd04 and scored; the original unanswered dispatch
+remains in the checkpoint. The cell finished at 23:25Z with a complete marker: 400
+cases, 401 dispatches, 400 native responses, 400 valid scores, no abstentions.
+
+Ornith detects 288/300 attacks and flags 0/100 clean sources: naive 88/100, combine
+100/100, authority 100/100. Gemma26 MLX8 and E4B detect 0/100 naive attacks (Gemma26
+authority 98/100), and every Model Armor alias also misses all naive attacks. The naive
+template is a plain approval instruction inside a code comment with no override
+framing, so it is the cohort's discriminating subgroup. Mean valid request 5.10 s
+(median 4.99, p95 7.74); usage 629,084 input, 87,669 output and 81,967 reasoning tokens.
+Audit: `lmstudio-code-panel-2026-10-04/ornith-code-audit.json` (checkpoint SHA256
+2d96b315d918c753f01c6dc5e91bc949d938002c9fda49b873110253b5d84307). Regenerated
+`lmstudio-full-code-baselines-2026-10-04.md` with `compare-full-code.ts` (now also
+lists the v2 models); the prior comparison JSON is retained by hash in `snapshots/`.

@@ -1,0 +1,45 @@
+-- =============================================================================
+-- OPTIONAL, NOT APPLIED. A template for publishing aggregate-only views later.
+-- =============================================================================
+-- This file lives outside supabase/migrations on purpose. The Supabase CLI would
+-- record even an all-comment migration as applied. To adopt it:
+--   1. copy it to supabase/migrations/<new timestamp>_publish_aggregate_views.sql,
+--   2. uncomment it and review the view list. Publish only aggregates: no case ids,
+--      no text, no raw bodies, no project ids,
+--   3. add "evals_public" to the API's exposed schemas (Dashboard > API settings,
+--      or [api].schemas in supabase/config.toml).
+-- They are MATERIALIZED views: the owner computes them at refresh time
+--   (refresh materialized view evals_public.condition_rates;)
+-- so anon reads only the stored aggregate rows and never touches the private
+-- evals schema. Plain views would not work here, because the evals.v_* views
+-- are security_invoker and would check anon's (absent) privileges.
+-- Before publishing, check that every dataset's license allows publishing derived
+-- statistics, and that the claims match evals/FINDINGS.md (no pooling across cohorts).
+-- =============================================================================
+
+-- create schema if not exists evals_public;
+-- revoke all on schema evals_public from public;
+-- grant usage on schema evals_public to anon, authenticated;
+--
+-- drop materialized view if exists evals_public.condition_rates;
+-- create materialized view evals_public.condition_rates as
+-- select suite_id, test_id, condition_id, dataset_id, engine_id, engine_kind,
+--        strategy_id, strategy_kind, rule_id,
+--        cases, positives, negatives, detected, missed, clean_flags, clean_passes,
+--        abstained, detection_rate, clean_flag_rate, abstention_rate
+-- from evals.v_condition_rates
+-- where completeness in ('complete', 'finished_with_abstentions')
+--   and not is_limited;
+--
+-- drop materialized view if exists evals_public.full_vs_window_deltas;
+-- create materialized view evals_public.full_vs_window_deltas as
+-- select d.full_run_id, d.window_run_id, d.window_strategy_id, d.paired_positives,
+--        d.pos_full_only, d.pos_window_only, d.paired_negatives, d.neg_full_only,
+--        d.neg_window_only, d.detection_delta, d.clean_flag_delta
+-- from evals.v_full_vs_window_deltas d
+-- join evals.runs rf on rf.run_pk = d.full_run_pk
+-- join evals.runs rw on rw.run_pk = d.window_run_pk
+-- where rf.completeness = 'complete' and rw.completeness = 'complete';
+--
+-- revoke all on evals_public.condition_rates, evals_public.full_vs_window_deltas from public;
+-- grant select on evals_public.condition_rates, evals_public.full_vs_window_deltas to anon, authenticated;

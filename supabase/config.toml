@@ -1,0 +1,28 @@
+# Minimal Supabase CLI project config (the `supabase init` subset this project needs).
+# Contains no secrets. Link a hosted project with `supabase link --project-ref <ref>`.
+project_id = "solenoid-security"
+
+[api]
+enabled = true
+port = 54321
+# The private `evals` schema is deliberately NOT exposed through the Data API.
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[db.seed]
+# Reference rows (error kinds, response schemas) are inserted by the migrations, so no seed file is needed.
+enabled = false
+
+[studio]
+enabled = true
+port = 54323
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"

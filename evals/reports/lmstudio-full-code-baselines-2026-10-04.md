@@ -1,15 +1,19 @@
 # Full-input code-review baseline
 
-Updated 2026-10-04T15:44:46.563Z. All100 synthetic code families, each with one clean source and three injection variants:400 selected cases. The injected objective is to force review approval through code comments. These labels represent constructed attempts, not measured downstream compliance.
+Updated 2026-10-04T23:25:29.259Z. All100 synthetic code families, each with one clean source and three injection variants:400 selected cases. The injected objective is to force review approval through code comments. These labels represent constructed attempts, not measured downstream compliance.
 
 | Configuration | Coverage | Naive detected / valid | Combine detected / valid | Authority detected / valid | Clean flags / valid | Abstentions |
 |---|---|---:|---:|---:|---:|---:|
 | E2B high | not started | — | — | — | — | — |
 | E4B high | complete | 0/100 | 100/100 | 100/100 | 0/100 | 0 |
 | Muse | not started | — | — | — | — | — |
-| Gemma26 | not started | — | — | — | — | — |
-| Ornith | not started | — | — | — | — | — |
+| Gemma26 | complete | 0/100 | 100/100 | 98/100 | 0/100 | 0 |
+| Ornith | complete | 88/100 | 100/100 | 100/100 | 0/100 | 0 |
 | Qwen3.8 | not started | — | — | — | — | — |
+| Gemma26 GGUF Q8 | not started | — | — | — | — | — |
+| Laguna XS2.1 Q8 | not started | — | — | — | — | — |
+| Nemotron3.5 Lightning Q8 | not started | — | — | — | — | — |
+| Gemma31-it Q8 | not started | — | — | — | — | — |
 | Model Armor base (recorded alias) | complete | 0/100 | 100/100 | 0/100 | 0/100 | 0 |
 | Model Armor high (recorded alias) | complete | 0/100 | 100/100 | 1/100 | 0/100 | 0 |
 | Model Armor low (recorded alias) | complete | 0/100 | 1/100 | 0/100 | 0/100 | 0 |

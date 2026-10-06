@@ -609,18 +609,24 @@ no reasoning, and its short-prompt token accounting is unreliable.**
   score shifts, abstentions, reasoning text and throughput, and check whether flips concentrate in borderline or subtle
   (naive-template) cases. If flips are material, a detector's verdict depends on server load. All local panel runs to
   date are serial (decision 2026-10-06), so they are the baseline.
-- **F6 — Jev-style scoring on open-weight models: a broad sweep.** Jev answers a fixed versioned question about a text
-  fragment with a numeric `noul` answer rather than a generated rationale (see `LEGACY_JEV_QUESTION` in
-  `evals/src/engines.ts`). Open-weight models can be run the same way: ask the fixed question and score from the
-  model's output distribution (e.g. P(yes) from answer-token logprobs, which llama.cpp/vLLM servers expose) instead of a
-  generated `concernScore`. This would likely remove several failure modes seen so far: copying a requested number
-  (O12–O14), exact-zero collisions (O16), reasoning-budget abstentions and the MLX reasoning-channel bug (O40, O42),
-  and much of the latency (O38). It also gives continuous scores for threshold calibration (O17). Design: a sweep of the
-  best open-weight models across data types (paper, email, code, résumé, web, agent tool output, short user prompts),
-  logprob-scored vs generated-score protocol on the same builds, plus full vs windows. Check LM Studio logprob support
-  first (otherwise use llama.cpp server directly). Measure detection, false alarms, calibration (AUC/ECE), steering
-  resistance on the paired counterfactual probe, and speed. Exact Jev internals are not documented in this repo, so
-  treat "Jev-style" as the protocol shape, not a replication.
+- **F6 — Jev-class decision models on open weights: a broad sweep.** Jev (TypeSafe AI) is a "System One" decision
+  model: it takes a state plus typed questions (Noul = calibrated yes/no probability, Choice, Score), answers them all in
+  one parallel pass without generating text, and is trained with RL for calibrated decisions (RLCD). Weights are
+  proprietary; 70–500 ms latency claimed ([TypeSafe](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
+  [Willison](https://simonwillison.net/2026/Sep/21/jev/)). Open re-implementations read the probability of each allowed
+  answer straight from a model's output distribution instead of generating it, on a modified serving stack:
+  [OpenJev](https://github.com/razorback16/openjev) (Apache-2.0; `POST /v1/systemone`, wire-compatible with the Jev SDK
+  and close to our `jev` engine request; vLLM or **MLX on Apple silicon**; DiffusionGemma 26B-A4B by default, plus Laya,
+  Verdict, CLM and a Qwen3.5-4B LoRA; re-reads and averages when entropy > 0.1), Laya (ModernBERT-scale, ONNX on Apple
+  silicon), Kev/Vev (Qwen3.5 fine-tunes), and [JevBench](https://github.com/fstandhartinger/jevbench) for accuracy,
+  calibration, speed and cost ([field guide](https://github.com/AbdelStark/awesome-typesafe-jev)). Why it matters here:
+  no generated number to steer (O12–O14), continuous calibrated scores (O16–O17), no reasoning-budget abstentions or
+  MLX reasoning-channel bug (O40, O42), and far lower latency (O38). Design: run OpenJev-style serving on the Mac Studio
+  with the same Noul question as `LEGACY_JEV_QUESTION`, sweep the strongest open decision models and slot-probability
+  reads from our panel LLMs, compare against hosted Jev and the generated-score protocol on the same cohorts and data
+  types (paper, email, code, résumé, web, tool output, short prompts), full vs windows. Measure detection, false alarms,
+  calibration (AUC/ECE), steering resistance on the paired probe, and speed. Caveats: entropy-triggered re-reads make
+  verdicts sampling-dependent (cf. F5), and open replications are not Jev itself.
 
 ---
 

@@ -600,6 +600,15 @@ no reasoning, and its short-prompt token accounting is unreliable.**
   already exist: per-model miss lists from the full-input panel, the recognition-vs-concern cases (O18, Laguna in L119),
   and the attack-following pool (O12–O13). Needs an agent harness (e.g. AgentDojo-style tasks) with outcome checks; the
   Supabase `behavior_assessments` table can hold the agent-side outcomes.
+- **F5 — Does batched (concurrent) inference change detection verdicts?** LM Studio supports continuous batching
+  ("Max Concurrent Predictions", unified KV cache; llama.cpp ≥ 2.0 and MLX ≥ 0.4.2), as do vLLM-style servers. Batched
+  kernels group floating-point reductions differently from serial execution, so temperature-0 outputs can change with
+  batch composition (the batch-invariance problem; cf. arXiv 2606.26185 and 2605.19537 in
+  [literature scan](reports/literature-scan-2026-10-05.md)). Design: same model, build and frozen cohorts, run serial
+  (parallel=1) vs batched (parallel=2/4/8, mixed co-batched requests), repeated, then compare decision flips at >0.5,
+  score shifts, abstentions, reasoning text and throughput, and check whether flips concentrate in borderline or subtle
+  (naive-template) cases. If flips are material, a detector's verdict depends on server load. All local panel runs to
+  date are serial (decision 2026-10-06), so they are the baseline.
 
 ---
 

@@ -609,6 +609,18 @@ no reasoning, and its short-prompt token accounting is unreliable.**
   score shifts, abstentions, reasoning text and throughput, and check whether flips concentrate in borderline or subtle
   (naive-template) cases. If flips are material, a detector's verdict depends on server load. All local panel runs to
   date are serial (decision 2026-10-06), so they are the baseline.
+- **F6 — Jev-style scoring on open-weight models: a broad sweep.** Jev answers a fixed versioned question about a text
+  fragment with a numeric `noul` answer rather than a generated rationale (see `LEGACY_JEV_QUESTION` in
+  `evals/src/engines.ts`). Open-weight models can be run the same way: ask the fixed question and score from the
+  model's output distribution (e.g. P(yes) from answer-token logprobs, which llama.cpp/vLLM servers expose) instead of a
+  generated `concernScore`. This would likely remove several failure modes seen so far: copying a requested number
+  (O12–O14), exact-zero collisions (O16), reasoning-budget abstentions and the MLX reasoning-channel bug (O40, O42),
+  and much of the latency (O38). It also gives continuous scores for threshold calibration (O17). Design: a sweep of the
+  best open-weight models across data types (paper, email, code, résumé, web, agent tool output, short user prompts),
+  logprob-scored vs generated-score protocol on the same builds, plus full vs windows. Check LM Studio logprob support
+  first (otherwise use llama.cpp server directly). Measure detection, false alarms, calibration (AUC/ECE), steering
+  resistance on the paired counterfactual probe, and speed. Exact Jev internals are not documented in this repo, so
+  treat "Jev-style" as the protocol shape, not a replication.
 
 ---
 

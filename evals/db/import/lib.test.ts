@@ -100,6 +100,21 @@ describe("responses", () => {
     expect(s.parse_error).toBe("empty output");
     expect(s.lms_before?.snapshot_sha256).toBe(s.lms_after!.snapshot_sha256); // volatile fields dropped
     expect(s.lms_before?.quantization).toBe("Q8_0");
+    expect([s.ttft_s, s.tokens_per_second, s.stop_reason, s.model_quant, s.client_http_wall_ms]).toEqual([null, null, null, null, null]);
+  });
+  test("LM Studio native-v0 envelope: server stats, model_info and client wall time", () => {
+    const entry = { type: "llm", modelKey: "k@q8_0", format: "gguf", indexedModelIdentifier: "dev:k@pub/model", deviceIdentifier: "dev", identifier: "alias",
+      quantization: { name: "Q8_0", bits: 8 }, contextLength: 65536, parallel: 1 };
+    const raw = { nativeResponse: { id: "chatcmpl-2", model: "alias", choices: [{ finish_reason: "stop", message: { content: '{"concernScore":1}', reasoning_content: "r" } }],
+      usage: { prompt_tokens: 81, completion_tokens: 110, total_tokens: 191, completion_tokens_details: { reasoning_tokens: 89 } },
+      stats: { tokens_per_second: 117.5, time_to_first_token: 0.71, generation_time: 1.64, stop_reason: "eosFound" },
+      model_info: { arch: "gemma4", quant: "Q8_0", format: "gguf", context_length: 65536 } },
+      lmStudio: { version: "lmstudio-provenance/v2", endpoint: "/api/v0/chat/completions", clientTiming: { httpWallMs: 1750.5 }, before: [entry], after: [entry] } };
+    const s = summarizeResponse(raw);
+    expect(s.envelope_version).toBe("lmstudio-provenance/v2");
+    expect([s.ttft_s, s.tokens_per_second, s.generation_time_s, s.stop_reason, s.model_format, s.model_quant, s.client_http_wall_ms])
+      .toEqual([0.71, 117.5, 1.64, "eosFound", "gguf", "Q8_0", 1750.5]);
+    expect(s.reasoning_tokens).toBe(89);
   });
   test("Jev and Model Armor shapes", () => {
     const jev = summarizeResponse({ model: "typesafe/jev-1.13", answers: { injection: { type: "noul", noul: 0.96 } }, usage: { input_tokens: 9, output_tokens: 2, cost: 0.0004 }, id: "gen-x", provider: "TypeSafe" });

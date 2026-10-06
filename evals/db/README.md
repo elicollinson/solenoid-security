@@ -20,6 +20,8 @@ it meaning (`evals/datasets/*.json`, `evals/suites/*.json`, `evals/src/types.ts`
 | `…090500_analysis_views.sql` | outcome, verdict, rate, paired-delta, spend, lineage and catalog views |
 | `…090600_rls_and_storage.sql` | re-applies policies, asserts RLS on every table, revokes anon/PUBLIC, creates private Storage buckets and object policies |
 | `…20261005090000_importer_behavior_lineage.sql` | importer bookkeeping (`import_files`), response detail (`reasoning_text`, `parsed_output`, Storage path of the raw body), model-card provenance, R/L log ids, injection payload columns on `cases`, `counterfactual_pairs`, `behavior_assessments`, prompt lineage, and the views `v_prompt_lineage`, `v_paired_target_tracking`, `v_observation_behavior`, `v_window_level_following` |
+| `…20261006090000_lmstudio_native_speed.sql` | nullable LM Studio native-v0 speed columns on `responses` (`ttft_s`, `tokens_per_second`, `generation_time_s`, `stop_reason`, `model_format`, `model_quant`, `client_http_wall_ms`) and `envelope_version` widened to `lmstudio-provenance/v1|v2`. See [LM Studio native-v0 speed stats](#lm-studio-native-v0-speed-stats-migration-20261006090000) |
+| `…20261006091000_lmstudio_speed_comment_fix.sql` | comment-only: `generation_time_s` includes TTFT on llama.cpp but not on MLX |
 | `evals/db/import/` | The TypeScript/Bun importer (`bun run db:import`), its model-card catalog and its unit tests. See [Importer](#importer) |
 | `supabase/optional/publish_aggregate_views.sql` | **Not applied.** A commented template for publishing aggregate-only materialized views later |
 | `evals/db/check_import_assumptions.py` | Read-only scan of `evals/runs` that checks the identity assumptions below |
@@ -156,7 +158,8 @@ Counts are from the scan on 2026-10-04 and are still growing.
 **Response shapes** (`responses.shape`): `openai_chat` (150k: OpenRouter, with usage/cost/reasoning_tokens),
 `model_armor_assessment[_native]` (64k: binary verdict, with native `sanitizationResult` and filter version once capture
 was added), `jev_answers` (20k: `answers.injection.noul`), `lmstudio_envelope` (9.5k: `lmstudio-provenance/v1`
-`{nativeResponse, lmStudio.before/after}`). Finish reasons seen: stop 159k, length 220, error 2.
+`{nativeResponse, lmStudio.before/after}`; native-v0 runs from 2026-10-06 use `lmstudio-provenance/v2`, which adds
+`endpoint` and `clientTiming`). Finish reasons seen: stop 159k, length 220, error 2.
 
 ## Methodology encoded in the schema
 
@@ -366,6 +369,27 @@ attempt(s) {status: count}, M upload(s) failed`.
   low→high flips, score direction, control flips), `v_observation_behavior` (the strongest assessment per
   observation) and `v_window_level_following` (window segments whose behavior differs from the case's max-scoring
   segment).
+
+### LM Studio native-v0 speed stats (migration 20261006090000)
+
+Engines with `lmStudio.endpoint: "native-v0"` post to LM Studio's `/api/v0/chat/completions`. The body is the same
+OpenAI-shaped completion plus server-measured `stats` (`tokens_per_second`, `time_to_first_token`,
+`generation_time`, `stop_reason`) and `model_info` (`arch`, `quant`, `format`, `context_length`). The runner keeps
+the body verbatim inside an `lmstudio-provenance/v2` envelope that also records the wire path and the client's
+HTTP wall time (`clientTiming.httpWallMs`, which excludes the `lms ps` provenance snapshots). `/v1` engines keep the
+v1 envelope and produce no stats.
+
+`summarizeResponse` fills, per response: `ttft_s`, `tokens_per_second`, `generation_time_s`, `stop_reason`,
+`model_format`, `model_quant` (from the native body) and `client_http_wall_ms` (from the envelope). All columns are
+null for `/v1`, hosted and Model Armor rows, so earlier rows need no backfill. Derivations:
+`tokens_per_second` is the decode rate. `generation_time_s` includes TTFT on llama.cpp (GGUF) but excludes it on
+MLX, so derive decode seconds as `completion_tokens / tokens_per_second` and LM Link/relay overhead as
+`client_http_wall_ms / 1000 - ttft_s - completion_tokens / tokens_per_second` (migration `20261006091000` corrects
+the column comment written by `20261006090000`);
+prefill rate ≈ `prompt_tokens / ttft_s`, but only on prompt-cache misses (paired LongPIBench families share a
+document prefix, so later family members have very short TTFTs). Applied to the hosted project on 2026-10-06 with
+`bunx supabase@latest db push --db-url "$SUPABASE_DB_URL"`; the column checks and the widened
+`responses_envelope_version_check` were confirmed afterwards. No rows were re-imported in that step.
 
 ## Validation performed
 

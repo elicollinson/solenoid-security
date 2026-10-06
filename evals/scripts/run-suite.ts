@@ -221,7 +221,7 @@ async function worker(): Promise<void> {
         inputStrategyId: strategy!.id, inputStrategySha256: sha256(JSON.stringify(strategy)), rawScore: result.rawScore,
         rawVerdict: result.rawVerdict, provider: result.provider, resolvedModel: result.resolvedModel,
         responseIds: result.responseIds, requestId, requestTurn: 1, startedAt, durationMs: Math.round(performance.now() - began),
-        usage: result.usage, status: "scored",
+        usage: result.usage, ...(result.speed ? { speed: result.speed } : {}), status: "scored",
       };
       append({ type: "observation", caseId: task.item.id, segmentId: task.segment.id, value: observation });
       done.add(task.segment.id);

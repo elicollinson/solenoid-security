@@ -41,6 +41,7 @@
     "google-auth-library": "^9.15.1"
   },
   "devDependencies": {
+    "@lmstudio/sdk": "^2.0.0",
     "@types/node": "^22.0.0",
     "typescript": "^6.0.3"
   }

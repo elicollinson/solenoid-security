@@ -15,6 +15,18 @@ shows matched cohort coverage, abstentions and measured request time. The
 audited 72-case regression pool and configuration-specific evidence, retaining
 completed chunking results for the later technique study.
 
+**Device update (2026-10-06, log L127–L130):** inference has moved to the
+user's Mac Studio over LM Link. The new `native-v0` transport records
+server-measured TTFT and decode speed and gives byte-identical outputs to `/v1`.
+On the Studio, 12 of 15 builds pass the first-six paper qualification
+(Gemma26, Ornith and Gemma31-it at Q8/Q6/Q4_K_M; Muse at Q8/Q6_K_XL; Qwen3.8
+GGUF Q8). Gemma26 QAT runs out of budget, and both MLX builds (Qwen3.8 8-bit,
+Bonsai 2-bit) show the reasoning-channel routing bug. On identical Q8 inputs,
+Studio and MacBook decisions agree on 95/96 cases, but the reasoning text
+differs, so Studio runs are a separate condition. Evidence:
+`evals/runs/lmstudio-studio-2026-10-05/` (`qualification-summary.json`,
+`transport-equivalence.json`, `studio-vs-macbook-first6.json`).
+
 ## Main findings and their evidence
 
 | Question | Current evidence | Report |
@@ -28,6 +40,7 @@ completed chunking results for the later technique study.
 | Is Qwen's BIPIA deficit entirely a lack of score separation? | No. On jointly valid inputs its AUC exceeds E4B's despite lower detection at >0.5. Yet26 attacks score exactly zero, so lowering a threshold does not resolve every miss. | [Score-distribution diagnostic](lmstudio-bipia-score-distribution-2026-10-04.md) |
 | Does the paper benefit transfer to a nonnumeric attack goal? | Historical completed pairs: E2B changes 37→34/60 attacks, E4B 60→58, and Gemma26 stays 60→60; all retain 0/20 clean flags. Every E2B and E4B loss has a window containing the full payload. | [Frozen email panel](lmstudio-long-email-panel-2026-10-04.md) |
 | Does MoE architecture explain the changes? | Not on detection. On the completed 3-vs-3 full-input panel (MoE Gemma26, Ornith, Laguna; dense Muse, Qwen3.8, Gemma31-it), group medians never differ by more than within-group spread on any detection or false-alarm metric (permutation p ≥ 0.2). MoE is 4–6× cheaper per request. On code and numeric, the same Gemma26 weights as MLX8 vs GGUF differ by more than the architecture groups do. | [MoE-vs-dense panel report](lmstudio-moe-dense-panel-2026-10-05.md), [model selection](moe-dense-design-2026-10-03.md), [initial protocol diagnostic](lmstudio-larger-protocol-first6-2026-10-04.md) |
+| Does the inference device change outputs? | Decisions rarely: on 24 identical first-six paper inputs, Studio and MacBook GGUF Q8 builds agree on 24/24 flags for Gemma26, Gemma31-it and Qwen3.8 and 23/24 for Ornith. Reasoning text often differs (Gemma26 is identical on 4/24, Ornith on 0/24 with speculative drafting). Studio reruns are byte-identical. | Log L130; `lmstudio-studio-2026-10-05/studio-vs-macbook-first6.json` |
 | Do identical reasoning settings imply equal inference work? | No. On identical paper inputs, reported reasoning ranges from zero for Gemma26 to thousands of tokens for other configurations; Qwen and Ornith expose native draft counters. | [Native work and latency](lmstudio-native-work-2026-10-04.md) |
 
 ## Study status

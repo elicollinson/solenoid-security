@@ -178,6 +178,27 @@ snapshots; file identity/size/quantization are checked, but cannot establish
 byte-identical weights or a pinned remote runtime. Do not equate these runs with
 hosted FP8/BF16 results or compare nominal precision in isolation from runtime.
 
+**Native-v0 transport (speed stats).** An engine may set `lmStudio.endpoint: "native-v0"`
+to post the same request body to `/api/v0/chat/completions` instead of `/v1`. The
+native body is the same OpenAI-shaped completion plus server-measured `stats`
+(`time_to_first_token`, `tokens_per_second`, `generation_time`, `stop_reason`) and
+`model_info`; it is retained verbatim in an `lmstudio-provenance/v2` envelope that
+also records the wire path and client HTTP wall time. Observations then carry
+`speed: {ttftS, tokensPerSecond, generationTimeS, stopReason, clientWallMs}`, which
+the analyzer re-derives from the body. `model_info.quant` must match the pinned
+quantization (`context_length` is not checked: MLX reports its maximum). Omitting
+`endpoint` keeps `/v1` and the v1 envelope, so earlier engine identities are
+unchanged. A 12-case Studio check gave byte-identical outputs on both paths (log
+L127). `generation_time` includes TTFT on llama.cpp but not on MLX; derive decode
+seconds as completion tokens / `tokens_per_second`.
+
+Hub-artifact variants (`google/gemma-4-26b-a4b@q8_0`) appear only in
+`lms ls --variants --json`, and `lms load` cannot select them. The matrix driver
+pins variants from that listing and loads them with `@lmstudio/sdk`
+(`client.llm.load(variantKey, …)`), then validates `lms ps` as usual.
+`--require-device=<id>` refuses engines pinned elsewhere and any loaded instance
+placed on another device.
+
 References: [LM Link API](https://lmstudio.ai/docs/developer/core/lmlink),
 [structured outputs](https://lmstudio.ai/docs/developer/openai-compat/structured-output),
 [model management API](https://lmstudio.ai/docs/developer/rest).

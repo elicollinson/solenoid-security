@@ -59,6 +59,8 @@ export interface LMStudioConfig {
   contextLength: number;
   parallel: number;
   timeoutMs: number;
+  /** Omitted: OpenAI-compatible /v1 (historical identities). "native-v0": /api/v0 with server stats and model_info. */
+  endpoint?: "native-v0";
 }
 
 export type EngineSpec = (
@@ -135,6 +137,8 @@ export interface InferenceObservation {
   startedAt: string;
   durationMs: number | null;
   usage: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null };
+  /** LM Studio native-v0 only: server-measured stats and client HTTP wall time (LM Link overhead = wall - TTFT - generation). */
+  speed?: { ttftS: number; tokensPerSecond: number; generationTimeS: number; stopReason: string; clientWallMs: number };
   status: "scored" | "error";
   errorKind?: string;
   sourceArtifact?: string;

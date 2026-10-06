@@ -192,6 +192,9 @@ export interface ResponseSummary {
   total_tokens: number | null; cost_usd: number | null; upstream_cost_usd: number | null;
   output_text: string | null; output_chars: number | null; reasoning_text: string | null; reasoning_chars: number | null;
   parsed_output: unknown; parse_error: string | null; raw_sha256: string;
+  /** LM Studio native-v0 server stats/model_info and the client's HTTP wall time; null for other transports. */
+  ttft_s: number | null; tokens_per_second: number | null; generation_time_s: number | null; stop_reason: string | null;
+  model_format: string | null; model_quant: string | null; client_http_wall_ms: number | null;
   lms_before: LmsSnapshot | null; lms_after: LmsSnapshot | null; armor: ArmorSummary | null;
 }
 
@@ -211,7 +214,8 @@ export function parseOutput(text: string | null): { parsed: unknown; error: stri
   catch (e) { return { parsed: null, error: `invalid JSON: ${(e as Error).message.slice(0, 120)}` }; }
 }
 
-function chatSummary(native: any, provider: string | null): Omit<ResponseSummary, "shape" | "envelope_version" | "raw_sha256" | "lms_before" | "lms_after" | "armor"> {
+const NO_SPEED = { ttft_s: null, tokens_per_second: null, generation_time_s: null, stop_reason: null, model_format: null, model_quant: null, client_http_wall_ms: null };
+function chatSummary(native: any, provider: string | null): Omit<ResponseSummary, "shape" | "envelope_version" | "raw_sha256" | "lms_before" | "lms_after" | "armor" | "client_http_wall_ms"> {
   const choice = Array.isArray(native?.choices) ? native.choices[0] : undefined;
   const message = choice?.message ?? {};
   const content = message.content;
@@ -227,6 +231,9 @@ function chatSummary(native: any, provider: string | null): Omit<ResponseSummary
     total_tokens: int(usage.total_tokens), cost_usd: num(usage.cost), upstream_cost_usd: num(usage.cost_details?.upstream_inference_cost),
     output_text: outputText, output_chars: outputText?.length ?? null, reasoning_text: reasoning, reasoning_chars: reasoning?.length ?? null,
     parsed_output: parsed, parse_error: error,
+    ttft_s: num(native?.stats?.time_to_first_token), tokens_per_second: num(native?.stats?.tokens_per_second),
+    generation_time_s: num(native?.stats?.generation_time), stop_reason: str(native?.stats?.stop_reason),
+    model_format: str(native?.model_info?.format), model_quant: str(native?.model_info?.quant),
   };
 }
 
@@ -257,18 +264,18 @@ export function summarizeResponse(raw: unknown): ResponseSummary {
     shape, envelope_version: null as string | null, raw_sha256: jsonSha(raw), lms_before: null as LmsSnapshot | null,
     lms_after: null as LmsSnapshot | null, armor: null as ArmorSummary | null,
   };
-  if (shape === "openai_chat") return { ...base, ...chatSummary(r, null) };
+  if (shape === "openai_chat") return { ...base, ...chatSummary(r, null), client_http_wall_ms: null };
   if (shape === "lmstudio_envelope") {
     const chat = chatSummary(r.nativeResponse, "LM Studio");
     return {
-      ...base, ...chat, envelope_version: str(r.lmStudio?.version) ?? "lmstudio-provenance/v1",
+      ...base, ...chat, envelope_version: str(r.lmStudio?.version) ?? "lmstudio-provenance/v1", client_http_wall_ms: num(r.lmStudio?.clientTiming?.httpWallMs),
       lms_before: lmsSnapshot(r.lmStudio?.before, chat.resolved_model), lms_after: lmsSnapshot(r.lmStudio?.after, chat.resolved_model),
     };
   }
   const empty = {
     native_id: null, provider: null, resolved_model: null, finish_reason: null, native_finish_reason: null, prompt_tokens: null,
     completion_tokens: null, reasoning_tokens: null, cached_tokens: null, total_tokens: null, cost_usd: null, upstream_cost_usd: null,
-    output_text: null, output_chars: null, reasoning_text: null, reasoning_chars: null, parsed_output: null, parse_error: null,
+    output_text: null, output_chars: null, reasoning_text: null, reasoning_chars: null, parsed_output: null, parse_error: null, ...NO_SPEED,
   };
   if (shape === "jev_answers") {
     const usage = r.usage ?? {};

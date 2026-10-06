@@ -1,4 +1,4 @@
-import { lmsJson, validateLMStudioConfig, validateLoadedModel } from "./lmStudio.js";
+import { lmsJson, lmStudioChatPath, lmStudioEnvelopeVersion, lmStudioSpeed, validateLMStudioConfig, validateLoadedModel, validateNativeModelInfo, type LMStudioSpeed } from "./lmStudio.js";
 import { ModelArmorScanner } from "../../src/modelArmor.js";
 import { sha256 } from "./strategies.js";
 import type { EngineSpec, EvalCase, InputSegment } from "./types.js";
@@ -11,6 +11,8 @@ export interface EngineOutput {
   responseIds: string[];
   usage: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null };
   rawResponse: unknown;
+  /** LM Studio native-v0 only. */
+  speed?: LMStudioSpeed;
 }
 
 /** Keep malformed successful provider bodies in ignored checkpoints for protocol diagnosis. */
@@ -168,7 +170,8 @@ export async function inferText(engine: EngineSpec, text: string, runtime: Engin
     // Conservative UTF-8 byte bound plus template/output allowance, never source truncation.
     if (messages.reduce((n, message) => n + Buffer.byteLength(message.content), 0) + 1280 > local.contextLength) throw new Error("LM Studio conservative context bound exceeded; use a separately versioned larger-context engine");
   }
-  const response = await send(local ? new URL("/v1/chat/completions", local.baseUrl).href : "https://openrouter.ai/api/v1/chat/completions", {
+  const httpStarted = performance.now();
+  const response = await send(local ? new URL(lmStudioChatPath(engine), local.baseUrl).href : "https://openrouter.ai/api/v1/chat/completions", {
     method: "POST", redirect: "error", signal: AbortSignal.timeout(local?.timeoutMs ?? 120000),
     headers: { ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}), "Content-Type": "application/json" },
     body: JSON.stringify({ model: engine.model, ...(local ? { reasoning_effort: engine.parameters!.reasoning_effort } : { provider: { only: [engine.provider], allow_fallbacks: false } }), messages, ...(engine.parameters?.reasoning_enabled === undefined ? {} : { reasoning: { enabled: engine.parameters.reasoning_enabled } }), ...(engine.kind === "task_context_llm" || engine.kind === "llm_json" || engine.kind === "llm_score_json"
@@ -177,26 +180,33 @@ export async function inferText(engine: EngineSpec, text: string, runtime: Engin
   });
   if (!local && !response.ok) throw new Error(`LLM HTTP ${response.status}`);
   const body = await response.text();
+  const httpWallMs = Math.round((performance.now() - httpStarted) * 1000) / 1000;
   let raw: Record<string, unknown>;
   try { raw = object(JSON.parse(body)); } catch { throw new EngineResponseError(`LLM HTTP ${response.status}: malformed response`, { body }); }
   let captured: unknown = raw;
   try {
   if (local) {
-    captured = { nativeResponse: raw, lmStudio: { version: "lmstudio-provenance/v1", before, after: null } };
+    // v2 (native-v0) additionally records the wire path and client HTTP wall time; the native body stays verbatim.
+    const envelope = (after: unknown) => lmStudioEnvelopeVersion(engine) === "lmstudio-provenance/v1"
+      ? { nativeResponse: raw, lmStudio: { version: "lmstudio-provenance/v1", before, after } }
+      : { nativeResponse: raw, lmStudio: { version: "lmstudio-provenance/v2", endpoint: lmStudioChatPath(engine), clientTiming: { httpWallMs }, before, after } };
+    captured = envelope(null);
     const after = await snapshot();
-    captured = { nativeResponse: raw, lmStudio: { version: "lmstudio-provenance/v1", before, after } };
+    captured = envelope(after);
     validateLoadedModel(engine, after);
   }
   if (!response.ok) throw new Error(`LLM HTTP ${response.status}`);
   const choices = raw.choices as { message?: { content?: string; tool_calls?: { function?: { name?: string; arguments?: string } }[] } }[] | undefined;
   const toolCalls = choices?.[0]?.message?.tool_calls;
   if (local && (!Array.isArray(choices) || choices.length !== 1 || (choices[0] as { finish_reason?: string }).finish_reason !== "stop")) throw new Error("LM Studio incomplete response (including token-limit abstention)");
+  if (local) validateNativeModelInfo(engine, raw);
   if (raw.model !== engine.model || typeof raw.id !== "string" || (!local && (typeof raw.provider !== "string" || raw.provider.toLowerCase() !== engine.provider.split("/")[0]?.toLowerCase()))) throw new Error("LLM provider/model provenance mismatch");
   if (engine.kind === "task_context_llm" || engine.kind === "llm_json" || engine.kind === "llm_score_json" ? typeof choices?.[0]?.message?.content !== "string" : toolCalls?.length !== 1 || toolCalls[0]?.function?.name !== "submit_result" || typeof toolCalls[0].function.arguments !== "string") throw new Error("LLM structured-output provenance mismatch");
   const structured = engine.kind === "task_context_llm" || engine.kind === "llm_json" || engine.kind === "llm_score_json" ? choices![0]!.message!.content! : toolCalls![0]!.function!.arguments!;
   const parsed = object(JSON.parse(structured));
   if (engine.kind !== "llm_score_json" && typeof parsed.rationale !== "string") throw new Error("LLM rationale missing");
   if (local && Object.keys(parsed).some(key => !["concernScore", ...(engine.kind === "llm_score_json" ? [] : ["rationale"])].includes(key))) throw new Error("LM Studio output schema differs");
-  return { rawScore: numericScore(parsed.concernScore), rawVerdict: null, provider: local ? "LM Studio" : String(raw.provider), resolvedModel: String(raw.model), responseIds: [String(raw.id)], usage: usage(raw, "prompt_tokens", "completion_tokens"), rawResponse: captured };
+  const speed = local ? lmStudioSpeed(engine, captured) : null;
+  return { rawScore: numericScore(parsed.concernScore), rawVerdict: null, provider: local ? "LM Studio" : String(raw.provider), resolvedModel: String(raw.model), responseIds: [String(raw.id)], usage: usage(raw, "prompt_tokens", "completion_tokens"), rawResponse: captured, ...(speed ? { speed } : {}) };
   } catch (error) { throw new EngineResponseError(error instanceof Error ? error.message : "LLM output validation failed", captured); }
 }

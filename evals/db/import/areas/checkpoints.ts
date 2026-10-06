@@ -259,22 +259,27 @@ async function writeResponses(ctx: Ctx, tx: Tx, p: ParsedCheckpoint, artifactId:
       reasoning_chars: s.reasoning_chars, reasoning_text: s.reasoning_text, parsed_output: s.parsed_output ?? null, parse_error: s.parse_error,
       lms_before_sha256: s.lms_before?.snapshot_sha256 ?? null, lms_after_sha256: s.lms_after?.snapshot_sha256 ?? null,
       raw: r.anomalous ? r.raw : null, raw_sha256: s.raw_sha256, raw_line_no: r.line_no,
+      ttft_s: s.ttft_s, tokens_per_second: s.tokens_per_second, generation_time_s: s.generation_time_s, stop_reason: s.stop_reason,
+      model_format: s.model_format, model_quant: s.model_quant, client_http_wall_ms: s.client_http_wall_ms,
     };
   });
   const n = await ctx.db.write(tx, "responses", rows, rs => `
     insert into evals.responses (request_id, received_at, shape, envelope_version, native_id, provider, resolved_model, finish_reason,
       native_finish_reason, prompt_tokens, completion_tokens, reasoning_tokens, cached_tokens, total_tokens, cost_usd, upstream_cost_usd,
       output_text, output_chars, reasoning_chars, reasoning_text, parsed_output, parse_error, lms_before_sha256, lms_after_sha256, raw,
-      raw_sha256, raw_artifact_id, raw_line_no)
+      raw_sha256, raw_artifact_id, raw_line_no, ttft_s, tokens_per_second, generation_time_s, stop_reason, model_format, model_quant,
+      client_http_wall_ms)
     select t.request_id, t.received_at, t.shape, t.envelope_version, t.native_id, t.provider, t.resolved_model, t.finish_reason,
       t.native_finish_reason, t.prompt_tokens, t.completion_tokens, t.reasoning_tokens, t.cached_tokens, t.total_tokens, t.cost_usd, t.upstream_cost_usd,
       t.output_text, t.output_chars, t.reasoning_chars, t.reasoning_text, t.parsed_output, t.parse_error, t.lms_before_sha256, t.lms_after_sha256, t.raw,
-      t.raw_sha256, $2, t.raw_line_no
+      t.raw_sha256, $2, t.raw_line_no, t.ttft_s, t.tokens_per_second, t.generation_time_s, t.stop_reason, t.model_format, t.model_quant,
+      t.client_http_wall_ms
     from ${rs} as t(request_id uuid, received_at timestamptz, shape evals.response_shape, envelope_version text, native_id text, provider text,
       resolved_model text, finish_reason text, native_finish_reason text, prompt_tokens integer, completion_tokens integer, reasoning_tokens integer,
       cached_tokens integer, total_tokens integer, cost_usd numeric, upstream_cost_usd numeric, output_text text, output_chars integer,
       reasoning_chars integer, reasoning_text text, parsed_output jsonb, parse_error text, lms_before_sha256 text, lms_after_sha256 text, raw jsonb,
-      raw_sha256 text, raw_line_no integer)
+      raw_sha256 text, raw_line_no integer, ttft_s double precision, tokens_per_second double precision, generation_time_s double precision,
+      stop_reason text, model_format text, model_quant text, client_http_wall_ms double precision)
     join evals.inference_requests q on q.request_id = t.request_id
     on conflict (request_id) do nothing`, [artifactId], 500);
   const armor = responses.filter(r => r.summary.armor).map(r => ({ request_id: r.request_id, ...r.summary.armor! }));

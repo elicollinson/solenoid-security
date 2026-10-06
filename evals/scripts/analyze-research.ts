@@ -5,7 +5,7 @@ import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expectedPositive, loadDataset, selectTestCases } from "../src/datasets.js";
 import { decideCase } from "../src/decisions.js";
-import { unwrapLMStudioResponse } from "../src/lmStudio.js";
+import { lmStudioSpeed, unwrapLMStudioResponse, validateNativeModelInfo } from "../src/lmStudio.js";
 import { taskContextForCase, isLengthLimitedResponse } from "../src/engines.js";
 import { confusionMatrix } from "../src/metrics.js";
 import { segmentCase, sha256 } from "../src/strategies.js";
@@ -176,6 +176,8 @@ function validateResponse(engine: EngineSpec, rawValue: unknown, observation: In
   check((typeof usage[fields[0]!] === "number" ? usage[fields[0]!] : null) === observation.usage.inputTokens &&
     (typeof usage[fields[1]!] === "number" ? usage[fields[1]!] : null) === observation.usage.outputTokens &&
     (typeof usage.cost === "number" ? usage.cost : null) === observation.usage.costUsd, "Response usage differs");
+  if (engine.lmStudio) validateNativeModelInfo(engine, raw);
+  check(same(observation.speed ?? null, engine.lmStudio ? lmStudioSpeed(engine, rawValue) : null), "Response speed stats differ");
 }
 
 export interface PartialCheckpointAudit {

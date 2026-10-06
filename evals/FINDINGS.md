@@ -627,6 +627,27 @@ no reasoning, and its short-prompt token accounting is unreliable.**
   types (paper, email, code, résumé, web, tool output, short prompts), full vs windows. Measure detection, false alarms,
   calibration (AUC/ECE), steering resistance on the paired probe, and speed. Caveats: entropy-triggered re-reads make
   verdicts sampling-dependent (cf. F5), and open replications are not Jev itself.
+  **First experiment (naive, no training):** Qwen3.8 27B and Gemma 4 26B-A4B (GGUF Q8, Mac Studio) on the same cohorts
+  under three protocols: (a) the current generated `concernScore` with reasoning; (b) a naive slot read with reasoning
+  disabled (fixed Noul-style question; score = P(yes)/(P(yes)+P(no)) at the first answer token, one forward pass);
+  (c) reasoning first, then the yes/no probability read at the final answer position. Add post-hoc calibration
+  (Platt/isotonic) fit on held-out families for (b) and (c). Key risk to check: (b) may share Gemma26 MLX's blind spot
+  on the naive code template (0/100 without reasoning, O42/O43). **Prerequisite:** confirm that LM Studio's API returns
+  token logprobs (one short request in a gap between Studio queue steps); if not, serve the same GGUF files with
+  llama.cpp `llama-server` (`n_probs`/`logprobs`).
+- **F7 — Abliterated vs original models at detection.** Abliteration projects out a model's refusal direction to remove
+  open-weight guardrails. As of 2026-10-06, no published work tests abliterated models as injection *detectors*. The
+  related work measures refusal or harmful compliance only: [2510.02768](https://arxiv.org/abs/2510.02768) (which
+  safety pretraining survives abliteration); [2605.17413](https://arxiv.org/abs/2605.17413) (refusal projection barely
+  improved authorized security work, 0.46→0.50, but raised unsafe compliance 0.10→0.47); and abliteration defenses
+  [2505.19056](https://arxiv.org/abs/2505.19056) and [2608.18093](https://arxiv.org/html/2608.18093). Competing
+  hypotheses: recognition survives (detection is judgment, not refusal), but concern drops, widening the
+  "recognized-but-not-concerning" misses (O18, O44) and raising steerability on the paired score probe (O12–O13); or
+  fewer benign false alarms (O24). Design: matched original/abliterated pairs at identical quantization and runtime,
+  e.g. `Qwen3.5-27B-Claude-4.6-Opus-Reasoning-Distilled` vs its `-heretic` GGUF (mradermacher), GLM-4.7-Flash vs an
+  abliterated build, and the excluded Qwen3.6 Fable Fusion (built on a heretic base) vs its base. Run the full-input
+  cohorts plus the counterfactual probe. Measure detection, false alarms, recognition vs concern in reasoning text, and
+  steering. Pairs with F1, since several abliterated releases are also distills.
 
 ---
 

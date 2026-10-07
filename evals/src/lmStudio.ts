@@ -60,8 +60,8 @@ export function validateLMStudioConfig(engine: EngineSpec): void {
     || !c.indexedModelIdentifier.startsWith(c.deviceIdentifier + ":") || !Number.isSafeInteger(c.sizeBytes) || c.sizeBytes <= 0
     || !Number.isSafeInteger(c.contextLength) || c.contextLength < 1024 || !Number.isSafeInteger(c.parallel) || c.parallel < 1
     || !Number.isSafeInteger(c.timeoutMs) || c.timeoutMs < 1000 || c.timeoutMs > 900000) throw new Error("Invalid LM Studio identity or load configuration");
-  const cap = engine.kind === "llm_score_json" && typeof engine.parameters?.max_tokens === "number" && [64, 1024].includes(engine.parameters.max_tokens) ? engine.parameters?.max_tokens : engine.kind === "task_context_llm" && engine.schemaId === "task-context-score-rationale-neutral-v2" ? 256 : undefined;
-  if (engine.parameters?.temperature !== 0 || cap === undefined || engine.parameters?.max_tokens !== cap) throw new Error("LM Studio requires a bounded score-only (64/1024) or neutral-context (256) protocol with matching temperature and token cap");
+  const cap = engine.kind === "llm_score_json" && typeof engine.parameters?.max_tokens === "number" && [64, 1024, 4096].includes(engine.parameters.max_tokens) ? engine.parameters?.max_tokens : engine.kind === "task_context_llm" && engine.schemaId === "task-context-score-rationale-neutral-v2" ? 256 : undefined;
+  if (engine.parameters?.temperature !== 0 || cap === undefined || engine.parameters?.max_tokens !== cap) throw new Error("LM Studio requires a bounded score-only (64/1024/4096) or neutral-context (256) protocol with matching temperature and token cap");
   if (engine.parameters?.reasoning_enabled !== undefined) throw new Error("LM Studio uses reasoning_effort, not OpenRouter reasoning_enabled");
   if (!["none", "minimal", "low", "medium", "high", "xhigh"].includes(String(engine.parameters?.reasoning_effort))) throw new Error("Explicit LM Studio reasoning_effort required");
 }

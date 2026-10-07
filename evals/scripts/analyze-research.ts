@@ -24,6 +24,7 @@ export interface Metadata {
   newInferenceCalls?: 0;
   deduplication?: "exact-input/v1";
   inputReuseFrom?: { version: "exact-native-input-reuse/v1"; sourceCheckpoint: string; sourceCheckpointSha256: string; sourceRunId: string };
+  clientConcurrency?: number;
 }
 export interface Suite {
   schemaVersion: string; id: string; tests: EvalTest[]; engines: Record<string, EngineSpec>;

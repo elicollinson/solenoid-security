@@ -67,6 +67,10 @@ if (inputCache) {
   if (inputCache.reference.sourceRunId === runId || !tasks.some(t => inputCache.inputs.has(t.segment.textSha256))) throw new Error("Native input reuse requires a separate source with matching inputs");
   metadata = { ...metadata, inputReuseFrom: inputCache.reference };
 }
+// Batched local execution is part of run identity: a non-serial client concurrency is recorded (absent = 1, serial),
+// so serial and batched checkpoints can never be resumed into or pooled with each other silently.
+const requestedConcurrency = Number(option("concurrency", engine.lmStudio ? "1" : "8"));
+if (engine.lmStudio && requestedConcurrency !== 1) metadata = { ...metadata, clientConcurrency: requestedConcurrency };
 const reusePlan = reuseSource ? prepareReusedRun(metadata, cases, reuseSource, root) : undefined;
 if (reusePlan) metadata = reusePlan.metadata;
 if (!args.includes("--execute")) {

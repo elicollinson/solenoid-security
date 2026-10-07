@@ -293,6 +293,7 @@
   ],
   "aliases": {
     "google/gemma-4-26b-a4b-it": "google/gemma-4-26b-a4b-it",
+    "google/gemma-4-26b-a4b@lmstudio-community": "google/gemma-4-26b-a4b-it",
     "lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit": "google/gemma-4-26b-a4b-it",
     "lmstudio-community/gemma-4-26B-A4B-it-GGUF": "google/gemma-4-26b-a4b-it",
     "unsloth/gemma-4-26B-A4B-it-GGUF": "google/gemma-4-26b-a4b-it",

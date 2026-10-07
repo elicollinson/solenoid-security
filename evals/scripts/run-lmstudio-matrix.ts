@@ -29,6 +29,10 @@ const limit = option("limit"), tranche = option("max-new-segments"), maxCells = 
 const reuseSource = option("reuse-from");
 const inputReuseSource = option("reuse-inputs-from");
 const deduplicate = args.includes("--deduplicate-inputs");
+// Client concurrency (default 1 = serial). Values above 1 require an engine pinned with parallel >= N (run-suite checks)
+// and are recorded in checkpoint metadata as clientConcurrency.
+const clientConcurrency = Number(option("concurrency", "1"));
+if (!Number.isSafeInteger(clientConcurrency) || clientConcurrency < 1 || clientConcurrency > 16 || deduplicate && clientConcurrency !== 1) throw new Error("Invalid --concurrency");
 if (deduplicate && (reuseSource || cells.some(c => c.engine.kind !== "llm_score_json") || args.includes("--continue-after-output-errors") || args.includes("--continue-after-length-errors"))) throw new Error("Within-run reuse requires local score-only inference without external reuse or error continuation");
 if (reuseSource && (cells.length !== 1 || limit)) throw new Error("--reuse-from requires one full-cohort local matrix cell");
 if (inputReuseSource) {
@@ -93,9 +97,10 @@ try {
     const output = resolve(outputDir, test.id, `${condition.id}${suffix}.jsonl`);
     if (existsSync(output)) {
       const state = readCompleteJsonl(readFileSync(output, "utf8"));
-      const captured = state.events[0]?.value as {conditionId?: string; testId?: string; suiteId?: string; caseLimit?: number; reuseFrom?: {sourceCheckpoint?: string}; inputReuseFrom?: {sourceCheckpoint?: string}; deduplication?: string};
+      const captured = state.events[0]?.value as {clientConcurrency?: number; conditionId?: string; testId?: string; suiteId?: string; caseLimit?: number; reuseFrom?: {sourceCheckpoint?: string}; inputReuseFrom?: {sourceCheckpoint?: string}; deduplication?: string};
       if (captured?.conditionId !== condition.id || captured.testId !== test.id || captured.suiteId !== suite.id || captured.caseLimit !== (limit ? Number(limit) : undefined)) throw new Error("Existing local checkpoint identity mismatch");
       if (captured.reuseFrom?.sourceCheckpoint !== (reuseSource ? relative(root, resolve(root, reuseSource)) : undefined)) throw new Error("Existing local checkpoint reuse source differs; resume with the same --reuse-from");
+      if (captured.clientConcurrency !== (clientConcurrency !== 1 ? clientConcurrency : undefined)) throw new Error("Existing local checkpoint client concurrency differs");
       if (captured.deduplication !== (deduplicate ? "exact-input/v1" : undefined)) throw new Error("Existing local checkpoint input reuse differs; resume with the same --deduplicate-inputs setting");
       if (captured.inputReuseFrom?.sourceCheckpoint !== (inputReuseSource ? relative(root, resolve(root, inputReuseSource)) : undefined)) throw new Error("Existing local checkpoint native source differs; resume with the same --reuse-inputs-from");
       if (state.events.some(e => e.type === "complete")) {
@@ -121,7 +126,7 @@ try {
       validateLoadedModel(engine, loaded); requireDevice(loaded);
       log({event: "preflight_device", deviceIdentifier: c.deviceIdentifier, requiredDevice: requiredDevice || null});
     }
-    const argv = [resolve(root, "evals/scripts/run-suite.ts"), `--suite=${suiteArg}`, `--test=${test.id}`, `--condition=${condition.id}`, `--output=${output}`, "--concurrency=1", "--execute", ...(limit ? [`--limit=${limit}`] : []), ...(tranche ? [`--max-new-segments=${tranche}`] : []), ...(reuseSource ? [`--reuse-from=${reuseSource}`] : []), ...(inputReuseSource ? [`--reuse-inputs-from=${inputReuseSource}`] : []), ...["--deduplicate-inputs", "--retry-uncertain", "--continue-after-length-errors", "--continue-after-output-errors"].filter(flag => args.includes(flag))];
+    const argv = [resolve(root, "evals/scripts/run-suite.ts"), `--suite=${suiteArg}`, `--test=${test.id}`, `--condition=${condition.id}`, `--output=${output}`, `--concurrency=${clientConcurrency}`, "--execute", ...(limit ? [`--limit=${limit}`] : []), ...(tranche ? [`--max-new-segments=${tranche}`] : []), ...(reuseSource ? [`--reuse-from=${reuseSource}`] : []), ...(inputReuseSource ? [`--reuse-inputs-from=${inputReuseSource}`] : []), ...["--deduplicate-inputs", "--retry-uncertain", "--continue-after-length-errors", "--continue-after-output-errors"].filter(flag => args.includes(flag))];
     log({event: "cell_start", test: test.id, condition: condition.id});
     const code = await new Promise<number>((done, reject) => {
       child = spawn(process.execPath, argv, {cwd: root, stdio: ["ignore", "pipe", "pipe"]});

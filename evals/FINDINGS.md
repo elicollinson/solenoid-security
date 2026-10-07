@@ -5,8 +5,11 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-05. **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
-and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Window pairs remain deferred.
+**Last updated:** 2026-10-06. **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
+and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
+pairs for five Q8 builds, is complete ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md); O45–O47). Paused by user decision on 2026-10-07 and pending as follow-ups: the Qwen3.8 MLX
+diagnostic (schema vs prompt-only JSON) and the Studio quantization × chunking ladder (Study B); neither has run (log
+L144).
 
 **Core hypothesis under test.** Splitting untrusted input into chunks or windows before an LLM judges it should (a) help
 detect prompt injection and (b) keep the judge from following the injection. Section 2.1 covers (a), and O11 covers (b).
@@ -137,19 +140,31 @@ is near zero.**
   [LongPIBench](reports/longpibench-research-2026-09-29.md),
   [Gemma26 tranche](reports/lmstudio-gemma26-paper-window-first20-2026-10-04.md),
   [synthesis](reports/lmstudio-small-model-synthesis-2026-10-03.md).
-- Strength: **Strong** for the pattern on this cohort (8 configurations). A ceiling effect partly forces it.
+- Studio Study A (2026-10-06, five Q8 reasoning builds, first 20 families): every non-abstention change on paper,
+  email and code is in the naive template; combine and authority_spoof are 19–20 of the jointly valid attacks in both
+  arms for every model. The naive template now moves in both directions: Muse paper 13→18/19, Qwen3.8 paper 18→14/18
+  ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
+- Strength: **Strong** for the pattern on this cohort (8 hosted configurations plus 5 Studio builds). A ceiling
+  effect partly forces it.
 - Caveats: "naive" is one specific subtle paper-review instruction.
 - Follow-up: several subtle templates per domain, with matched benign "procedural" text.
 
-**O3: The paper-window benefit replicates on local quantized models (E2B, E4B, Gemma26) on a 20-family tranche.**
+**O3: The paper-window benefit replicates on small local quantized models (E2B, E4B, Gemma26 MLX8) on a 20-family
+tranche. It does not generalize to the Studio Q8 reasoning builds: there it is +8.8 pp for one model, zero at ceiling
+for three, and −7.3 pp for Qwen3.8.**
 - Evidence ✔: 60 attacks / 20 clean: E2B 37→47 (coverage 45), E4B 43→53 (52), Gemma26 MLX8 40→50 (47). Each gain is
   +16.7 pp, with empirical family-bootstrap ranges of [+8.3, +25.0] for E2B/E4B and [+10.0, +23.3] for Gemma26. Clean
   flags: E2B 0→1, others 0. See [domain comparison](reports/lmstudio-chunking-domain-comparison-2026-10-04.md).
-- Strength: **Moderate.** Three Gemma-family models on 20 ordered families. The first six families were also used to
-  build the probe.
-- Caveats: high/1024 reasoning protocol. One E2B gain comes only from a clean-text window (O9). Not the full 400-case
-  cohort.
-- Follow-up: run Muse, Ornith, Qwen3.8 and the new models on the same tranche, then on the full 400.
+- Studio Study A ✔ (same 20 families, Q8 GGUF with reasoning; jointly valid attacks, full → windows (coverage)):
+  Gemma26 58→58 (58), Ornith 59→60 (60), Gemma31-it 60→60 (60), Muse 51→56 (56; +8.8 pp [0, +17.5], all gains
+  naive), Qwen3.8 55→51 (50; −7.3 pp [−14.5, −1.8], all four losses naive). Window abstentions: Gemma26 2, Qwen3.8 6,
+  Muse 4. Clean flags rise 0→1/20 for Ornith, Qwen3.8 and Muse. See [Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md), log L133–L142.
+- Strength: **Moderate** for small-model replication (three Gemma-family models on 20 ordered families; the first six
+  families also built the probe). **Moderate** that it is model-specific among larger reasoning builds (one
+  significant gain, one significant loss, three at ceiling).
+- Caveats: high/1024 reasoning protocol. One E2B gain comes only from a clean-text window (O9). The Studio Gemma26
+  GGUF build is already 58/58 on full input, so the MLX8 +16.7 pp gain has no headroom to replicate (O42).
+- Follow-up: fresh subtle paper templates with headroom for the ceiling models (backlog 3).
 
 **O4: On long emails and résumés, windows are neutral or harmful, even when a window contains the whole payload.**
 - Evidence ✔: local email first-20: E2B 37→34 (7 gains, 10 losses; coverage 30), E4B 60→58 (56), Gemma26 60→60. Hosted
@@ -159,8 +174,11 @@ is near zero.**
 - Strength: **Moderate.** Same direction in two local and two hosted models. Small absolute changes; Gemma26 at ceiling.
 - Caveats: genre, payload goal (URL insertion vs rating) and length all change together. The E2B family-bootstrap range
   [−16.7, +6.7] includes zero.
-- Hypothesis (untested): in instruction-heavy genres, the full document gives contrast that makes the injected request
-  look out of place, and a window loses that contrast.
+- Studio Study A ✔ (email first-20, Q8 reasoning builds): neutral at ceiling for all five models: Gemma26 59→59,
+  Ornith 60→60, Qwen3.8 58→58, Gemma31-it 60→60, Muse 59→60, clean 0/20 everywhere ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
+- Hypothesis: in instruction-heavy genres, the full document gives contrast that makes the injected request look out
+  of place, and a window loses that contrast. Now with indirect support from papers and code (O46): in 9 Studio
+  losses, a window holding the whole payload scores lower than the full document.
 - Follow-up: fix the payload goal and vary only the host genre; test including the document header or task in every
   window.
 
@@ -168,14 +186,22 @@ is near zero.**
 - Evidence ✔: /300, full → windows (coverage): Gemma31 FP4 144→201 (191), Jev 202→230 (210), Gemma26 199→206 (203),
   Qwen9 186→195 (188), Qwen35B 231→231 (221). Clean flags 0. Gemma31's gain is in the authority template (45→100). Local
   E2B fast pilot: 0→1 of 91 attacks.
-- Strength: **Suggestive.** Mixed once tails are removed.
-- Follow-up: include code in the local window panel.
+- Studio Study A ✔ (code first-20 families, /≈60 jointly valid, full → windows (coverage)): Gemma26 46→50 (49; 10
+  full-input naive abstentions, 8 flagged by windows), Ornith 59→60 (60), Qwen3.8 54→57 (55), Muse 42→50 (44; +13.6
+  pp [+5.1, +22.0] raw, +3.4 [−3.4, +10.2] tail-free), Gemma31-it 46→48 (46; 4 gains, 2 losses). Every change is
+  naive; clean 0/20 ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
+- Strength: **Moderate** that raw code gains are model-specific (now 10 configurations); **suggestive** for any
+  tail-free gain (0 to +6 pp, intervals include zero except Gemma26 [0, +12]).
+- Follow-up: code payloads at varied positions, so the terminal window does not re-read them (O6, O19).
 
 **O6: Redundant short "tail" windows explain a material share of some apparent chunking gains.**
 - Evidence ✔: removing tails, with no new calls: Gemma26 paper 218→207 (11 of 18 net gains depend on tails), Gemma31 FP4
   233→209, Qwen9 paper 224→212, Qwen9 email 237→226, E2B paper 47→45, E2B email 34→30, E4B email 58→56. Qwen35B paper
   stays 300. See [full report §5](reports/research-full-report-2026-09-29.md), log R17.
-- Strength: **Strong:** an exact offline replay across many configurations.
+- Studio Study A ✔: on code, the summed net gain across five models falls from 18 to 7 without tails (Muse +8→+2,
+  Gemma31-it +2→0, Qwen3.8 +3→+1, Gemma26 +4→+3, Ornith +1→+1). On paper, tails matter only for Qwen3.8 (−4→−5); email
+  is unchanged ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
+- Strength: **Strong:** an exact offline replay across many configurations, now including five Studio builds.
 - Caveats: tails re-read the document end, where LongPIBench appends payloads.
 - Follow-up: always report coverage-only results. Consider a deliberate "payload-region re-read" as a named technique.
 
@@ -198,6 +224,8 @@ hard-benign flags flat.**
   Gemma31 58→68, Jev 107→120, Ministral 209→223. BIPIA Ministral clean 28→37 ✔. An E2B clean paper/8 excerpt scored 0.9
   while the full paper scored 0. It produced the only clean false alarm and one of E2B's 10 "gains" (log L64). Jev paper
   clean 0→1.
+- Studio Study A ✔: paper clean flags 0→1/20 under windows for Ornith, Qwen3.8 and Muse (each also kept by
+  coverage-only replay); email and code clean 0/20 for all five models ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
 - Strength: **Moderate.** PIDS hard-benign is flat; local long clean controls are only 20.
 - Follow-up: add long benign paper and email controls; all 100 clean papers and emails exceed 512 words.
 
@@ -205,8 +233,12 @@ hard-benign flags flat.**
 work.**
 - Evidence: E2B email full 37 / windows 34 / cascade 44/60 at 2.08× (early exit), clean 0/20. E4B paper 54/60 at 3.10×.
   Gemma26 email: no benefit for 2.11×. See [cascade](reports/lmstudio-full-window-cascade-replay-2026-10-04.md).
+- Studio Study A replay ✔ (five Q8 builds × paper/email/code): the cascade keeps every full-input detection,
+  neutralizes the Qwen3.8 paper loss (59/59) and adds most where windows add (Muse code 42→51/59, Muse paper 59/59).
+  Ceiling cells gain nothing. Captured time is 2.5–3.8× (paper), 1.7–1.8× (email) and 1.3–1.6× (code) full input,
+  close to windows alone; clean flags: the three paper window false alarms carry over ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
 - Strength: **Suggestive:** formed and evaluated on the same cases, and by construction it cannot lose full-input
-  detections.
+  detections. Now replayed on 20 model × domain cells.
 - Follow-up: prospective run on fresh families with long benign controls.
 
 **O11: There is no evidence yet that chunking keeps the judge from following the injection, and some window-level
@@ -215,9 +247,14 @@ hijacking persists.**
   tracks both values. E2B high: 0/18 full vs 1/18 window. Gemma26: 0 exact, but one window pair scores 0.1 vs 0.85. Case
   max scores mask these. See [attack-following](reports/injection-following-findings-2026-10-04.md),
   [Gemma26 window probe](reports/lmstudio-score-counterfactual-gemma26-preserve-2026-10-04-comparison.md).
+- Studio Study A window-level checks ✔ (15 cells): no case is flagged only through windows lacking the payload; in 9
+  naive attacks the full input flags but every whole-payload window scores ≤ 0.5 (O46); one item
+  (lp-a4a60da9c36fc4d10becb950) has two whole-payload windows scored 0 and 0.85 (Gemma26) or 0.1 and 0.7 (Muse),
+  masked by the max. The payloads target a rating or approval the detector does not act on, so this measures concern,
+  not obedience ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)).
 - Strength: **Suggestive.** Six families, and the two arms do not get equal opportunity.
 - Caveats: this is the core hypothesis (b). It is neither supported nor refuted yet, and windows increase the number of
-  hijack opportunities.
+  hijack opportunities. Study A adds that windows can *lower* concern for a subtle payload (O46).
 - Follow-up: score only the attack-bearing window(s) vs full, on the 72-case pool plus fresh families and non-numeric
   goals.
 
@@ -356,20 +393,23 @@ exceed within-group spread; only request cost separates the groups. The "expert 
     naive code (44/53 with 47 abstentions vs 25/86 with 14 abstentions). Gemma31 is ~4× slower.
 - Hypothesized: shorter inputs lead MoE routers to pick better experts, so chunking should help MoE more than dense. LM
   Studio and OpenRouter expose no routing traces, and the cited routing literature does not test this
-  ([design doc](reports/moe-dense-design-2026-10-03.md)). Untested here; window pairs are deferred.
+  ([design doc](reports/moe-dense-design-2026-10-03.md)). **Tested behaviorally on window pairs (Studio Study A, O45):
+  the chunking gain is not larger for MoE** (paired deltas overlap in every domain; permutation p ≥ 0.7). The router
+  mechanism itself remains unobserved.
 - Strength: **Moderate** that *no group-level detection difference is visible* on this panel (complete cohorts, two
   build sensitivities, a matched same-family pair). **Not established / anecdotal** for any causal architecture claim:
   n = 3 per group, Muse is Q4, four families with different training, unequal actual reasoning, and one coding
   specialist (Laguna). **Strong** (as a measurement) for the cost difference.
-- Follow-up: within-model full-vs-window pairs (P2); a Muse Q8 row; more same-family MoE/dense pairs. A routing claim
-  would need an instrumented open-weights study.
+- Follow-up: within-model full-vs-window pairs (P2) — done on the Studio (O45); a Muse Q8 full-input row on BIPIA,
+  NotInject and numeric (Study B, pending); more same-family MoE/dense pairs; MoE candidates with full-input headroom.
+  A routing claim would need an instrumented open-weights study.
 
 **O27: In the hosted data, the paper chunking benefit appears in both MoE and dense models; MoE status does not predict
 its size.**
 - Evidence ✔: coverage-only paper gains: MoE Qwen35B +94, MoE Gemma26 +7, dense Qwen9 +17, dense Gemma31 FP4 +8, Jev +94
   (architecture unknown).
 - Strength: **Suggestive:** five models; endpoint precision differs.
-- Follow-up: repeat on the local panel.
+- Follow-up: repeated on the local Studio panel; same conclusion (O45).
 
 **O28: Within the small Gemma family, the larger model catches more attacks and raises more false alarms.**
 - Evidence ✔: E2B → E4B, both high/1024: BIPIA 11→29/78 (a superset), paper-20 37→43/60, email-20 37→60/60, NotInject
@@ -538,6 +578,52 @@ no reasoning, and its short-prompt token accounting is unreliable.**
 - Follow-up: F3, which this result argues against (a coding specialist is worst on code review). Inspect raw
   llama.cpp output for the unreturned tokens, and retest under a corrected chat template if one ships.
 
+
+### 2.12 Mac Studio Study A: within-model window pairs (2026-10-06)
+
+**O45: On paired full-vs-window runs, the chunking gain is not larger for MoE than for dense detectors. Window effects
+are model-specific, and the MoE models have little headroom.**
+- Evidence ✔: five Studio Q8 GGUF reasoning builds, first 20 families per domain (60 attacks / 20 clean), paired on
+  jointly valid attacks. Window − full, pp, MoE [Gemma26, Ornith] vs dense [Qwen3.8, Muse, Gemma31-it]: paper [0.0,
+  +1.7] vs [−7.3, +8.8, 0.0]; email [0, 0] vs [0, +1.7, 0]; code [+8.0, +1.7] vs [+5.2, +13.6, +3.4]; pooled [+2.4,
+  +1.1] vs [−0.6, +8.0, +1.1]. Ranges overlap everywhere. Dense within-group spread (up to 16.1 pp) exceeds every
+  group-mean gap. Exact 2/3 label permutation (10 splits, floor p = 0.1): p = 0.7–1.0 raw and 0.5–1.0 coverage-only.
+  The sign of the mean difference flips between raw and tail-free code. The pre-registered MoE paper-400 extension (reported separately) shows no headroom
+  either: Gemma26 291→291 jointly valid (0 clean flags; 2 full-input abstentions flagged by windows), Ornith 297→299
+  (+0.7 pp [0, +1.7]; clean 0→1/100, the same item as in the 80-case tranche). See the [Studio Study A report](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md),
+  `runs/lmstudio-studio-2026-10-05/chunking-moe-dense-summary.json`, log L131–L144.
+- Strength: **Moderate** that no group difference is visible on this panel (complete, audited, pre-registered pairs;
+  raw and tail-free replays agree). **Suggestive at most** as evidence of equal effects: 2 vs 3 models from four
+  families; both MoE models are at 58–60/60 on full input in 5 of 6 cells; nearly all movement is one template
+  (naive).
+- Caveats: the payload sits at the document end (tails); 20 ordered families; Gemma26's code gain is mostly recovered
+  abstentions (10 → 2). Routing is unobserved.
+- Follow-up: subtle templates or cohorts where the MoE models miss on full input; the Study B quantization ladder
+  (lower bit widths may create headroom; paused, pending follow-up).
+
+**O46: Windowing can turn a detected subtle injection into "recognized but not concerning". In every Studio window
+loss, the full document flags the attack but every window holding the whole payload scores below threshold.**
+- Evidence ✔: 9 paired losses (Qwen3.8 paper 4, Muse paper 1, Qwen3.8 code 1, Muse code 1, Gemma31-it code 2), all
+  naive. Full input scores 0.65–0.95; the best whole-payload window scores 0.2–0.45. Saved Qwen3.8 reasoning on the
+  paper losses calls the sentence an instruction meant to influence the reviewer, then "not severe" or "just a
+  request" (log L135). Two items recur across models (one paper item for Qwen3.8 and Muse, one code item for Muse and
+  Gemma31-it). No Studio case is flagged only through windows lacking the payload. See the [Studio Study A report](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md).
+- Strength: **Moderate** for the measured pattern (exact window-level replay across three dense models); **suggestive**
+  for the contrast mechanism (O4 hypothesis; model-generated rationales).
+- Caveats: one subtle template per domain; payloads target a rating or approval, so lower window scores measure
+  concern, not obedience (O11). MoE models show no such loss, but they are at ceiling.
+- Follow-up: include a document header or trusted task in each window; the two-axis prompt (O18) on these 9 items.
+
+**O47: Studio reruns are nearly, but not always, byte-reproducible at the decision and score level.**
+- Evidence ✔: the Gemma31-it paper rerun after an LM Link failure (full unload and reload) reproduced all 752
+  previously scored windows exactly (752/752 scores, 0 flips; log L142). Code windows byte-identical to the full input
+  reproduce the full-input score 109/110 times across five models; the exception is one Gemma26 naive case, 0.80 vs
+  0.85 with different reasoning length (L133). The 12-case transport repeat (L127) was too small to show this.
+- Strength: **Moderate** (large counts, one device, serial, parallel 1).
+- Caveats: the one mismatch's cause (prompt-cache state is the leading guess) is unconfirmed. Batched serving was not
+  tested (F5).
+- Follow-up: count reruns as repeated draws, not independent trials; repeat the mismatch case cold and warm.
+
 ---
 
 ## 3. Numbers that did not reconcile, or could not be checked
@@ -559,8 +645,13 @@ no reasoning, and its short-prompt token accounting is unreliable.**
 
 1. **Directly test hypothesis (b)** (O11, O12, O13): attack-bearing window vs full input on the 72-case pool plus fresh
    families and non-numeric goals, for all panel models.
-2. **Within-model full-vs-window pairs on the completed 3-vs-3 full-input panel** (O26, O27, O3), with per-model paired
-   deltas and family bootstrap. The full-input panel is done (§5).
+2. **Within-model full-vs-window pairs** (O26, O27, O3): **done** on the Studio for five Q8 builds (O45–O47). Remaining:
+   cohorts with full-input headroom for the MoE models, and the Study B quantization × chunking ladder (pending; see
+   item 11).
+11. **Pending Studio follow-ups (paused by user decision, 2026-10-07; log L144):** (a) the Qwen3.8 MLX diagnostic
+   (current MLX engine with strict schema vs prompt-only JSON, then a matched GGUF; F2, L136), ready as
+   `runs/lmstudio-studio-2026-10-05/run-mlx-diagnostic.unpaused.sh`; (b) Study B, the quantization × chunking ladder
+   (O32, O33, O42, O45; `study-b-plan-amendment-1.json`), ready as `queue-study-b2.txt` via `run-study-b.unpaused.sh`.
 3. **Fresh long-document cohort** (O1, O2, O4, O15): real documents, new subtle attacks, authorized-instruction controls,
    plus 100+ long benign documents per genre (O9).
 4. **Two-axis scoring prompt** (O16–O18) with a frozen threshold.
@@ -653,7 +744,7 @@ no reasoning, and its short-prompt token accounting is unreliable.**
 
 ## 5. MoE-vs-dense full-input panel (final, 2026-10-05)
 
-**Status: complete for full input.** Window pairs (P2) are deferred. Full analysis is in the
+**Status: complete for full input.** Window pairs (P2) were run on the Mac Studio for five Q8 builds (Study A; [Studio Study A report](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)). Full analysis is in the
 [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md), with group statistics in
 `runs/lmstudio-new-panel-v2-2026-10-04/moe-dense-panel-summary.json`.
 
@@ -682,10 +773,15 @@ Answers:
 - **(P1) Do group medians differ by more than within-group spread?** No, for every detection and false-alarm metric:
   ranges overlap and permutation p ≥ 0.2, whichever Gemma26 build is used. Yes for request time: MoE medians are 4–6×
   faster, with non-overlapping ranges (O26).
-- **(P2) Window pairs:** not run (deferred).
+- **(P2) Window pairs:** Studio Study A (Gemma26 and Ornith MoE; Qwen3.8, Muse and Gemma31-it dense; Q8 GGUF; 20
+  families per domain). The chunking gain is not larger for MoE beyond within-group spread in any domain (permutation
+  p ≥ 0.7 raw, ≥ 0.5 tail-free; O45). The dense group alone spans −7.3 pp (Qwen3.8 paper) to +13.6 pp (Muse code,
+  mostly redundant tails). Both MoE models are at or near ceiling on full input, so the test has little power for a
+  MoE advantage. Laguna and Gemma26 MLX8 were not in the Study A panel.
 - **(P3) Do quantization or runtime explain more variance than architecture?** Runtime/build does for the one model where
   it can be tested: Gemma26 MLX8 vs GGUF moves naive-code detection from 0/100 to 44/53 and numeric from 38/54 to 54/54,
-  more than any MoE-dense median gap (O42). Quantization is untested (Muse is the only Q4 row; no ladder).
+  more than any MoE-dense median gap (O42). Quantization is untested (Muse is the only Q4 row). The Studio Q4/Q6/Q8 ladder (Study B) is frozen but
+  paused as a pending follow-up (log L144).
 
 ---
 
@@ -693,14 +789,16 @@ Answers:
 
 1. **"Your injection detector can be talked into a score"** (O12, O13, O14, O41). *Missing:* non-numeric goals, another
    small model family, an adaptive attack on the larger models.
-2. **"Chunking helps — sometimes: a domain-by-domain look"** (O1–O7, O9, O39). *Missing:* fresh real documents, long
-   benign controls, the larger local models' window pairs.
+2. **"Chunking helps — sometimes: a domain-by-domain look"** (O1–O7, O9, O39, O45, O46). The larger local models'
+   window pairs are now in: model-specific gains and losses, with code gains mostly from tails and windows sometimes
+   lowering concern. *Missing:* fresh real documents, long benign controls, payloads not at the document end.
 3. **"Recall is not enough: abstentions, zero-score collisions and the threshold trap"** (O16, O17, O18, O40, O24).
    *Missing:* the two-axis prompt experiment, to show a remedy.
 4. **"Hosted benchmarks don't transfer for free"** (O32, O33, O34, O38). *Missing:* a controlled local quantization
    ladder.
 5. **"Managed guardrails vs small open models on indirect injection"** (O35, O36, O37, O23). *Missing:* cost per catch; a
    current check of Armor templates.
-6. **"MoE vs dense for on-device injection screening"** (O26, O27, O28, O42–O44, §5). The full-input story is now
+6. **"MoE vs dense for on-device injection screening"** (O26, O27, O28, O42–O45, §5). The full-input story is now
    supportable: no group-level detection difference, a 4–6× cost advantage for MoE, and build or runtime effects larger
-   than architecture. *Missing:* within-model window deltas, and an explicit statement that routing is unobserved.
+   than architecture. Within-model window deltas are now in (O45): chunking does not help MoE more. *Missing:* an
+   explicit statement that routing is unobserved, and a cohort where the MoE models are not at ceiling.

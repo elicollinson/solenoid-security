@@ -802,3 +802,36 @@ Answers:
    supportable: no group-level detection difference, a 4–6× cost advantage for MoE, and build or runtime effects larger
    than architecture. Within-model window deltas are now in (O45): chunking does not help MoE more. *Missing:* an
    explicit statement that routing is unobserved, and a cohort where the MoE models are not at ceiling.
+
+---
+
+## Appendix A. Protocol note: the 1,024-token reasoning budget (2026-10-07)
+
+**What happened.** The first Mac Studio Q8 full-text baseline (research log L145) used the same output cap as every
+earlier local run: `max_tokens: 1024`, shared between reasoning and the final answer. All three newly added models
+failed qualification on budget exhaustion. Qwen3.6 35B-A3B and Laguna XS 2.1 failed on the same hard paper case at
+request 10. Qwen3.6 27B failed on a clean paper at request 2. Each response stopped with `finish_reason: length` after
+exactly 1,024 completion tokens, all of them reasoning, and empty final content. The prompts were 7.6–10.3k tokens
+against a 65,536-token context, so **context length was not the cause**. The Qwen3.6 models had already reached a
+verdict in their reasoning (e.g. "Result: `{"concernScore": 1}` … Final Answer Generation …") and were looping on
+answer and format checks when they were cut off. Laguna was still deliberating. Laguna had passed the same check on the
+MacBook.
+
+**Why it matters.** The cap affects results for every reasoning model, not just these three:
+- It caused the earlier length abstentions, e.g. 47 Gemma26 GGUF abstentions on naive code comments (O42/O43) and
+  Qwen3.8's abstentions (O40).
+- It excluded models whose verdicts were already formed.
+- Strict-schema output may make it worse: the models keep re-checking that the JSON is valid.
+
+Qwen-architecture GGUF models reason normally in LM Studio (Qwen3.8 27B, Ornith 1.5), so this is a per-model
+verbosity × budget interaction, not an LM Studio or Qwen support failure.
+
+**Decision.** The 1,024-cap baseline was stopped after about 50 minutes (Ornith partial run kept, marked superseded).
+The baseline restarted with `max_tokens: 4096` for every model, with all other settings frozen and all 8 models
+re-qualified (`evals/runs/studio-baseline-t4096-2026-10-07/`, research log entries after L145). Abstention rates under
+1,024 versus 4,096 on matched cases are themselves a reportable result: how much a fixed reasoning budget changes
+detection verdicts and abstentions per model.
+
+**Implications for earlier results.** All pre-2026-10-07 local results used the 1,024 cap. Their abstentions should
+be read as budget-limited. Detection rates on jointly valid cases are unaffected by definition, but which cases are
+valid differs.

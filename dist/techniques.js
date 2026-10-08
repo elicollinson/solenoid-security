@@ -2,8 +2,18 @@ export function seededRandom(seed) {
     let state = seed >>> 0;
     return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 0x100000000; };
 }
+const SEGMENTING_KINDS = new Set(["random_word_chunks", "sliding_word_window", "sliding_word_window_preserve_v1"]);
 export function validateTechnique(technique) {
-    if (technique.kind === "random_word_chunks") {
+    if (technique?.kind === "cascade") {
+        const { first, then } = technique;
+        if (first?.kind === "cascade" || then?.kind === "cascade")
+            throw new Error("Invalid cascade: cascades do not nest");
+        if (!SEGMENTING_KINDS.has(String(then?.kind)))
+            throw new Error("Invalid cascade: `then` must be a segmenting technique");
+        validateTechnique(first);
+        validateTechnique(then);
+    }
+    else if (technique?.kind === "random_word_chunks") {
         if (!Number.isInteger(technique.minWords) || !Number.isInteger(technique.maxWords) || technique.minWords < 1 || technique.maxWords < technique.minWords)
             throw new Error("Invalid chunk bounds");
         if (technique.seed !== undefined && !Number.isInteger(technique.seed))
@@ -28,6 +38,8 @@ export function validateAggregator(aggregator) {
 /** Splits text into the segments a technique screens. Whitespace-only text has none. */
 export function segmentText(text, technique) {
     validateTechnique(technique);
+    if (technique.kind === "cascade")
+        throw new Error("A cascade is staged; segment its `first` and `then` techniques separately");
     if (!text.trim())
         return [];
     if (technique.kind === "full_text")
@@ -107,21 +119,46 @@ export function decodedPreviewV1(text) {
     }
     return views.length ? text + "\n\n[Decoded text previews]\n" + views.map((view, i) => `[View ${i + 1}]\n${view}`).join("\n") : text;
 }
-/** Applies an aggregator, returning the case flag and the score that summarizes it. */
-export function aggregate(results, aggregator) {
+export function isInconclusive(assessment) {
+    return assessment.inconclusive === true;
+}
+/** The summary score: the max for flag votes, the configured reduction for a score rule. */
+function summarize(results, aggregator) {
     const scores = results.map(({ assessment }) => assessment.score);
     const max = Math.max(0, ...scores);
-    if (aggregator === "any")
-        return { flagged: results.some(({ assessment }) => assessment.flagged), score: max };
-    if (aggregator === "all")
-        return { flagged: results.length > 0 && results.every(({ assessment }) => assessment.flagged), score: max };
-    if (typeof aggregator === "function")
-        return { flagged: aggregator(results) === true, score: max };
+    if (aggregator === "any" || aggregator === "all" || typeof aggregator === "function")
+        return max;
     if (scores.some((value) => typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1)) {
         throw new Error("Score aggregation requires provider scores from 0 to 1");
     }
-    const score = aggregator.reduce === "max" ? max
+    return aggregator.reduce === "max" ? max
         : aggregator.reduce === "min" ? Math.min(...scores)
             : scores.reduce((sum, value) => sum + value, 0) / scores.length;
-    return { flagged: aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold, score };
+}
+function vote(results, aggregator) {
+    if (aggregator === "any")
+        return results.some(({ assessment }) => assessment.flagged);
+    if (aggregator === "all")
+        return results.length > 0 && results.every(({ assessment }) => assessment.flagged);
+    if (typeof aggregator === "function")
+        return aggregator(results) === true;
+    const score = summarize(results, aggregator);
+    return aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold;
+}
+/**
+ * Applies an aggregator, returning the case flag and the score that summarizes
+ * it. Inconclusive assessments are resolved by the two-reading rule documented
+ * on `ScreeningAggregator`.
+ */
+export function aggregate(results, aggregator) {
+    const conclusive = results.filter(({ assessment }) => !isInconclusive(assessment));
+    const score = conclusive.length || !results.length ? summarize(conclusive, aggregator) : Number.NaN;
+    if (conclusive.length === results.length)
+        return { flagged: vote(results, aggregator), inconclusive: false, score };
+    const assume = (flagged) => results.map((result) => isInconclusive(result.assessment)
+        ? { ...result, assessment: { ...result.assessment, flagged, score: flagged ? 1 : 0 } }
+        : result);
+    const worst = vote(assume(true), aggregator);
+    const best = vote(assume(false), aggregator);
+    return worst === best ? { flagged: worst, inconclusive: false, score } : { flagged: false, inconclusive: true, score };
 }

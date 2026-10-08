@@ -1,9 +1,11 @@
 export { createSecurity, ScreeningError } from "./screen.js";
-export type { ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningDecision, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
+export type { CascadeStageResult, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningDecision, ScreeningErrorCode, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
 export { segmentText } from "./techniques.js";
-export type { ScreeningAggregator, ScreeningTechnique, SegmentAssessment, TextSegment } from "./techniques.js";
+export type { CascadeTechnique, ScreeningAggregator, ScreeningTechnique, SegmentAssessment, SegmentingTechnique, SingleStageTechnique, TextSegment } from "./techniques.js";
 export { ModelArmorScanner } from "./modelArmor.js";
 export type { ModelArmorAssessment, ModelArmorFilterVerdict, ModelArmorScannerOptions, PromptTextParts, FetchLike } from "./modelArmor.js";
+export { OpenAICompatibleJudge, SCORE_ONLY_PROMPT, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_SCHEMA, SCORE_ONLY_SCHEMA_ID } from "./llmJudge.js";
+export type { JudgeAbstentionReason, JudgeUsage, OpenAICompatibleJudgeAssessment, OpenAICompatibleJudgeOptions } from "./llmJudge.js";
 export { AuthoredTextRegistry, MIN_AUTHORED_LENGTH, authoredText } from "./authoredText.js";
 export type { AuthoredEntry } from "./authoredText.js";
 export { actionFor, DEFAULT_ORIGIN, ORIGIN_ACTION } from "./trust.js";

@@ -1,6 +1,69 @@
 # Solenoid Security
 
-The separate [evaluation workspace](evals/README.md) holds prompt-injection datasets, engine/input-strategy experiments, raw-score checkpoints, and historical comparisons. It is not part of the published runtime package.
+Provenance-aware prompt-injection screening for AI agents, and the evaluation lab that decides how it should screen.
+
+The library screens untrusted text at the boundary where it enters an agent. The [evaluation workspace](evals/README.md)
+measures which detectors, input techniques and runtimes actually catch injections. It covers 21 public and synthetic
+datasets (7,326 cases), 33 detector configurations from 17 models, hosted APIs and local inference, and about 388,000
+scored judgments. Every claim below links to its evidence. Strength ratings and confounds are in
+[`evals/FINDINGS.md`](evals/FINDINGS.md).
+
+## Results
+
+| Finding | Key numbers | Strength | Evidence |
+|---|---|---|---|
+| **Subtle injections are a separate failure mode.** A plain request ("rate this paper 8 or 9", "you should approve the code change") is missed where explicit overrides are caught. | Explicit variants ≈100/100. Naive paper template 0–13/100 for most hosted models; naive code 0/100 for Model Armor and several local models. | Strong | [O15](evals/FINDINGS.md), [O43](evals/FINDINGS.md), [code baselines](evals/reports/lmstudio-full-code-baselines-2026-10-04.md) |
+| **A detector can be talked into a score.** A small local judge copies the rating the injected text asks for. | Gemma 4 E2B (no reasoning): exact copy in 13/18 paired tests, 0/6 control flips. Reasoning and larger models: 0–2/18. | Strong (existence) | [O12–O13](evals/FINDINGS.md), [attack-following write-up](evals/reports/injection-following-findings-2026-10-04.md) |
+| **Chunking helps on long documents, not everywhere.** | 512-word windows lift every hosted detector on papers (Qwen3.6 35B-A3B 206 → 300/300, ≤1/100 clean flags). Neutral or harmful on email, résumés and web pages. | Strong (papers) | [O1–O6](evals/FINDINGS.md), [LongPIBench report](evals/reports/longpibench-research-2026-09-29.md) |
+| **Windows can lower concern.** Seeing less context, a judge recognizes the instruction but stops treating it as a threat. | In all 9 Studio window losses, full text flags the attack (0.65–0.95) while every window holding the whole payload scores 0.20–0.45. | Moderate | [O46](evals/FINDINGS.md), [Studio chunking study](evals/reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md) |
+| **Build format matters more than architecture.** Same weights, different runtime. | Gemma 4 26B-A4B naive code: 0/100 as MLX 8-bit (no reasoning emitted) vs 44/53 as GGUF Q8 (reasoning). No MoE-vs-dense difference in detection; MoE is 4–6× faster. | Moderate | [O42](evals/FINDINGS.md), [O26](evals/FINDINGS.md), [MoE vs dense panel](evals/reports/lmstudio-moe-dense-panel-2026-10-05.md) |
+| **A cheap decode step fixes encoded-text false alarms.** | Decoded previews cut false flags on 969 encoded benign controls by up to 92% (Qwen3.6 27B 140 → 11) and largely keep Base64 recall. | Strong | [O23](evals/FINDINGS.md), [decoded-preview report](evals/reports/decoded-preview-research-2026-09-29.md) |
+| **A managed guardrail misses embedded attacks.** | Model Armor catches 0–3/78 BIPIA email attacks and ~0 subtle long-document attacks, but has the lowest benign false-positive rate. | Strong | [O35–O37](evals/FINDINGS.md) |
+| **Rankings flip between datasets, so small checks mislead.** | Qwen3.8 27B: 18/18 on a paper qualification tranche, 18/75 on BIPIA. | Strong | [O30](evals/FINDINGS.md) |
+
+Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
+reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. A full-text
+baseline of eight Q8 models across all 21 datasets on one machine is running; see the
+[research log](evals/reports/research-log-2026-09-29.md).
+
+## Design rationale
+
+Whether text is an injection is a question about **provenance**, not wording. Two files make that argument in code:
+
+- **[`src/trust.ts`](src/trust.ts): origin is declared by the caller, never inferred.** Text is `operator`, `agent` or
+  `external`, and anything unlabeled defaults to `external`. Inferring origin from position ("the first message is the
+  user") would treat a stranger's iMessage or a screenshot as trusted, because those workflows put outside text in that
+  position. The same flag also means different things by origin: `observe` for the operator, `quarantine` for tool
+  output, `block` elsewhere.
+- **[`src/authoredText.ts`](src/authoredText.ts): subtract what we wrote before the detector looks.** Our own tool
+  descriptions are second-person imperatives, and classifiers cannot tell them from attacks. Measured with Llama Prompt
+  Guard 2, nine tool descriptions scored 0.001–0.172 one at a time, but their concatenation scored 0.63 and was
+  flagged. Registered constant strings are redacted per span, so the mixed case (our scaffolding around someone's
+  email) is handled without trusting a whole tool. The safety rule: register only literals from the source, never
+  interpolated text.
+
+The evaluations inform the screening defaults. The library's chunking techniques run on the same code as the eval input
+strategies ([`src/techniques.ts`](src/techniques.ts)). Because chunking helps only some content types and can lower
+concern, the default is full text, with chunking as an explicit per-call choice.
+
+## Where to look
+
+1. **[`evals/FINDINGS.md`](evals/FINDINGS.md):** 47 observations, each with numbers, sample size, strength rating,
+   confounds and a follow-up, plus an open-questions backlog and future research avenues.
+2. **Key reports:** [MoE vs dense panel](evals/reports/lmstudio-moe-dense-panel-2026-10-05.md) ·
+   [Studio chunking study](evals/reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md) ·
+   [attack-following](evals/reports/injection-following-findings-2026-10-04.md) ·
+   [literature scan](evals/reports/literature-scan-2026-10-05.md) ·
+   [all reports](evals/reports/lmstudio-research-index-2026-10-04.md).
+3. **[`evals/README.md`](evals/README.md):** the harness. Datasets, engines, input strategies and decision rules are
+   versioned separately. Runs are resumable and reuse exact inputs, and every native response is retained.
+4. **[`evals/reports/research-log-2026-09-29.md`](evals/reports/research-log-2026-09-29.md):** the decision log, with
+   every protocol choice, failure and rerun.
+5. **[`supabase/migrations/`](supabase/migrations) and [`evals/db/`](evals/db/README.md):** a private Postgres store
+   for all runs, including per-response reasoning text, behavior assessments (did the model follow the injection?)
+   and prompt lineage.
+
+## Using the library
 
 Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. The first release supports text through Google Cloud Model Armor; the input API can grow to images and documents in later releases.
 
@@ -28,7 +91,7 @@ if (result.decision === "block" || result.decision === "quarantine") {
 
 `content` can be one string or an array of strings screened together. Use a separate call for each independent source so one quarantined item does not stop unrelated work. Unknown origins default to `external`, even if the content is placed in the first message of a conversation.
 
-## Screening configuration
+### Screening configuration
 
 A screen has three settings: the **technique** that decides what text each provider call sees, the **models** that judge it, and the **aggregator** that turns their verdicts into one flag. Register named providers and set app-wide defaults once:
 
@@ -65,7 +128,7 @@ Every model screens every segment, and the aggregator sees the whole matrix, so 
 
 The aggregator decides only prompt injection. A match on any other content filter from any model or segment still blocks. `result.assessment` is the aggregated assessment and `result.assessments` lists each model's result for each segment. Any provider failure fails the whole screen with `ScreeningError`. Chunking multiplies provider calls by the number of segments, and the calls run concurrently.
 
-## Decisions
+### Decisions
 
 | Decision | Meaning |
 | --- | --- |
@@ -87,7 +150,7 @@ const scanner = new ModelArmorScanner({
 });
 ```
 
-## Provenance
+### Provenance
 
 Register only **literal text written by your application**. The registry removes exact authored spans before a provider sees a mixed tool result, while leaving external content to be screened. Never register a string that contains interpolated user, document, web, or tool data.
 
@@ -100,7 +163,7 @@ security.authoredText.register(
 
 `origin: "operator"` means the person controlling the assistant, not simply the first message. Retrieved messages, pages, screenshots, and memory records containing other people's text remain `external` wherever they appear.
 
-## Tool gating
+### Tool gating
 
 The package also provides a run-scoped hook for approving or denying writes. Validate tool arguments first, call `authorizeTool` before executing the tool, and execute only when it returns `{ allow: true }`. A write without a gate is denied by this helper. The host application owns its permission storage, approval UI, and audit trail.
 
@@ -124,7 +187,7 @@ await withToolGate(async (request) => {
 
 The initial gate matches Solenoid Assistant's `read` / `write` distinction. Hosts should classify by actual side effect: a tool that changes state, including an audit record, is a write. Future policy layers can add destination, resource, and data sensitivity checks.
 
-## Install and develop
+### Install and develop
 
 This package is ESM and ships compiled JavaScript plus TypeScript declarations for Node 20+ and Bun. It does not expose a Zod type in its public API; applications may use Zod 4 for their own tool argument validation.
 

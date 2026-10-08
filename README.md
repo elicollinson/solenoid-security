@@ -54,7 +54,10 @@ gate writes with `authorizeTool`. What runs behind that call (which technique, w
 comes from a layered, overridable configuration whose defaults are set by measured performance.
 
 **Configuration layers.** App-wide defaults are set once in `createSecurity`, and any setting can be overridden per
-call (see [Screening configuration](#screening-configuration)). That part exists today. The planned layer is
+call (see [Screening configuration](#screening-configuration)). That part exists today, along with the pieces the
+evidence so far points to: a self-hostable LLM judge that asks the exact score-only question the evals measured
+([`OpenAICompatibleJudge`](#self-hosted-llm-judge)), the full-then-windows `cascade` technique, and an explicit
+inconclusive outcome so a judge that runs out of tokens is never read as a pass. The planned layer is
 **recommendation profiles**: evidence-backed defaults per content type (long documents, code, email, web pages, tool
 output, encoded text, user prompts), per common self-hostable model, and per technique, each traceable to an
 observation in [`FINDINGS.md`](evals/FINDINGS.md).
@@ -107,7 +110,7 @@ The library's chunking techniques run on the same code as the eval input strateg
 
 ## Using the library
 
-Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. The first release supports text through Google Cloud Model Armor; the input API can grow to images and documents in later releases.
+Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. Text can be judged by Google Cloud Model Armor or by a [self-hosted LLM judge](#self-hosted-llm-judge) on any OpenAI-compatible endpoint; the input API can grow to images and documents in later releases.
 
 ```ts
 import { createSecurity, ModelArmorScanner } from "@elicollinson/solenoid-security";
@@ -162,13 +165,51 @@ await security.screen(
 
 | Setting | Options | Default |
 | --- | --- | --- |
-| `technique` | `{ kind: "full_text" }`; `{ kind: "random_word_chunks", minWords, maxWords, seed? }`; `{ kind: "sliding_word_window", windowWords, strideWords }` | `full_text` |
+| `technique` | `{ kind: "full_text" }`; `{ kind: "decoded_preview_v1" }`; `{ kind: "random_word_chunks", minWords, maxWords, seed? }`; `{ kind: "sliding_word_window" \| "sliding_word_window_preserve_v1", windowWords, strideWords }`; `{ kind: "cascade", first, then }` | `full_text` |
 | `models` | Names from `providers`. A single `provider` is named `"default"`. | Every configured provider |
 | `aggregator` | `"any"`, `"all"`, `{ kind: "score", reduce: "max" \| "mean" \| "min", threshold, comparator?: ">" \| ">=" }`, or a function over every segment-by-model assessment | `"any"` |
 
 Every model screens every segment, and the aggregator sees the whole matrix, so a function can express rules such as "two of three models agree". The score comparator defaults to `>`. Without a `seed`, random chunk boundaries are unpredictable; pass one only when you need reproducible chunks. The chunk techniques split on the same code as the [eval workspace](evals/README.md) input strategies of the same `kind`, so evaluate a technique, model, and threshold together before adopting them. A Model Armor PI verdict is binary and scores 1 or 0.
 
 The aggregator decides only prompt injection. A match on any other content filter from any model or segment still blocks. `result.assessment` is the aggregated assessment and `result.assessments` lists each model's result for each segment. Any provider failure fails the whole screen with `ScreeningError`. Chunking multiplies provider calls by the number of segments, and the calls run concurrently.
+
+**Cascade (recommended for long documents).** Screen the full text first, and only if it is not flagged, screen it again in windows. The text is flagged if either pass flags it.
+
+```ts
+technique: {
+  kind: "cascade",
+  first: { kind: "full_text" },
+  then: { kind: "sliding_word_window_preserve_v1", windowWords: 512, strideWords: 384 },
+}
+```
+
+Windows alone can lower a judge's concern for a payload it flags in context ([O46](evals/FINDINGS.md)); after a clean full-text pass they can only add detections. Replayed on 20 model × domain cells, the cascade kept every full-text detection at roughly 1.3–3.8× the work of full text ([O10](evals/FINDINGS.md), [O45](evals/FINDINGS.md)). `first` is any single-pass technique, `then` must segment, and cascades do not nest. Each pass uses the same models and aggregator. `result.cascade.decidedBy` is `"first"` when the first pass flagged and the windows never ran, otherwise `"then"`; `result.cascade.stages` summarizes each pass that ran, and each entry in `result.assessments` carries its `stage`.
+
+### Self-hosted LLM judge
+
+`OpenAICompatibleJudge` screens text with a model on any OpenAI-compatible chat completions endpoint: LM Studio, llama.cpp `llama-server`, vLLM, or OpenRouter. It sends the same score-only prompt and JSON schema the evals measured (`security-eval-score-only-json-v1`, `concern-score-only-json-v1`), so its behavior matches the numbers in [`FINDINGS.md`](evals/FINDINGS.md).
+
+```ts
+import { createSecurity, OpenAICompatibleJudge } from "@elicollinson/solenoid-security";
+
+const security = createSecurity({
+  provider: new OpenAICompatibleJudge({
+    baseUrl: "http://127.0.0.1:1234/v1", // LM Studio; `/chat/completions` is appended
+    model: "qwen3.6-35b-a3b",
+    // apiKey, timeoutMs (120000), temperature (0), maxTokens (4096),
+    // reasoningEffort, threshold (0.5, compared with ">"), responseFormat ("json_schema")
+  }),
+});
+```
+
+| Setting | Default | Notes |
+| --- | --- | --- |
+| `maxTokens` | `4096` | Shared by reasoning and the answer. A 1,024 cap cut verbose reasoning models off before they answered ([Appendix A](evals/FINDINGS.md)). |
+| `reasoningEffort` | unset | Sent as `reasoning_effort`. Prefer builds that actually reason ([O42](evals/FINDINGS.md)). |
+| `threshold`, `comparator` | `0.5`, `">"` | A score above the threshold flags. |
+| `responseFormat` | `"json_schema"` | `"prompt_json"` omits `response_format`, for LM Studio MLX builds that route schema-constrained output to `reasoning_content`. |
+
+The answer must be exactly `{"concernScore": <0..1>}`. A cut-off response (`finish_reason: "length"`), an answer only in the reasoning channel, malformed JSON, or an out-of-range score is never clamped or guessed: it is an **inconclusive** assessment (`label: "INCONCLUSIVE"`, `inconclusive: true`, `inconclusiveReason`, `score: NaN`). An HTTP error or a body that is not a chat completion throws. Each assessment also records `usage` (including `reasoningTokens`), `finishReason`, `responseId` and the answering `model`. Small non-reasoning judges can be steered into the score an injection asks for ([O12](evals/FINDINGS.md)), so evaluate a model before relying on it.
 
 ### Decisions
 
@@ -180,6 +221,20 @@ The aggregator decides only prompt injection. A match on any other content filte
 | `block` | Prompt injection was flagged at another external boundary, or a different content safety filter matched. |
 
 The provider result is included in `assessment` when screening runs. A provider failure throws `ScreeningError`; callers must stop or otherwise contain that source. A failed or incomplete scan is never an `allow` result.
+
+**Inconclusive screens.** An abstaining assessment is neither a flag nor a pass. Each aggregator is evaluated twice, reading every abstention once as flagged (score 1) and once as clean (score 0). If both readings agree, the missing answers could not have changed the outcome and it stands: one conclusive flag under `"any"` still flags, and one conclusive clean segment under `"all"` still clears. If they disagree, the screen is inconclusive. Function aggregators receive both readings (abstentions stay marked `inconclusive: true`) and are assumed monotone. A cascade's windows still run after an inconclusive first pass; a flag from them decides, and a clean result leaves the screen inconclusive.
+
+By default an inconclusive screen throws `ScreeningError` with `code: "inconclusive"` (provider failures use `"provider_failed"`), so code that already contains failures stays safe. `error.result` holds every assessment. Set `onInconclusive: "quarantine"` or `"block"` in `createSecurity` to get that decision instead, at every boundary and for every origin, with `assessment.inconclusive: true`.
+
+```ts
+try {
+  const result = await security.screen({ type: "text", content: page, boundary: "tool_output" });
+} catch (error) {
+  if (error instanceof ScreeningError && error.code === "inconclusive") {
+    // The judge gave no verdict. Retry with a larger maxTokens, try another model, or contain the source.
+  }
+}
+```
 
 The default Model Armor adapter requires a project and a template with its prompt injection filter enabled. It supports an API key, an injected token callback, or Google application default credentials. Pass `getAuthToken` and `fetchFn` to test without a cloud account. Model Armor requests send text to Google Cloud; choose a provider and retention policy appropriate for your data.
 

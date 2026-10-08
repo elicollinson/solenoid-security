@@ -5,11 +5,8 @@
 // plan measured in an eval is the chunk plan that runs here.
 import type { ScreeningAssessment } from "./screen.js";
 
-export type ScreeningTechnique =
-  /** The whole text in one provider call. */
-  | { kind: "full_text" }
-  /** Preserve the original source and append bounded, deterministic decoded views. */
-  | { kind: "decoded_preview_v1" }
+/** A technique that splits text into several segments, each judged separately. */
+export type SegmentingTechnique =
   /**
    * Nonoverlapping chunks of `minWords` to `maxWords` words. Without a `seed`,
    * boundaries are unpredictable, so an attacker cannot place an instruction to
@@ -20,6 +17,41 @@ export type ScreeningTechnique =
   | { kind: "sliding_word_window"; windowWords: number; strideWords: number }
   /** Same word boundaries and terminal windows as sliding_word_window, retaining source whitespace. */
   | { kind: "sliding_word_window_preserve_v1"; windowWords: number; strideWords: number };
+
+/** A technique that is one pass over the text. */
+export type SingleStageTechnique =
+  /** The whole text in one provider call. */
+  | { kind: "full_text" }
+  /** Preserve the original source and append bounded, deterministic decoded views. */
+  | { kind: "decoded_preview_v1" }
+  | SegmentingTechnique;
+
+/**
+ * Two passes: screen with `first`, and only when that comes back unflagged,
+ * screen again with `then`. The text is flagged if either pass flags it.
+ *
+ * Why this shape, and why it is the recommended long-document setup: windows
+ * catch subtle injections that a long full text dilutes (papers especially,
+ * FINDINGS O1–O3), but a window can also LOWER a judge's concern for a payload
+ * it would have flagged in context — in all 9 Studio window losses the full
+ * document scored 0.65–0.95 and every window holding the whole payload scored
+ * 0.20–0.45 (O46). Windows alone therefore trade some detections for others. Run
+ * after a clean full-text pass, they can only add: replayed on 20 model × domain
+ * cells, the full-then-windows cascade kept every full-text detection and
+ * recovered most of what windows add (O10, O45). It costs a second pass only on
+ * text the first pass cleared — about 1.3–3.8× full text in those replays.
+ *
+ * Deliberately narrow: `first` is any single-stage technique, `then` must
+ * segment (a second whole-text pass would ask the same question twice), and
+ * cascades do not nest. Each stage uses the screen's models and aggregator.
+ */
+export interface CascadeTechnique {
+  kind: "cascade";
+  first: SingleStageTechnique;
+  then: SegmentingTechnique;
+}
+
+export type ScreeningTechnique = SingleStageTechnique | CascadeTechnique;
 
 export interface TextSegment {
   index: number;
@@ -32,6 +64,8 @@ export interface TextSegment {
 export interface SegmentAssessment {
   model: string;
   segment: number;
+  /** For a cascade, the pass that produced this assessment. `segment` counts from 0 within each pass. */
+  stage?: "first" | "then";
   startWord?: number;
   endWord?: number;
   assessment: ScreeningAssessment;
@@ -42,6 +76,16 @@ export interface SegmentAssessment {
  * flag. `"any"` and `"all"` read each assessment's `flagged`; `"score"` reduces
  * the provider scores and compares them with a threshold. A function receives
  * the full segment-by-model matrix, e.g. to require two of three models.
+ *
+ * Inconclusive assessments (a judge that gave no usable answer) are neither
+ * flags nor passes. Every aggregator is evaluated twice, once with each
+ * inconclusive assessment read as a flag (score 1) and once as clean (score
+ * 0). If both readings agree, the missing answers could not have changed the
+ * outcome and it stands: one conclusive flag under `"any"` flags, one
+ * conclusive clean under `"all"` clears. If they disagree, the outcome is
+ * inconclusive. A function aggregator sees the substituted assessments, still
+ * marked `inconclusive: true`; this reading assumes it is monotone (one more
+ * flag never clears a text), which every sensible vote is.
  */
 export type ScreeningAggregator =
   | "any"
@@ -54,8 +98,16 @@ export function seededRandom(seed: number): () => number {
   return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 0x100000000; };
 }
 
+const SEGMENTING_KINDS = new Set(["random_word_chunks", "sliding_word_window", "sliding_word_window_preserve_v1"]);
+
 export function validateTechnique(technique: ScreeningTechnique): void {
-  if (technique.kind === "random_word_chunks") {
+  if (technique?.kind === "cascade") {
+    const { first, then } = technique as { first?: { kind?: unknown }; then?: { kind?: unknown } };
+    if (first?.kind === "cascade" || then?.kind === "cascade") throw new Error("Invalid cascade: cascades do not nest");
+    if (!SEGMENTING_KINDS.has(String(then?.kind))) throw new Error("Invalid cascade: `then` must be a segmenting technique");
+    validateTechnique(first as ScreeningTechnique);
+    validateTechnique(then as ScreeningTechnique);
+  } else if (technique?.kind === "random_word_chunks") {
     if (!Number.isInteger(technique.minWords) || !Number.isInteger(technique.maxWords) || technique.minWords < 1 || technique.maxWords < technique.minWords) throw new Error("Invalid chunk bounds");
     if (technique.seed !== undefined && !Number.isInteger(technique.seed)) throw new Error("Non-integer segmentation seed");
   } else if (technique.kind === "sliding_word_window" || technique.kind === "sliding_word_window_preserve_v1") {
@@ -76,6 +128,7 @@ export function validateAggregator(aggregator: ScreeningAggregator): void {
 /** Splits text into the segments a technique screens. Whitespace-only text has none. */
 export function segmentText(text: string, technique: ScreeningTechnique): TextSegment[] {
   validateTechnique(technique);
+  if (technique.kind === "cascade") throw new Error("A cascade is staged; segment its `first` and `then` techniques separately");
   if (!text.trim()) return [];
   if (technique.kind === "full_text") return [{ index: 0, text }];
   if (technique.kind === "decoded_preview_v1") return [{ index: 0, text: decodedPreviewV1(text) }];
@@ -141,18 +194,52 @@ export function decodedPreviewV1(text: string): string {
   return views.length ? text + "\n\n[Decoded text previews]\n" + views.map((view, i) => `[View ${i + 1}]\n${view}`).join("\n") : text;
 }
 
-/** Applies an aggregator, returning the case flag and the score that summarizes it. */
-export function aggregate(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): { flagged: boolean; score: number } {
+export function isInconclusive(assessment: ScreeningAssessment): boolean {
+  return assessment.inconclusive === true;
+}
+
+export interface AggregateVerdict {
+  flagged: boolean;
+  /** True when the outcome depends on assessments that returned no verdict. `flagged` is then false. */
+  inconclusive: boolean;
+  /** Summarizes the conclusive assessments only; NaN when there were none. */
+  score: number;
+}
+
+/** The summary score: the max for flag votes, the configured reduction for a score rule. */
+function summarize(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): number {
   const scores = results.map(({ assessment }) => assessment.score);
   const max = Math.max(0, ...scores);
-  if (aggregator === "any") return { flagged: results.some(({ assessment }) => assessment.flagged), score: max };
-  if (aggregator === "all") return { flagged: results.length > 0 && results.every(({ assessment }) => assessment.flagged), score: max };
-  if (typeof aggregator === "function") return { flagged: aggregator(results) === true, score: max };
+  if (aggregator === "any" || aggregator === "all" || typeof aggregator === "function") return max;
   if (scores.some((value) => typeof value !== "number" || !Number.isFinite(value) || value < 0 || value > 1)) {
     throw new Error("Score aggregation requires provider scores from 0 to 1");
   }
-  const score = aggregator.reduce === "max" ? max
+  return aggregator.reduce === "max" ? max
     : aggregator.reduce === "min" ? Math.min(...scores)
       : scores.reduce((sum, value) => sum + value, 0) / scores.length;
-  return { flagged: aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold, score };
+}
+
+function vote(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): boolean {
+  if (aggregator === "any") return results.some(({ assessment }) => assessment.flagged);
+  if (aggregator === "all") return results.length > 0 && results.every(({ assessment }) => assessment.flagged);
+  if (typeof aggregator === "function") return aggregator(results) === true;
+  const score = summarize(results, aggregator);
+  return aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold;
+}
+
+/**
+ * Applies an aggregator, returning the case flag and the score that summarizes
+ * it. Inconclusive assessments are resolved by the two-reading rule documented
+ * on `ScreeningAggregator`.
+ */
+export function aggregate(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): AggregateVerdict {
+  const conclusive = results.filter(({ assessment }) => !isInconclusive(assessment));
+  const score = conclusive.length || !results.length ? summarize(conclusive, aggregator) : Number.NaN;
+  if (conclusive.length === results.length) return { flagged: vote(results, aggregator), inconclusive: false, score };
+  const assume = (flagged: boolean) => results.map((result) => isInconclusive(result.assessment)
+    ? { ...result, assessment: { ...result.assessment, flagged, score: flagged ? 1 : 0 } }
+    : result);
+  const worst = vote(assume(true), aggregator);
+  const best = vote(assume(false), aggregator);
+  return worst === best ? { flagged: worst, inconclusive: false, score } : { flagged: false, inconclusive: true, score };
 }

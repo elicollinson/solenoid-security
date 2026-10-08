@@ -35,8 +35,8 @@ abliterated-model, prompt and technique comparisons.
 |---|---|---|
 | Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.906; 12 abstentions in 7,326) |
 | Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.923; 9 abstentions) |
-| Qwen3.6 35B-A3B | MoE | ▶ Running |
-| Laguna XS 2.1 | MoE (coding) | Queued |
+| Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.901; 3 abstentions) |
+| Laguna XS 2.1 | MoE (coding) | ▶ Running |
 | Qwen3.8 27B | Dense | Queued |
 | Qwen3.6 27B | Dense | Queued |
 | Muse Glimmer | Dense | Queued |

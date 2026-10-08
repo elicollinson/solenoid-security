@@ -26,9 +26,32 @@ reported separately and never counted as misses. Labels mark injection *attempts
 baseline of eight Q8 models across all 21 datasets on one machine is running; see the
 [research log](evals/reports/research-log-2026-09-29.md).
 
-## Design rationale
+## Design
 
-Whether text is an injection is a question about **provenance**, not wording. Two files make that argument in code:
+**Goal:** a short list of self-hostable screening recommendations that substantially reduce prompt-injection risk
+and malicious agent actions, behind one simple interface. Callers make one `screen` call at each trust boundary and
+gate writes with `authorizeTool`. What runs behind that call (which technique, which models, how verdicts combine)
+comes from a layered, overridable configuration whose defaults are set by measured performance.
+
+**Configuration layers.** App-wide defaults are set once in `createSecurity`, and any setting can be overridden per
+call (see [Screening configuration](#screening-configuration)). That part exists today. The planned layer is
+**recommendation profiles**: evidence-backed defaults per content type (long documents, code, email, web pages, tool
+output, encoded text, user prompts), per common self-hostable model, and per technique, each traceable to an
+observation in [`FINDINGS.md`](evals/FINDINGS.md).
+
+**What the evidence suggests so far** (provisional until the eight-model baseline finishes):
+
+| Content | Current recommendation | Why |
+|---|---|---|
+| Long documents and code | Full text with a reasoning detector; add a windows pass only when the full-text verdict is negative | Windows lift subtle-injection recall on papers, but can lower concern for a payload. The full-then-windows cascade never lost a full-text detection ([O1](evals/FINDINGS.md), [O10](evals/FINDINGS.md), [O46](evals/FINDINGS.md)) |
+| Email, résumés, web pages | Full text | Windows were neutral or harmful ([O4](evals/FINDINGS.md), [O9](evals/FINDINGS.md)) |
+| Encoded or obfuscated text | Full text plus bounded decoded previews | Up to 92% fewer encoded-text false alarms with recall largely kept ([O23](evals/FINDINGS.md)) |
+| Agent tool output | Full text with an LLM detector rather than a managed filter alone | LLM detectors ≈97% vs 47% for Model Armor ([O35](evals/FINDINGS.md)) |
+| Any content, small or fast judges | Avoid trusting a generated score from small non-reasoning models | They can be steered into the requested score ([O12](evals/FINDINGS.md)) |
+| Runtime | Prefer builds that actually run reasoning (GGUF over MLX here), and record abstentions | Build format moved detection more than architecture ([O42](evals/FINDINGS.md), [Appendix A](evals/FINDINGS.md)) |
+
+**Provenance comes first.** Whether text is an injection is a question about where it came from, not its wording. Two
+files make that argument in code:
 
 - **[`src/trust.ts`](src/trust.ts): origin is declared by the caller, never inferred.** Text is `operator`, `agent` or
   `external`, and anything unlabeled defaults to `external`. Inferring origin from position ("the first message is the
@@ -42,9 +65,8 @@ Whether text is an injection is a question about **provenance**, not wording. Tw
   email) is handled without trusting a whole tool. The safety rule: register only literals from the source, never
   interpolated text.
 
-The evaluations inform the screening defaults. The library's chunking techniques run on the same code as the eval input
-strategies ([`src/techniques.ts`](src/techniques.ts)). Because chunking helps only some content types and can lower
-concern, the default is full text, with chunking as an explicit per-call choice.
+The library's chunking techniques run on the same code as the eval input strategies
+([`src/techniques.ts`](src/techniques.ts)), so a recommendation measured in the lab is exactly what ships.
 
 ## Where to look
 

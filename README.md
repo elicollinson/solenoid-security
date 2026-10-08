@@ -22,9 +22,29 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 | **Rankings flip between datasets, so small checks mislead.** | Qwen3.8 27B: 18/18 on a paper qualification tranche, 18/75 on BIPIA. | Strong | [O30](evals/FINDINGS.md) |
 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
-reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. A full-text
-baseline of eight Q8 models across all 21 datasets on one machine is running; see the
-[research log](evals/reports/research-log-2026-09-29.md).
+reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The full-text baseline now running is described [below](#now-running-as-of-2026-10-07).
+
+## Now running (as of 2026-10-07)
+
+**Mac Studio Q8 full-text baseline.** Eight self-hostable models, each run on all 21 datasets (7,326 cases per model)
+under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0, reasoning on with a 4,096-token
+budget, and one request at a time on a single machine. This becomes the reference point for later quantization,
+abliterated-model, prompt and technique comparisons.
+
+| Model | Type | Status |
+|---|---|---|
+| Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.906; 12 abstentions in 7,326) |
+| Gemma 4 26B-A4B | MoE | ▶ Running |
+| Qwen3.6 35B-A3B | MoE | Queued |
+| Laguna XS 2.1 | MoE (coding) | Queued |
+| Qwen3.8 27B | Dense | Queued |
+| Qwen3.6 27B | Dense | Queued |
+| Muse Glimmer | Dense | Queued |
+| Gemma 4 31B-it | Dense | Queued |
+
+Projected finish is about 2026-10-13. The budget was raised from 1,024 tokens after the first attempt cut off verbose
+reasoning models before they answered ([Appendix A](evals/FINDINGS.md)). Progress is logged in the
+[research log](evals/reports/research-log-2026-09-29.md). Jev and Model Armor results remain hosted references.
 
 ## Design
 

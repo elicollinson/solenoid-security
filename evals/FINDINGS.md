@@ -739,6 +739,18 @@ loss, the full document flags the attack but every window holding the whole payl
   abliterated build, and the excluded Qwen3.6 Fable Fusion (built on a heretic base) vs its base. Run the full-input
   cohorts plus the counterfactual probe. Measure detection, false alarms, recognition vs concern in reasoning text, and
   steering. Pairs with F1, since several abliterated releases are also distills.
+- **F8 — Does KV-cache quantization change detection?** Separate from weight quantization, inference servers can
+  quantize the attention key/value cache to save memory and speed up long contexts: llama.cpp `--cache-type-k` /
+  `--cache-type-v` (f16 default, q8_0, q4_0) and LM Studio's experimental K/V cache quantization for GGUF. Detection
+  inputs here are long (paper prompts reach 7–13k tokens), and KV-cache error compounds with context length, so it
+  could matter most where detection is already fragile: subtle payloads deep in long documents and position effects
+  (O15, O19). It should matter least for short windows, which makes it a direct interaction with chunking (O1, O46).
+  Design: hold weights at the Studio Q8 baseline and vary only the cache type (f16 vs q8_0 vs q4_0, K and V together,
+  then K-only) on the long-document cohorts, paper positions and the score-steering probe, plus a short-input control
+  (NotInject, BIPIA). Compare case-level decision flips against the f16 baseline, score shifts, abstentions, reasoning
+  length, and memory and speed. Check first that the current runs pin the cache type, and record it in run provenance,
+  so the baseline's setting is known. Literature not yet searched for safety or detection effects; KV-quantization
+  papers mostly report perplexity and long-context benchmarks.
 
 ---
 

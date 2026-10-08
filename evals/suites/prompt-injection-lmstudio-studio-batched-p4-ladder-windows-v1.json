@@ -1,0 +1,496 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-lmstudio-studio-batched-p4-ladder-windows-v1",
+  "tests": [
+    {
+      "id": "bipia-email-mixed",
+      "datasetId": "bipia-email-paired-v1",
+      "datasetRevision": "sha256:386e8275a8bf5b805e0f74f0700a254e4ec219ec4f533f516263139e6ad9365a",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-paper",
+      "datasetId": "longpibench-paper-default-v1",
+      "datasetRevision": "sha256:a894883dc318735a99ce98012592c8e2d95432a411ce20ef419c9d19e6e467af",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-code",
+      "datasetId": "longpibench-code-default-v1",
+      "datasetRevision": "sha256:dad890219b8481413fbc7fa2e61bbec4c36d2459620ad05f448c2386833797b1",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "paper-score-counterfactual",
+      "datasetId": "longpibench-paper-score-counterfactual-v1",
+      "datasetRevision": "sha256:4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-email",
+      "datasetId": "longpibench-email-default-v1",
+      "datasetRevision": "sha256:15a0827d9e321c924af35b69d6c7ed11328a3848f19257f24b9fdc22f7c590cb",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    }
+  ],
+  "engines": {
+    "gemma26-q8": {
+      "id": "studio-gemma26-q8-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-gemma26-q8-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-26b-a4b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-26b-a4b@lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 28054761043,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "gemma26-q4km": {
+      "id": "studio-gemma26-q4km-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-gemma26-q4km-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-26b-a4b@q4_k_m",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-26b-a4b@lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q4_K_M.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 17990919923,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "gemma26-q6": {
+      "id": "studio-gemma26-q6-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-gemma26-q6-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-26b-a4b@q6_k",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-26b-a4b@lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q6_K.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q6_K",
+        "sizeBytes": 23833301075,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "ornith-q8": {
+      "id": "studio-ornith-q8-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-ornith-q8-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 38704971520,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "ornith-q4km": {
+      "id": "studio-ornith-q4km-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-ornith-q4km-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b@q4_k_m",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q4_K_M.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 22616285280,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "ornith-q6": {
+      "id": "studio-ornith-q6-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-ornith-q6-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b@q6_k",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q6_K.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q6_K",
+        "sizeBytes": 30111553632,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "qwen38-q8gguf": {
+      "id": "studio-qwen38-q8gguf-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-qwen38-q8gguf-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "qwen/qwen3.8-27b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:qwen/qwen3.8-27b@lmstudio-community/Qwen3.8-27B-GGUF/Qwen3.8-27B-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 29978410384,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "muse-q8": {
+      "id": "studio-muse-q8-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-muse-q8-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "muse-glimmer-30b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:unsloth/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 31013286912,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "muse-q6kxl": {
+      "id": "studio-muse-q6kxl-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-muse-q6kxl-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "muse-glimmer-30b@q6_k_xl",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:unsloth/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-UD-Q6_K_XL.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q6_K_XL",
+        "sizeBytes": 27665691904,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "gemma31-q8": {
+      "id": "studio-gemma31-q8-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-gemma31-q8-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-31b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-31b@lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 33836475099,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "gemma31-q4km": {
+      "id": "studio-gemma31-q4km-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-gemma31-q4km-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-31b@q4_k_m",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-31b@lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q4_K_M.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 19887864731,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    },
+    "gemma31-q6": {
+      "id": "studio-gemma31-q6-lmstudio-score-v1-thinking1024-native-v0-p4-ctx262144-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-gemma31-q6-thinking1024-p4-ctx262144",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-31b@q6_k",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-31b@lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q6_K.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q6_K",
+        "sizeBytes": 26402284251,
+        "contextLength": 262144,
+        "parallel": 4,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    }
+  },
+  "inputStrategies": {
+    "preserve512": {
+      "id": "sliding-preserve-words-512-stride384-v1",
+      "kind": "sliding_word_window_preserve_v1",
+      "windowWords": 512,
+      "strideWords": 384,
+      "turnSelection": "last_external"
+    }
+  },
+  "decisionRules": {
+    "score05": {
+      "id": "max-score-gt-05-v1",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "comparator": ">",
+      "threshold": 0.5
+    }
+  },
+  "conditions": [
+    {
+      "id": "studio-gemma26-q8-thinking1024-p4-ladder-preserve512",
+      "engine": "gemma26-q8",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-gemma26-q4km-thinking1024-p4-ladder-preserve512",
+      "engine": "gemma26-q4km",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-gemma26-q6-thinking1024-p4-ladder-preserve512",
+      "engine": "gemma26-q6",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-ornith-q8-thinking1024-p4-ladder-preserve512",
+      "engine": "ornith-q8",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-ornith-q4km-thinking1024-p4-ladder-preserve512",
+      "engine": "ornith-q4km",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-ornith-q6-thinking1024-p4-ladder-preserve512",
+      "engine": "ornith-q6",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-qwen38-q8gguf-thinking1024-p4-ladder-preserve512",
+      "engine": "qwen38-q8gguf",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-muse-q8-thinking1024-p4-ladder-preserve512",
+      "engine": "muse-q8",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-muse-q6kxl-thinking1024-p4-ladder-preserve512",
+      "engine": "muse-q6kxl",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-gemma31-q8-thinking1024-p4-ladder-preserve512",
+      "engine": "gemma31-q8",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-gemma31-q4km-thinking1024-p4-ladder-preserve512",
+      "engine": "gemma31-q4km",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "studio-gemma31-q6-thinking1024-p4-ladder-preserve512",
+      "engine": "gemma31-q6",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    }
+  ]
+}

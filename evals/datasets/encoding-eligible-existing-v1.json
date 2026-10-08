@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "encoding-eligible-existing-v1",
+  "revision": "sha256:dfee4b4001ee5335261ee7795797401ef51b1d51cb71a08ce354109ca4bd8d3a",
+  "source": {
+    "path": "evals/private/sources/encoding-eligible-existing-v1.jsonl",
+    "sha256": "dfee4b4001ee5335261ee7795797401ef51b1d51cb71a08ce354109ca4bd8d3a",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 229,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "sourceDatasets": [
+      "pids-obfuscated-v1",
+      "pids-hard-benign-public-v1",
+      "notinject-benign-339"
+    ],
+    "license": "Inherited public source terms; research/noncommercial restrictions retained. No withheld LMSYS rows.",
+    "selection": "Deterministic byte-level transform eligibility, never model scores. Original PIDS/NotInject full-text detections reused for parent comparison, not purchased again.",
+    "labelMeaning": "Original source labels preserved through reversible encoding; attempts are not compromise. Encoded benign controls and source families correlated."
+  }
+}

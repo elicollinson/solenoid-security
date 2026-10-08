@@ -1,0 +1,334 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-lmstudio-available-panel-thinking1024-v1",
+  "tests": [
+    {
+      "id": "benign-false-positives",
+      "datasetId": "notinject-benign-339",
+      "datasetRevision": "sha256:f8d28adfb5895e33a6e28270fe13c21c3739b5a6fb02f565bf71c4756d9cca61",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "negative",
+      "metrics": [
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "bipia-email-mixed",
+      "datasetId": "bipia-email-paired-v1",
+      "datasetRevision": "sha256:386e8275a8bf5b805e0f74f0700a254e4ec219ec4f533f516263139e6ad9365a",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-paper",
+      "datasetId": "longpibench-paper-default-v1",
+      "datasetRevision": "sha256:a894883dc318735a99ce98012592c8e2d95432a411ce20ef419c9d19e6e467af",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-code",
+      "datasetId": "longpibench-code-default-v1",
+      "datasetRevision": "sha256:dad890219b8481413fbc7fa2e61bbec4c36d2459620ad05f448c2386833797b1",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "paper-score-counterfactual",
+      "datasetId": "longpibench-paper-score-counterfactual-v1",
+      "datasetRevision": "sha256:4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    }
+  ],
+  "engines": {
+    "gemma4-31b-mlx8-thinking1024": {
+      "id": "gemma4-31b-mlx8-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-31b-mlx8-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "gemma-4-31b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:mlx-community/gemma-4-31b-8bit",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "safetensors",
+        "quantization": "8bit",
+        "sizeBytes": 33795503367,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "granite42-30b-mlx8-thinking1024": {
+      "id": "granite42-30b-mlx8-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-granite42-30b-mlx8-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "granite-4.2-30b-mlx",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/granite-4.2-30b-MLX-8bit",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "safetensors",
+        "quantization": "8bit",
+        "sizeBytes": 31114533844,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "muse-glimmer-q4-thinking1024": {
+      "id": "muse-glimmer-q4-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-muse-glimmer-q4-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "meta/muse-glimmer",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:meta/muse-glimmer",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 18157122004,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "gemma4-26b-a4b-mlx8-thinking1024": {
+      "id": "gemma4-26b-a4b-mlx8-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-26b-a4b-mlx8-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "gemma-4-26b-a4b-it-mlx",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "safetensors",
+        "quantization": "8bit",
+        "sizeBytes": 27986060505,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "ornith15-35b-a3b-q8-thinking1024": {
+      "id": "ornith15-35b-a3b-q8-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-ornith15-35b-a3b-q8-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 38704971520,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    }
+  },
+  "inputStrategies": {
+    "full": {
+      "id": "full-last-external-v1",
+      "kind": "full_text",
+      "turnSelection": "last_external"
+    },
+    "windows512": {
+      "id": "sliding-words-512-stride384-v1",
+      "kind": "sliding_word_window",
+      "windowWords": 512,
+      "strideWords": 384,
+      "turnSelection": "last_external"
+    },
+    "preserve512": {
+      "id": "sliding-preserve-words-512-stride384-v1",
+      "kind": "sliding_word_window_preserve_v1",
+      "windowWords": 512,
+      "strideWords": 384,
+      "turnSelection": "last_external"
+    }
+  },
+  "decisionRules": {
+    "score05": {
+      "id": "max-score-gt-05-v1",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "comparator": ">",
+      "threshold": 0.5
+    }
+  },
+  "conditions": [
+    {
+      "id": "gemma4-31b-mlx8-thinking1024-full",
+      "engine": "gemma4-31b-mlx8-thinking1024",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-31b-mlx8-thinking1024-windows512",
+      "engine": "gemma4-31b-mlx8-thinking1024",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-31b-mlx8-thinking1024-preserve512",
+      "engine": "gemma4-31b-mlx8-thinking1024",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "granite42-30b-mlx8-thinking1024-full",
+      "engine": "granite42-30b-mlx8-thinking1024",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "granite42-30b-mlx8-thinking1024-windows512",
+      "engine": "granite42-30b-mlx8-thinking1024",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "granite42-30b-mlx8-thinking1024-preserve512",
+      "engine": "granite42-30b-mlx8-thinking1024",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "muse-glimmer-q4-thinking1024-full",
+      "engine": "muse-glimmer-q4-thinking1024",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "muse-glimmer-q4-thinking1024-windows512",
+      "engine": "muse-glimmer-q4-thinking1024",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "muse-glimmer-q4-thinking1024-preserve512",
+      "engine": "muse-glimmer-q4-thinking1024",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-26b-a4b-mlx8-thinking1024-full",
+      "engine": "gemma4-26b-a4b-mlx8-thinking1024",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-26b-a4b-mlx8-thinking1024-windows512",
+      "engine": "gemma4-26b-a4b-mlx8-thinking1024",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-26b-a4b-mlx8-thinking1024-preserve512",
+      "engine": "gemma4-26b-a4b-mlx8-thinking1024",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "ornith15-35b-a3b-q8-thinking1024-full",
+      "engine": "ornith15-35b-a3b-q8-thinking1024",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "ornith15-35b-a3b-q8-thinking1024-windows512",
+      "engine": "ornith15-35b-a3b-q8-thinking1024",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "ornith15-35b-a3b-q8-thinking1024-preserve512",
+      "engine": "ornith15-35b-a3b-q8-thinking1024",
+      "inputStrategy": "preserve512",
+      "decisionRule": "score05",
+      "repeat": 1
+    }
+  ]
+}

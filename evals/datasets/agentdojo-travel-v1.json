@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "agentdojo-travel-v1",
+  "revision": "sha256:0de1eebe5a0efe605cfece925fbcf5ab87a02eaf556b1be04f98320fcd9361da",
+  "source": {
+    "path": "evals/datasets/agentdojo-travel-v1.jsonl",
+    "sha256": "0de1eebe5a0efe605cfece925fbcf5ab87a02eaf556b1be04f98320fcd9361da",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 21,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": ["injection"],
+  "negativeValues": ["benign"],
+  "provenance": {
+    "repository": "https://github.com/ethz-spylab/agentdojo",
+    "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+    "sourceFiles": {
+      "src/agentdojo/default_suites/v1/travel/user_tasks.py": "sha256:757f0e28208f92c2082e016469654524cb1120ec10928ce229da15fe32f6d3ee",
+      "src/agentdojo/default_suites/v1/travel/injection_tasks.py": "sha256:9252be834b0ae0e28fe06744e052987d71d8ad3666b8d0b1f65f2875f998fca8",
+      "src/agentdojo/data/suites/travel/injection_vectors.yaml": "sha256:a6ab848b39d862439e7b4844a617e578294de93cd0176c1851184dd901edb51c",
+      "src/agentdojo/attacks/baseline_attacks.py": "sha256:0e3f3cec2173524989d67bd3d934d032774ad3fc5995969c9565613efaa21c6d"
+    },
+    "license": "MIT",
+    "selection": "Three travel user tasks, three attacker goals, two published fixed attack templates, plus three paired clean vector defaults.",
+    "labelMeaning": "Template-generated attempted redirection versus clean review text. These are text-only derived cases; execution success and legitimate task completion require AgentDojo's original harness."
+  }
+}

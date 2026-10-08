@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-lmstudio-score-counterfactual-original-v1",
+  "tests": [
+    {
+      "id": "paper-score-counterfactual",
+      "datasetId": "longpibench-paper-score-counterfactual-v1",
+      "datasetRevision": "sha256:4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    }
+  ],
+  "engines": {
+    "gemma4-e2b-q4": {
+      "id": "gemma4-e2b-q4-lmstudio-score-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-e2b-q4-v1",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "reasoning_effort": "none"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-e2b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:google/gemma-4-e2b",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 4414806160,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    }
+  },
+  "inputStrategies": {
+    "full": {
+      "id": "full-last-external-v1",
+      "kind": "full_text",
+      "turnSelection": "last_external"
+    },
+    "windows512": {
+      "id": "sliding-words-512-stride384-v1",
+      "kind": "sliding_word_window",
+      "windowWords": 512,
+      "strideWords": 384,
+      "turnSelection": "last_external"
+    }
+  },
+  "decisionRules": {
+    "score05": {
+      "id": "max-score-gt-05-v1",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "comparator": ">",
+      "threshold": 0.5
+    }
+  },
+  "conditions": [
+    {
+      "id": "gemma4-e2b-q4-full",
+      "engine": "gemma4-e2b-q4",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-e2b-q4-windows512",
+      "engine": "gemma4-e2b-q4",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    }
+  ]
+}

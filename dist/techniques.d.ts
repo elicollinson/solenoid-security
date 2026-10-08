@@ -4,6 +4,10 @@ export type ScreeningTechnique =
 {
     kind: "full_text";
 }
+/** Preserve the original source and append bounded, deterministic decoded views. */
+ | {
+    kind: "decoded_preview_v1";
+}
 /**
  * Nonoverlapping chunks of `minWords` to `maxWords` words. Without a `seed`,
  * boundaries are unpredictable, so an attacker cannot place an instruction to
@@ -18,6 +22,12 @@ export type ScreeningTechnique =
 /** Windows of `windowWords` words starting every `strideWords` words. A stride longer than the window would skip text, so it is rejected. */
  | {
     kind: "sliding_word_window";
+    windowWords: number;
+    strideWords: number;
+}
+/** Same word boundaries and terminal windows as sliding_word_window, retaining source whitespace. */
+ | {
+    kind: "sliding_word_window_preserve_v1";
     windowWords: number;
     strideWords: number;
 };
@@ -52,6 +62,12 @@ export declare function validateTechnique(technique: ScreeningTechnique): void;
 export declare function validateAggregator(aggregator: ScreeningAggregator): void;
 /** Splits text into the segments a technique screens. Whitespace-only text has none. */
 export declare function segmentText(text: string, technique: ScreeningTechnique): TextSegment[];
+/** Cheap local preprocessing, not an execution engine. No recursive decoding.
+ * Keep original evidence. Unicode NFKC/removal of invisible format characters,
+ * strict UTF-8 Base64 blocks, and escaped Unicode/percent text receive previews.
+ * At most8 unique views,8k characters each,32k characters total are appended.
+ */
+export declare function decodedPreviewV1(text: string): string;
 /** Applies an aggregator, returning the case flag and the score that summarizes it. */
 export declare function aggregate(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): {
     flagged: boolean;

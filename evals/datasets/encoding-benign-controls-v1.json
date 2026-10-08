@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "encoding-benign-controls-v1",
+  "revision": "sha256:59d1f946156a3da602f068b4c3fecacdf2b78f12376228e7c0c099ce51baa1d5",
+  "source": {
+    "path": "evals/private/sources/encoding-benign-controls-v1.jsonl",
+    "sha256": "59d1f946156a3da602f068b4c3fecacdf2b78f12376228e7c0c099ce51baa1d5",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 969,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "sourceDatasets": [
+      "pids-obfuscated-v1",
+      "pids-hard-benign-public-v1",
+      "notinject-benign-339"
+    ],
+    "license": "Inherited public source terms; research/noncommercial restrictions retained. No withheld LMSYS rows.",
+    "selection": "208 external PIDS benign sources and339 NotInject sources considered for Base64 and letter-wise Unicode escapes; include only transformations yielding a nonidentical decoder preview (fixed size/text-validity rules). Exclusion counts recorded. Synthetic probes, not naturally observed encodings.",
+    "labelMeaning": "Original source labels preserved through reversible encoding; attempts are not compromise. Encoded benign controls and source families correlated.",
+    "excludedControls": {
+      "notinject-benign-339/base64": 79,
+      "notinject-benign-339/unicode_escape": 46
+    }
+  }
+}

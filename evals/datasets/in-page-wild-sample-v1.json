@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "in-page-wild-sample-v1",
+  "revision": "sha256:ddb2aea2f235040bf06101b4da12c1f6cd2e5aed115a7431b3929a4625d0ff1e",
+  "source": {
+    "path": "evals/datasets/in-page-wild-sample-v1.jsonl",
+    "sha256": "ddb2aea2f235040bf06101b4da12c1f6cd2e5aed115a7431b3929a4625d0ff1e",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 480,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": ["injection"],
+  "negativeValues": ["benign"],
+  "provenance": {
+    "repository": "https://github.com/SoheilKhodayari/in_page_prompt_injection_pub",
+    "commit": "0a04d1762cf60957f954f16a6cb9525ab32d6bca",
+    "sourceFiles": {
+      "data/dataset.csv": "sha256:6de535016f4515a489c625813604dfdad4957470d319914bc2d2b10f647aedcb",
+      "data/dataset_tp.csv": "sha256:aa4cae8559f6b6b7a3a35075a12958933c7f194b3801fe80b32f8c54b28d43c7"
+    },
+    "license": "CC BY 4.0 (released sanitized dataset)",
+    "selection": "240 validated fp=0 rows, one per lexical cluster and host; 240 reviewed fp=1 rows, one per host, prioritized for attack-adjacent context; unclear fp=? excluded",
+    "labelMeaning": "Researcher-reviewed presence or absence of an in-page prompt-injection attempt, not agent compliance."
+  }
+}

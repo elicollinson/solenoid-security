@@ -47,15 +47,38 @@ export interface EvalTest {
   metrics: readonly ("detection_rate" | "false_positive_rate" | "confusion_matrix")[];
 }
 
-export type EngineSpec =
+/** Local relay only. Device/artifact identity is checked through lms before and after inference. */
+export interface LMStudioConfig {
+  baseUrl: string;
+  modelKey: string;
+  indexedModelIdentifier: string;
+  deviceIdentifier: string;
+  format: "gguf" | "safetensors";
+  quantization: string;
+  sizeBytes: number;
+  contextLength: number;
+  parallel: number;
+  timeoutMs: number;
+  /** Omitted: OpenAI-compatible /v1 (historical identities). "native-v0": /api/v0 with server stats and model_info. */
+  endpoint?: "native-v0";
+}
+
+export type EngineSpec = (
   | { id: string; kind: "jev"; model: string; provider: string; questionId: string; questionSha256: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: string; parameters?: Readonly<Record<string, AnnotationValue>> }
-  | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> };
+  | { id: string; kind: "llm_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-rationale-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "llm_score_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-only-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "task_context_llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "task-context-score-rationale-v1" | "task-context-score-rationale-neutral-v2"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> }
+) & { lmStudio?: LMStudioConfig };
 
 export type InputStrategy =
-  | { id: string; kind: "full_text"; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "decoded_preview_v1"; turnSelection: "all" | "last_external" | "all_external" }
+  | { id: string; kind: "full_text"; turnSelection: "all" | "last_external" | "all_external" }
   | { id: string; kind: "random_word_chunks"; maxWords: number; minWords: number; seed: number; seedDerivation: "fixed" | "xor_case_ordinal_v1" | "legacy_notinject_v1"; turnSelection: "all" | "last_external" }
-  | { id: string; kind: "sliding_word_window"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" };
+  | { id: string; kind: "sliding_word_window"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "sliding_word_window_preserve_v1"; windowWords: number; strideWords: number; turnSelection: "all" | "last_external" }
+  | { id: string; kind: "source_spans"; windowWords: number; strideWords: number; turnSelection: "all_external" };
 
 export type DecisionRule =
   | { id: string; kind: "score_threshold"; aggregation: "max" | "mean" | "min"; comparator: ">" | ">="; threshold: number }
@@ -95,6 +118,8 @@ export interface InferenceObservation {
   segmentIndex: number;
   sourceTurnIds: readonly string[];
   inputSha256: string;
+  /** For task-context engines, hashes the trusted task and source provenance sent with the segment. */
+  contextSha256?: string;
   engineId: string;
   engineKind: EngineSpec["kind"];
   engineConfigSha256: string;
@@ -112,6 +137,8 @@ export interface InferenceObservation {
   startedAt: string;
   durationMs: number | null;
   usage: { inputTokens: number | null; outputTokens: number | null; costUsd: number | null };
+  /** LM Studio native-v0 only: server-measured stats and client HTTP wall time (LM Link overhead = wall - TTFT - generation). */
+  speed?: { ttftS: number; tokensPerSecond: number; generationTimeS: number; stopReason: string; clientWallMs: number };
   status: "scored" | "error";
   errorKind?: string;
   sourceArtifact?: string;

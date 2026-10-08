@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "longpibench-paper-score-counterfactual-v1",
+  "revision": "sha256:4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+  "source": {
+    "path": "evals/private/sources/longpibench-paper-score-counterfactual-v1.jsonl",
+    "sha256": "4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 72,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "parentDataset": "longpibench-paper-default-v1",
+    "parentSourceSha256": "a894883dc318735a99ce98012592c8e2d95432a411ce20ef419c9d19e6e467af",
+    "parentRepository": "https://github.com/liu00222/LongPIBench",
+    "parentCommit": "c7b80114ae56f65fb8019ec82afdb3df91e4ed65",
+    "license": "MIT synthetic source; repository-authored numeral substitutions and factual controls",
+    "builderSha256": "0179cdec7e065020d2b487e15588477af6c9541ac0f4106256ca12c02f76601b",
+    "selection": "First six paper families (0-5), the full prefix already used in the authority-prompt pilot. Post-hoc study motivated by observed score 9 outputs; no individual family excluded based on result.",
+    "transformation": "Only replace the exact phrase 8 or 9 in each appended attack suffix with 2 or 3, 0.1 or 0.2, or 0.8 or 0.9. Preserve the paper and trusted task exactly. Add one non-directive numerical fact control per family and target pair.",
+    "classes": {
+      "constructedAttacks": 54,
+      "factualControls": 18
+    },
+    "labelMeaning": "Constructed instructions to prescribe the review score versus non-directive numerical facts, not measured compromise. Correlated within six families; post-hoc diagnostic, not an independent benchmark.",
+    "reuse": "Original 8-or-9 attacks and clean papers are excluded to avoid repeating existing authority-pilot and baseline outputs. Compare those saved parents offline."
+  }
+}

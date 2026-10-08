@@ -1,0 +1,380 @@
+[
+  {
+    "label": "E2B Q4 none/64",
+    "engine": {
+      "id": "gemma4-e2b-q4-lmstudio-score-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-e2b-q4-v1",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "reasoning_effort": "none"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-e2b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:google/gemma-4-e2b",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 4414806160,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "attacks": {
+      "expected": 54,
+      "valid": 54,
+      "flags": 14,
+      "abstentions": 0
+    },
+    "numericControls": {
+      "expected": 18,
+      "valid": 18,
+      "flags": 0,
+      "abstentions": 0
+    },
+    "notInjectFlags": 2,
+    "notInjectValid": 339,
+    "notInjectAbstentions": 0,
+    "meanValidSeconds": 1.0553333333333332,
+    "meanValidReasoningTokens": 0.0,
+    "reasoningKnownOfValid": [
+      72,
+      72
+    ],
+    "meanValidOutputTokens": 18.416666666666668,
+    "sources": {
+      "numeric": {
+        "path": "evals/runs/lmstudio-score-counterfactual-original-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-full.jsonl",
+        "capturedBytes": 268980,
+        "capturedSha256": "aeea3f52447a99a6154f090fd9a7fae21be9a5d4d4f1b4d60ca1362d7c525914"
+      },
+      "benign": {
+        "path": "evals/runs/lmstudio-research-2026-10-03/benign-false-positives/gemma4-e2b-q4-full.jsonl",
+        "capturedBytes": 1173828,
+        "capturedSha256": "4d3c31de62449230c2fc0d56c135c5c5e99b7da4eb1b415805316512f08057fc"
+      }
+    }
+  },
+  {
+    "label": "E2B Q4 high/1024",
+    "engine": {
+      "id": "gemma4-e2b-q4-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-e2b-q4-v1-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-e2b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:google/gemma-4-e2b",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 4414806160,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "attacks": {
+      "expected": 54,
+      "valid": 54,
+      "flags": 34,
+      "abstentions": 0
+    },
+    "numericControls": {
+      "expected": 18,
+      "valid": 18,
+      "flags": 0,
+      "abstentions": 0
+    },
+    "notInjectFlags": 10,
+    "notInjectValid": 339,
+    "notInjectAbstentions": 0,
+    "meanValidSeconds": 7.353097222222222,
+    "meanValidReasoningTokens": 423.93055555555554,
+    "reasoningKnownOfValid": [
+      72,
+      72
+    ],
+    "meanValidOutputTokens": 446.9583333333333,
+    "sources": {
+      "numeric": {
+        "path": "evals/runs/lmstudio-score-counterfactual-e2b-thinking1024-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-thinking1024-full.jsonl",
+        "capturedBytes": 421859,
+        "capturedSha256": "e2ce01f8508b34a6cb2d5fb552d627807e77431b5b35b387e9ddd5d6f90f31e5"
+      },
+      "benign": {
+        "path": "evals/runs/lmstudio-thinking1024-2026-10-03/benign-false-positives/gemma4-e2b-q4-thinking1024-full.jsonl",
+        "capturedBytes": 1571342,
+        "capturedSha256": "fdf2c0f1df499c8a16ec0b199ffa1fffacfc68822edb8a9c8b34089e4cee05cf"
+      }
+    }
+  },
+  {
+    "label": "E4B Q4 high/1024",
+    "engine": {
+      "id": "gemma4-e4b-q4-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-e4b-q4-v1-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "gemma-4-e4b-it",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-E4B-it-GGUF/gemma-4-E4B-it-Q4_K_M.gguf",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 6326837120,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "attacks": {
+      "expected": 54,
+      "valid": 54,
+      "flags": 36,
+      "abstentions": 0
+    },
+    "numericControls": {
+      "expected": 18,
+      "valid": 18,
+      "flags": 0,
+      "abstentions": 0
+    },
+    "notInjectFlags": 24,
+    "notInjectValid": 339,
+    "notInjectAbstentions": 0,
+    "meanValidSeconds": 13.290847222222222,
+    "meanValidReasoningTokens": 426.02777777777777,
+    "reasoningKnownOfValid": [
+      72,
+      72
+    ],
+    "meanValidOutputTokens": 447.40277777777777,
+    "sources": {
+      "numeric": {
+        "path": "evals/runs/lmstudio-score-counterfactual-e4b-2026-10-03/paper-score-counterfactual/gemma4-e4b-q4-thinking1024-full.jsonl",
+        "capturedBytes": 427826,
+        "capturedSha256": "1ec16d654a878207f9ae6ecea1c2ab502a3e8a8267deaf3b6efa306df5e5081f"
+      },
+      "benign": {
+        "path": "evals/runs/lmstudio-thinking1024-2026-10-03/benign-false-positives/gemma4-e4b-q4-thinking1024-full.jsonl",
+        "capturedBytes": 1564498,
+        "capturedSha256": "fd10b82bad9589e80e040c7d39016f5026c088807635fcec952fa75173a90ccb"
+      }
+    }
+  },
+  {
+    "label": "Muse Q4 high/1024",
+    "engine": {
+      "id": "muse-glimmer-q4-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-muse-glimmer-q4-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "meta/muse-glimmer",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:meta/muse-glimmer",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 18157122004,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "attacks": {
+      "expected": 54,
+      "valid": 52,
+      "flags": 45,
+      "abstentions": 2
+    },
+    "numericControls": {
+      "expected": 18,
+      "valid": 18,
+      "flags": 0,
+      "abstentions": 0
+    },
+    "notInjectFlags": 15,
+    "notInjectValid": 338,
+    "notInjectAbstentions": 1,
+    "meanValidSeconds": 49.91498571428571,
+    "meanValidReasoningTokens": 424.37142857142857,
+    "reasoningKnownOfValid": [
+      70,
+      70
+    ],
+    "meanValidOutputTokens": 444.37142857142857,
+    "sources": {
+      "numeric": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/muse-glimmer-q4-thinking1024-full.jsonl",
+        "capturedBytes": 429516,
+        "capturedSha256": "4e8bcb1bc93ce48ff7618c7d58f7e0999d36884e0d6e131fc263ac88e54f1711"
+      },
+      "benign": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/benign-false-positives/muse-glimmer-q4-thinking1024-full.jsonl",
+        "capturedBytes": 1633963,
+        "capturedSha256": "6ecae7761e94a609ddf4efce3cb2f5ad7b97344d70d720980cf3fd6fbf47243f"
+      }
+    }
+  },
+  {
+    "label": "Gemma26 MLX8 high/1024",
+    "engine": {
+      "id": "gemma4-26b-a4b-mlx8-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-26b-a4b-mlx8-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "gemma-4-26b-a4b-it-mlx",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "safetensors",
+        "quantization": "8bit",
+        "sizeBytes": 27986060505,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "attacks": {
+      "expected": 54,
+      "valid": 54,
+      "flags": 38,
+      "abstentions": 0
+    },
+    "numericControls": {
+      "expected": 18,
+      "valid": 18,
+      "flags": 0,
+      "abstentions": 0
+    },
+    "notInjectFlags": 23,
+    "notInjectValid": 339,
+    "notInjectAbstentions": 0,
+    "meanValidSeconds": 1.5076666666666667,
+    "meanValidReasoningTokens": 0.0,
+    "reasoningKnownOfValid": [
+      72,
+      72
+    ],
+    "meanValidOutputTokens": 8.166666666666666,
+    "sources": {
+      "numeric": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/gemma4-26b-a4b-mlx8-thinking1024-full.jsonl",
+        "capturedBytes": 278863,
+        "capturedSha256": "779fe44ed91b61d342cac6599613d5152591c5fa515d5d8cfc9e49b1344620a3"
+      },
+      "benign": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/benign-false-positives/gemma4-26b-a4b-mlx8-thinking1024-full.jsonl",
+        "capturedBytes": 1229798,
+        "capturedSha256": "4b32df5ce3001b74d326a969830f3f458fe53432ae5f6990a82b8e78d2b86edc"
+      }
+    }
+  },
+  {
+    "label": "Ornith1.5 Q8 high/1024",
+    "engine": {
+      "id": "ornith15-35b-a3b-q8-lmstudio-score-v1-thinking1024-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-ornith15-35b-a3b-q8-thinking1024",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 1024,
+        "reasoning_effort": "high"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 38704971520,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "attacks": {
+      "expected": 54,
+      "valid": 53,
+      "flags": 46,
+      "abstentions": 1
+    },
+    "numericControls": {
+      "expected": 18,
+      "valid": 18,
+      "flags": 4,
+      "abstentions": 0
+    },
+    "notInjectFlags": 16,
+    "notInjectValid": 339,
+    "notInjectAbstentions": 0,
+    "meanValidSeconds": 11.196647887323943,
+    "meanValidReasoningTokens": 448.6478873239437,
+    "reasoningKnownOfValid": [
+      71,
+      71
+    ],
+    "meanValidOutputTokens": 463.11267605633805,
+    "sources": {
+      "numeric": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/ornith15-35b-a3b-q8-thinking1024-full.jsonl",
+        "capturedBytes": 449608,
+        "capturedSha256": "59cbd910dd9ca4be70931fcab1990bf87b819837a9221fd176a10fe9388bb1ec"
+      },
+      "benign": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/benign-false-positives/ornith15-35b-a3b-q8-thinking1024-full.jsonl",
+        "capturedBytes": 1514510,
+        "capturedSha256": "0b5e7ff49f21f7b6327db2c53aa33a9e6c1e6be812b5e0766e3f4336ffdcd4c5"
+      }
+    }
+  }
+]

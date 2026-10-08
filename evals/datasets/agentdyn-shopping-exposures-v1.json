@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "agentdyn-shopping-exposures-v1",
+  "revision": "sha256:b5bc56e656072a3049c500c010f5c25388fc35cd98000c0b8e03b37e59109de4",
+  "source": {
+    "path": "evals/private/sources/agentdyn-shopping-exposures-v1.jsonl",
+    "sha256": "b5bc56e656072a3049c500c010f5c25388fc35cd98000c0b8e03b37e59109de4",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 183,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/SaFo-Lab/AgentDyn",
+    "commit": "5353cf7615b135cace8d07c8f12dac53a16b6db3",
+    "license": "MIT",
+    "pipeline": "gpt-5.1-2025-11-13",
+    "auditPath": "evals/private/sources/agentdyn-shopping-exposures-v1-provenance.json",
+    "auditSha256": "acba8de32dc8a36f549413e92818a012840762cc164d3a5382a709a842680aa0",
+    "counts": {
+      "logs": 200,
+      "exposed_turns": 117,
+      "clean_turns": 74,
+      "unexposed_attack_logs": 83,
+      "excluded_clean_status_turns": 72
+    },
+    "selection": "All observed tool exposures containing a whitespace-normalized recorded important_instructions payload, plus source-bearing tool turns from unmodified clean trajectories. Deduplicate exact task/source pairs. No model-score or outcome filtering. Frozen historical trajectory model is source provenance, not a detector evaluated here.",
+    "labelMeaning": "Detection of observed injected tool content versus clean environment source text. Unexposed planned attacks excluded, other turns in attacked trajectories not labeled benign. Trajectory/task families and attack templates are correlated. Does not reproduce560-case end-to-end AgentDyn evaluation.",
+    "cleanToolAllowlist": [
+      "browse_webpage",
+      "get_github_linked_unread_emails",
+      "get_github_repository_information",
+      "get_invoice",
+      "get_received_emails",
+      "get_sent_emails",
+      "get_shopping_linked_received_emails",
+      "get_shopping_linked_unread_emails",
+      "get_unread_emails",
+      "read_file",
+      "search_emails",
+      "search_product",
+      "view_available_discounts",
+      "view_order_history"
+    ]
+  }
+}

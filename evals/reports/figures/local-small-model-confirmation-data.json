@@ -1,0 +1,82 @@
+[
+  {
+    "model": "E2B",
+    "cohort": "Original papers",
+    "attacks": 60,
+    "clean": 20,
+    "full": 37,
+    "window": 47,
+    "coverage": 45,
+    "fullFP": 0,
+    "windowFP": 1,
+    "gains": 10,
+    "losses": 0,
+    "fullRecordedMs": 587635,
+    "distinctWindowRecordedMs": 1785443,
+    "windowTimeRatio": 3.0383537399916616,
+    "source": {
+      "full": "evals/runs/lmstudio-thinking1024-2026-10-03/longpi-paper/gemma4-e2b-q4-thinking1024-full.jsonl",
+      "window": "evals/runs/lmstudio-thinking1024-2026-10-03/longpi-paper/gemma4-e2b-q4-thinking1024-preserve512.jsonl"
+    }
+  },
+  {
+    "model": "E2B",
+    "cohort": "Numeric probe",
+    "attacks": 54,
+    "clean": 18,
+    "full": 34,
+    "window": 34,
+    "coverage": 30,
+    "fullFP": 0,
+    "windowFP": 0,
+    "gains": 5,
+    "losses": 5,
+    "fullRecordedMs": 529423,
+    "distinctWindowRecordedMs": 911384,
+    "windowTimeRatio": 1.7214665777648497,
+    "source": {
+      "full": "evals/runs/lmstudio-score-counterfactual-e2b-thinking1024-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-thinking1024-full.jsonl",
+      "window": "evals/runs/lmstudio-score-counterfactual-e2b-thinking1024-preserve-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-thinking1024-preserve512.jsonl"
+    }
+  },
+  {
+    "model": "E4B",
+    "cohort": "Original papers",
+    "attacks": 60,
+    "clean": 20,
+    "full": 43,
+    "window": 53,
+    "coverage": 52,
+    "fullFP": 0,
+    "windowFP": 0,
+    "gains": 11,
+    "losses": 1,
+    "fullRecordedMs": 1142832,
+    "distinctWindowRecordedMs": 2946310,
+    "windowTimeRatio": 2.5780779677152896,
+    "source": {
+      "full": "evals/runs/lmstudio-thinking1024-2026-10-03/longpi-paper/gemma4-e4b-q4-thinking1024-full.jsonl",
+      "window": "evals/runs/lmstudio-thinking1024-2026-10-03/longpi-paper/gemma4-e4b-q4-thinking1024-preserve512.jsonl"
+    }
+  },
+  {
+    "model": "E4B",
+    "cohort": "Numeric probe",
+    "attacks": 54,
+    "clean": 18,
+    "full": 36,
+    "window": 45,
+    "coverage": 45,
+    "fullFP": 0,
+    "windowFP": 0,
+    "gains": 9,
+    "losses": 0,
+    "fullRecordedMs": 956941,
+    "distinctWindowRecordedMs": 1595537,
+    "windowTimeRatio": 1.667330587779184,
+    "source": {
+      "full": "evals/runs/lmstudio-score-counterfactual-e4b-2026-10-03/paper-score-counterfactual/gemma4-e4b-q4-thinking1024-full.jsonl",
+      "window": "evals/runs/lmstudio-score-counterfactual-e4b-preserve-2026-10-03/paper-score-counterfactual/gemma4-e4b-q4-thinking1024-preserve512.jsonl"
+    }
+  }
+]

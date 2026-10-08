@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-lmstudio-authority-v1",
+  "tests": [
+    {
+      "id": "benign-false-positives",
+      "datasetId": "notinject-benign-339",
+      "datasetRevision": "sha256:f8d28adfb5895e33a6e28270fe13c21c3739b5a6fb02f565bf71c4756d9cca61",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "negative",
+      "metrics": [
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "bipia-email-mixed",
+      "datasetId": "bipia-email-paired-v1",
+      "datasetRevision": "sha256:386e8275a8bf5b805e0f74f0700a254e4ec219ec4f533f516263139e6ad9365a",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-paper",
+      "datasetId": "longpibench-paper-default-v1",
+      "datasetRevision": "sha256:a894883dc318735a99ce98012592c8e2d95432a411ce20ef419c9d19e6e467af",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-code",
+      "datasetId": "longpibench-code-default-v1",
+      "datasetRevision": "sha256:dad890219b8481413fbc7fa2e61bbec4c36d2459620ad05f448c2386833797b1",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    }
+  ],
+  "engines": {
+    "gemma4-e2b-q4-authority": {
+      "id": "gemma4-e2b-q4-lmstudio-score-v1-source-authority-v2",
+      "kind": "llm_score_json",
+      "model": "solenoid-gemma4-e2b-q4-v1",
+      "provider": "lmstudio",
+      "promptId": "security-eval-source-authority-score-v2",
+      "promptSha256": "780a8615c99eb24738cb8a39cbfc9dc5645090fdd8d97bdb0c521dd9d895112f",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "reasoning_effort": "none"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-e2b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:google/gemma-4-e2b",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q4_K_M",
+        "sizeBytes": 4414806160,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "glm47-flash-mlx8-authority": {
+      "id": "glm47-flash-mlx8-lmstudio-score-v1-source-authority-v2",
+      "kind": "llm_score_json",
+      "model": "solenoid-glm47-flash-mlx8-v1",
+      "provider": "lmstudio",
+      "promptId": "security-eval-source-authority-score-v2",
+      "promptSha256": "780a8615c99eb24738cb8a39cbfc9dc5645090fdd8d97bdb0c521dd9d895112f",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "reasoning_effort": "none"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "zai-org/glm-4.7-flash",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:zai-org/glm-4.7-flash",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "safetensors",
+        "quantization": "8bit",
+        "sizeBytes": 31841422272,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    },
+    "nemotron3-nano-mlx8-authority": {
+      "id": "nemotron3-nano-mlx8-lmstudio-score-v1-source-authority-v2",
+      "kind": "llm_score_json",
+      "model": "solenoid-nemotron3-nano-mlx8-v1",
+      "provider": "lmstudio",
+      "promptId": "security-eval-source-authority-score-v2",
+      "promptSha256": "780a8615c99eb24738cb8a39cbfc9dc5645090fdd8d97bdb0c521dd9d895112f",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 64,
+        "reasoning_effort": "none"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "nvidia/nemotron-3-nano",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:nvidia/nemotron-3-nano",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "safetensors",
+        "quantization": "8bit",
+        "sizeBytes": 33577236003,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      }
+    }
+  },
+  "inputStrategies": {
+    "full": {
+      "id": "full-last-external-v1",
+      "kind": "full_text",
+      "turnSelection": "last_external"
+    },
+    "windows512": {
+      "id": "sliding-words-512-stride384-v1",
+      "kind": "sliding_word_window",
+      "windowWords": 512,
+      "strideWords": 384,
+      "turnSelection": "last_external"
+    }
+  },
+  "decisionRules": {
+    "score05": {
+      "id": "max-score-gt-05-v1",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "comparator": ">",
+      "threshold": 0.5
+    }
+  },
+  "conditions": [
+    {
+      "id": "gemma4-e2b-q4-authority-full",
+      "engine": "gemma4-e2b-q4-authority",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "gemma4-e2b-q4-authority-windows512",
+      "engine": "gemma4-e2b-q4-authority",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "glm47-flash-mlx8-authority-full",
+      "engine": "glm47-flash-mlx8-authority",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "glm47-flash-mlx8-authority-windows512",
+      "engine": "glm47-flash-mlx8-authority",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "nemotron3-nano-mlx8-authority-full",
+      "engine": "nemotron3-nano-mlx8-authority",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    },
+    {
+      "id": "nemotron3-nano-mlx8-authority-windows512",
+      "engine": "nemotron3-nano-mlx8-authority",
+      "inputStrategy": "windows512",
+      "decisionRule": "score05",
+      "repeat": 1
+    }
+  ]
+}

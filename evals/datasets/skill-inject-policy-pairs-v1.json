@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "skill-inject-policy-pairs-v1",
+  "revision": "sha256:b7da8738ddd9815e377f50323da72d8111e712bb6f3c3fc4d98d42eedb032312",
+  "source": {
+    "path": "evals/private/sources/skill-inject-policy-pairs-v1.jsonl",
+    "sha256": "b7da8738ddd9815e377f50323da72d8111e712bb6f3c3fc4d98d42eedb032312",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 234,
+  "annotationKey": "policy_violation",
+  "positiveValues": [
+    "violation"
+  ],
+  "negativeValues": [
+    "authorized"
+  ],
+  "provenance": {
+    "repository": "https://github.com/aisa-group/skill-inject",
+    "commit": "182f3d9d9836e81cdae213e9b9cec1d9be96eea3",
+    "license": "Repository MIT with inherited skill-specific terms, including Anthropic document-skill terms. Preserve upstream notices; raw skill sources and case outputs remain private/ignored.",
+    "sourceAuditPath": "evals/private/sources/skill-inject-policy-pairs-v1-provenance.json",
+    "sourceAuditSha256": "4fd5a5040eb9632e691b08a4d9f1abd48d9384f78f0267b48e6088fc668ec18e",
+    "upstreamEntries": 48,
+    "selectedDirectEntries": 39,
+    "excluded": [],
+    "selection": "All direct contextual entry/task pairs with valid exact upstream line insertion, under warning and legitimizing policies. Identical external skill content within each pair; only trusted task policy changes. Script-based injections excluded because a Markdown-only detector would not see their payload.",
+    "labelMeaning": "Upstream contextual action interpreted as policy violation under warning and authorized under legitimizing. Measures policy-conditioned screening, not unconditional injection attempt detection or actual tool execution. Label sensitivity/ambiguity of upstream policy language is a limitation. Source-only deterministic classifiers have exactly50% balanced pair accuracy by construction; do not purchase duplicate policy-blind calls.",
+    "independence": "Frozen protocol selected before inspecting these model responses. Same39 injection families and skills recur across tasks; use paired/family metrics."
+  }
+}

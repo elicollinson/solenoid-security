@@ -22,9 +22,9 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 | **Rankings flip between datasets, so small checks mislead.** | Qwen3.8 27B: 18/18 on a paper qualification tranche, 18/75 on BIPIA. | Strong | [O30](evals/FINDINGS.md) |
 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
-reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The full-text baseline now running is described [below](#now-running-as-of-2026-10-08).
+reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The full-text baseline now running is described [below](#now-running-as-of-2026-10-09).
 
-## Now running (as of 2026-10-08)
+## Now running (as of 2026-10-09)
 
 **Mac Studio Q8 full-text baseline.** Eight self-hostable models, each run on all 21 datasets (7,326 cases per model)
 under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0, reasoning on with a 4,096-token
@@ -36,8 +36,8 @@ abliterated-model, prompt and technique comparisons.
 | Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.906; 12 abstentions in 7,326) |
 | Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.923; 9 abstentions) |
 | Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.901; 3 abstentions) |
-| Laguna XS 2.1 | MoE (coding) | ▶ Running |
-| Qwen3.8 27B | Dense | Queued |
+| Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.712; 114 abstentions) |
+| Qwen3.8 27B | Dense | ▶ Running |
 | Qwen3.6 27B | Dense | Queued |
 | Muse Glimmer | Dense | Queued |
 | Gemma 4 31B-it | Dense | Queued |

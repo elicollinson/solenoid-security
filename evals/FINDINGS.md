@@ -653,8 +653,11 @@ loss, the full document flags the attack but every window holding the whole payl
 
 ## 4. Open questions and follow-up backlog (prioritized)
 
+Open items are tracked as GitHub issues with the [`research` label](https://github.com/elicollinson/solenoid-security/issues?q=label%3Aresearch). This section keeps the evidence and rationale; status lives in the issues.
+
 1. **Directly test hypothesis (b)** (O11, O12, O13): attack-bearing window vs full input on the 72-case pool plus fresh
    families and non-numeric goals, for all panel models.
+   _Tracked in [#8](https://github.com/elicollinson/solenoid-security/issues/8)._
 2. **Within-model full-vs-window pairs** (O26, O27, O3): **done** on the Studio for five Q8 builds (O45–O47). Remaining:
    cohorts with full-input headroom for the MoE models, and the Study B quantization × chunking ladder (pending; see
    item 11).
@@ -662,6 +665,7 @@ loss, the full document flags the attack but every window holding the whole payl
    (current MLX engine with strict schema vs prompt-only JSON, then a matched GGUF; F2, L136), ready as
    `runs/lmstudio-studio-2026-10-05/run-mlx-diagnostic.unpaused.sh`; (b) Study B, the quantization × chunking ladder
    (O32, O33, O42, O45; `study-b-plan-amendment-1.json`), ready as `queue-study-b2.txt` via `run-study-b.unpaused.sh`.
+   _Tracked in [#25](https://github.com/elicollinson/solenoid-security/issues/25) (MLX diagnostic) and [#26](https://github.com/elicollinson/solenoid-security/issues/26) (Study B)._
 3. **Fresh long-document cohort** (O1, O2, O4, O15): real documents, new subtle attacks, authorized-instruction controls,
    plus 100+ long benign documents per genre (O9). **Datasets added 2026-10-08 (not yet run):** 24 frozen subtle
    templates per domain on LongPIBench papers, code and résumés (`longpi-subtle-{paper,code,resume}-v1`), benign
@@ -671,13 +675,21 @@ loss, the full document flags the attack but every window holding the whole payl
    `prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1` (same engines and conditions as the running
    baseline); see [PUBLIC_SOURCES](datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08). Real
    (non-synthetic) long papers, code and résumés remain open.
+   _Tracked in [#9](https://github.com/elicollinson/solenoid-security/issues/9)._
 4. **Two-axis scoring prompt** (O16–O18) with a frozen threshold.
+   _Tracked in [#10](https://github.com/elicollinson/solenoid-security/issues/10)._
 5. **Isolate generation settings** (O13, O29, O38): none/1024 and reasoning-off arms; reasoning tokens as a covariate.
+   _Tracked in [#11](https://github.com/elicollinson/solenoid-security/issues/11)._
 6. **Quantization ladder on one model** (O32, O33).
+   _Tracked in [#12](https://github.com/elicollinson/solenoid-security/issues/12)._
 7. **Prospective cascade or ensemble** (O10, O31).
+   _Tracked in [#13](https://github.com/elicollinson/solenoid-security/issues/13)._
 8. **Position × windows** (O19).
+   _Tracked in [#14](https://github.com/elicollinson/solenoid-security/issues/14)._
 9. **Realistic-prevalence benign stream** (O24, O25).
+   _Tracked in [#15](https://github.com/elicollinson/solenoid-security/issues/15)._
 10. **Energy and uncached latency** (O39).
+   _Tracked in [#16](https://github.com/elicollinson/solenoid-security/issues/16)._
 
 ### Future research avenues (noted 2026-10-04; not scheduled)
 
@@ -687,6 +699,7 @@ loss, the full document flags the attack but every window holding the whole payl
   matched base/distill pairs, identical runtime and quant, the full-input cohorts plus the numerical counterfactual
   probe. Caveat: the first distill tried (Qwen3.5 27B Opus-distill, MLX6) hit the LM Studio structured-output
   reasoning-channel bug, so it needs a working build first.
+  _Tracked in [#17](https://github.com/elicollinson/solenoid-security/issues/17)._
 - **F2 — MLX vs GGUF on models that ship both.** Same model, same nominal bit width, MLX vs GGUF (llama.cpp) on the
   full-input cohorts: detection, false alarms, abstentions, reasoning tokens actually generated, and latency. Motivated
   by Gemma 4 26B-A4B MLX reporting 0 reasoning tokens under `reasoning_effort: high` while GGUF Gemma models reason
@@ -694,12 +707,14 @@ loss, the full document flags the attack but every window holding the whole payl
   #1698/#1773/#1971), and by O32/O33 showing runtime/endpoint changes shift decisions. No published MLX-vs-GGUF
   comparison on injection detection was found as of 2026-10-04. A first pair (Gemma 4 26B-A4B MLX8 vs GGUF Q8) may
   fall out of the current panel.
+  _Tracked in [#18](https://github.com/elicollinson/solenoid-security/issues/18)._
 - **F3 — Do domain-specialized models (e.g. coding/agentic models) detect better in any domain?** Compare specialized
   models against general-purpose models of similar size and architecture across every cohort, not only the matching
   one: is a coding model better on the code-review cohort (and at the naive-approval template everything else misses),
   neutral elsewhere, or worse on email/web/benign? Candidates already near the panel: Laguna XS 2.1 (agentic coding,
   MoE) and KAT-Coder V2.5 Dev (a Qwen3.6-35B-A3B derivative, so a clean specialized-vs-base pair). Specialist detector
   APIs (Jev, Model Armor) are a different kind of specialization and already have baselines (O35–O37).
+  _Tracked in [#19](https://github.com/elicollinson/solenoid-security/issues/19)._
 - **F4 — Do a detector's misses actually compromise an agent running the same model?** Take each model's missed
   attacks (false negatives as a detector) and replay them against an agent built on that same model, in a task where the
   payload's goal is actionable (tool calls, replies, ratings). Measure attack success rate on misses vs on caught attacks:
@@ -708,6 +723,7 @@ loss, the full document flags the attack but every window holding the whole payl
   already exist: per-model miss lists from the full-input panel, the recognition-vs-concern cases (O18, Laguna in L119),
   and the attack-following pool (O12–O13). Needs an agent harness (e.g. AgentDojo-style tasks) with outcome checks; the
   Supabase `behavior_assessments` table can hold the agent-side outcomes.
+  _Tracked in [#20](https://github.com/elicollinson/solenoid-security/issues/20)._
 - **F5 — Does batched (concurrent) inference change detection verdicts?** LM Studio supports continuous batching
   ("Max Concurrent Predictions", unified KV cache; llama.cpp ≥ 2.0 and MLX ≥ 0.4.2), as do vLLM-style servers. Batched
   kernels group floating-point reductions differently from serial execution, so temperature-0 outputs can change with
@@ -717,6 +733,7 @@ loss, the full document flags the attack but every window holding the whole payl
   score shifts, abstentions, reasoning text and throughput, and check whether flips concentrate in borderline or subtle
   (naive-template) cases. If flips are material, a detector's verdict depends on server load. All local panel runs to
   date are serial (decision 2026-10-06), so they are the baseline.
+  _Tracked in [#21](https://github.com/elicollinson/solenoid-security/issues/21)._
 - **F6 — Jev-class decision models on open weights: a broad sweep.** Jev (TypeSafe AI) is a "System One" decision
   model: it takes a state plus typed questions (Noul = calibrated yes/no probability, Choice, Score), answers them all in
   one parallel pass without generating text, and is trained with RL for calibrated decisions (RLCD). Weights are
@@ -743,6 +760,7 @@ loss, the full document flags the attack but every window holding the whole payl
   on the naive code template (0/100 without reasoning, O42/O43). **Prerequisite:** confirm that LM Studio's API returns
   token logprobs (one short request in a gap between Studio queue steps); if not, serve the same GGUF files with
   llama.cpp `llama-server` (`n_probs`/`logprobs`).
+  _Tracked in [#22](https://github.com/elicollinson/solenoid-security/issues/22)._
 - **F7 — Abliterated vs original models at detection.** Abliteration projects out a model's refusal direction to remove
   open-weight guardrails. As of 2026-10-06, no published work tests abliterated models as injection *detectors*. The
   related work measures refusal or harmful compliance only: [2510.02768](https://arxiv.org/abs/2510.02768) (which
@@ -756,6 +774,7 @@ loss, the full document flags the attack but every window holding the whole payl
   abliterated build, and the excluded Qwen3.6 Fable Fusion (built on a heretic base) vs its base. Run the full-input
   cohorts plus the counterfactual probe. Measure detection, false alarms, recognition vs concern in reasoning text, and
   steering. Pairs with F1, since several abliterated releases are also distills.
+  _Tracked in [#23](https://github.com/elicollinson/solenoid-security/issues/23)._
 - **F8 — Does KV-cache quantization change detection?** Separate from weight quantization, inference servers can
   quantize the attention key/value cache to save memory and speed up long contexts: llama.cpp `--cache-type-k` /
   `--cache-type-v` (f16 default, q8_0, q4_0) and LM Studio's experimental K/V cache quantization for GGUF. Detection
@@ -768,6 +787,12 @@ loss, the full document flags the attack but every window holding the whole payl
   length, and memory and speed. Check first that the current runs pin the cache type, and record it in run provenance,
   so the baseline's setting is known. Literature not yet searched for safety or detection effects; KV-quantization
   papers mostly report perplexity and long-context benchmarks.
+  _Tracked in [#24](https://github.com/elicollinson/solenoid-security/issues/24)._
+- **F9 — Does speculative decoding change detection verdicts?** Greedy speculative decoding is lossless in exact
+  arithmetic, but batched verification can shift numerics (cf. F5). Ornith runs with drafting on both machines and is the
+  only Studio model whose reasoning text matched 0/24 across devices while flags matched 23/24 (O38, O47). Compare
+  no-draft vs draft-model vs MTP builds on long documents, the score probe and the subtle templates.
+  _Tracked in [#7](https://github.com/elicollinson/solenoid-security/issues/7)._
 
 ---
 

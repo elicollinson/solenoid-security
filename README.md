@@ -37,8 +37,8 @@ abliterated-model, prompt and technique comparisons.
 | Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.923; 9 abstentions) |
 | Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.901; 3 abstentions) |
 | Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.712; 114 abstentions) |
-| Qwen3.8 27B | Dense | ▶ Running |
-| Qwen3.6 27B | Dense | Queued |
+| Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.895; 17 abstentions) |
+| Qwen3.6 27B | Dense | ▶ Running |
 | Muse Glimmer | Dense | Queued |
 | Gemma 4 31B-it | Dense | Queued |
 

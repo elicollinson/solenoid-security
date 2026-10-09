@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "browsesafe-test-stratified-v1",
+  "revision": "sha256:579c0c1c5059791aaf083fafc2b9547cbbe27b69fc7f7e38ba685083e0f091ae",
+  "source": {
+    "path": "evals/private/sources/browsesafe-test-stratified-v1.jsonl",
+    "sha256": "579c0c1c5059791aaf083fafc2b9547cbbe27b69fc7f7e38ba685083e0f091ae",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 400,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://huggingface.co/datasets/perplexity-ai/browsesafe-bench",
+    "revision": "b506fb5bc7fd4472c8738055a67a0ef6406afdc9",
+    "paper": "https://arxiv.org/abs/2511.20597",
+    "sourceFiles": {
+      "test.parquet": "sha256:00cbad96b60fee46e016d79af6981fb221384c61f12cf28b4f04b5a6420573d0",
+      "LICENSE": "sha256:a38e68182bd2b4fe128e63f2643063c498b901261176ad5dffd52164ef9ae130",
+      "README.md": "sha256:54b69cee375b4fbbeffb30d68bfb7a55805092634105303c9ebe99407c120519"
+    },
+    "license": "MIT (dataset card and LICENSE at the pinned revision). Credit: Kaiyuan Zhang, Mark Tenenholtz, Kyle Polley, Jerry Ma, Denis Yarats and Ninghui Li, BrowseSafe (Perplexity).",
+    "accessLimits": "Public, ungated. Parquet source and generated cases stay under ignored evals/private/.",
+    "sampling": {
+      "seed": "browsesafe-test-stratified-v1",
+      "eligibility": "Test split rows (3,680: 1,824 yes / 1,856 no) whose UTF-8 HTML is at most 60000 bytes, so full text fits the 65,536-token local engines' conservative byte bound without truncation. Eligible rows: 2251.",
+      "strata": "label x byte-length quintile; quintile edges are computed over the eligible pool (both labels together): [8656, 19445, 32626, 45956] bytes.",
+      "perStratum": 40,
+      "order": "Within a stratum, rows sorted by SHA-256 of '<seed>/<row index>/<sha256(content)>'; the first 40 are taken."
+    },
+    "selection": "Deterministic stratified sample: 200 injection (label yes) and 200 benign (label no) pages, 40 per label per length quintile. Pages over the byte bound (1,429 of 3,680, about 39% of the split, all among the longest pages) are excluded and their results do not generalize to them.",
+    "labelMeaning": "Upstream machine-generated pipeline labels: yes = page contains an inserted injection payload; no = benign page, which often contains distractor elements (hidden text, comments, data attributes). The release has no per-row attack type, placement, style or language columns, so those taxonomy facets cannot be reported per case; has_html_comment and has_hidden_style are observable structure flags only.",
+    "facets": [
+      "source_row",
+      "length_stratum",
+      "source_bytes",
+      "has_html_comment",
+      "has_hidden_style"
+    ],
+    "classCounts": {
+      "injection": 200,
+      "benign": 200
+    }
+  }
+}

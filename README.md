@@ -38,11 +38,11 @@ abliterated-model, prompt and technique comparisons.
 | Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.901; 3 abstentions) |
 | Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.712; 114 abstentions) |
 | Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.895; 17 abstentions) |
-| Qwen3.6 27B | Dense | ▶ Running |
-| Muse Glimmer | Dense | Queued |
+| Qwen3.6 27B | Dense | ⏸ Deferred (about 3.7× slower than Qwen3.8; will resume later) |
+| Muse Glimmer | Dense | ▶ Running |
 | Gemma 4 31B-it | Dense | Queued |
 
-Projected finish is about 2026-10-13. The budget was raised from 1,024 tokens after the first attempt cut off verbose
+Projected finish is about 2026-10-12. The budget was raised from 1,024 tokens after the first attempt cut off verbose
 reasoning models before they answered ([Appendix A](evals/FINDINGS.md)). Progress is logged in the
 [research log](evals/reports/research-log-2026-09-29.md). Jev and Model Armor results remain hosted references.
 

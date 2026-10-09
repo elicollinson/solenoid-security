@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "longpi-subtle-resume-v1",
+  "revision": "sha256:e2925e2c99812d434cc842f6a8ea6419274117f35b2b5f91e8dfe242002a0ae1",
+  "source": {
+    "path": "evals/private/sources/longpi-subtle-resume-v1.jsonl",
+    "sha256": "e2925e2c99812d434cc842f6a8ea6419274117f35b2b5f91e8dfe242002a0ae1",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 220,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/liu00222/LongPIBench",
+    "commit": "c7b80114ae56f65fb8019ec82afdb3df91e4ed65",
+    "dataset": "https://huggingface.co/datasets/RainWatcher/LongPIBench",
+    "datasetRevision": "cdfdfdba8838911ec3d120d5bbf584c0afb280f2",
+    "adapterCodeHashes": {
+      "benchmark.py": "cf7f06e36dea747b038f35af9fcaf8bfacd756bf1ac21c9437fb77a687c429c3",
+      "attacks.py": "9edfc687950befac7f1fd22e50f0231c7d42f24caf71d6b58312886740aa2ea8",
+      "prompts.py": "d75883ce33a94f589793ee4509843bf2657681a7b268be1b1c4a0d25c2851755",
+      "data.py": "55856653925b5dba4c11e4c8801e301a11b83c23134263659ce67c10c23748cf"
+    },
+    "templateList": {
+      "path": "evals/datasets/templates/varied-injection-templates-v1.json",
+      "sha256": "2a12eef15ebc998a6b850473cd5de4be5570648c847205394370cd18997bb873",
+      "group": "subtle.resume",
+      "templates": 24
+    },
+    "license": "LongPIBench released synthetic documents and code: MIT. Templates: repository-authored (this repository's MIT license); seeds cited per template in the template list.",
+    "accessLimits": "Generated case text stays under ignored evals/private/. The template list is tracked; it contains attack phrasings but no case text.",
+    "selection": "All 100 resume documents as clean siblings, plus each of the 24 frozen subtle templates inserted into 5 documents. Document for (template index t, copy k) = permutation[(t*5+k) mod 100], permutation = documents sorted by SHA-256 of 'varied-injection-templates-v1/subtle/resume/<item>'. Each template sets its own insertion position.",
+    "construction": "Clean rendering is asserted byte-identical to upstream prepare_example(attack='no'). Insertions follow upstream conventions where upstream has that position (paper section end, resume footnote, code comment after the change) and otherwise use documented points (resume header/experience/education/skills, code top/middle/description; middle lines chosen by SHA-256). Clean siblings are byte-identical to the clean cases of longpibench-<domain>-default-v1, so exact-input reuse can avoid re-running them.",
+    "labelMeaning": "Constructed injection attempt versus the clean document. Templates vary goal, politeness, explicitness, position and visibility; report per attack_template_id with spread, and group by document_family. Not observed compliance.",
+    "facets": [
+      "attack_template_id",
+      "template_position",
+      "visibility",
+      "goal",
+      "politeness",
+      "explicitness",
+      "document_family",
+      "source_item"
+    ],
+    "classCounts": {
+      "injection": 120,
+      "benign": 100
+    }
+  }
+}

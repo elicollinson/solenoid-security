@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "llmail-inject-payload-pool-v1",
+  "revision": "sha256:9d11048a500c6e6970822e9ec85dedef42bea833c5bb88aef0c976f22c794309",
+  "source": {
+    "path": "evals/private/sources/llmail-inject-payload-pool-v1.jsonl",
+    "sha256": "9d11048a500c6e6970822e9ec85dedef42bea833c5bb88aef0c976f22c794309",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 300,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://huggingface.co/datasets/microsoft/llmail-inject-challenge",
+    "revision": "1063bdf01ec8762b812d5e06ee768a06faa5a6f7",
+    "sourceFiles": {
+      "data/labelled_unique_submissions_phase1.json": "sha256:691dfa1595d2bd0e731069f233bd5448f7af1c0ebd9732bc6f12dd6cee446586",
+      "data/labelled_unique_submissions_phase2.json": "sha256:f89af984e345430c3b357903890e30867bf4676f4ef10c138cc7bad218e890b8",
+      "data/scenarios.json": "sha256:3d7c55fd04826dd29fa11b9f9912ae270fffb16a6c52a7eb2bff00457d378e4f",
+      "data/levels_descriptions.json": "sha256:d1391d6fa8bb074b1603bb20699df6c1ada3c6add64db495e1a39faebc0cd400",
+      "data/objectives_descriptions.json": "sha256:daed5cacc5126790073e1a8dfc650b8024c903c415f1e11a189a8171c0c0f183",
+      "README.md": "sha256:d85767e349ab1abbaf43db9390c4e906e34954e5df3a1335c8f1516efa64e812"
+    },
+    "license": "MIT (dataset card at the pinned revision). Credit: Sahar Abdelnabi et al., Microsoft, LLMail-Inject: A Dataset from a Realistic Adaptive Prompt Injection Challenge.",
+    "accessLimits": "Public, ungated. The 514 MB release and generated cases stay under ignored evals/private/.",
+    "selection": "Both phases' labelled unique submissions with attack_attempt == 'True' and reason in ['api_triggered', 'judge'], parsed as 'Subject of the email: <s>. Body: <b>', body 40-4000 characters. Ordered by SHA-256 of '<seed>/<phase>/<sha256(submission)>', deduplicated by normalized body (whitespace-collapsed, casefolded) and by its first 120 normalized characters. Strata: phase x judge reason x body-length tercile (edges over the deduplicated pool); first 25 per stratum, 300 total.",
+    "sampling": {
+      "seed": "llmail-inject-payload-pool-v1",
+      "eligibleAttackAttempts": 131734,
+      "afterDedup": 56122,
+      "lengthTercileEdgesChars": [
+        256,
+        667
+      ]
+    },
+    "labelMeaning": "Upstream attack-attempt annotations (API call triggered, or LLM judge), not success against any defense. Attack-only: use caseSelector positive. The case text is Subject plus body as an email. May overlap the private llmail-phase2-positive-400 cohort; do not pool them as independent evidence.",
+    "facets": [
+      "phase",
+      "judge_reason",
+      "length_tercile",
+      "pool_index",
+      "submission_sha256",
+      "attack_template_id"
+    ],
+    "classCounts": {
+      "injection": 300,
+      "benign": 0
+    }
+  }
+}

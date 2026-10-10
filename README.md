@@ -24,7 +24,7 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
 reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The full-text baseline now running is described [below](#now-running-as-of-2026-10-09).
 
-## Now running (as of 2026-10-09)
+## Now running (as of 2026-10-10)
 
 **Mac Studio Q8 full-text baseline.** Eight self-hostable models, each run on all 21 datasets (7,326 cases per model)
 under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0, reasoning on with a 4,096-token
@@ -39,8 +39,8 @@ abliterated-model, prompt and technique comparisons.
 | Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.712; 114 abstentions) |
 | Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.895; 17 abstentions) |
 | Qwen3.6 27B | Dense | ⏸ Deferred (about 3.7× slower than Qwen3.8; will resume later) |
-| Muse Glimmer | Dense | ▶ Running |
-| Gemma 4 31B-it | Dense | Queued |
+| Muse Glimmer | Dense | ✅ Done (mean balanced accuracy 0.903; 5 abstentions) |
+| Gemma 4 31B-it | Dense | ▶ Running (started 2026-10-10) |
 
 Projected finish is about 2026-10-12. The budget was raised from 1,024 tokens after the first attempt cut off verbose
 reasoning models before they answered ([Appendix A](evals/FINDINGS.md)). Progress is logged in the

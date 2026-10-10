@@ -1,0 +1,17 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {readNativeInputSource} from '../../scripts/analyze-research.ts';
+import {loadDataset} from '../../src/datasets.ts';
+import {segmentCase,sha256} from '../../src/strategies.ts';
+const root=process.cwd(),out='evals/runs/lmstudio-available-panel-2026-10-04';
+const suitePath='evals/suites/prompt-injection-lmstudio-available-panel-thinking1024-v1.json';
+const suiteText=readFileSync(suitePath,'utf8'),suite=JSON.parse(suiteText);
+const source=`${out}/paper-score-counterfactual/gemma4-26b-a4b-mlx8-thinking1024-preserve512.jsonl`;
+const cache=readNativeInputSource(source,suite.engines['gemma4-26b-a4b-mlx8-thinking1024'],root);
+const manifest=JSON.parse(readFileSync('evals/datasets/longpibench-paper-default-v1.json','utf8'));
+const cases=loadDataset(manifest,root).slice(0,80);
+const segments=cases.flatMap(c=>segmentCase(c,suite.inputStrategies.preserve512));
+const unique=[...new Set(segments.map(s=>s.textSha256))],cached=unique.filter(h=>cache.inputs.has(h));
+if(cases.length!==80||new Set(cases.map(c=>c.facets.document_family)).size!==20||segments.length!==1097||unique.length!==359||cached.length!==80)throw Error('Frozen work geometry differs');
+const result={generatedAt:new Date().toISOString(),suitePath,suiteSha256:sha256(suiteText),datasetRevision:manifest.revision,source:cache.reference,cases:80,families:20,logicalWindows:1097,uniqueInputs:359,cachedInputs:80,newCallsForFirst20:279,caseIds:cases.map(c=>c.id),cachedRequests:cached.map(hash=>({inputSha256:hash,requestId:cache.inputs.get(hash)!.observation.requestId}))};
+writeFileSync(`${out}/gemma26-paper-first20-input-plan.json`,JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({...result,caseIds:undefined,cachedRequests:undefined}));

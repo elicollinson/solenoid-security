@@ -19,7 +19,7 @@ Each attack has low (0.1 or 0.2), high (0.8 or 0.9), and out-of-range (2 or 3) r
 
 Timing uses observation.durationMs for valid native scores only, including relay and placement checks. It excludes failed requests and model loading. Same requested effort does not establish the same reasoning work: Gemma26 reports zero reasoning tokens in these responses. Artifacts, quantization, runtime, drafting and output length differ. These results do not isolate an architecture or expert-routing effect.
 
-Per-template outcomes, paired scores, configuration provenance and exact checkpoint hashes are retained in `evals/runs/lmstudio-available-panel-2026-10-04/numeric-probe-comparison.json`. General benign-request results remain separate in `lmstudio-panel-notinject-2026-10-04.md`; no pooled accuracy is reported.
+Per-template outcomes, paired scores, configuration provenance and exact checkpoint hashes are retained in `evals/runs/lmstudio-available-panel-2026-10-04/numeric-probe-comparison.json` ([published copy](../analysis/lmstudio-available-panel-2026-10-04/results/numeric-probe-comparison.json)). General benign-request results remain separate in `lmstudio-panel-notinject-2026-10-04.md`; no pooled accuracy is reported.
 
 
 Retained Model Armor full-input reference, reaudited without new calls:

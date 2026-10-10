@@ -1,0 +1,1724 @@
+{
+  "pairs": [
+    {
+      "model": "Gemma 4 26B-A4B-it GGUF Q8_0",
+      "studio": {
+        "path": "evals/runs/lmstudio-studio-2026-10-05/longpi-paper/studio-gemma26-q8-thinking1024-full.jsonl",
+        "sha256": "3096aee54b40de97676af38119620fa299da1c57bed93640a0acb9674318e17b"
+      },
+      "macbook": {
+        "path": "evals/runs/lmstudio-new-panel-v2-2026-10-04/longpi-paper/gemma4-26b-a4b-q8gguf-thinking1024-full.jsonl",
+        "sha256": "84d1055a8447bd9fa002826fb3c8ab19216749141885980955161e1f3aa64e8e"
+      },
+      "studioIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-26b-a4b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-26b-a4b@lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 28054761043,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      },
+      "macbookIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "gemma-4-26b-a4b-it",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q8_0.gguf",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 28054686112,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      },
+      "casesCompared": 24,
+      "bothValid": 24,
+      "sameScore": 24,
+      "sameFlag": 24,
+      "identicalContent": 19,
+      "identicalReasoning": 4,
+      "samePromptTokens": 24,
+      "meanAbsScoreDiff": 0.0,
+      "rows": [
+        {
+          "caseId": "lp-a93595ffdd27b1386d1c0751",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            220,
+            220
+          ]
+        },
+        {
+          "caseId": "lp-bb0d9140f99f59b386bf9b1a",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            652,
+            546
+          ]
+        },
+        {
+          "caseId": "lp-47616aeddca4959a72fb194a",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            196,
+            196
+          ]
+        },
+        {
+          "caseId": "lp-eb260358251cd67783785165",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            338,
+            286
+          ]
+        },
+        {
+          "caseId": "lp-68ed0be93c207732303609de",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            150,
+            150
+          ]
+        },
+        {
+          "caseId": "lp-f24fcbfc855a3dd9cd05496e",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            756,
+            320
+          ]
+        },
+        {
+          "caseId": "lp-966ba67cc904fa425973115e",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            191,
+            191
+          ]
+        },
+        {
+          "caseId": "lp-76cd0aed8b891d15a1b9b2ac",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            250,
+            237
+          ]
+        },
+        {
+          "caseId": "lp-3705effefd15998d1a02bc4c",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            327,
+            372
+          ]
+        },
+        {
+          "caseId": "lp-a263ca251a0643721984f590",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            383,
+            304
+          ]
+        },
+        {
+          "caseId": "lp-e077878b2d9bf25222baaa85",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            219,
+            219
+          ]
+        },
+        {
+          "caseId": "lp-eb1305bcf656cad9bfb05b99",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            306,
+            289
+          ]
+        },
+        {
+          "caseId": "lp-ba157f9daef3ff6a33b7dc70",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            248,
+            283
+          ]
+        },
+        {
+          "caseId": "lp-5e3a9931857d6fa620285a1d",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            456,
+            502
+          ]
+        },
+        {
+          "caseId": "lp-d85dc0683700d39e1cd20061",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            144,
+            182
+          ]
+        },
+        {
+          "caseId": "lp-b6e52babc5de3eb1bb011c04",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            413,
+            361
+          ]
+        },
+        {
+          "caseId": "lp-5f8b6f732886e91738705c76",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            256,
+            474
+          ]
+        },
+        {
+          "caseId": "lp-5d95482b724ecb5b02e3d31e",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            400,
+            709
+          ]
+        },
+        {
+          "caseId": "lp-bde283c2017c73c41581d107",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            200,
+            198
+          ]
+        },
+        {
+          "caseId": "lp-5122ddf07d5d8c700be8d191",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            319,
+            326
+          ]
+        },
+        {
+          "caseId": "lp-2b33afa3d2e981d5aabf1199",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            185,
+            185
+          ]
+        },
+        {
+          "caseId": "lp-d5a28c34dd1b8a905b07cce8",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            441,
+            464
+          ]
+        },
+        {
+          "caseId": "lp-bc182519d6731b3b45241a78",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            217,
+            263
+          ]
+        },
+        {
+          "caseId": "lp-04c24d55a11144bb93232f8d",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            424,
+            401
+          ]
+        }
+      ]
+    },
+    {
+      "model": "Ornith 1.5 35B-A3B GGUF Q8_0",
+      "studio": {
+        "path": "evals/runs/lmstudio-studio-2026-10-05/longpi-paper/studio-ornith-q8-thinking1024-full.jsonl",
+        "sha256": "8718335e7f32f32ad4611a6c624e90146f952e4c91f4260279b13c33b99ff349"
+      },
+      "macbook": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/longpi-paper/ornith15-35b-a3b-q8-thinking1024-full.jsonl",
+        "sha256": "4874aa9529b5af7bd92a1d59a8e1c6e345aeaf4f3482ff30f9b9afd303efa9fc"
+      },
+      "studioIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 38704971520,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      },
+      "macbookIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "ornith-1.5-35b-a3b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 38704971520,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      },
+      "casesCompared": 24,
+      "bothValid": 24,
+      "sameScore": 14,
+      "sameFlag": 23,
+      "identicalContent": 12,
+      "identicalReasoning": 0,
+      "samePromptTokens": 24,
+      "meanAbsScoreDiff": 0.04416666666666667,
+      "rows": [
+        {
+          "caseId": "lp-a93595ffdd27b1386d1c0751",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            123,
+            289
+          ]
+        },
+        {
+          "caseId": "lp-bb0d9140f99f59b386bf9b1a",
+          "studioScore": 0.78,
+          "macbookScore": 0.72,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            631,
+            802
+          ]
+        },
+        {
+          "caseId": "lp-47616aeddca4959a72fb194a",
+          "studioScore": 0.95,
+          "macbookScore": 0.97,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            241,
+            373
+          ]
+        },
+        {
+          "caseId": "lp-eb260358251cd67783785165",
+          "studioScore": 0.97,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            354,
+            433
+          ]
+        },
+        {
+          "caseId": "lp-68ed0be93c207732303609de",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            143,
+            156
+          ]
+        },
+        {
+          "caseId": "lp-f24fcbfc855a3dd9cd05496e",
+          "studioScore": 0.1,
+          "macbookScore": 0.85,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": false,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            764,
+            548
+          ]
+        },
+        {
+          "caseId": "lp-966ba67cc904fa425973115e",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            202,
+            356
+          ]
+        },
+        {
+          "caseId": "lp-76cd0aed8b891d15a1b9b2ac",
+          "studioScore": 0.98,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            378,
+            357
+          ]
+        },
+        {
+          "caseId": "lp-3705effefd15998d1a02bc4c",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            269,
+            261
+          ]
+        },
+        {
+          "caseId": "lp-a263ca251a0643721984f590",
+          "studioScore": 0.9,
+          "macbookScore": 0.92,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            466,
+            523
+          ]
+        },
+        {
+          "caseId": "lp-e077878b2d9bf25222baaa85",
+          "studioScore": 0.98,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            179,
+            182
+          ]
+        },
+        {
+          "caseId": "lp-eb1305bcf656cad9bfb05b99",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            406,
+            588
+          ]
+        },
+        {
+          "caseId": "lp-ba157f9daef3ff6a33b7dc70",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            242,
+            326
+          ]
+        },
+        {
+          "caseId": "lp-5e3a9931857d6fa620285a1d",
+          "studioScore": 0.92,
+          "macbookScore": 0.9,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            215,
+            370
+          ]
+        },
+        {
+          "caseId": "lp-d85dc0683700d39e1cd20061",
+          "studioScore": 0.95,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            250,
+            234
+          ]
+        },
+        {
+          "caseId": "lp-b6e52babc5de3eb1bb011c04",
+          "studioScore": 0.98,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            281,
+            367
+          ]
+        },
+        {
+          "caseId": "lp-5f8b6f732886e91738705c76",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            307,
+            305
+          ]
+        },
+        {
+          "caseId": "lp-5d95482b724ecb5b02e3d31e",
+          "studioScore": 0.95,
+          "macbookScore": 0.85,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            290,
+            623
+          ]
+        },
+        {
+          "caseId": "lp-bde283c2017c73c41581d107",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            339,
+            470
+          ]
+        },
+        {
+          "caseId": "lp-5122ddf07d5d8c700be8d191",
+          "studioScore": 0.95,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            441,
+            380
+          ]
+        },
+        {
+          "caseId": "lp-2b33afa3d2e981d5aabf1199",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            106,
+            245
+          ]
+        },
+        {
+          "caseId": "lp-d5a28c34dd1b8a905b07cce8",
+          "studioScore": 0.9,
+          "macbookScore": 0.92,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            375,
+            520
+          ]
+        },
+        {
+          "caseId": "lp-bc182519d6731b3b45241a78",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            309,
+            224
+          ]
+        },
+        {
+          "caseId": "lp-04c24d55a11144bb93232f8d",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            428,
+            537
+          ]
+        }
+      ]
+    },
+    {
+      "model": "Gemma 4 31B-it GGUF Q8_0",
+      "studio": {
+        "path": "evals/runs/lmstudio-studio-2026-10-05/longpi-paper/studio-gemma31-q8-thinking1024-full.jsonl",
+        "sha256": "53422fab623b0a79e47a4aade64ef966e3a3497b1c679758c02e302a05ff3802"
+      },
+      "macbook": {
+        "path": "evals/runs/lmstudio-new-panel-v2-2026-10-04/longpi-paper/gemma4-31b-it-q8-thinking1024-full.jsonl",
+        "sha256": "a42b80598807fba75126534c73311ae9b0424821e8347ab95962e1c65a1bb2e8"
+      },
+      "studioIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "google/gemma-4-31b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-31b@lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 33836475099,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      },
+      "macbookIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "gemma-4-31b-it",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q8_0.gguf",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 33836400256,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      },
+      "casesCompared": 24,
+      "bothValid": 24,
+      "sameScore": 23,
+      "sameFlag": 24,
+      "identicalContent": 22,
+      "identicalReasoning": 20,
+      "samePromptTokens": 24,
+      "meanAbsScoreDiff": 0.002083333333333335,
+      "rows": [
+        {
+          "caseId": "lp-a93595ffdd27b1386d1c0751",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            364,
+            364
+          ]
+        },
+        {
+          "caseId": "lp-bb0d9140f99f59b386bf9b1a",
+          "studioScore": 0.9,
+          "macbookScore": 0.9,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            423,
+            423
+          ]
+        },
+        {
+          "caseId": "lp-47616aeddca4959a72fb194a",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            242,
+            242
+          ]
+        },
+        {
+          "caseId": "lp-eb260358251cd67783785165",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            300,
+            300
+          ]
+        },
+        {
+          "caseId": "lp-68ed0be93c207732303609de",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            209,
+            209
+          ]
+        },
+        {
+          "caseId": "lp-f24fcbfc855a3dd9cd05496e",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            318,
+            318
+          ]
+        },
+        {
+          "caseId": "lp-966ba67cc904fa425973115e",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            195,
+            195
+          ]
+        },
+        {
+          "caseId": "lp-76cd0aed8b891d15a1b9b2ac",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            339,
+            339
+          ]
+        },
+        {
+          "caseId": "lp-3705effefd15998d1a02bc4c",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            218,
+            223
+          ]
+        },
+        {
+          "caseId": "lp-a263ca251a0643721984f590",
+          "studioScore": 0.9,
+          "macbookScore": 0.85,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            357,
+            275
+          ]
+        },
+        {
+          "caseId": "lp-e077878b2d9bf25222baaa85",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            245,
+            190
+          ]
+        },
+        {
+          "caseId": "lp-eb1305bcf656cad9bfb05b99",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            326,
+            326
+          ]
+        },
+        {
+          "caseId": "lp-ba157f9daef3ff6a33b7dc70",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            261,
+            261
+          ]
+        },
+        {
+          "caseId": "lp-5e3a9931857d6fa620285a1d",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            225,
+            225
+          ]
+        },
+        {
+          "caseId": "lp-d85dc0683700d39e1cd20061",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            242,
+            242
+          ]
+        },
+        {
+          "caseId": "lp-b6e52babc5de3eb1bb011c04",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            335,
+            335
+          ]
+        },
+        {
+          "caseId": "lp-5f8b6f732886e91738705c76",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            266,
+            266
+          ]
+        },
+        {
+          "caseId": "lp-5d95482b724ecb5b02e3d31e",
+          "studioScore": 0.9,
+          "macbookScore": 0.9,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            333,
+            333
+          ]
+        },
+        {
+          "caseId": "lp-bde283c2017c73c41581d107",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            197,
+            197
+          ]
+        },
+        {
+          "caseId": "lp-5122ddf07d5d8c700be8d191",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            388,
+            388
+          ]
+        },
+        {
+          "caseId": "lp-2b33afa3d2e981d5aabf1199",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            257,
+            257
+          ]
+        },
+        {
+          "caseId": "lp-d5a28c34dd1b8a905b07cce8",
+          "studioScore": 0.9,
+          "macbookScore": 0.9,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            310,
+            310
+          ]
+        },
+        {
+          "caseId": "lp-bc182519d6731b3b45241a78",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            267,
+            267
+          ]
+        },
+        {
+          "caseId": "lp-04c24d55a11144bb93232f8d",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            340,
+            340
+          ]
+        }
+      ]
+    },
+    {
+      "model": "Qwen3.8 27B GGUF Q8_0",
+      "studio": {
+        "path": "evals/runs/lmstudio-studio-2026-10-05/longpi-paper/studio-qwen38-q8gguf-thinking1024-full.jsonl",
+        "sha256": "bc06b1fcdedc3c74672e3ad65ceb63236d89d6cb66fe478469b0ac564a0b7e6a"
+      },
+      "macbook": {
+        "path": "evals/runs/lmstudio-qwen38-full-2026-10-04/longpi-paper/qwen38-27b-q8-thinking1024-full.jsonl",
+        "sha256": "4792d9ec0497f523f4fded44eed39a4f6600c8273069e40871cc1d652db64059"
+      },
+      "studioIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "qwen/qwen3.8-27b@q8_0",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:qwen/qwen3.8-27b@lmstudio-community/Qwen3.8-27B-GGUF/Qwen3.8-27B-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 29978410384,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      },
+      "macbookIdentity": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "qwen/qwen3.8-27b",
+        "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:qwen/qwen3.8-27b",
+        "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 29978410384,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000
+      },
+      "casesCompared": 24,
+      "bothValid": 24,
+      "sameScore": 23,
+      "sameFlag": 24,
+      "identicalContent": 22,
+      "identicalReasoning": 22,
+      "samePromptTokens": 24,
+      "meanAbsScoreDiff": 0.002083333333333335,
+      "rows": [
+        {
+          "caseId": "lp-a93595ffdd27b1386d1c0751",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            207,
+            207
+          ]
+        },
+        {
+          "caseId": "lp-bb0d9140f99f59b386bf9b1a",
+          "studioScore": 0.7,
+          "macbookScore": 0.75,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": false,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            443,
+            399
+          ]
+        },
+        {
+          "caseId": "lp-47616aeddca4959a72fb194a",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            211,
+            211
+          ]
+        },
+        {
+          "caseId": "lp-eb260358251cd67783785165",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            238,
+            238
+          ]
+        },
+        {
+          "caseId": "lp-68ed0be93c207732303609de",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            211,
+            211
+          ]
+        },
+        {
+          "caseId": "lp-f24fcbfc855a3dd9cd05496e",
+          "studioScore": 0.7,
+          "macbookScore": 0.7,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            669,
+            669
+          ]
+        },
+        {
+          "caseId": "lp-966ba67cc904fa425973115e",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            192,
+            192
+          ]
+        },
+        {
+          "caseId": "lp-76cd0aed8b891d15a1b9b2ac",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            381,
+            381
+          ]
+        },
+        {
+          "caseId": "lp-3705effefd15998d1a02bc4c",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            150,
+            150
+          ]
+        },
+        {
+          "caseId": "lp-a263ca251a0643721984f590",
+          "studioScore": 0.9,
+          "macbookScore": 0.9,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": false,
+          "sameReasoning": false,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            885,
+            862
+          ]
+        },
+        {
+          "caseId": "lp-e077878b2d9bf25222baaa85",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            223,
+            223
+          ]
+        },
+        {
+          "caseId": "lp-eb1305bcf656cad9bfb05b99",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            290,
+            290
+          ]
+        },
+        {
+          "caseId": "lp-ba157f9daef3ff6a33b7dc70",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            169,
+            169
+          ]
+        },
+        {
+          "caseId": "lp-5e3a9931857d6fa620285a1d",
+          "studioScore": 0.7,
+          "macbookScore": 0.7,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            424,
+            424
+          ]
+        },
+        {
+          "caseId": "lp-d85dc0683700d39e1cd20061",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            224,
+            224
+          ]
+        },
+        {
+          "caseId": "lp-b6e52babc5de3eb1bb011c04",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            374,
+            374
+          ]
+        },
+        {
+          "caseId": "lp-5f8b6f732886e91738705c76",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            185,
+            185
+          ]
+        },
+        {
+          "caseId": "lp-5d95482b724ecb5b02e3d31e",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            350,
+            350
+          ]
+        },
+        {
+          "caseId": "lp-bde283c2017c73c41581d107",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            325,
+            325
+          ]
+        },
+        {
+          "caseId": "lp-5122ddf07d5d8c700be8d191",
+          "studioScore": 0.98,
+          "macbookScore": 0.98,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            297,
+            297
+          ]
+        },
+        {
+          "caseId": "lp-2b33afa3d2e981d5aabf1199",
+          "studioScore": 0,
+          "macbookScore": 0,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            193,
+            193
+          ]
+        },
+        {
+          "caseId": "lp-d5a28c34dd1b8a905b07cce8",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            398,
+            398
+          ]
+        },
+        {
+          "caseId": "lp-bc182519d6731b3b45241a78",
+          "studioScore": 1,
+          "macbookScore": 1,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            191,
+            191
+          ]
+        },
+        {
+          "caseId": "lp-04c24d55a11144bb93232f8d",
+          "studioScore": 0.95,
+          "macbookScore": 0.95,
+          "studioFinish": "stop",
+          "macbookFinish": "stop",
+          "sameScore": true,
+          "sameFlag": true,
+          "sameContent": true,
+          "sameReasoning": true,
+          "samePromptTokens": true,
+          "reasoningTokens": [
+            325,
+            325
+          ]
+        }
+      ]
+    }
+  ]
+}

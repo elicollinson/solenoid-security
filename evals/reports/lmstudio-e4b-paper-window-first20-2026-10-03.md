@@ -19,4 +19,4 @@ The first six families supplied the numerical diagnostic; the other 14 are repor
 
 Removing 25 redundant terminal windows changes 1 case flags. Full input and 512-word / 384-stride preserved windows share the same engine settings and >0.5 threshold. Different total generation work remains a confound. Exact reused scores are linked to their original native requests; they are not additional trials.
 
-Per-family counts, case scores, window provenance and captured checkpoint byte hashes are retained in evals/runs/lmstudio-thinking1024-2026-10-03/lmstudio-e4b-paper-window-first20-2026-10-03.json. Checkpoints may subsequently be extended; recorded hashes describe the captured bytes at analysis time.
+Per-family counts, case scores, window provenance and captured checkpoint byte hashes are retained in evals/runs/lmstudio-thinking1024-2026-10-03/lmstudio-e4b-paper-window-first20-2026-10-03.json ([published copy](../analysis/lmstudio-thinking1024-2026-10-03/results/lmstudio-e4b-paper-window-first20-2026-10-03.json)). Checkpoints may subsequently be extended; recorded hashes describe the captured bytes at analysis time.

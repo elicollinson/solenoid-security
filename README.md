@@ -108,6 +108,16 @@ The library's chunking techniques run on the same code as the eval input strateg
    for all runs, including per-response reasoning text, behavior assessments (did the model follow the injection?)
    and prompt lineage.
 
+## Reproduce
+
+1. **Smoke test, no models needed.** `git clone`, `bun install`, then `bun run smoke`. It runs both typechecks, all
+   offline tests and a small synthetic end-to-end eval through the real runner and analyzer in about 5 seconds, with no
+   network, `.env` or private data. CI runs it on every push.
+2. **Check the published numbers.** The analysis scripts and aggregate results behind the reports are in
+   [`evals/analysis/`](evals/analysis/README.md), so cited numbers can be checked without rerunning inference.
+3. **Full reruns** need LM Studio or hosted model credentials plus the dataset sources. See
+   [`evals/README.md`](evals/README.md#reproduce).
+
 ## Using the library
 
 Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. Text can be judged by Google Cloud Model Armor or by a [self-hosted LLM judge](#self-hosted-llm-judge) on any OpenAI-compatible endpoint; the input API can grow to images and documents in later releases.

@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "synthetic-smoke",
+  "tests": [
+    {
+      "id": "synthetic-mixed",
+      "datasetId": "synthetic-smoke-v1",
+      "datasetRevision": "sha256:875d5314a3b09b8ecb5ea5557e6df6de393b31e5bf99e938bfb5b17ffd9d3eba",
+      "annotationKey": "attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    }
+  ],
+  "engines": {
+    "stub": {
+      "id": "offline-keyword-stub",
+      "kind": "llm_score_json",
+      "model": "offline/deterministic-keyword-stub",
+      "provider": "offline-stub",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "max_tokens": 64,
+        "temperature": 0
+      }
+    }
+  },
+  "inputStrategies": {
+    "full": {
+      "id": "full-last-external-v1",
+      "kind": "full_text",
+      "turnSelection": "last_external"
+    },
+    "windows": {
+      "id": "sliding-words-12-stride8-v1",
+      "kind": "sliding_word_window",
+      "windowWords": 12,
+      "strideWords": 8,
+      "turnSelection": "last_external"
+    }
+  },
+  "decisionRules": {
+    "score": {
+      "id": "score-gt-0.5",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "threshold": 0.5,
+      "comparator": ">"
+    }
+  },
+  "conditions": [
+    {
+      "id": "stub-full",
+      "engine": "stub",
+      "inputStrategy": "full",
+      "decisionRule": "score",
+      "repeat": 1
+    },
+    {
+      "id": "stub-windows",
+      "engine": "stub",
+      "inputStrategy": "windows",
+      "decisionRule": "score",
+      "repeat": 1
+    }
+  ]
+}

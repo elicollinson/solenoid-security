@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "synthetic-smoke-v1",
+  "revision": "sha256:875d5314a3b09b8ecb5ea5557e6df6de393b31e5bf99e938bfb5b17ffd9d3eba",
+  "source": {
+    "path": "evals/fixtures/smoke/synthetic-smoke-v1.jsonl",
+    "sha256": "875d5314a3b09b8ecb5ea5557e6df6de393b31e5bf99e938bfb5b17ffd9d3eba",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 8,
+  "annotationKey": "attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "synthetic": true,
+    "license": "MIT",
+    "note": "Eight synthetic cases written for scripts/smoke.ts. Not drawn from any benchmark, private source or model output."
+  }
+}

@@ -7,6 +7,28 @@ uses the explicit path `bun test ./evals/tests`: keep the leading `./`. An
 unprefixed argument is a discovery filter and can scan the retained artifact
 tree, causing macOS subprocess `EBADF` failures in Bun ([upstream issue](https://github.com/oven-sh/bun/issues/32067)).
 
+## Reproduce
+
+1. **Smoke test (no models, no network, no `.env`, no private data).** After `git clone` and `bun install`, run
+   `bun run smoke`. It typechecks the library and the evals, runs every offline test suite, and passes a committed
+   synthetic fixture ([`fixtures/smoke/`](fixtures/smoke/)) through the real `run-suite.ts` and `analyze-run.ts`. A
+   deterministic keyword detector stands in for the model endpoint, and outputs go to a temporary directory. It takes
+   about 5 seconds and prints `SMOKE PASS` or `SMOKE FAIL`. CI runs the same command
+   ([`.github/workflows/ci.yml`](../.github/workflows/ci.yml)).
+2. **Check published numbers without inference.** [`analysis/`](analysis/README.md) holds the analysis scripts from
+   the ignored run directories and the aggregate result files the reports cite (`analysis/<run-id>/results/`). If you
+   have the run checkpoints, rerun the scripts from the repository root.
+3. **Full reruns** need LM Studio (or an OpenRouter key or Model Armor credentials) and the dataset sources. See
+   [New evaluations](#new-evaluations) and [LM Studio / LM Link research backend](#lm-studio--lm-link-research-backend) below.
+
+**Skipped tests.** On a fresh clone, about 50 tests in `evals/tests/` skip. Each is gated on a git-ignored dataset
+source existing: canonical JSONL under `evals/private/sources/` or `evals/datasets/`, or a pinned upstream checkout
+under `evals/private/upstream/` or `.local/eval-sources/`. Unlock them by building those sources.
+`bun run eval:fetch-public` builds the web, AIB and AgentDojo cohorts, and `bun run eval:fetch-bipia` builds BIPIA
+email. For the other cohorts, run the `evals/scripts/import-*.py` adapter named in each dataset manifest (see
+[`datasets/PUBLIC_SOURCES.md`](datasets/PUBLIC_SOURCES.md)). LLMail private data, PIDS (non-commercial) and other
+restricted sources are not distributed, so their tests stay skipped outside the original workspace.
+
 | Layer | Owns | Example |
 | --- | --- | --- |
 | Dataset | Inputs, turn structure, source hashes, labels, facets | LLMail-Inject attack attempts; NotInject benign cases |

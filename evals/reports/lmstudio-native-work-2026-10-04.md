@@ -38,7 +38,7 @@ compared. A later speed/quality experiment would need separately versioned
 configurations, the same inputs, explicit abstentions and attack-following
 regressions. Current raw outputs already provide the baseline for such a test.
 
-[Source-linked native work audit](../runs/lmstudio-available-panel-2026-10-04/first6-native-work-audit.json)
+[Source-linked native work audit](../analysis/lmstudio-available-panel-2026-10-04/results/first6-native-work-audit.json)
 retains per-case request IDs, input hashes, usage, timing, native draft counters,
 engine identities and captured checkpoint hashes. The
 [protocol-tranche results](lmstudio-larger-protocol-first6-2026-10-04.md) show

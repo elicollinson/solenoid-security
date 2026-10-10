@@ -19,4 +19,4 @@ An unchanged net family can contain both gained and lost detections. These count
 
 The E2B paper gain includes one case supported only by a clean-source window that also produces a clean false positive. Conversely, all ten E2B email losses retain at least one window containing the entire appended payload. These audits limit a simple claim that chunking always helps by exposing attacks. Gemma26 is at the email ceiling; its zero effect there does not demonstrate equivalence outside this cohort.
 
-Coverage excludes redundant terminal windows using captured outputs. Resampling adds no inference calls and changes no threshold or primary result. Source-prefix hashes and per-family outcomes are retained in `evals/runs/lmstudio-long-email-2026-10-04/domain-family-comparison.json`.
+Coverage excludes redundant terminal windows using captured outputs. Resampling adds no inference calls and changes no threshold or primary result. Source-prefix hashes and per-family outcomes are retained in `evals/runs/lmstudio-long-email-2026-10-04/domain-family-comparison.json` ([published copy](../analysis/lmstudio-long-email-2026-10-04/results/domain-family-comparison.json)).

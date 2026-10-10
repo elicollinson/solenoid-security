@@ -578,7 +578,7 @@ no reasoning, and its short-prompt token accounting is unreliable.**
   are counted as reasoning (most responses stop at total_tokens = 554). The mechanism is unconfirmed; the pattern is
   consistent with stripped post-answer control tokens. The numeric probe shows 4/15 exact endpoint pairs, mixing
   rationale-backed detections at 0.9 with low-target 0.1 scores. See log L123 and the
-  [token audit](runs/lmstudio-new-panel-v2-2026-10-04/laguna-token-accounting-audit.json).
+  [token audit](analysis/lmstudio-new-panel-v2-2026-10-04/results/laguna-token-accounting-audit.json).
 - Strength: **Moderate** for the detection deficit and the accounting anomaly (complete cohorts, one configuration).
   **Suggestive** for the recognition-without-concern reading (outcome-selected rationales). The same dismissal appears
   in every reasoning model's naive misses (O43), so it is not unique to Laguna. Laguna's distinguishing traits are its
@@ -600,7 +600,7 @@ are model-specific, and the MoE models have little headroom.**
   The sign of the mean difference flips between raw and tail-free code. The pre-registered MoE paper-400 extension (reported separately) shows no headroom
   either: Gemma26 291→291 jointly valid (0 clean flags; 2 full-input abstentions flagged by windows), Ornith 297→299
   (+0.7 pp [0, +1.7]; clean 0→1/100, the same item as in the 80-case tranche). See the [Studio Study A report](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md),
-  `runs/lmstudio-studio-2026-10-05/chunking-moe-dense-summary.json`, log L131–L144.
+  `runs/lmstudio-studio-2026-10-05/chunking-moe-dense-summary.json` ([published copy](analysis/lmstudio-studio-2026-10-05/results/chunking-moe-dense-summary.json)), log L131–L144.
 - Strength: **Moderate** that no group difference is visible on this panel (complete, audited, pre-registered pairs;
   raw and tail-free replays agree). **Suggestive at most** as evidence of equal effects: 2 vs 3 models from four
   families; both MoE models are at 58–60/60 on full input in 5 of 6 cells; nearly all movement is one template
@@ -663,7 +663,7 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
    item 11).
 11. **Pending Studio follow-ups (paused by user decision, 2026-10-07; log L144):** (a) the Qwen3.8 MLX diagnostic
    (current MLX engine with strict schema vs prompt-only JSON, then a matched GGUF; F2, L136), ready as
-   `runs/lmstudio-studio-2026-10-05/run-mlx-diagnostic.unpaused.sh`; (b) Study B, the quantization × chunking ladder
+   `runs/lmstudio-studio-2026-10-05/run-mlx-diagnostic.unpaused.sh` ([published copy](analysis/lmstudio-studio-2026-10-05/run-mlx-diagnostic.unpaused.sh)); (b) Study B, the quantization × chunking ladder
    (O32, O33, O42, O45; `study-b-plan-amendment-1.json`), ready as `queue-study-b2.txt` via `run-study-b.unpaused.sh`.
    _Tracked in [#25](https://github.com/elicollinson/solenoid-security/issues/25) (MLX diagnostic) and [#26](https://github.com/elicollinson/solenoid-security/issues/26) (Study B)._
 3. **Fresh long-document cohort** (O1, O2, O4, O15): real documents, new subtle attacks, authorized-instruction controls,
@@ -800,7 +800,7 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
 
 **Status: complete for full input.** Window pairs (P2) were run on the Mac Studio for five Q8 builds (Study A; [Studio Study A report](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md)). Full analysis is in the
 [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md), with group statistics in
-`runs/lmstudio-new-panel-v2-2026-10-04/moe-dense-panel-summary.json`.
+`runs/lmstudio-new-panel-v2-2026-10-04/moe-dense-panel-summary.json` ([published copy](analysis/lmstudio-new-panel-v2-2026-10-04/results/moe-dense-panel-summary.json)).
 
 | Group | Qualified and complete | Not qualified / excluded |
 |---|---|---|

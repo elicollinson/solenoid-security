@@ -56,4 +56,4 @@ These paired comparisons require both cases to have valid scores; Qwen's three a
 
 The next live work remains the numerical hijack diagnostic and matched raw model baselines. A future calibration experiment needs disjoint source families and broader benign controls, with its threshold frozen before test evaluation. Exact-zero overlaps also motivate testing the detector's definition of an attempted redirection, rather than treating every miss as a threshold issue.
 
-[Source-linked analysis](../runs/bipia-score-distribution-2026-10-04/comparison.json) retains histograms, native checkpoint hashes, paired case IDs and configuration identities. [Full BIPIA results](lmstudio-panel-bipia-2026-10-04.md) retain coverage and abstentions.
+[Source-linked analysis](../analysis/bipia-score-distribution-2026-10-04/results/comparison.json) retains histograms, native checkpoint hashes, paired case IDs and configuration identities. [Full BIPIA results](lmstudio-panel-bipia-2026-10-04.md) retain coverage and abstentions.

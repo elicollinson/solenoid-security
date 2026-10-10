@@ -4,11 +4,11 @@
 five local Q8 detectors on one Mac Studio: two MoE (Gemma 4 26B-A4B, Ornith 1.5 35B-A3B) and three dense (Qwen3.8 27B,
 Muse Glimmer 28B, Gemma 4 31B-it). Each detector is tested on the first 20 families of the LongPIBench paper, email and
 code cohorts. The design was frozen before inference
-(`runs/lmstudio-studio-2026-10-05/chunking-moe-dense-plan.json`, amended once by
-`chunking-moe-dense-plan-amendment-1.json`). Execution and per-model audits are in research-log entries L131–L144. All numbers come from
-[`chunking-moe-dense-summary.json`](../runs/lmstudio-studio-2026-10-05/chunking-moe-dense-summary.json). That file is
+(`runs/lmstudio-studio-2026-10-05/chunking-moe-dense-plan.json` ([published copy](../analysis/lmstudio-studio-2026-10-05/results/chunking-moe-dense-plan.json)), amended once by
+[`chunking-moe-dense-plan-amendment-1.json`](../analysis/lmstudio-studio-2026-10-05/results/chunking-moe-dense-plan-amendment-1.json)). Execution and per-model audits are in research-log entries L131–L144. All numbers come from
+[`chunking-moe-dense-summary.json`](../analysis/lmstudio-studio-2026-10-05/results/chunking-moe-dense-summary.json). That file is
 produced offline by `summarize-studio-chunking.ts`, which validates every checkpoint with the partial auditor, and
-`analyze-studio-chunking.py`, both in the same run directory. No paid calls were made.
+`analyze-studio-chunking.py`, both in the same run directory (published in [`evals/analysis/lmstudio-studio-2026-10-05/`](../analysis/lmstudio-studio-2026-10-05/)). No paid calls were made.
 
 ## Bottom line
 

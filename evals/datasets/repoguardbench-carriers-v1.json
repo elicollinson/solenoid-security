@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "repoguardbench-carriers-v1",
+  "revision": "sha256:91d2717e90343a007381b4d1e129eae1522a942be03135fe6814c62e7883e2a9",
+  "source": {
+    "path": "evals/private/sources/repoguardbench-carriers-v1.jsonl",
+    "sha256": "91d2717e90343a007381b4d1e129eae1522a942be03135fe6814c62e7883e2a9",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 575,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/DaoyuanLi2816/RepoGuardBench",
+    "commit": "49d6e51b5189f1f49a948bf360ed73d9487548a3",
+    "paper": "RepoGuardBench: Repository-Borne Prompt Injection Attacks and Lightweight Defenses for Local Coding Agents (DL4C @ ICML 2026)",
+    "sourceFiles": {
+      "data/repoguardbench_core.jsonl": "sha256:761d6e0f30b693ece46a10bf910e643d9f265dd2fabaac99779584cf433e462d",
+      "data/repoguardbench_real.jsonl": "sha256:dcc47416f94e54f71a9e2fe7536f7a69fa6300db263fd3d89cd229444600897c",
+      "LICENSE": "sha256:6ff94969cafec607c90ec1f6f939d0c8ff16dc53e0c7cc5a77e9badac63508ac",
+      "LICENSE-DATA": "sha256:3a460c85614f59675300cac572e3c09f8e8f1ed26225f8ebba6c269d5c2c25a1",
+      "repoguard/attacks/carriers.py": "sha256:1129ef8533264ded5bce12a120a77eecfbdabe100ff365f19c2244ba2fae227b"
+    },
+    "license": "Code MIT (LICENSE); task data CC BY 4.0 (LICENSE-DATA), commercial use permitted with attribution (Daoyuan Li, RepoGuardBench). Generated cases indicate changes: payloads are inserted by the pinned upstream carriers module.",
+    "accessLimits": "Public. Payloads are inert and workspace-local by upstream design. Generated cases stay under ignored evals/private/.",
+    "selection": "All 94 tasks (80 Core, 14 Applied) in upstream file order, reduced to distinct clean artifacts per carrier: upstream tasks share READMEs (34 distinct), issues (26) and target files (34), and the test-log and rule-file carriers are task-independent (1 each). Each distinct artifact is poisoned with all 5 goals by the pinned upstream carriers module, using the first task that has it. Clean siblings: each distinct README, issue and target source file (upstream), plus a constructed clean test log (upstream template with the notice line removed). The agent rule file exists only when poisoned, so it has no clean sibling. No two cases share a screened text.",
+    "construction": "The screened external turn is the single carrier artifact, prefixed 'File: <path>' (the issue is screened as its text). The operator turn is a repository-authored neutral task naming the upstream target test.",
+    "labelMeaning": "Inert injection attempt placed in a repository artifact versus the clean artifact. Not observed agent compliance. Five fixed payload texts (one per goal) recur across tasks: variety is in carrier and surrounding repository content, not payload wording.",
+    "facets": [
+      "task_id",
+      "tier",
+      "carrier",
+      "artifact_path",
+      "attack_goal",
+      "attack_template_id",
+      "clean_sibling",
+      "pair_id"
+    ],
+    "classCounts": {
+      "injection": 480,
+      "benign": 95
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "nemotron-ipi-domain-sample-v1",
+  "revision": "sha256:3cfb0e59d859a8a8afc962ab87de790adf72adef61fddd6e8fd09f2adb99902f",
+  "source": {
+    "path": "evals/private/sources/nemotron-ipi-domain-sample-v1.jsonl",
+    "sha256": "3cfb0e59d859a8a8afc962ab87de790adf72adef61fddd6e8fd09f2adb99902f",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 360,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://huggingface.co/datasets/nvidia/Nemotron-RL-Agentic-Indirect-Prompt-Injection-v1",
+    "revision": "d738d4f361cc38bb4d7a42b9066776dade5332f5",
+    "sourceFiles": {
+      "train.jsonl": "sha256:3329da17564a7eb287e2730fc7d6956e1f4fe51e8950ac4f110b3c37e78cf3b9",
+      "README.md": "sha256:0386806252047746e06cba58bba3f91905aa02ccdd4def963022440e6d5de851"
+    },
+    "license": "CC BY 4.0 (dataset card and every row's license field). Commercial use permitted with attribution to NVIDIA Corporation. Credit: Nemotron-RL-Agentic-Indirect-Prompt-Injection-v1.",
+    "accessLimits": "Public, ungated. Raw rows and generated cases stay under ignored evals/private/.",
+    "selection": "Attack-only. 40 rows per domain for all 9 domains (360). Within each domain, rows are ordered by SHA-256 of 'nemotron-ipi/<id>' per attack category and taken round-robin across the sorted categories, so small categories are fully represented before large ones repeat. No model-driven filtering.",
+    "construction": "Operator turns are the upstream system prompt and user request. The screened external turn is the full simulated backend environment (JSON, indent 2) that the required read tool exposes; it contains the injection inside the upstream injection_vector field. Upstream injection_text is not always verbatim in the environment (the red-teaming loop rewrote some); placement_in_field is start/middle/end when it is verbatim, else unlocated.",
+    "labelMeaning": "Every row is a successful-against-the-defender injection attempt disguised as domain content (upstream retains only attacks that fooled Nemotron Nano 3). This is attack-only: use caseSelector positive and detection_rate. It measures detection, not agent compliance. Domain content is synthetic.",
+    "facets": [
+      "domain",
+      "attack_category",
+      "injection_vector",
+      "target_tool",
+      "verification_type",
+      "placement_in_field",
+      "injection_verbatim_in_environment",
+      "attack_template_id"
+    ],
+    "classCounts": {
+      "injection": 360,
+      "benign": 0
+    }
+  }
+}

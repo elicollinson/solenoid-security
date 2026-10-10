@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "longpi-email-llmail-v1",
+  "revision": "sha256:c99df4aee18d3dacc2d2adbbd9058173c6bff8f08a11ce9288a31aa06153d179",
+  "source": {
+    "path": "evals/private/sources/longpi-email-llmail-v1.jsonl",
+    "sha256": "c99df4aee18d3dacc2d2adbbd9058173c6bff8f08a11ce9288a31aa06153d179",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 400,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/liu00222/LongPIBench",
+    "commit": "c7b80114ae56f65fb8019ec82afdb3df91e4ed65",
+    "dataset": "https://huggingface.co/datasets/RainWatcher/LongPIBench",
+    "datasetRevision": "cdfdfdba8838911ec3d120d5bbf584c0afb280f2",
+    "adapterCodeHashes": {
+      "benchmark.py": "cf7f06e36dea747b038f35af9fcaf8bfacd756bf1ac21c9437fb77a687c429c3",
+      "attacks.py": "9edfc687950befac7f1fd22e50f0231c7d42f24caf71d6b58312886740aa2ea8",
+      "prompts.py": "d75883ce33a94f589793ee4509843bf2657681a7b268be1b1c4a0d25c2851755",
+      "data.py": "55856653925b5dba4c11e4c8801e301a11b83c23134263659ce67c10c23748cf"
+    },
+    "payloadPool": {
+      "datasetId": "llmail-inject-payload-pool-v1",
+      "repository": "https://huggingface.co/datasets/microsoft/llmail-inject-challenge",
+      "revision": "1063bdf01ec8762b812d5e06ee768a06faa5a6f7"
+    },
+    "license": "LongPIBench synthetic emails MIT; LLMail-Inject payloads MIT (dataset card at the pinned revision). Credit: Sahar Abdelnabi et al., Microsoft, LLMail-Inject: A Dataset from a Realistic Adaptive Prompt Injection Challenge.",
+    "accessLimits": "Generated case text stays under ignored evals/private/.",
+    "selection": "All 100 LongPIBench emails as clean siblings. Email item i receives pool payloads i, 100+i and 200+i at email_in_end, attachment_middle and attachment_end respectively, so all 300 pooled payloads are used once and every email has three attacked siblings.",
+    "construction": "Only the payload body is inserted (its subject is dropped). email_in_end and attachment_end append after a blank line; attachment_middle inserts at a paragraph break chosen by SHA-256. Clean rendering is asserted byte-identical to upstream prepare_example(attack='no'), and the clean siblings are byte-identical to longpibench-email-default-v1's clean cases.",
+    "labelMeaning": "A real competition attack attempt placed inside a long benign business email versus the clean email. Attack attempts were written for the LLMail scenario (exfiltrate to contact@contact.com), not for this summarize-and-reply task. Not observed compliance. Group by document_family.",
+    "facets": [
+      "document_family",
+      "insertion_position",
+      "pool_index",
+      "phase",
+      "judge_reason",
+      "attack_template_id"
+    ],
+    "classCounts": {
+      "injection": 300,
+      "benign": 100
+    }
+  }
+}

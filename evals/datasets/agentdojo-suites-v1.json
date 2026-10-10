@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "agentdojo-suites-v1",
+  "revision": "sha256:d34992f5c7132329e0be4dfebf48c8ee6a85e1a23bb78aa19b1e853d32db8288",
+  "source": {
+    "path": "evals/private/sources/agentdojo-suites-v1.jsonl",
+    "sha256": "d34992f5c7132329e0be4dfebf48c8ee6a85e1a23bb78aa19b1e853d32db8288",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 280,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/ethz-spylab/agentdojo",
+    "commit": "089ed468cf3ed0322acc66b0211f26d9d90dbf60",
+    "sourceFiles": {
+      "src/agentdojo/attacks/baseline_attacks.py": "sha256:0e3f3cec2173524989d67bd3d934d032774ad3fc5995969c9565613efaa21c6d",
+      "src/agentdojo/data/suites/travel/injection_vectors.yaml": "sha256:a6ab848b39d862439e7b4844a617e578294de93cd0176c1851184dd901edb51c",
+      "src/agentdojo/default_suites/v1/travel/injection_tasks.py": "sha256:9252be834b0ae0e28fe06744e052987d71d8ad3666b8d0b1f65f2875f998fca8",
+      "src/agentdojo/default_suites/v1/travel/user_tasks.py": "sha256:757f0e28208f92c2082e016469654524cb1120ec10928ce229da15fe32f6d3ee"
+    },
+    "license": "MIT. Copyright (c) 2024 Edoardo Debenedetti, Jie Zhang, Mislav Balunović, Luca Beurer-Kellner, Marc Fischer, and Florian Tramèr.",
+    "accessLimits": "Public. Generated cases stay under ignored evals/private/.",
+    "selection": "All four v1 suites (workspace, travel, banking, slack), deduplicated by exact screened tool output (first occurrence kept). For every injection vector exposed by at least one ground-truth trajectory: up to 3 exposing user tasks (lowest task number first) each give one clean tool output (vector = upstream default). Every injection task of the suite is injected once per vector, cycling over those user tasks, with template = templates[(vector index + injection task index) mod 5] over direct, ignore_previous, system_message, injecagent and important_instructions (user 'Emma Johnson', model 'the AI language model').",
+    "construction": "The screened external turn is the exact tool output AgentDojo's GroundTruthPipeline returns for that user task with the injection applied to the environment before parsing (upstream load_and_inject_default_environment), so YAML formatting is upstream's. The tool output exposing a vector is identified with upstream-style canaries. The operator turn is the user task prompt.",
+    "relationToTravelV1": "agentdojo-travel-v1 screens the bare vector text for 3 travel user tasks; this cohort screens full tool outputs for all suites. Do not pool the two.",
+    "labelMeaning": "Template-generated injection attempt inside a real AgentDojo tool output versus the clean tool output. Not AgentDojo attack success or utility; run the original harness for those. Clean siblings share the user task and tool output with their attacked siblings (pair_id = suite/vector).",
+    "facets": [
+      "suite",
+      "user_task",
+      "vector",
+      "tool_output_index",
+      "injection_task",
+      "attack",
+      "attack_template_id",
+      "pair_id"
+    ],
+    "runtime": {
+      "agentdojo": "0.1.35",
+      "pyyaml": "6.0.3",
+      "pydantic": "2.14.0"
+    },
+    "classCounts": {
+      "injection": 236,
+      "benign": 44
+    }
+  }
+}

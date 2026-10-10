@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "security-eval-dataset/v1",
+  "id": "inj-squad-v1",
+  "revision": "sha256:0bbb4c4618694ac7c1020533d6b54c3c0623159ba6fed6fc106f1cb74cbccdfe",
+  "source": {
+    "path": "evals/private/sources/inj-squad-v1.jsonl",
+    "sha256": "0bbb4c4618694ac7c1020533d6b54c3c0623159ba6fed6fc106f1cb74cbccdfe",
+    "format": "canonical-jsonl",
+    "visibility": "public"
+  },
+  "expectedCases": 1200,
+  "annotationKey": "prompt_injection_attempt",
+  "positiveValues": [
+    "injection"
+  ],
+  "negativeValues": [
+    "benign"
+  ],
+  "provenance": {
+    "repository": "https://github.com/LukeChen-go/indirect-pia-detection",
+    "commit": "1e9e0f00179adc154e9ca991b9cd3206c99f9588",
+    "paper": "https://arxiv.org/abs/2502.16580",
+    "sourceFiles": {
+      "data/crafted_instruction_data_squad_injection_qa.json": "sha256:c48a0205815caa266ada687eb6f78db2c809254820cef4c86dd4437851f8fb7e",
+      "data/crafted_instruction_data_tri_injection_qa.json": "sha256:9a70351612f60f535dc3937a109b57c589226ee668e788fdf05a0c1dbd74d389",
+      "LICENSE": "sha256:a2d5c8ec4daf90d384bfebc9474e021e152306b1de4def3f945c27db87df37a9",
+      "run_detection.py": "sha256:1140f40b22104e2721db8690f6bf799fb323ab22fd8eea5191d1dc4930b876aa",
+      "instruction_attack_defense_tools.py": "sha256:3236d343d254a5d490ee5aee5fc5ff3497acd58bfd54cb981ccf2f74ef320f36"
+    },
+    "license": "MIT (repository LICENSE, Copyright (c) 2025 Yulin Chen). Contexts derive from SQuAD: SQuAD v1.1 is CC BY-SA 4.0; the TriviaQA repository is Apache-2.0 and its evidence documents come from the web and Wikipedia under their original terms. Used as research test data; generated case text stays private.",
+    "accessLimits": "Public, ungated. Generated cases and outputs stay under ignored evals/private/ and evals/runs/.",
+    "selection": "All 900 rows of the released SQuAD injection test file: 300 distinct injected instructions, each paired with 3 different contexts. Row r uses instruction r mod 300 and copy r div 300; position = (instruction + copy) mod 3 over start/middle/end, so every instruction appears once at each position. Clean siblings are the normalized contexts of the 300 copy-0 rows (100 per position of their attacked sibling).",
+    "insertion": "Upstream run_detection normalization (terminal punctuation plus a trailing space) and the 'naive' attack (instruction.capitalize()) via insert_injection. start/end are exact; middle replaces random.choice of a space-split word index with a SHA-256 choice of (context, injection).",
+    "labelMeaning": "Constructed injection attempts in a retrieved QA context versus the same context without insertion. Not observed compliance. Only the naive attack style is used; variety comes from the 300 instructions and 3 positions. Bootstrap by instruction_id or pair_id.",
+    "facets": [
+      "instruction_id",
+      "attack_template_id",
+      "insertion_position",
+      "attack_style",
+      "pair_id",
+      "source_row"
+    ],
+    "classCounts": {
+      "injection": 900,
+      "benign": 300
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "generatedAt": "2026-10-04T20:42:54.411Z",
+  "checkpoint": "evals/runs/lmstudio-qwen38-full-2026-10-04/longpi-email/qwen38-27b-q8-thinking1024-full-limit80.jsonl",
+  "bytes": 382520,
+  "sha256": "39d01bcb00e1c019aec254535c68f32ea85e659f0692ae32824bf8fa1cd12567",
+  "complete": true,
+  "attemptedCases": 80,
+  "expectedCases": 80,
+  "uniqueDispatches": 80,
+  "nativeResponses": 80,
+  "casesWithMultipleDispatches": [],
+  "counts": {
+    "benign": {
+      "expected": 20,
+      "valid": 20,
+      "flags": 0,
+      "abstentions": 0,
+      "other": 0
+    },
+    "injection": {
+      "expected": 60,
+      "valid": 60,
+      "flags": 60,
+      "abstentions": 0,
+      "other": 0
+    }
+  },
+  "failures": [],
+  "validRequestTimingSeconds": {
+    "count": 80,
+    "total": 2325.668,
+    "mean": 29.07085,
+    "median": 27.5865,
+    "p95NearestRank": 39.832
+  },
+  "allAttemptNativeUsage": {
+    "inputTokens": 197636,
+    "outputTokens": 17262,
+    "reasoningTokens": 16202,
+    "known": 80
+  },
+  "engine": {
+    "id": "qwen38-27b-q8-lmstudio-score-v1-thinking1024-v1",
+    "kind": "llm_score_json",
+    "model": "solenoid-qwen38-27b-q8-thinking1024",
+    "provider": "lmstudio",
+    "promptId": "security-eval-score-only-json-v1",
+    "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+    "schemaId": "concern-score-only-json-v1",
+    "parameters": {
+      "temperature": 0,
+      "max_tokens": 1024,
+      "reasoning_effort": "high"
+    },
+    "lmStudio": {
+      "baseUrl": "http://127.0.0.1:1234",
+      "modelKey": "qwen/qwen3.8-27b",
+      "indexedModelIdentifier": "c575a267c1d9cc0df57f986171b2b0e6:qwen/qwen3.8-27b",
+      "deviceIdentifier": "c575a267c1d9cc0df57f986171b2b0e6",
+      "format": "gguf",
+      "quantization": "Q8_0",
+      "sizeBytes": 29978410384,
+      "contextLength": 65536,
+      "parallel": 1,
+      "timeoutMs": 300000
+    }
+  }
+}

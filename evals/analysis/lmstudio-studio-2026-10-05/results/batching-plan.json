@@ -1,0 +1,23 @@
+{
+  "fixedAt": "2026-10-06T15:10:41.521911+00:00",
+  "request": "Coordinator: test LM Studio continuous batching (parallel=4, unified KV, client concurrency 4) at the next model boundary; adopt for remaining Study B only if decisions agree.",
+  "suites": {
+    "check": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-batching-check-v1.json",
+      "sha256": "298e60a05e7d135a3218b76fc9bf1213d167b06102462bfec7763d3e2de9176d"
+    },
+    "batchedFull": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-batched-p4-thinking1024-v1.json",
+      "sha256": "50919ba68698add1f30e399ac2b16bdbe10d99033247300d783ad643b6cf3830"
+    },
+    "batchedWindows": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-batched-p4-ladder-windows-v1.json",
+      "sha256": "98a62b97a99787bbb5059dc8852b4c48ced0813d2fbbf94dd6edac8aaf3432f4"
+    }
+  },
+  "check": "Gemma26 Q8, frozen first-80 code cases (--max-new-segments=80, --continue-after-output-errors): serial control parallel=1 ctx 262,144; batched parallel=4 ctx 262,144 concurrency 4; batched repeat. Also compared with the Study A serial run (parallel=1, ctx 65,536).",
+  "adoptionRule": "Adopt iff, against the serial ctx-262,144 control, both batched runs agree on >= 79/80 case decisions (flag at >0.5, or abstention) and show no new failure mode (only stop/length finish reasons, no transport/provenance/non-abstention errors). Otherwise stay serial.",
+  "ifAdopted": "queue-study-b2-batched.txt: Q8 rows stay serial (comparisons with Study A), Q4/Q6 rows run batched in both arms; quant comparisons then cross serial/batched and are labelled so. TTFT and tok/s per request are confounded under batching; aggregate cases/min is the throughput metric.",
+  "provenance": "parallel and contextLength are in the engine identity (distinct engine ids); run-suite records clientConcurrency in checkpoint metadata when != 1 and the matrix refuses to resume across a concurrency change.",
+  "placement": "Start of run-mlx-diagnostic.sh, i.e. after Study A (including the MoE paper-400 steps) and before the MLX diagnostic and Study B; the running Study A queue is not touched."
+}

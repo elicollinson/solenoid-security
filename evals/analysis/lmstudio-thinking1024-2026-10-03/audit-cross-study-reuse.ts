@@ -1,0 +1,22 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {analyzeCheckpoint,type Event,type Metadata} from '../../scripts/analyze-research.ts';
+import {loadDataset} from '../../src/datasets.ts';
+import {segmentCase,sha256} from '../../src/strategies.ts';
+import type {InferenceObservation} from '../../src/types.ts';
+const root=process.cwd(), suite=JSON.parse(readFileSync('evals/suites/prompt-injection-lmstudio-preserve-windows-v1.json','utf8'));
+const source='evals/runs/lmstudio-score-counterfactual-e4b-preserve-2026-10-03/paper-score-counterfactual/gemma4-e4b-q4-thinking1024-preserve512.jsonl';
+const text=readFileSync(source,'utf8'), events=text.trimEnd().split('\n').map(s=>JSON.parse(s) as Event);
+const run=analyzeCheckpoint(events,root), meta=events[0]!.value as Metadata;
+if(JSON.stringify(meta.engine)!==JSON.stringify(suite.engines['gemma4-e4b-q4-thinking1024']))throw new Error('Engine mismatch');
+const native=new Map(events.filter(e=>e.type==='observation').map(e=>{const o=e.value as InferenceObservation;return[o.inputSha256,o]}));
+const manifest=JSON.parse(readFileSync('evals/datasets/longpibench-paper-default-v1.json','utf8'));
+const cases=loadDataset(manifest,root);
+const rows=[20,100].map(families=>{
+ const selected=cases.slice(0,families*4),segments=selected.flatMap(c=>segmentCase(c,suite.inputStrategies.preserve512));
+ const inputs=new Map(segments.map(s=>[s.textSha256,s]));
+ const matches=[...inputs].filter(([hash])=>native.has(hash)).map(([hash,segment])=>({inputSha256:hash,targetRepresentativeSegment:segment.id,nativeSourceSegment:native.get(hash)!.segmentId,nativeRequestId:native.get(hash)!.requestId}));
+ return{families,cases:selected.length,logicalWindows:segments.length,uniqueInputs:inputs.size,alreadyCapturedNativeInputs:matches.length,newUniqueInputs:inputs.size-matches.length,matches};
+});
+const result={source,sourceSha256:sha256(text),engineConfigSha256:run.aggregate.engineConfigSha256,rows};
+writeFileSync('evals/runs/lmstudio-thinking1024-2026-10-03/cross-study-window-reuse-audit.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify(rows.map(({matches,...r})=>r)));

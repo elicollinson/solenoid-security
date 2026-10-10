@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-10-04T10:14:41.330Z",
+  "newServiceCalls": 0,
+  "datasetRevision": "sha256:4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+  "rows": [
+    {
+      "alias": "base",
+      "engine": {
+        "id": "model-armor-base-detector",
+        "kind": "model_armor",
+        "projectId": "eli-collinson",
+        "location": "us-central1",
+        "templateId": "base-detector",
+        "filter": "pi_and_jailbreak"
+      },
+      "path": "evals/runs/armor-score-counterfactual-2026-10-03/paper-score-counterfactual/armor-base-full.jsonl",
+      "capturedBytes": 206723,
+      "sha256": "187242d85bfbc21fe08fb82de5b44dbf4152d2144fcbfc085116105a06e78511",
+      "matrix": {
+        "tp": 18,
+        "fn": 36,
+        "fp": 0,
+        "tn": 18,
+        "incomplete": 0
+      },
+      "pairs": 18,
+      "lowHighVerdictChanges": 0,
+      "bothFlagged": 6,
+      "bothMissed": 12
+    },
+    {
+      "alias": "high",
+      "engine": {
+        "id": "model-armor-high-sensitivity",
+        "kind": "model_armor",
+        "projectId": "eli-collinson",
+        "location": "us-central1",
+        "templateId": "high-sensitivity",
+        "filter": "pi_and_jailbreak"
+      },
+      "path": "evals/runs/armor-score-counterfactual-2026-10-03/paper-score-counterfactual/armor-high-full.jsonl",
+      "capturedBytes": 206945,
+      "sha256": "5246f223785cba4998908cfd563099e90c202e9466b52181864121fd2413c05e",
+      "matrix": {
+        "tp": 18,
+        "fn": 36,
+        "fp": 0,
+        "tn": 18,
+        "incomplete": 0
+      },
+      "pairs": 18,
+      "lowHighVerdictChanges": 0,
+      "bothFlagged": 6,
+      "bothMissed": 12
+    },
+    {
+      "alias": "low",
+      "engine": {
+        "id": "model-armor-low-intensity",
+        "kind": "model_armor",
+        "projectId": "eli-collinson",
+        "location": "us-central1",
+        "templateId": "low-intensity",
+        "filter": "pi_and_jailbreak"
+      },
+      "path": "evals/runs/armor-score-counterfactual-2026-10-03/paper-score-counterfactual/armor-low-full.jsonl",
+      "capturedBytes": 204507,
+      "sha256": "010692324a3bfaea6440bed1b22719c721b17901dc078765dd90be567d651148",
+      "matrix": {
+        "tp": 0,
+        "fn": 54,
+        "fp": 0,
+        "tn": 18,
+        "incomplete": 0
+      },
+      "pairs": 18,
+      "lowHighVerdictChanges": 0,
+      "bothFlagged": 0,
+      "bothMissed": 18
+    }
+  ]
+}

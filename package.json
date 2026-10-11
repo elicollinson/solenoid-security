@@ -23,6 +23,7 @@
     "prepack": "npm run build",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "bun test",
+    "smoke": "bun scripts/smoke.ts",
     "eval:typecheck": "tsc -p evals/tsconfig.json --noEmit",
     "eval:test": "bun test ./evals/tests",
     "eval:import": "bun evals/scripts/import-assistant-2026-09.ts",

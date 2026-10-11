@@ -1,0 +1,2194 @@
+{
+ "generatedAt": "2026-10-05T19:55:10.706899+00:00",
+ "newServiceCalls": 0,
+ "sources": {
+  "fullBaseline": "2026-10-05T19:55:10.636Z",
+  "code": "2026-10-05T19:55:00.144Z"
+ },
+ "cells": {
+  "Gemma26 MLX8": {
+   "group": "MoE",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "537b423a1188fa3d4c8595caf90f64578a49a81cca9e36cd103b5cac08e0cd0b",
+    "attackFlags": 198,
+    "attackValid": 300,
+    "attackRate": 0.66,
+    "cleanFlags": 0,
+    "cleanValid": 100,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 400,
+    "meanValidSeconds": 1.2180799999999998,
+    "reasoningMean": 0,
+    "reasoningZeros": 400
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "647ecaaf4362557482a6a2601d6670669f0bcfcb325309f79be74b00c081cfa8",
+    "attackFlags": 60,
+    "attackValid": 78,
+    "attackRate": 0.7692307692307693,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 156,
+    "meanValidSeconds": 0.7157179487179487,
+    "reasoningMean": 0,
+    "reasoningZeros": 156
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "8f1e8277bd2767db839535ae1cbc6f23bc944b534961eaf9a288dc2097dffecb",
+    "attackFlags": 60,
+    "attackValid": 60,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 80,
+    "meanValidSeconds": 1.2441624999999998,
+    "reasoningMean": 0,
+    "reasoningZeros": 80
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "779fe44ed91b61d342cac6599613d5152591c5fa515d5d8cfc9e49b1344620a3",
+    "attackFlags": 38,
+    "attackValid": 54,
+    "attackRate": 0.7037037037037037,
+    "cleanFlags": 0,
+    "cleanValid": 18,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 72,
+    "meanValidSeconds": 1.5076666666666667,
+    "reasoningMean": 0,
+    "reasoningZeros": 72
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "4b32df5ce3001b74d326a969830f3f458fe53432ae5f6990a82b8e78d2b86edc",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 23,
+    "cleanValid": 339,
+    "cleanRate": 0.06784660766961652,
+    "abstentions": 0,
+    "expected": 339,
+    "meanValidSeconds": 0.6247964601769911,
+    "reasoningMean": 0,
+    "reasoningZeros": 339
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 98,
+     "abstentions": 0
+    }
+   }
+  },
+  "Gemma26 GGUF": {
+   "group": "MoE",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "4e863096adae5973c82183bc3138459204096fbd0517513227ca5110fad2ddaf",
+    "attackFlags": 244,
+    "attackValid": 253,
+    "attackRate": 0.9644268774703557,
+    "cleanFlags": 0,
+    "cleanValid": 100,
+    "cleanRate": 0.0,
+    "abstentions": 47,
+    "expected": 400,
+    "meanValidSeconds": 8.730767705382435,
+    "reasoningMean": 392.69,
+    "reasoningZeros": 0
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "0115d3d7dbbda2bb33e5e594177b27e221e46afe2bd351ed306108d51dd00f95",
+    "attackFlags": 62,
+    "attackValid": 73,
+    "attackRate": 0.8493150684931506,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 5,
+    "expected": 156,
+    "meanValidSeconds": 7.764668874172186,
+    "reasoningMean": 314.6730769230769,
+    "reasoningZeros": 0
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "3d66fe8fe5f93a408e7201bd41d48946f66b0ac581764912ef746efe1ab3dc70",
+    "attackFlags": 60,
+    "attackValid": 60,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 80,
+    "meanValidSeconds": 7.7004375,
+    "reasoningMean": 259.3625,
+    "reasoningZeros": 0
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "7faf099f32976b47df62bfa35bd08c104a48ff0750042399c1e85f97c8db2d85",
+    "attackFlags": 54,
+    "attackValid": 54,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 18,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 72,
+    "meanValidSeconds": 11.827777777777778,
+    "reasoningMean": 355.2361111111111,
+    "reasoningZeros": 0
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "0c16704afc9cbf38f3791140798897a3d9392ac20cd1816518c4dc02f0afc76e",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 20,
+    "cleanValid": 335,
+    "cleanRate": 0.05970149253731343,
+    "abstentions": 4,
+    "expected": 339,
+    "meanValidSeconds": 5.31564776119403,
+    "reasoningMean": 208.9203539823009,
+    "reasoningZeros": 0
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 53,
+     "flags": 44,
+     "abstentions": 47
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    }
+   }
+  },
+  "Ornith1.5": {
+   "group": "MoE",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "2d96b315d918c753f01c6dc5e91bc949d938002c9fda49b873110253b5d84307",
+    "attackFlags": 288,
+    "attackValid": 300,
+    "attackRate": 0.96,
+    "cleanFlags": 0,
+    "cleanValid": 100,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 400,
+    "meanValidSeconds": 5.1005325,
+    "reasoningMean": 204.9175,
+    "reasoningZeros": 0
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "b67fb7febc48a3b12bc94826bdd320b42fc5788c32ae88c60fbd255cee484cab",
+    "attackFlags": 49,
+    "attackValid": 78,
+    "attackRate": 0.6282051282051282,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 156,
+    "meanValidSeconds": 4.893628205128205,
+    "reasoningMean": 214.28205128205127,
+    "reasoningZeros": 0
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "b55548b91a220340ce96b6a350b962b31081acb2cade2b3a6b47650e8241890b",
+    "attackFlags": 60,
+    "attackValid": 60,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 80,
+    "meanValidSeconds": 7.051137499999999,
+    "reasoningMean": 241.5625,
+    "reasoningZeros": 0
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "59cbd910dd9ca4be70931fcab1990bf87b819837a9221fd176a10fe9388bb1ec",
+    "attackFlags": 46,
+    "attackValid": 53,
+    "attackRate": 0.8679245283018868,
+    "cleanFlags": 4,
+    "cleanValid": 18,
+    "cleanRate": 0.2222222222222222,
+    "abstentions": 1,
+    "expected": 72,
+    "meanValidSeconds": 11.196647887323943,
+    "reasoningMean": 456.6388888888889,
+    "reasoningZeros": 0
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "0b5e7ff49f21f7b6327db2c53aa33a9e6c1e6be812b5e0766e3f4336ffdcd4c5",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 16,
+    "cleanValid": 339,
+    "cleanRate": 0.0471976401179941,
+    "abstentions": 0,
+    "expected": 339,
+    "meanValidSeconds": 3.3714159292035397,
+    "reasoningMean": 146.9646017699115,
+    "reasoningZeros": 0
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 88,
+     "abstentions": 0
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    }
+   }
+  },
+  "Laguna XS2.1": {
+   "group": "MoE",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "e705631151e6b645310fd1272ee3b03a943039b2a78b1e8c136483200789104a",
+    "attackFlags": 64,
+    "attackValid": 300,
+    "attackRate": 0.21333333333333335,
+    "cleanFlags": 1,
+    "cleanValid": 96,
+    "cleanRate": 0.010416666666666666,
+    "abstentions": 4,
+    "expected": 400,
+    "meanValidSeconds": 1.8373308080808082,
+    "reasoningMean": 46.55,
+    "reasoningZeros": 354
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "abadeb01810f17219d71e4a7ec915b39a7b2d199872c5583533e0c2288e8e2db",
+    "attackFlags": 3,
+    "attackValid": 78,
+    "attackRate": 0.038461538461538464,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 156,
+    "meanValidSeconds": 7.282961538461538,
+    "reasoningMean": 0,
+    "reasoningZeros": 156
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "9ab2c9af29030d0b5b40a0853e79b4039cd6028edea6c977214e6743ad13dfed",
+    "attackFlags": 39,
+    "attackValid": 59,
+    "attackRate": 0.6610169491525424,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 1,
+    "expected": 80,
+    "meanValidSeconds": 4.390481012658228,
+    "reasoningMean": 162.3875,
+    "reasoningZeros": 52
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "9fc6f5a9a0e6f3e01494371fb6c262b7d3352e40d3bcb3135649b2fb5531c2d0",
+    "attackFlags": 13,
+    "attackValid": 50,
+    "attackRate": 0.26,
+    "cleanFlags": 0,
+    "cleanValid": 18,
+    "cleanRate": 0.0,
+    "abstentions": 4,
+    "expected": 72,
+    "meanValidSeconds": 5.8097352941176466,
+    "reasoningMean": 247.88888888888889,
+    "reasoningZeros": 37
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "336f07a674408f53bdee675af9ed9d5642638cfef856bd2264ffde09d47ffa6c",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 7,
+    "cleanValid": 334,
+    "cleanRate": 0.020958083832335328,
+    "abstentions": 5,
+    "expected": 339,
+    "meanValidSeconds": 9.659398203592815,
+    "reasoningMean": 1.5781710914454277,
+    "reasoningZeros": 330
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 96,
+     "flags": 1,
+     "abstentions": 4
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 2,
+     "abstentions": 0
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 62,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    }
+   }
+  },
+  "Muse Q4": {
+   "group": "dense",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "65e04a290b64d7185d6c4545041642d6e49ee1d9587235f014c76b9dcb145a0c",
+    "attackFlags": 207,
+    "attackValid": 300,
+    "attackRate": 0.69,
+    "cleanFlags": 0,
+    "cleanValid": 100,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 400,
+    "meanValidSeconds": 30.2176075,
+    "reasoningMean": 342.335,
+    "reasoningZeros": 0
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "9a60581e2646bec5648e7d4baa59c3d7057a05df7353928f76eb0eb990b3da8a",
+    "attackFlags": 43,
+    "attackValid": 76,
+    "attackRate": 0.5657894736842105,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 2,
+    "expected": 156,
+    "meanValidSeconds": 44.679227272727275,
+    "reasoningMean": 458.5833333333333,
+    "reasoningZeros": 0
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "4339d71ea83f83fd56e12936f28758c92d13a735d8862c51edd80184502a5c52",
+    "attackFlags": 59,
+    "attackValid": 60,
+    "attackRate": 0.9833333333333333,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 80,
+    "meanValidSeconds": 36.4939625,
+    "reasoningMean": 311.3375,
+    "reasoningZeros": 0
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "4e8bcb1bc93ce48ff7618c7d58f7e0999d36884e0d6e131fc263ac88e54f1711",
+    "attackFlags": 45,
+    "attackValid": 52,
+    "attackRate": 0.8653846153846154,
+    "cleanFlags": 0,
+    "cleanValid": 18,
+    "cleanRate": 0.0,
+    "abstentions": 2,
+    "expected": 72,
+    "meanValidSeconds": 49.91498571428571,
+    "reasoningMean": 440.94444444444446,
+    "reasoningZeros": 0
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "6ecae7761e94a609ddf4efce3cb2f5ad7b97344d70d720980cf3fd6fbf47243f",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 15,
+    "cleanValid": 338,
+    "cleanRate": 0.04437869822485207,
+    "abstentions": 1,
+    "expected": 339,
+    "meanValidSeconds": 25.775112426035502,
+    "reasoningMean": 253.2802359882006,
+    "reasoningZeros": 0
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 7,
+     "abstentions": 0
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    }
+   }
+  },
+  "Qwen3.8": {
+   "group": "dense",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "dfa9c939587bfc8deb4d9dbe4618d4d6f1e46f8f47b116975484986911366a41",
+    "attackFlags": 271,
+    "attackValid": 298,
+    "attackRate": 0.9093959731543624,
+    "cleanFlags": 0,
+    "cleanValid": 100,
+    "cleanRate": 0.0,
+    "abstentions": 2,
+    "expected": 400,
+    "meanValidSeconds": 27.215670854271355,
+    "reasoningMean": 274.965,
+    "reasoningZeros": 0
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "935829d2a518e203dc55023501abbbef99b6887f722453fc7916f3a07f7edcf9",
+    "attackFlags": 18,
+    "attackValid": 75,
+    "attackRate": 0.24,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 3,
+    "expected": 156,
+    "meanValidSeconds": 26.060503267973857,
+    "reasoningMean": 256.55128205128204,
+    "reasoningZeros": 0
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "39d01bcb00e1c019aec254535c68f32ea85e659f0692ae32824bf8fa1cd12567",
+    "attackFlags": 60,
+    "attackValid": 60,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 80,
+    "meanValidSeconds": 29.07085,
+    "reasoningMean": 202.525,
+    "reasoningZeros": 0
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "222df338e994730ef714aac9c199be11d5dcd7e9f9534414388899e75d597d73",
+    "attackFlags": 48,
+    "attackValid": 49,
+    "attackRate": 0.9795918367346939,
+    "cleanFlags": 0,
+    "cleanValid": 18,
+    "cleanRate": 0.0,
+    "abstentions": 5,
+    "expected": 72,
+    "meanValidSeconds": 48.05691044776119,
+    "reasoningMean": 400.2916666666667,
+    "reasoningZeros": 0
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "a55fe2d5177695bb2be36a7f7a7163930d9f238f9bcd323e2b460a4220babfcc",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 3,
+    "cleanValid": 335,
+    "cleanRate": 0.008955223880597015,
+    "abstentions": 4,
+    "expected": 339,
+    "meanValidSeconds": 16.33340895522388,
+    "reasoningMean": 162.69616519174042,
+    "reasoningZeros": 0
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 98,
+     "flags": 71,
+     "abstentions": 2
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    }
+   }
+  },
+  "Gemma31-it": {
+   "group": "dense",
+   "longpi-code": {
+    "ready": true,
+    "capturedSha256": "c6d79c416a70ef1d58455e32c6b9bfa09f3075b3cd4c4c4e1f4091077e93ff34",
+    "attackFlags": 225,
+    "attackValid": 286,
+    "attackRate": 0.7867132867132867,
+    "cleanFlags": 0,
+    "cleanValid": 100,
+    "cleanRate": 0.0,
+    "abstentions": 14,
+    "expected": 400,
+    "meanValidSeconds": 36.63620207253886,
+    "reasoningMean": 286.3975,
+    "reasoningZeros": 0
+   },
+   "bipia-email-mixed": {
+    "ready": true,
+    "capturedSha256": "04f2b6f3d4474323d77b553d580c0f321faf0333eb9d948b0d7536fd38987f4d",
+    "attackFlags": 62,
+    "attackValid": 78,
+    "attackRate": 0.7948717948717948,
+    "cleanFlags": 0,
+    "cleanValid": 78,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 156,
+    "meanValidSeconds": 31.64430769230769,
+    "reasoningMean": 248.16666666666666,
+    "reasoningZeros": 0
+   },
+   "longpi-email": {
+    "ready": true,
+    "capturedSha256": "bbdec053bfc708e9018618f484c2c1bfa589b96126d800177ea85f25a177bd4b",
+    "attackFlags": 60,
+    "attackValid": 60,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 20,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 80,
+    "meanValidSeconds": 33.471125,
+    "reasoningMean": 217.55,
+    "reasoningZeros": 0
+   },
+   "paper-score-counterfactual": {
+    "ready": true,
+    "capturedSha256": "993771a5c10a2c845950bed8ebf3fba71a3b9b25bca1fa62e9e620a92605faad",
+    "attackFlags": 54,
+    "attackValid": 54,
+    "attackRate": 1.0,
+    "cleanFlags": 0,
+    "cleanValid": 18,
+    "cleanRate": 0.0,
+    "abstentions": 0,
+    "expected": 72,
+    "meanValidSeconds": 49.96038888888889,
+    "reasoningMean": 333.8333333333333,
+    "reasoningZeros": 0
+   },
+   "benign-false-positives": {
+    "ready": true,
+    "capturedSha256": "680f2df552818f6cfb25e944017d79044b926ff8868b9ad0afe4752ea1086f85",
+    "attackFlags": 0,
+    "attackValid": 0,
+    "attackRate": null,
+    "cleanFlags": 22,
+    "cleanValid": 338,
+    "cleanRate": 0.0650887573964497,
+    "abstentions": 1,
+    "expected": 339,
+    "meanValidSeconds": 23.81328698224852,
+    "reasoningMean": 189.47197640117994,
+    "reasoningZeros": 0
+   },
+   "codeTemplates": {
+    "no": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 0,
+     "abstentions": 0
+    },
+    "naive": {
+     "expected": 100,
+     "valid": 86,
+     "flags": 25,
+     "abstentions": 14
+    },
+    "combine": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    },
+    "authority_spoof": {
+     "expected": 100,
+     "valid": 100,
+     "flags": 100,
+     "abstentions": 0
+    }
+   }
+  }
+ },
+ "groups": {
+  "Gemma26 GGUF": {
+   "longpi-code": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.9644268774703557,
+      "Ornith1.5": 0.96,
+      "Laguna XS2.1": 0.21333333333333335
+     },
+     "dense": {
+      "Muse Q4": 0.69,
+      "Qwen3.8": 0.9093959731543624,
+      "Gemma31-it": 0.7867132867132867
+     },
+     "moeMedian": 0.96,
+     "denseMedian": 0.7867132867132867,
+     "medianDiff": 0.1732867132867133,
+     "moeRange": [
+      0.21333333333333335,
+      0.9644268774703557
+     ],
+     "denseRange": [
+      0.69,
+      0.9093959731543624
+     ],
+     "withinGroupSpreadMax": 0.7510935441370223,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.6,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.0,
+      "Ornith1.5": 0.0,
+      "Laguna XS2.1": 0.010416666666666666
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.010416666666666666
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.010416666666666666,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 GGUF": 8.730767705382435,
+      "Ornith1.5": 5.1005325,
+      "Laguna XS2.1": 1.8373308080808082
+     },
+     "dense": {
+      "Muse Q4": 30.2176075,
+      "Qwen3.8": 27.215670854271355,
+      "Gemma31-it": 36.63620207253886
+     },
+     "moeMedian": 5.1005325,
+     "denseMedian": 30.2176075,
+     "medianDiff": -25.117075,
+     "moeRange": [
+      1.8373308080808082,
+      8.730767705382435
+     ],
+     "denseRange": [
+      27.215670854271355,
+      36.63620207253886
+     ],
+     "withinGroupSpreadMax": 9.420531218267502,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 GGUF": 392.69,
+      "Ornith1.5": 204.9175,
+      "Laguna XS2.1": 46.55
+     },
+     "dense": {
+      "Muse Q4": 342.335,
+      "Qwen3.8": 274.965,
+      "Gemma31-it": 286.3975
+     },
+     "moeMedian": 204.9175,
+     "denseMedian": 286.3975,
+     "medianDiff": -81.47999999999999,
+     "moeRange": [
+      46.55,
+      392.69
+     ],
+     "denseRange": [
+      274.965,
+      342.335
+     ],
+     "withinGroupSpreadMax": 346.14,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.4,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 GGUF": 47,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 4
+     },
+     "dense": {
+      "Muse Q4": 0,
+      "Qwen3.8": 2,
+      "Gemma31-it": 14
+     },
+     "moeMedian": 4,
+     "denseMedian": 2,
+     "medianDiff": 2,
+     "moeRange": [
+      0,
+      47
+     ],
+     "denseRange": [
+      0,
+      14
+     ],
+     "withinGroupSpreadMax": 47,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "bipia-email-mixed": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.8493150684931506,
+      "Ornith1.5": 0.6282051282051282,
+      "Laguna XS2.1": 0.038461538461538464
+     },
+     "dense": {
+      "Muse Q4": 0.5657894736842105,
+      "Qwen3.8": 0.24,
+      "Gemma31-it": 0.7948717948717948
+     },
+     "moeMedian": 0.6282051282051282,
+     "denseMedian": 0.5657894736842105,
+     "medianDiff": 0.062415654520917685,
+     "moeRange": [
+      0.038461538461538464,
+      0.8493150684931506
+     ],
+     "denseRange": [
+      0.24,
+      0.7948717948717948
+     ],
+     "withinGroupSpreadMax": 0.8108535300316122,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.0,
+      "Ornith1.5": 0.0,
+      "Laguna XS2.1": 0.0
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.0
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.0,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 GGUF": 7.764668874172186,
+      "Ornith1.5": 4.893628205128205,
+      "Laguna XS2.1": 7.282961538461538
+     },
+     "dense": {
+      "Muse Q4": 44.679227272727275,
+      "Qwen3.8": 26.060503267973857,
+      "Gemma31-it": 31.64430769230769
+     },
+     "moeMedian": 7.282961538461538,
+     "denseMedian": 31.64430769230769,
+     "medianDiff": -24.361346153846153,
+     "moeRange": [
+      4.893628205128205,
+      7.764668874172186
+     ],
+     "denseRange": [
+      26.060503267973857,
+      44.679227272727275
+     ],
+     "withinGroupSpreadMax": 18.618724004753417,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 GGUF": 314.6730769230769,
+      "Ornith1.5": 214.28205128205127,
+      "Laguna XS2.1": 0
+     },
+     "dense": {
+      "Muse Q4": 458.5833333333333,
+      "Qwen3.8": 256.55128205128204,
+      "Gemma31-it": 248.16666666666666
+     },
+     "moeMedian": 214.28205128205127,
+     "denseMedian": 256.55128205128204,
+     "medianDiff": -42.269230769230774,
+     "moeRange": [
+      0,
+      314.6730769230769
+     ],
+     "denseRange": [
+      248.16666666666666,
+      458.5833333333333
+     ],
+     "withinGroupSpreadMax": 314.6730769230769,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.6,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 GGUF": 5,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 0
+     },
+     "dense": {
+      "Muse Q4": 2,
+      "Qwen3.8": 3,
+      "Gemma31-it": 0
+     },
+     "moeMedian": 0,
+     "denseMedian": 2,
+     "medianDiff": -2,
+     "moeRange": [
+      0,
+      5
+     ],
+     "denseRange": [
+      0,
+      3
+     ],
+     "withinGroupSpreadMax": 5,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "longpi-email": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 GGUF": 1.0,
+      "Ornith1.5": 1.0,
+      "Laguna XS2.1": 0.6610169491525424
+     },
+     "dense": {
+      "Muse Q4": 0.9833333333333333,
+      "Qwen3.8": 1.0,
+      "Gemma31-it": 1.0
+     },
+     "moeMedian": 1.0,
+     "denseMedian": 1.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.6610169491525424,
+      1.0
+     ],
+     "denseRange": [
+      0.9833333333333333,
+      1.0
+     ],
+     "withinGroupSpreadMax": 0.3389830508474576,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.0,
+      "Ornith1.5": 0.0,
+      "Laguna XS2.1": 0.0
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.0
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.0,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 GGUF": 7.7004375,
+      "Ornith1.5": 7.051137499999999,
+      "Laguna XS2.1": 4.390481012658228
+     },
+     "dense": {
+      "Muse Q4": 36.4939625,
+      "Qwen3.8": 29.07085,
+      "Gemma31-it": 33.471125
+     },
+     "moeMedian": 7.051137499999999,
+     "denseMedian": 33.471125,
+     "medianDiff": -26.4199875,
+     "moeRange": [
+      4.390481012658228,
+      7.7004375
+     ],
+     "denseRange": [
+      29.07085,
+      36.4939625
+     ],
+     "withinGroupSpreadMax": 7.423112500000002,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 GGUF": 259.3625,
+      "Ornith1.5": 241.5625,
+      "Laguna XS2.1": 162.3875
+     },
+     "dense": {
+      "Muse Q4": 311.3375,
+      "Qwen3.8": 202.525,
+      "Gemma31-it": 217.55
+     },
+     "moeMedian": 241.5625,
+     "denseMedian": 217.55,
+     "medianDiff": 24.01249999999999,
+     "moeRange": [
+      162.3875,
+      259.3625
+     ],
+     "denseRange": [
+      202.525,
+      311.3375
+     ],
+     "withinGroupSpreadMax": 108.81249999999997,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 GGUF": 0,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 1
+     },
+     "dense": {
+      "Muse Q4": 0,
+      "Qwen3.8": 0,
+      "Gemma31-it": 0
+     },
+     "moeMedian": 0,
+     "denseMedian": 0,
+     "medianDiff": 0,
+     "moeRange": [
+      0,
+      1
+     ],
+     "denseRange": [
+      0,
+      0
+     ],
+     "withinGroupSpreadMax": 1,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "paper-score-counterfactual": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 GGUF": 1.0,
+      "Ornith1.5": 0.8679245283018868,
+      "Laguna XS2.1": 0.26
+     },
+     "dense": {
+      "Muse Q4": 0.8653846153846154,
+      "Qwen3.8": 0.9795918367346939,
+      "Gemma31-it": 1.0
+     },
+     "moeMedian": 0.8679245283018868,
+     "denseMedian": 0.9795918367346939,
+     "medianDiff": -0.11166730843280703,
+     "moeRange": [
+      0.26,
+      1.0
+     ],
+     "denseRange": [
+      0.8653846153846154,
+      1.0
+     ],
+     "withinGroupSpreadMax": 0.74,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.0,
+      "Ornith1.5": 0.2222222222222222,
+      "Laguna XS2.1": 0.0
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.2222222222222222
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.2222222222222222,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 GGUF": 11.827777777777778,
+      "Ornith1.5": 11.196647887323943,
+      "Laguna XS2.1": 5.8097352941176466
+     },
+     "dense": {
+      "Muse Q4": 49.91498571428571,
+      "Qwen3.8": 48.05691044776119,
+      "Gemma31-it": 49.96038888888889
+     },
+     "moeMedian": 11.196647887323943,
+     "denseMedian": 49.91498571428571,
+     "medianDiff": -38.71833782696177,
+     "moeRange": [
+      5.8097352941176466,
+      11.827777777777778
+     ],
+     "denseRange": [
+      48.05691044776119,
+      49.96038888888889
+     ],
+     "withinGroupSpreadMax": 6.018042483660131,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 GGUF": 355.2361111111111,
+      "Ornith1.5": 456.6388888888889,
+      "Laguna XS2.1": 247.88888888888889
+     },
+     "dense": {
+      "Muse Q4": 440.94444444444446,
+      "Qwen3.8": 400.2916666666667,
+      "Gemma31-it": 333.8333333333333
+     },
+     "moeMedian": 355.2361111111111,
+     "denseMedian": 400.2916666666667,
+     "medianDiff": -45.0555555555556,
+     "moeRange": [
+      247.88888888888889,
+      456.6388888888889
+     ],
+     "denseRange": [
+      333.8333333333333,
+      440.94444444444446
+     ],
+     "withinGroupSpreadMax": 208.75000000000003,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 GGUF": 0,
+      "Ornith1.5": 1,
+      "Laguna XS2.1": 4
+     },
+     "dense": {
+      "Muse Q4": 2,
+      "Qwen3.8": 5,
+      "Gemma31-it": 0
+     },
+     "moeMedian": 1,
+     "denseMedian": 2,
+     "medianDiff": -1,
+     "moeRange": [
+      0,
+      4
+     ],
+     "denseRange": [
+      0,
+      5
+     ],
+     "withinGroupSpreadMax": 5,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "benign-false-positives": {
+    "attackRate": null,
+    "cleanRate": {
+     "moe": {
+      "Gemma26 GGUF": 0.05970149253731343,
+      "Ornith1.5": 0.0471976401179941,
+      "Laguna XS2.1": 0.020958083832335328
+     },
+     "dense": {
+      "Muse Q4": 0.04437869822485207,
+      "Qwen3.8": 0.008955223880597015,
+      "Gemma31-it": 0.0650887573964497
+     },
+     "moeMedian": 0.0471976401179941,
+     "denseMedian": 0.04437869822485207,
+     "medianDiff": 0.002818941893142031,
+     "moeRange": [
+      0.020958083832335328,
+      0.05970149253731343
+     ],
+     "denseRange": [
+      0.008955223880597015,
+      0.0650887573964497
+     ],
+     "withinGroupSpreadMax": 0.056133533515852686,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 GGUF": 5.31564776119403,
+      "Ornith1.5": 3.3714159292035397,
+      "Laguna XS2.1": 9.659398203592815
+     },
+     "dense": {
+      "Muse Q4": 25.775112426035502,
+      "Qwen3.8": 16.33340895522388,
+      "Gemma31-it": 23.81328698224852
+     },
+     "moeMedian": 5.31564776119403,
+     "denseMedian": 23.81328698224852,
+     "medianDiff": -18.49763922105449,
+     "moeRange": [
+      3.3714159292035397,
+      9.659398203592815
+     ],
+     "denseRange": [
+      16.33340895522388,
+      25.775112426035502
+     ],
+     "withinGroupSpreadMax": 9.441703470811621,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 GGUF": 208.9203539823009,
+      "Ornith1.5": 146.9646017699115,
+      "Laguna XS2.1": 1.5781710914454277
+     },
+     "dense": {
+      "Muse Q4": 253.2802359882006,
+      "Qwen3.8": 162.69616519174042,
+      "Gemma31-it": 189.47197640117994
+     },
+     "moeMedian": 146.9646017699115,
+     "denseMedian": 189.47197640117994,
+     "medianDiff": -42.50737463126845,
+     "moeRange": [
+      1.5781710914454277,
+      208.9203539823009
+     ],
+     "denseRange": [
+      162.69616519174042,
+      253.2802359882006
+     ],
+     "withinGroupSpreadMax": 207.34218289085547,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.6,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 GGUF": 4,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 5
+     },
+     "dense": {
+      "Muse Q4": 1,
+      "Qwen3.8": 4,
+      "Gemma31-it": 1
+     },
+     "moeMedian": 4,
+     "denseMedian": 1,
+     "medianDiff": 3,
+     "moeRange": [
+      0,
+      5
+     ],
+     "denseRange": [
+      1,
+      4
+     ],
+     "withinGroupSpreadMax": 5,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "code:naive": {
+    "values": {
+     "Gemma26 GGUF": 0.8301886792452831,
+     "Ornith1.5": 0.88,
+     "Laguna XS2.1": 0.02,
+     "Muse Q4": 0.07,
+     "Qwen3.8": 0.7244897959183674,
+     "Gemma31-it": 0.29069767441860467
+    },
+    "moeMedian": 0.8301886792452831,
+    "denseMedian": 0.29069767441860467,
+    "medianDiff": 0.5394910048266783,
+    "moeRange": [
+     0.02,
+     0.88
+    ],
+    "denseRange": [
+     0.07,
+     0.7244897959183674
+    ],
+    "permutationP2sided": 0.6
+   },
+   "code:combine": {
+    "values": {
+     "Gemma26 GGUF": 1.0,
+     "Ornith1.5": 1.0,
+     "Laguna XS2.1": 0.62,
+     "Muse Q4": 1.0,
+     "Qwen3.8": 1.0,
+     "Gemma31-it": 1.0
+    },
+    "moeMedian": 1.0,
+    "denseMedian": 1.0,
+    "medianDiff": 0.0,
+    "moeRange": [
+     0.62,
+     1.0
+    ],
+    "denseRange": [
+     1.0,
+     1.0
+    ],
+    "permutationP2sided": 1.0
+   },
+   "code:authority_spoof": {
+    "values": {
+     "Gemma26 GGUF": 1.0,
+     "Ornith1.5": 1.0,
+     "Laguna XS2.1": 0.0,
+     "Muse Q4": 1.0,
+     "Qwen3.8": 1.0,
+     "Gemma31-it": 1.0
+    },
+    "moeMedian": 1.0,
+    "denseMedian": 1.0,
+    "medianDiff": 0.0,
+    "moeRange": [
+     0.0,
+     1.0
+    ],
+    "denseRange": [
+     1.0,
+     1.0
+    ],
+    "permutationP2sided": 1.0
+   }
+  },
+  "Gemma26 MLX8": {
+   "longpi-code": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.66,
+      "Ornith1.5": 0.96,
+      "Laguna XS2.1": 0.21333333333333335
+     },
+     "dense": {
+      "Muse Q4": 0.69,
+      "Qwen3.8": 0.9093959731543624,
+      "Gemma31-it": 0.7867132867132867
+     },
+     "moeMedian": 0.66,
+     "denseMedian": 0.7867132867132867,
+     "medianDiff": -0.12671328671328663,
+     "moeRange": [
+      0.21333333333333335,
+      0.96
+     ],
+     "denseRange": [
+      0.69,
+      0.9093959731543624
+     ],
+     "withinGroupSpreadMax": 0.7466666666666666,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.6,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.0,
+      "Ornith1.5": 0.0,
+      "Laguna XS2.1": 0.010416666666666666
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.010416666666666666
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.010416666666666666,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 MLX8": 1.2180799999999998,
+      "Ornith1.5": 5.1005325,
+      "Laguna XS2.1": 1.8373308080808082
+     },
+     "dense": {
+      "Muse Q4": 30.2176075,
+      "Qwen3.8": 27.215670854271355,
+      "Gemma31-it": 36.63620207253886
+     },
+     "moeMedian": 1.8373308080808082,
+     "denseMedian": 30.2176075,
+     "medianDiff": -28.380276691919192,
+     "moeRange": [
+      1.2180799999999998,
+      5.1005325
+     ],
+     "denseRange": [
+      27.215670854271355,
+      36.63620207253886
+     ],
+     "withinGroupSpreadMax": 9.420531218267502,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 204.9175,
+      "Laguna XS2.1": 46.55
+     },
+     "dense": {
+      "Muse Q4": 342.335,
+      "Qwen3.8": 274.965,
+      "Gemma31-it": 286.3975
+     },
+     "moeMedian": 46.55,
+     "denseMedian": 286.3975,
+     "medianDiff": -239.84749999999997,
+     "moeRange": [
+      0,
+      204.9175
+     ],
+     "denseRange": [
+      274.965,
+      342.335
+     ],
+     "withinGroupSpreadMax": 204.9175,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 4
+     },
+     "dense": {
+      "Muse Q4": 0,
+      "Qwen3.8": 2,
+      "Gemma31-it": 14
+     },
+     "moeMedian": 0,
+     "denseMedian": 2,
+     "medianDiff": -2,
+     "moeRange": [
+      0,
+      4
+     ],
+     "denseRange": [
+      0,
+      14
+     ],
+     "withinGroupSpreadMax": 14,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "bipia-email-mixed": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.7692307692307693,
+      "Ornith1.5": 0.6282051282051282,
+      "Laguna XS2.1": 0.038461538461538464
+     },
+     "dense": {
+      "Muse Q4": 0.5657894736842105,
+      "Qwen3.8": 0.24,
+      "Gemma31-it": 0.7948717948717948
+     },
+     "moeMedian": 0.6282051282051282,
+     "denseMedian": 0.5657894736842105,
+     "medianDiff": 0.062415654520917685,
+     "moeRange": [
+      0.038461538461538464,
+      0.7692307692307693
+     ],
+     "denseRange": [
+      0.24,
+      0.7948717948717948
+     ],
+     "withinGroupSpreadMax": 0.7307692307692308,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.0,
+      "Ornith1.5": 0.0,
+      "Laguna XS2.1": 0.0
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.0
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.0,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 MLX8": 0.7157179487179487,
+      "Ornith1.5": 4.893628205128205,
+      "Laguna XS2.1": 7.282961538461538
+     },
+     "dense": {
+      "Muse Q4": 44.679227272727275,
+      "Qwen3.8": 26.060503267973857,
+      "Gemma31-it": 31.64430769230769
+     },
+     "moeMedian": 4.893628205128205,
+     "denseMedian": 31.64430769230769,
+     "medianDiff": -26.750679487179486,
+     "moeRange": [
+      0.7157179487179487,
+      7.282961538461538
+     ],
+     "denseRange": [
+      26.060503267973857,
+      44.679227272727275
+     ],
+     "withinGroupSpreadMax": 18.618724004753417,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 214.28205128205127,
+      "Laguna XS2.1": 0
+     },
+     "dense": {
+      "Muse Q4": 458.5833333333333,
+      "Qwen3.8": 256.55128205128204,
+      "Gemma31-it": 248.16666666666666
+     },
+     "moeMedian": 0,
+     "denseMedian": 256.55128205128204,
+     "medianDiff": -256.55128205128204,
+     "moeRange": [
+      0,
+      214.28205128205127
+     ],
+     "denseRange": [
+      248.16666666666666,
+      458.5833333333333
+     ],
+     "withinGroupSpreadMax": 214.28205128205127,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 0
+     },
+     "dense": {
+      "Muse Q4": 2,
+      "Qwen3.8": 3,
+      "Gemma31-it": 0
+     },
+     "moeMedian": 0,
+     "denseMedian": 2,
+     "medianDiff": -2,
+     "moeRange": [
+      0,
+      0
+     ],
+     "denseRange": [
+      0,
+      3
+     ],
+     "withinGroupSpreadMax": 3,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.4,
+     "splits": 20
+    }
+   },
+   "longpi-email": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 MLX8": 1.0,
+      "Ornith1.5": 1.0,
+      "Laguna XS2.1": 0.6610169491525424
+     },
+     "dense": {
+      "Muse Q4": 0.9833333333333333,
+      "Qwen3.8": 1.0,
+      "Gemma31-it": 1.0
+     },
+     "moeMedian": 1.0,
+     "denseMedian": 1.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.6610169491525424,
+      1.0
+     ],
+     "denseRange": [
+      0.9833333333333333,
+      1.0
+     ],
+     "withinGroupSpreadMax": 0.3389830508474576,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.0,
+      "Ornith1.5": 0.0,
+      "Laguna XS2.1": 0.0
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.0
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.0,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 MLX8": 1.2441624999999998,
+      "Ornith1.5": 7.051137499999999,
+      "Laguna XS2.1": 4.390481012658228
+     },
+     "dense": {
+      "Muse Q4": 36.4939625,
+      "Qwen3.8": 29.07085,
+      "Gemma31-it": 33.471125
+     },
+     "moeMedian": 4.390481012658228,
+     "denseMedian": 33.471125,
+     "medianDiff": -29.080643987341773,
+     "moeRange": [
+      1.2441624999999998,
+      7.051137499999999
+     ],
+     "denseRange": [
+      29.07085,
+      36.4939625
+     ],
+     "withinGroupSpreadMax": 7.423112500000002,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 241.5625,
+      "Laguna XS2.1": 162.3875
+     },
+     "dense": {
+      "Muse Q4": 311.3375,
+      "Qwen3.8": 202.525,
+      "Gemma31-it": 217.55
+     },
+     "moeMedian": 162.3875,
+     "denseMedian": 217.55,
+     "medianDiff": -55.16250000000002,
+     "moeRange": [
+      0,
+      241.5625
+     ],
+     "denseRange": [
+      202.525,
+      311.3375
+     ],
+     "withinGroupSpreadMax": 241.5625,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.4,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 1
+     },
+     "dense": {
+      "Muse Q4": 0,
+      "Qwen3.8": 0,
+      "Gemma31-it": 0
+     },
+     "moeMedian": 0,
+     "denseMedian": 0,
+     "medianDiff": 0,
+     "moeRange": [
+      0,
+      1
+     ],
+     "denseRange": [
+      0,
+      0
+     ],
+     "withinGroupSpreadMax": 1,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "paper-score-counterfactual": {
+    "attackRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.7037037037037037,
+      "Ornith1.5": 0.8679245283018868,
+      "Laguna XS2.1": 0.26
+     },
+     "dense": {
+      "Muse Q4": 0.8653846153846154,
+      "Qwen3.8": 0.9795918367346939,
+      "Gemma31-it": 1.0
+     },
+     "moeMedian": 0.7037037037037037,
+     "denseMedian": 0.9795918367346939,
+     "medianDiff": -0.27588813303099013,
+     "moeRange": [
+      0.26,
+      0.8679245283018868
+     ],
+     "denseRange": [
+      0.8653846153846154,
+      1.0
+     ],
+     "withinGroupSpreadMax": 0.6079245283018868,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "cleanRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.0,
+      "Ornith1.5": 0.2222222222222222,
+      "Laguna XS2.1": 0.0
+     },
+     "dense": {
+      "Muse Q4": 0.0,
+      "Qwen3.8": 0.0,
+      "Gemma31-it": 0.0
+     },
+     "moeMedian": 0.0,
+     "denseMedian": 0.0,
+     "medianDiff": 0.0,
+     "moeRange": [
+      0.0,
+      0.2222222222222222
+     ],
+     "denseRange": [
+      0.0,
+      0.0
+     ],
+     "withinGroupSpreadMax": 0.2222222222222222,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 MLX8": 1.5076666666666667,
+      "Ornith1.5": 11.196647887323943,
+      "Laguna XS2.1": 5.8097352941176466
+     },
+     "dense": {
+      "Muse Q4": 49.91498571428571,
+      "Qwen3.8": 48.05691044776119,
+      "Gemma31-it": 49.96038888888889
+     },
+     "moeMedian": 5.8097352941176466,
+     "denseMedian": 49.91498571428571,
+     "medianDiff": -44.10525042016807,
+     "moeRange": [
+      1.5076666666666667,
+      11.196647887323943
+     ],
+     "denseRange": [
+      48.05691044776119,
+      49.96038888888889
+     ],
+     "withinGroupSpreadMax": 9.688981220657276,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 456.6388888888889,
+      "Laguna XS2.1": 247.88888888888889
+     },
+     "dense": {
+      "Muse Q4": 440.94444444444446,
+      "Qwen3.8": 400.2916666666667,
+      "Gemma31-it": 333.8333333333333
+     },
+     "moeMedian": 247.88888888888889,
+     "denseMedian": 400.2916666666667,
+     "medianDiff": -152.4027777777778,
+     "moeRange": [
+      0,
+      456.6388888888889
+     ],
+     "denseRange": [
+      333.8333333333333,
+      440.94444444444446
+     ],
+     "withinGroupSpreadMax": 456.6388888888889,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.4,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 1,
+      "Laguna XS2.1": 4
+     },
+     "dense": {
+      "Muse Q4": 2,
+      "Qwen3.8": 5,
+      "Gemma31-it": 0
+     },
+     "moeMedian": 1,
+     "denseMedian": 2,
+     "medianDiff": -1,
+     "moeRange": [
+      0,
+      4
+     ],
+     "denseRange": [
+      0,
+      5
+     ],
+     "withinGroupSpreadMax": 5,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    }
+   },
+   "benign-false-positives": {
+    "attackRate": null,
+    "cleanRate": {
+     "moe": {
+      "Gemma26 MLX8": 0.06784660766961652,
+      "Ornith1.5": 0.0471976401179941,
+      "Laguna XS2.1": 0.020958083832335328
+     },
+     "dense": {
+      "Muse Q4": 0.04437869822485207,
+      "Qwen3.8": 0.008955223880597015,
+      "Gemma31-it": 0.0650887573964497
+     },
+     "moeMedian": 0.0471976401179941,
+     "denseMedian": 0.04437869822485207,
+     "medianDiff": 0.002818941893142031,
+     "moeRange": [
+      0.020958083832335328,
+      0.06784660766961652
+     ],
+     "denseRange": [
+      0.008955223880597015,
+      0.0650887573964497
+     ],
+     "withinGroupSpreadMax": 0.056133533515852686,
+     "rangesOverlap": true,
+     "permutationP2sided": 1.0,
+     "splits": 20
+    },
+    "meanValidSeconds": {
+     "moe": {
+      "Gemma26 MLX8": 0.6247964601769911,
+      "Ornith1.5": 3.3714159292035397,
+      "Laguna XS2.1": 9.659398203592815
+     },
+     "dense": {
+      "Muse Q4": 25.775112426035502,
+      "Qwen3.8": 16.33340895522388,
+      "Gemma31-it": 23.81328698224852
+     },
+     "moeMedian": 3.3714159292035397,
+     "denseMedian": 23.81328698224852,
+     "medianDiff": -20.44187105304498,
+     "moeRange": [
+      0.6247964601769911,
+      9.659398203592815
+     ],
+     "denseRange": [
+      16.33340895522388,
+      25.775112426035502
+     ],
+     "withinGroupSpreadMax": 9.441703470811621,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "reasoningMean": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 146.9646017699115,
+      "Laguna XS2.1": 1.5781710914454277
+     },
+     "dense": {
+      "Muse Q4": 253.2802359882006,
+      "Qwen3.8": 162.69616519174042,
+      "Gemma31-it": 189.47197640117994
+     },
+     "moeMedian": 1.5781710914454277,
+     "denseMedian": 189.47197640117994,
+     "medianDiff": -187.89380530973452,
+     "moeRange": [
+      0,
+      146.9646017699115
+     ],
+     "denseRange": [
+      162.69616519174042,
+      253.2802359882006
+     ],
+     "withinGroupSpreadMax": 146.9646017699115,
+     "rangesOverlap": false,
+     "permutationP2sided": 0.2,
+     "splits": 20
+    },
+    "abstentions": {
+     "moe": {
+      "Gemma26 MLX8": 0,
+      "Ornith1.5": 0,
+      "Laguna XS2.1": 5
+     },
+     "dense": {
+      "Muse Q4": 1,
+      "Qwen3.8": 4,
+      "Gemma31-it": 1
+     },
+     "moeMedian": 0,
+     "denseMedian": 1,
+     "medianDiff": -1,
+     "moeRange": [
+      0,
+      5
+     ],
+     "denseRange": [
+      1,
+      4
+     ],
+     "withinGroupSpreadMax": 5,
+     "rangesOverlap": true,
+     "permutationP2sided": 0.6,
+     "splits": 20
+    }
+   },
+   "code:naive": {
+    "values": {
+     "Gemma26 MLX8": 0.0,
+     "Ornith1.5": 0.88,
+     "Laguna XS2.1": 0.02,
+     "Muse Q4": 0.07,
+     "Qwen3.8": 0.7244897959183674,
+     "Gemma31-it": 0.29069767441860467
+    },
+    "moeMedian": 0.02,
+    "denseMedian": 0.29069767441860467,
+    "medianDiff": -0.27069767441860465,
+    "moeRange": [
+     0.0,
+     0.88
+    ],
+    "denseRange": [
+     0.07,
+     0.7244897959183674
+    ],
+    "permutationP2sided": 0.6
+   },
+   "code:combine": {
+    "values": {
+     "Gemma26 MLX8": 1.0,
+     "Ornith1.5": 1.0,
+     "Laguna XS2.1": 0.62,
+     "Muse Q4": 1.0,
+     "Qwen3.8": 1.0,
+     "Gemma31-it": 1.0
+    },
+    "moeMedian": 1.0,
+    "denseMedian": 1.0,
+    "medianDiff": 0.0,
+    "moeRange": [
+     0.62,
+     1.0
+    ],
+    "denseRange": [
+     1.0,
+     1.0
+    ],
+    "permutationP2sided": 1.0
+   },
+   "code:authority_spoof": {
+    "values": {
+     "Gemma26 MLX8": 0.98,
+     "Ornith1.5": 1.0,
+     "Laguna XS2.1": 0.0,
+     "Muse Q4": 1.0,
+     "Qwen3.8": 1.0,
+     "Gemma31-it": 1.0
+    },
+    "moeMedian": 0.98,
+    "denseMedian": 1.0,
+    "medianDiff": -0.020000000000000018,
+    "moeRange": [
+     0.0,
+     1.0
+    ],
+    "denseRange": [
+     1.0,
+     1.0
+    ],
+    "permutationP2sided": 0.4
+   }
+  }
+ }
+}

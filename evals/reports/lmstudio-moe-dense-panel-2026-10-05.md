@@ -3,8 +3,8 @@
 2026-10-05. This is the final comparison for the local full-input stage: six qualified models (seven builds) on five
 cohorts. No new inference was run for this report. It reuses audited checkpoints from research-log entries L119–L126.
 The group statistics come from
-[`moe-dense-panel-summary.json`](../runs/lmstudio-new-panel-v2-2026-10-04/moe-dense-panel-summary.json), produced by
-`summarize-moe-dense.py` in the same directory.
+[`moe-dense-panel-summary.json`](../analysis/lmstudio-new-panel-v2-2026-10-04/results/moe-dense-panel-summary.json), produced by
+`summarize-moe-dense.py` in the same directory (published in [`evals/analysis/lmstudio-new-panel-v2-2026-10-04/`](../analysis/lmstudio-new-panel-v2-2026-10-04/)).
 
 ## Bottom line
 
@@ -234,7 +234,7 @@ continued output (`<tool_call>`, and one rationale about "a very long list of 'A
 therefore neither in `content` nor inline reasoning. It is uncounted and stripped, which is most consistent with
 degenerate post-answer generation of control tokens, not hidden deliberation. The mechanism is unconfirmed, and no
 setting was changed. Long-prompt cohorts (code, email, numeric, paper) account cleanly
-([token audit](../runs/lmstudio-new-panel-v2-2026-10-04/laguna-token-accounting-audit.json), L123).
+([token audit](../analysis/lmstudio-new-panel-v2-2026-10-04/results/laguna-token-accounting-audit.json), L123).
 
 **Specialization.** Laguna is an agentic coding model, and it is the worst panel model on the code-review cohort.
 Domain specialization did not help detection here (FINDINGS F3). Its 4/15 exact numeric endpoint pairs mix
@@ -297,4 +297,4 @@ Not established:
   [numeric probes](lmstudio-panel-numeric-probes-2026-10-04.md).
 - Per-model audits: `runs/lmstudio-new-panel-v2-2026-10-04/{gemma26gguf,laguna,gemma31}-{code,bipia,notinject,email80,numeric}-audit.json`,
   `runs/lmstudio-code-panel-2026-10-04/{ornith,muse,qwen38}-code-audit.json`, and the earlier available-panel audits.
-- [Laguna token accounting](../runs/lmstudio-new-panel-v2-2026-10-04/laguna-token-accounting-audit.json).
+- [Laguna token accounting](../analysis/lmstudio-new-panel-v2-2026-10-04/results/laguna-token-accounting-audit.json).

@@ -19,4 +19,4 @@ The long-input agreement also includes shared failures: both miss all 20 naive p
 
 BIPIA is now complete locally: 55 attacks are detected by both deployments, 3 by hosted only, 5 by local only, and 15 by neither. Keep the local full-input study distinct; saved hosted predictions are a comparison, not substitutes for local observations.
 
-The [audit data](../runs/lmstudio-hosted-transfer-2026-10-04/comparison.json) retain engine identities, source hashes, per-case score/decision differences, original request IDs, completion work and selected cases. No hosted or local requests were repeated.
+The [audit data](../analysis/lmstudio-hosted-transfer-2026-10-04/results/comparison.json) retain engine identities, source hashes, per-case score/decision differences, original request IDs, completion work and selected cases. No hosted or local requests were repeated.

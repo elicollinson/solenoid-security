@@ -1,0 +1,130 @@
+{
+  "generatedAt": "2026-10-04T15:25:55.427Z",
+  "sources": [
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-score-counterfactual-original-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-full.jsonl",
+        "capturedBytes": 268980,
+        "capturedSha256": "aeea3f52447a99a6154f090fd9a7fae21be9a5d4d4f1b4d60ca1362d7c525914"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-score-counterfactual-e2b-thinking1024-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-thinking1024-full.jsonl",
+        "capturedBytes": 421859,
+        "capturedSha256": "e2ce01f8508b34a6cb2d5fb552d627807e77431b5b35b387e9ddd5d6f90f31e5"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-score-counterfactual-e4b-2026-10-03/paper-score-counterfactual/gemma4-e4b-q4-thinking1024-full.jsonl",
+        "capturedBytes": 427826,
+        "capturedSha256": "1ec16d654a878207f9ae6ecea1c2ab502a3e8a8267deaf3b6efa306df5e5081f"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/muse-glimmer-q4-thinking1024-full.jsonl",
+        "capturedBytes": 429516,
+        "capturedSha256": "4e8bcb1bc93ce48ff7618c7d58f7e0999d36884e0d6e131fc263ac88e54f1711"
+      },
+      "statuses": {
+        "scored": 70,
+        "length_abstention": 2
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/gemma4-26b-a4b-mlx8-thinking1024-full.jsonl",
+        "capturedBytes": 278863,
+        "capturedSha256": "779fe44ed91b61d342cac6599613d5152591c5fa515d5d8cfc9e49b1344620a3"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/ornith15-35b-a3b-q8-thinking1024-full.jsonl",
+        "capturedBytes": 449608,
+        "capturedSha256": "59cbd910dd9ca4be70931fcab1990bf87b819837a9221fd176a10fe9388bb1ec"
+      },
+      "statuses": {
+        "scored": 71,
+        "length_abstention": 1
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-qwen38-full-2026-10-04/paper-score-counterfactual/qwen38-27b-q8-thinking1024-full.jsonl",
+        "capturedBytes": 430696,
+        "capturedSha256": "222df338e994730ef714aac9c199be11d5dcd7e9f9534414388899e75d597d73"
+      },
+      "statuses": {
+        "scored": 67,
+        "length_abstention": 5
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-score-counterfactual-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-authority-full.jsonl",
+        "capturedBytes": 266535,
+        "capturedSha256": "7f1626e9aaafdb70e20f529638105dd5b5cf7980a92a170670a30dd2f236cf35"
+      },
+      "statuses": {
+        "scored": 60,
+        "output_abstention": 12
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-research-2026-10-03/longpi-paper/gemma4-e2b-q4-full.jsonl",
+        "capturedBytes": 1457355,
+        "capturedSha256": "556818a1a88d12ddb501066c4174aae45069f6bbe254f80c7dd6d3e5c031f546"
+      },
+      "statuses": {
+        "scored": 399,
+        "output_abstention": 1
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-score-counterfactual-e2b-thinking1024-preserve-2026-10-03/paper-score-counterfactual/gemma4-e2b-q4-thinking1024-preserve512.jsonl",
+        "capturedBytes": 5412885,
+        "capturedSha256": "a474ad8f793b5e00823cf1aa447908e420bd617ea6e388cbcf499a79072d1b3e"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-score-counterfactual-e4b-preserve-2026-10-03/paper-score-counterfactual/gemma4-e4b-q4-thinking1024-preserve512.jsonl",
+        "capturedBytes": 5386032,
+        "capturedSha256": "3987e6e4c0a4fa5c4a78e1c598a2c554ded509da4d532dc48fdef37e835ce313"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    },
+    {
+      "source": {
+        "path": "evals/runs/lmstudio-available-panel-2026-10-04/paper-score-counterfactual/gemma4-26b-a4b-mlx8-thinking1024-preserve512.jsonl",
+        "capturedBytes": 3977918,
+        "capturedSha256": "191b84a97f31c485146633773c4e11bc6ad0a9a51ebacfd3b103b35f2cb00f69"
+      },
+      "statuses": {
+        "scored": 72
+      }
+    }
+  ]
+}

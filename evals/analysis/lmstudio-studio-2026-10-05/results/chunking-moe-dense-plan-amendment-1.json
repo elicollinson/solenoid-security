@@ -1,0 +1,37 @@
+{
+  "amendedAt": "2026-10-06T03:52:57.313260+00:00",
+  "amends": {
+    "path": "evals/runs/lmstudio-studio-2026-10-05/chunking-moe-dense-plan.json",
+    "sha256": "0940845966231d0b70d8eb3bce9232f89d45585ac9aefd203639c1fa1a790e59"
+  },
+  "trigger": "Gemma26 Q8 deduplicated paper window run halted at 03:52Z on a length abstention (case lp-8d290e3dcf0947b8979c2480, index 35 / family paper/8, window 12: 1,021 reasoning tokens, empty content, stop maxPredictedTokensReached). Checkpoint retained unchanged (165 dispatches, 506 observations incl. derived).",
+  "change": "Apply the pre-registered fallback to every remaining paper and email window cohort, not only the halted one, so the unattended queue cannot stall on another window abstention: *-preserve512-nodedup condition, no --deduplicate-inputs, --continue-after-output-errors; paper --max-new-segments=1097 (all 80-case logical windows), email --limit=80. Code was already nodedup. The MoE paper-400 extension continues the same nodedup checkpoint without a bound. No setting, threshold, cohort or analysis change.",
+  "consequence": "Duplicate window inputs are re-sent (temperature 0, Studio reruns byte-identical per L127), so they are repeated draws of the same input, not independent trials; the analysis aggregates by window exactly as before. Cost rises from 691 to 1,594 window requests per model.",
+  "runtimeEstimate": {
+    "perModel": {
+      "gemma26": {
+        "coreHours": 1.95,
+        "paper400ExtensionHours": 4.22
+      },
+      "ornith": {
+        "coreHours": 1.53,
+        "paper400ExtensionHours": 3.3
+      },
+      "qwen38": {
+        "coreHours": 3.39,
+        "paper400ExtensionHours": 7.28
+      },
+      "muse": {
+        "coreHours": 5.92,
+        "paper400ExtensionHours": 12.83
+      },
+      "gemma31": {
+        "coreHours": 7.43,
+        "paper400ExtensionHours": 16.14
+      }
+    },
+    "coreHours": 20.2,
+    "moePaper400ExtensionHours": 7.5,
+    "decision": "Core ~20 h + MoE paper-400 ~8 h, about 1.2 days; still inside the 1-1.5 day target, so the extension is kept and stays last."
+  }
+}

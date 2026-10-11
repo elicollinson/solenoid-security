@@ -1,0 +1,211 @@
+{
+  "fixedAt": "2026-10-06T15:07:30.289758+00:00",
+  "supersedes": {
+    "path": "evals/runs/lmstudio-studio-2026-10-05/queue-study-b.txt",
+    "sha256": "7c1d99ae4a2057f3dc441431520b74788fe5548df610a162cc49b217c54c3438",
+    "note": "never started; retained"
+  },
+  "request": "Coordinator scope expansion (user): every qualified Studio build at Q4/Q6/Q8 through every panel cohort under full input and 512-word windows.",
+  "suites": {
+    "full": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-thinking1024-v1.json",
+      "sha256": "6f49376e5fa994809a2156c33b727a32c85c53e6334f8dd1089e80f60d013eaf"
+    },
+    "studyAWindows": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-windows-thinking1024-v1.json",
+      "sha256": "7c0a500bdd7f90a59f98beecae5e4b04e1c35f751eee497393dca1344c7a928b"
+    },
+    "ladderWindows": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-ladder-windows-thinking1024-v1.json",
+      "sha256": "04760168b9386ac1ac0b3b71b5c6aa391b14d20d6d9ac7f63ea01ad6573d5b87"
+    },
+    "mlxDiagnostic": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-mlx-diagnostic-v1.json",
+      "sha256": "ef871136e17cd97144fc9380664f73f8250be706e782fefad31b754ec0b67e04"
+    }
+  },
+  "builds": [
+    "gemma26-q8",
+    "gemma26-q4km",
+    "gemma26-q6",
+    "ornith-q8",
+    "ornith-q4km",
+    "ornith-q6",
+    "qwen38-q8gguf",
+    "muse-q8",
+    "muse-q6kxl",
+    "gemma31-q8",
+    "gemma31-q4km",
+    "gemma31-q6"
+  ],
+  "qwenQuantsInStudioInventory": "Only Qwen3.8 GGUF Q8_0 and MLX 8bit on 2026-10-06 (lms ls --variants); re-check between models; any new quant needs qualification and a new suite version.",
+  "mlx": "Qwen3.8 MLX only if run-mlx-diagnostic.sh qualifies a pair; its full cohorts, paper80 and ladder windows then go first.",
+  "fullArm": "BIPIA 156, NotInject 339, email80, numeric 72, code 400, paper80 (first 20 families). Q8 paper80/email80/code-first-80 come from Study A; code steps extend the same checkpoint to 400. Q6/Q4 paper80 extends the first6 qualification checkpoints (--max-new-segments=56).",
+  "windowArm": "sliding-preserve-words-512-stride384-v1, no dedup, --continue-after-output-errors (Study A fallback). paper80 (1,097 logical), email80 (332), code80 (165), numeric 72 (1,029), BIPIA (158). Q8 paper/email/code windows reuse Study A checkpoints (identical engine and strategy). ladder condition ids differ from Study A ids, so no path collides.",
+  "equivalence": {
+    "notinject": "All 339 cases are one window byte-identical to full input: windowed arm = full arm by exact-input identity; not re-run.",
+    "bipia": "154/156 single windows identical to full, 2 cases split into 2 windows; BIPIA windows are run (158 calls), which doubles as a 154-input rerun determinism check."
+  },
+  "geometry": {
+    "notinject": {
+      "cases": 339,
+      "logical": 339,
+      "identicalToFull": 339
+    },
+    "bipia": {
+      "cases": 156,
+      "logical": 158,
+      "identicalToFull": 154
+    },
+    "paper80": {
+      "cases": 80,
+      "logical": 1097
+    },
+    "email80": {
+      "cases": 80,
+      "logical": 332
+    },
+    "code80": {
+      "cases": 80,
+      "logical": 165
+    },
+    "numeric": {
+      "cases": 72,
+      "logical": 1029
+    }
+  },
+  "order": "Gemma26 (Q8, Q4_K_M, Q6_K), Ornith (Q8, Q4_K_M, Q6_K), Qwen3.8 Q8, Muse (Q8, Q6_K_XL), Gemma31 (Q8, Q4_K_M, Q6_K); within a build full arm first, then windows.",
+  "kept": "Study A MoE paper-400 steps stay at the end of queue-study-a2; the MLX diagnostic still runs between Study A and Study B.",
+  "runtimeEstimate": {
+    "method": "Measured Studio Q8 mean s/request from Study A checkpoints per arm/cohort (short prompts use the paper-window mean); Q6/Q4 scaled by first6 decode tok/s ratio; +1 min per step for loading.",
+    "secondsQ8": {
+      "gemma26": {
+        "paper": 4.11,
+        "code": 3.49,
+        "email": 3.13,
+        "win": 2.4,
+        "cwin": 3.04,
+        "short": 2.4
+      },
+      "ornith": {
+        "paper": 3.4,
+        "code": 2.06,
+        "email": 2.34,
+        "win": 1.7,
+        "cwin": 1.82,
+        "short": 1.7
+      },
+      "qwen38": {
+        "paper": 8.61,
+        "code": 5.9,
+        "email": 4.92,
+        "win": 3.92,
+        "cwin": 4.73,
+        "short": 3.92
+      },
+      "muse": {
+        "paper": 13.35,
+        "code": 12.84,
+        "email": 11.19,
+        "win": 10.11,
+        "cwin": 12.02,
+        "short": 10.11
+      },
+      "gemma31": {
+        "paper": 16.0,
+        "code": 15.4,
+        "email": 13.5,
+        "win": 9.18,
+        "cwin": 11.0,
+        "short": 9.18
+      }
+    },
+    "perBuild": [
+      {
+        "build": "gemma26-q8",
+        "steps": 6,
+        "newRequests": 2074,
+        "decodeScaleVsQ8": 1.0,
+        "hours": 1.6
+      },
+      {
+        "build": "gemma26-q4km",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.87,
+        "hours": 2.6
+      },
+      {
+        "build": "gemma26-q6",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.953,
+        "hours": 2.9
+      },
+      {
+        "build": "ornith-q8",
+        "steps": 6,
+        "newRequests": 2074,
+        "decodeScaleVsQ8": 1.0,
+        "hours": 1.1
+      },
+      {
+        "build": "ornith-q4km",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.878,
+        "hours": 1.9
+      },
+      {
+        "build": "ornith-q6",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.893,
+        "hours": 1.9
+      },
+      {
+        "build": "qwen38-q8gguf",
+        "steps": 6,
+        "newRequests": 2074,
+        "decodeScaleVsQ8": 1.0,
+        "hours": 2.6
+      },
+      {
+        "build": "muse-q8",
+        "steps": 6,
+        "newRequests": 2074,
+        "decodeScaleVsQ8": 1.0,
+        "hours": 6.2
+      },
+      {
+        "build": "muse-q6kxl",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.934,
+        "hours": 10.9
+      },
+      {
+        "build": "gemma31-q8",
+        "steps": 6,
+        "newRequests": 2074,
+        "decodeScaleVsQ8": 1.0,
+        "hours": 6.1
+      },
+      {
+        "build": "gemma31-q4km",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.706,
+        "hours": 8.0
+      },
+      {
+        "build": "gemma31-q6",
+        "steps": 11,
+        "newRequests": 3884,
+        "decodeScaleVsQ8": 0.876,
+        "hours": 9.8
+      }
+    ],
+    "totalHours": 55.6
+  }
+}

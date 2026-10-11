@@ -1,0 +1,5 @@
+{"status": "superseded", "haltedAtUtc": "2026-10-07T13:16:44Z", "reason": "superseded by 4096-cap baseline (user decision): at max_tokens 1024 the three new models failed qualification on reasoning-budget exhaustion (finish_reason length) and earlier runs showed length abstentions",
+ "successor": "evals/runs/studio-baseline-t4096-2026-10-07 (suite evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-v1.json)",
+ "stop": "chain (TERM) -> queue (KILL, so its trap did not write a second HALTED line) -> driver (TERM); driver unloaded solenoid-studio-ornith-q8-thinking1024 and removed evals/runs/lmstudio-device.lock in its finally block at 13:16:36Z",
+ "partialCheckpoints": {"longpi-paper/baseline-ornith-q8-full.jsonl": "400/400 observations, complete", "longpi-paper-abstract/baseline-ornith-q8-full.jsonl": "300/300 observations, complete", "longpi-paper-method/baseline-ornith-q8-full.jsonl": "59/300 observations, interrupted (sha256 55887dda823d298d0e036e201b4429787b0a4be61e13a9d9b2105c42a4686183)"},
+ "note": "All files kept untouched; not reused by the successor."}

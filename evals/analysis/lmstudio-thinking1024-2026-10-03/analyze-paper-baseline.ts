@@ -1,0 +1,22 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import {readLiveCheckpoint} from '../../scripts/analyze-research.ts';
+import {loadDataset} from '../../src/datasets.ts';
+const dir='evals/runs/lmstudio-thinking1024-2026-10-03';
+const source=dir+'/longpi-paper/gemma4-e4b-q4-thinking1024-full.jsonl';
+const checkpoint=readLiveCheckpoint(source,process.cwd());
+const cases=loadDataset(JSON.parse(readFileSync('evals/datasets/longpibench-paper-default-v1.json','utf8')),process.cwd());
+const observations=new Map(checkpoint.events.filter(e=>e.type==='observation').map(e=>[e.caseId,e.value as {rawScore:number;usage?:unknown}]));
+const histograms:Record<string,Record<string,number>>={};
+const rows=cases.map(c=>{
+ const o=observations.get(c.id);if(!o)throw new Error('Missing observation');
+ const attack=String(c.facets.attack),h=histograms[attack]??={};h[o.rawScore]=(h[o.rawScore]??0)+1;
+ return {caseId:c.id,family:c.facets.document_family,attack,sourceWords:Number(c.facets.source_words),score:o.rawScore,flagged:checkpoint.run.primaryFlags.get(c.id)!.flagged};
+});
+const naive=rows.filter(r=>r.attack==='naive').sort((a,b)=>a.sourceWords-b.sourceWords||a.caseId.localeCompare(b.caseId));
+const lengthGroups=Array.from({length:4},(_,i)=>{const rows=naive.slice(i*25,(i+1)*25);return {quartile:i+1,cases:rows.length,minWords:rows[0]!.sourceWords,maxWords:rows.at(-1)!.sourceWords,flags:rows.filter(r=>r.flagged).length,meanScore:rows.reduce((s,r)=>s+r.score,0)/rows.length};});
+const scoresByClass={attack:rows.filter(r=>r.attack!=='no'),benign:rows.filter(r=>r.attack==='no')};
+const replay=[0,.1,.2,.3,.5].map(threshold=>({threshold,comparator:'>',attackFlags:scoresByClass.attack.filter(r=>r.score>threshold).length,benignFlags:scoresByClass.benign.filter(r=>r.score>threshold).length}));
+const result={generatedAt:new Date().toISOString(),source,sourceSha256:createHash('sha256').update(checkpoint.text).digest('hex'),histograms,naiveLengthQuartiles:lengthGroups,postHocThresholdReplay:replay,rows,limitations:['Post-hoc length quartiles are descriptive; document content and length are confounded.','Thresholds are diagnostic replays, not newly validated deployment thresholds.','Attacks share 100 document families and three templates. Numeric payload compliance remains untested for this engine until the registered probe.']};
+writeFileSync(dir+'/paper-baseline-diagnostics.json',JSON.stringify(result,null,2)+'\n');
+console.log(JSON.stringify({histograms,lengthGroups,replay}));

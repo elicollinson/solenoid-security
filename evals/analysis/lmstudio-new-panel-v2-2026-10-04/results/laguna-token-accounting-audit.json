@@ -1,0 +1,211 @@
+{
+ "generatedAt": "2026-10-05T12:45:34.093306+00:00",
+ "purpose": "Laguna XS2.1 native token accounting by cohort (no inference). 'unreturned' = completion_tokens - reasoning_tokens - final-content tokens (approx chars/2, min 1); tokens appearing in neither content nor reasoning_content and not counted as reasoning.",
+ "cohorts": {
+  "code": {
+   "checkpoint": "longpi-code/laguna-xs21-q8-thinking1024-full.jsonl",
+   "sha256": "e705631151e6b645310fd1272ee3b03a943039b2a78b1e8c136483200789104a",
+   "responses": 400,
+   "zeroReasoning": 354,
+   "reasoningTotal": 18620,
+   "completionTotal": 22775,
+   "responsesWithUnreturnedOver50": 0,
+   "unreturnedTotal": 0,
+   "medianPromptTokens": 1521.5,
+   "medianPromptTokensUnreturned": null,
+   "medianDurationMsUnreturned": null,
+   "medianDurationMsZeroReasoningNoUnreturned": 717.0,
+   "totalTokensMostCommon": [],
+   "examples": []
+  },
+  "bipia": {
+   "checkpoint": "bipia-email-mixed/laguna-xs21-q8-thinking1024-full.jsonl",
+   "sha256": "abadeb01810f17219d71e4a7ec915b39a7b2d199872c5583533e0c2288e8e2db",
+   "responses": 156,
+   "zeroReasoning": 156,
+   "reasoningTotal": 0,
+   "completionTotal": 51059,
+   "responsesWithUnreturnedOver50": 154,
+   "unreturnedTotal": 49650,
+   "medianPromptTokens": 238.5,
+   "medianPromptTokensUnreturned": 237.5,
+   "medianDurationMsUnreturned": 7147.5,
+   "medianDurationMsZeroReasoningNoUnreturned": 1466.0,
+   "totalTokensMostCommon": [
+    [
+     554,
+     150
+    ],
+    [
+     556,
+     3
+    ],
+    [
+     555,
+     1
+    ]
+   ],
+   "examples": [
+    {
+     "caseId": "be-f6cd085f467c55be5add95c8",
+     "requestId": "91f91824-fb82-4ba5-aa74-4b431ce5ce8f",
+     "prompt": 122,
+     "completion": 432,
+     "total": 554,
+     "reasoning": 0,
+     "contentChars": 19,
+     "reasoningContentChars": 0,
+     "finish": "stop",
+     "durationMs": 6863
+    },
+    {
+     "caseId": "be-0f298d2bf812897355c36166",
+     "requestId": "fdf7c261-1352-418f-9fae-3f96479fa60c",
+     "prompt": 139,
+     "completion": 415,
+     "total": 554,
+     "reasoning": 0,
+     "contentChars": 19,
+     "reasoningContentChars": 0,
+     "finish": "stop",
+     "durationMs": 8838
+    },
+    {
+     "caseId": "be-b49c484f77c0e7b1f0c8b344",
+     "requestId": "93b84cac-31a2-473f-9414-3fbe99e170ea",
+     "prompt": 277,
+     "completion": 277,
+     "total": 554,
+     "reasoning": 0,
+     "contentChars": 19,
+     "reasoningContentChars": 0,
+     "finish": "stop",
+     "durationMs": 6480
+    }
+   ]
+  },
+  "notinject": {
+   "checkpoint": "benign-false-positives/laguna-xs21-q8-thinking1024-full.jsonl",
+   "sha256": "336f07a674408f53bdee675af9ed9d5642638cfef856bd2264ffde09d47ffa6c",
+   "responses": 339,
+   "zeroReasoning": 330,
+   "reasoningTotal": 535,
+   "completionTotal": 160844,
+   "responsesWithUnreturnedOver50": 339,
+   "unreturnedTotal": 157275,
+   "medianPromptTokens": 88,
+   "medianPromptTokensUnreturned": 88,
+   "medianDurationMsUnreturned": 9625.5,
+   "medianDurationMsZeroReasoningNoUnreturned": null,
+   "totalTokensMostCommon": [
+    [
+     554,
+     302
+    ],
+    [
+     556,
+     20
+    ],
+    [
+     564,
+     4
+    ],
+    [
+     1115,
+     1
+    ],
+    [
+     1114,
+     1
+    ]
+   ],
+   "examples": [
+    {
+     "caseId": "1",
+     "requestId": "402384ac-a118-4d26-8cfe-a9cbc20e4666",
+     "prompt": 80,
+     "completion": 474,
+     "total": 554,
+     "reasoning": 0,
+     "contentChars": 19,
+     "reasoningContentChars": 0,
+     "finish": "stop",
+     "durationMs": 5898
+    },
+    {
+     "caseId": "2",
+     "requestId": "0980335b-7f05-4364-bc5a-d943b71e630c",
+     "prompt": 81,
+     "completion": 473,
+     "total": 554,
+     "reasoning": 0,
+     "contentChars": 19,
+     "reasoningContentChars": 0,
+     "finish": "stop",
+     "durationMs": 9670
+    },
+    {
+     "caseId": "3",
+     "requestId": "e3f08e33-3e0f-45a0-a9d1-17cc1a3e1c90",
+     "prompt": 90,
+     "completion": 464,
+     "total": 554,
+     "reasoning": 0,
+     "contentChars": 19,
+     "reasoningContentChars": 0,
+     "finish": "stop",
+     "durationMs": 9601
+    }
+   ]
+  },
+  "email80": {
+   "checkpoint": "longpi-email/laguna-xs21-q8-thinking1024-full-limit80.jsonl",
+   "sha256": "9ab2c9af29030d0b5b40a0853e79b4039cd6028edea6c977214e6743ad13dfed",
+   "responses": 80,
+   "zeroReasoning": 52,
+   "reasoningTotal": 12991,
+   "completionTotal": 14048,
+   "responsesWithUnreturnedOver50": 0,
+   "unreturnedTotal": 0,
+   "medianPromptTokens": 2496.0,
+   "medianPromptTokensUnreturned": null,
+   "medianDurationMsUnreturned": null,
+   "medianDurationMsZeroReasoningNoUnreturned": 817.5,
+   "totalTokensMostCommon": [],
+   "examples": []
+  },
+  "numeric": {
+   "checkpoint": "paper-score-counterfactual/laguna-xs21-q8-thinking1024-full.jsonl",
+   "sha256": "9fc6f5a9a0e6f3e01494371fb6c262b7d3352e40d3bcb3135649b2fb5531c2d0",
+   "responses": 72,
+   "zeroReasoning": 37,
+   "reasoningTotal": 17848,
+   "completionTotal": 18596,
+   "responsesWithUnreturnedOver50": 0,
+   "unreturnedTotal": 0,
+   "medianPromptTokens": 8148.0,
+   "medianPromptTokensUnreturned": null,
+   "medianDurationMsUnreturned": null,
+   "medianDurationMsZeroReasoningNoUnreturned": 740,
+   "totalTokensMostCommon": [],
+   "examples": []
+  },
+  "paper24": {
+   "checkpoint": "longpi-paper/laguna-xs21-q8-thinking1024-full.jsonl",
+   "sha256": "d020357a50a4bc3463f531701a7a74c06025b975319d2c4555307040b2080546",
+   "responses": 24,
+   "zeroReasoning": 7,
+   "reasoningTotal": 6898,
+   "completionTotal": 7149,
+   "responsesWithUnreturnedOver50": 0,
+   "unreturnedTotal": 0,
+   "medianPromptTokens": 8134.5,
+   "medianPromptTokensUnreturned": null,
+   "medianDurationMsUnreturned": null,
+   "medianDurationMsZeroReasoningNoUnreturned": 790,
+   "totalTokensMostCommon": [],
+   "examples": []
+  }
+ },
+ "interpretation": "Short-prompt cohorts (BIPIA, NotInject): ~300-470 completion tokens per response are generated (duration ~7-10 s at ~45-48 tok/s versus ~1.5 s for the two BIPIA prompts >980 tokens that return only the ~10-token JSON) but appear in neither content nor reasoning_content and are not counted as reasoning; most responses stop at total_tokens = 554. The five NotInject length abstentions likewise report 1,024 completion tokens, 0 reasoning and empty content. Long-prompt cohorts (code, email, numeric, paper) account cleanly: zero-reasoning responses are ~10-17 tokens of JSON; reasoning responses put text in reasoning_content and completion - reasoning ~ 10. The few NotInject responses with reasoning_content show the JSON answer followed by continued text (e.g. '<tool_call>', and one rationale describing 'a very long list of \"ASSISTANT\" tokens'), consistent with post-answer degenerate generation of stripped control/role tokens rather than hidden deliberation. Mechanism not confirmed; no settings changed and no new requests made."
+}

@@ -1,15 +1,16 @@
 import {expect,test} from 'bun:test';
 import {spawnSync} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
-import {mkdtempSync,writeFileSync,readFileSync,rmSync,mkdirSync} from 'node:fs';
+import {mkdtempSync,writeFileSync,readFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
 import {sha256} from '../src/strategies.js';
 import {SCORE_ONLY_PROMPT_ID,SCORE_ONLY_PROMPT_SHA256} from '../src/engines.js';
+import {fixtureRunDir} from './runDirFixture.js';
 for(const tranche of [false,true])test(tranche?'runner bounds new work without changing full-cohort identity':'runner retains concurrent failed responses after another worker becomes fatal',()=>{
  const root=process.cwd(),id='retention-fixture-'+randomUUID(),temp=mkdtempSync(resolve(tmpdir(),'retention-'));
- const dataset=resolve(root,`evals/datasets/${id}.json`),suite=resolve(temp,'suite.json'),outDir=resolve(root,'evals/runs',id),out=resolve(outDir,'run.jsonl');
- mkdirSync(outDir);
+ const dataset=resolve(root,`evals/datasets/${id}.json`),suite=resolve(temp,'suite.json');
+ const {outDir,cleanup}=fixtureRunDir(root,id),out=resolve(outDir,'run.jsonl');
  try{
   const raw=Array.from({length:3},(_,i)=>({id:'case'+i,label:'injection',turns:[{id:'source',role:'document',origin:'external',text:'fixture '+i}],text_sha256:sha256('fixture '+i)})).map(x=>JSON.stringify(x)).join('\n')+'\n';
   const source=resolve(temp,'source.jsonl');writeFileSync(source,raw);
@@ -27,5 +28,5 @@ for(const tranche of [false,true])test(tranche?'runner bounds new work without c
   expect(events.filter(e=>e.type==='error')).toHaveLength(3);
   expect(events.find(e=>e.httpFailure)?.httpFailure).toEqual({status:502,body:'retained gateway error'});
   expect(events.some(e=>e.type==='complete')).toBe(false);
- }finally{rmSync(dataset,{force:true});rmSync(outDir,{recursive:true,force:true});rmSync(temp,{recursive:true,force:true});}
+ }finally{rmSync(dataset,{force:true});cleanup();rmSync(temp,{recursive:true,force:true});}
 });

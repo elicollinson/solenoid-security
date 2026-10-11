@@ -1,0 +1,6516 @@
+{
+  "generatedAt": "2026-10-03T23:01:08.827Z",
+  "rows": [
+    {
+      "test": "benign-false-positives",
+      "cases": 339,
+      "windows": 339,
+      "singleWindowCases": 339,
+      "exactReuseCases": 339,
+      "detail": [
+        {
+          "caseId": "1",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "2",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "3",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "4",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "5",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "6",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "7",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "8",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "9",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "10",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "11",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "12",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "13",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "14",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "15",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "16",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "17",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "18",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "19",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "20",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "21",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "22",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "23",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "24",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "25",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "26",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "27",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "28",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "29",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "30",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "31",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "32",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "33",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "34",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "35",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "36",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "37",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "38",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "39",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "40",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "41",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "42",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "43",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "44",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "45",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "46",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "47",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "48",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "49",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "50",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "51",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "52",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "53",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "54",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "55",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "56",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "57",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "58",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "59",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "60",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "61",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "62",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "63",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "64",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "65",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "66",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "67",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "68",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "69",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "70",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "71",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "72",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "73",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "74",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "75",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "76",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "77",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "78",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "79",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "80",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "81",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "82",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "83",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "84",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "85",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "86",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "87",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "88",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "89",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "90",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "91",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "92",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "93",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "94",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "95",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "96",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "97",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "98",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "99",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "100",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "101",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "102",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "103",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "104",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "105",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "106",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "107",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "108",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "109",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "110",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "111",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "112",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "113",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "114",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "115",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "116",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "117",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "118",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "119",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "120",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "121",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "122",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "123",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "124",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "125",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "126",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "127",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "128",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "129",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "130",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "131",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "132",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "133",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "134",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "135",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "136",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "137",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "138",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "139",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "140",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "141",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "142",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "143",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "144",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "145",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "146",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "147",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "148",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "149",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "150",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "151",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "152",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "153",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "154",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "155",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "156",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "157",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "158",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "159",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "160",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "161",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "162",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "163",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "164",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "165",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "166",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "167",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "168",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "169",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "170",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "171",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "172",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "173",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "174",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "175",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "176",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "177",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "178",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "179",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "180",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "181",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "182",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "183",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "184",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "185",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "186",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "187",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "188",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "189",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "190",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "191",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "192",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "193",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "194",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "195",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "196",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "197",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "198",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "199",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "200",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "201",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "202",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "203",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "204",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "205",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "206",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "207",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "208",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "209",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "210",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "211",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "212",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "213",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "214",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "215",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "216",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "217",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "218",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "219",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "220",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "221",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "222",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "223",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "224",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "225",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "226",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "227",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "228",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "229",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "230",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "231",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "232",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "233",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "234",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "235",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "236",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "237",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "238",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "239",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "240",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "241",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "242",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "243",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "244",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "245",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "246",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "247",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "248",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "249",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "250",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "251",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "252",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "253",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "254",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "255",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "256",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "257",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "258",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "259",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "260",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "261",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "262",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "263",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "264",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "265",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "266",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "267",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "268",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "269",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "270",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "271",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "272",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "273",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "274",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "275",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "276",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "277",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "278",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "279",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "280",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "281",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "282",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "283",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "284",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "285",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "286",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "287",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "288",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "289",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "290",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "291",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "292",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "293",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "294",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "295",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "296",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "297",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "298",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "299",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "300",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "301",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "302",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "303",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "304",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "305",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "306",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "307",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "308",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "309",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "310",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "311",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "312",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "313",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "314",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "315",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "316",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "317",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "318",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "319",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "320",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "321",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "322",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "323",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "324",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "325",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "326",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "327",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "328",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "329",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "330",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "331",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "332",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "333",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "334",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "335",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "336",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "337",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "338",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "339",
+          "windows": 1,
+          "exactMatches": 1
+        }
+      ]
+    },
+    {
+      "test": "bipia-email-mixed",
+      "cases": 156,
+      "windows": 158,
+      "singleWindowCases": 154,
+      "exactReuseCases": 17,
+      "detail": [
+        {
+          "caseId": "be-f6cd085f467c55be5add95c8",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-0f298d2bf812897355c36166",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-b49c484f77c0e7b1f0c8b344",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-e3801823b6a78899cdd1ead3",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-67af513282b6afe6fa2df823",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-f8ec4166b1545263f0d5bc8b",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-4927fad2319337b67be38210",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-fd6ead11199882aa29c0b384",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-e46ab04477fa0e4a6f0123f0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a9489432734ee4cfda374ab7",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-948e0e31a9a1cdcda434f7d5",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-3d2fc2fab71f1f84953219a4",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-42d4ec51795af2584ede2262",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-690c4a1643e0ed245b5599c7",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-0a73b266d80638c8a1a84293",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-d65b5a561449d968fe464801",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-7949ec6ea110f19bc83432b8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-34f0d56016fd87dba658e278",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-fa463f40055623a0edf56c63",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-28baabd95fca636b203051b8",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-d0aded42304ba7aa83b29832",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-472ccb76530f068c25f59b6c",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-b17afa7d5bcae8974b61b122",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-31d42415d14103e94f3b1c4e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-e1b5d3f662d9c8c144227b65",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-27679a3c58829767efc1ce2d",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-58cc404e77bec63597ac3416",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-fd34bd9ca502b60760340849",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-39a0c9a530b67272420b95e4",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-157ed7ee366693b440e9609b",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-85de3df55e50b4a4309ae666",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-53ce3e0952fb0405432ab791",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-268057b5cdaa0ccf05a9c113",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-37ad85741100c16dc2f6b0c7",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-1e0ca5ef007dda4d8e7da98c",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-8814b0a729d321d5c6753c2e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-45385865b00f75ca85a19410",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-1bc9a211288c3d901ff91890",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-14a21d2c1e57eed3b8efd6a0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-42c39ddec76db73588881ca2",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-348d913f010a682601b9c665",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-cd1a2237394ebb1b37f479a6",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-e6c1216f674fa5d5c6f9c3fd",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-d74a5df7692c519946186a84",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-8722ed46c748c584200665bc",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-83b982881650c56298eec16a",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-807113926940d534d79dffe2",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-1efa22863728564fc70f5b60",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-6a5dd74a7005965250305549",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-695547291d0bf9ddf34c3956",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-6e210eb5ee35601b1328a449",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-c95753fdfc9fdd6d694b3a0a",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-69f002aed4cf8d56e452db02",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-5250d48e1d01349aa73b291e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-3121c5ffc7d2742e86e84369",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-1115e48821d4af9afbf8592d",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-af7fc26b776cbbc6a003d08b",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-47459afeb4dfd1c2f4732944",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-82b3b36cb09a531c54dc982d",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-a1e60c0c1d00c7107b687149",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a179bb6d538784fad4150608",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-b5655cb55e35f9f1f9fea145",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-696b86364e21f49ee0ba3520",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-34d6d192fd1a3f77adebcc3a",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-5a6cb2ce48ff1c8cbf52842f",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-7f1fb705599d583e0c19703c",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-84f33527f77cc149f005c5b8",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-68e4f4673f575a056099de4c",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-26d7e0d33ea986e714ede874",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-ccc68b38be1c7d206170a955",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-83c8bd13979de8269338a3ad",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ff0fad1938986aa0959562cd",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-c69a91f10b4760ae745e94ad",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-95073677201617803a977aeb",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-8e38b4d2f9dc2bb5eee6d654",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-192e82bcd382ceeaf0f623af",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-f33eae2250a777ddc253428d",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a25c9158fb0464c021aaca5d",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-eb037d848c48407b23253f39",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ef3cb2a5f84e40a9c01bd4be",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-0f2a0343a84c9c9fca795d20",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-786e17931d82a4b38dd5479e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-9c2b98c3ba47c1ac95c4c17b",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-5b3ceeb5251203bac60c7541",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-d780a67b9265b8705b6495c0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-5a554dd33895e88cf8c195b2",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-6efce80980361bf0a17e3e03",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-abe9992ec222687de00cfa6b",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-762d79b4030b7626dd6edbba",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-7d4512429177b2912b98ceea",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-41c1ce09aea9fafec86b9d12",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-74e85b1a35865693bddd93c7",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a28a9fb068e0a4202c7f2da9",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-9d98e2664b69adcb9ee9c099",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-564bceba2e4526e65e897968",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-5ed12b35056829ea0ddec111",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-88002d351b555807282c67ad",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-acbb089c99a9dc7cd21c7b6e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-bd5092e0f1ab118767565573",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-2f71ab56906b15fd2b535e71",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-05a6b359458c586dc9cac57d",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-43b153bc8a1d070ce4dc641f",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-53f33d27e10145d0de50ec66",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-d4bc6db16c5cd93ba9b9ace8",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-624c9ca6c1ac483ea7c3f1e6",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-cd586fca8e1a7a8f6eec40ec",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-f40f1b628cc319813101ffce",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-d003862156c1121badc878cd",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-23da92907996eeb83a91d233",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ea01a13bb85634fdc8e64e25",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-0ffcb731937eb8c1101d3ba0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-f54d8bcb107407df78b220e0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-0e69274c2ae3936c899b0fad",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-fee5bfc4744e47b37eb62bc2",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a43136cf76a2ebec7490cde4",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-711a85cb08ae9e5c3e87f495",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ade52eb68117252951c38879",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-728d0145a9b87652620d09c7",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a2a930377ec52a8a36c6e45b",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-1ab51ffaab064fbc943fe891",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-91fd658a50021fc6d3767c2e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-b373d7619dfd98d9ffb21167",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-e00d24ef9adb0532420b2722",
+          "windows": 1,
+          "exactMatches": 1
+        },
+        {
+          "caseId": "be-ef0fd811bb06a4be8cb94931",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ae7ff80200faee167b127a7e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-0ee7503594451516bcfabbac",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a98a478b974a6b70db842fb9",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-4ef37c0bffc40758665583d0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-583aefec70abc5548c7de4af",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-44c198fc7c66cb9761b9021c",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-3ed62cb1a1ba1ac4caf7f53e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-2a2a8cdc7e16e49854e3267b",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-2700b1ab297396b7979a94e6",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-277f636125c649129c6da2df",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-470918d39811aa632bd04a95",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-2475071b980b2f72e8c35c60",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-02d03f0d21bcbe220b0bf575",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ce77533119824da142c829d7",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-4b2c963b7477019a58245a94",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-b09d0eee73a0a23fe894ed87",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-25b0c5e37829e1120871be9e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-322bb130e75a149ff6a9d26f",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-82daccfeac92d3adc3934875",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-31738152eafeea06e068ec20",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-3f0e27912219b10f03cacc22",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-a2e0353b70e7e581fffee846",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-f691955d65bbd9cb211ef5f9",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-dd334097e07a6ea1c5d4a3f8",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-f2825f93b2d8a1cbc87ffc4c",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-2a6008089c5027db0582d6da",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-e37cde99f2682e3248f2d0cd",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-3f7a4522bf8ef1367e8f6960",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-5e320f46f8b63dd5ba4bcabe",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-692ee72480228ecaf4e0d068",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ec271191a553c8f0574ccdb6",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "be-ebf08bb06c81d4c784357e99",
+          "windows": 1,
+          "exactMatches": 0
+        }
+      ]
+    },
+    {
+      "test": "longpi-paper",
+      "cases": 400,
+      "windows": 4717,
+      "singleWindowCases": 0,
+      "exactReuseCases": 0,
+      "detail": [
+        {
+          "caseId": "lp-a93595ffdd27b1386d1c0751",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bb0d9140f99f59b386bf9b1a",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-47616aeddca4959a72fb194a",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eb260358251cd67783785165",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-68ed0be93c207732303609de",
+          "windows": 15,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f24fcbfc855a3dd9cd05496e",
+          "windows": 15,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-966ba67cc904fa425973115e",
+          "windows": 15,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-76cd0aed8b891d15a1b9b2ac",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3705effefd15998d1a02bc4c",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a263ca251a0643721984f590",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e077878b2d9bf25222baaa85",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eb1305bcf656cad9bfb05b99",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ba157f9daef3ff6a33b7dc70",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5e3a9931857d6fa620285a1d",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d85dc0683700d39e1cd20061",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b6e52babc5de3eb1bb011c04",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5f8b6f732886e91738705c76",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5d95482b724ecb5b02e3d31e",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bde283c2017c73c41581d107",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5122ddf07d5d8c700be8d191",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2b33afa3d2e981d5aabf1199",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d5a28c34dd1b8a905b07cce8",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bc182519d6731b3b45241a78",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-04c24d55a11144bb93232f8d",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-855987c13f36bc49f7bb387f",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-028471297b24e3a6bc476129",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b931599bc1d1d5509a5104d6",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9d3f665377c7281e9346324f",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-695a90e0949f0164afd57410",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eff5badbd8915bc5d3d5909b",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-30a9d16dffc871f69ee261c8",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a9a5fc495590b90e8203ce99",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-663c61db220b3a032c9ab632",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-50ddbdf6f81ce64a3ae97a3e",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e15da239a39410ccb756680a",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8d290e3dcf0947b8979c2480",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-593722ba991b8f8f2d76d93b",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5864eea7c3d804c5ef91aba5",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-54c8fac9c493cd3089efd7b9",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ceca502453b66b6836483d0c",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-13610895d4b8c88bffd16ca6",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2530a6bcd0a7319b440996bd",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a850348e57d7370596226b5e",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b1b8887449e1bc42c244febc",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8ed2bc1ec9aa78e66ab062bb",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cd13d45bd1892a23807f534c",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-64e16a2ecc3e7598e8b9deec",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-39bdd92fda1b3e6e39048ffe",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cf5421ab2dd7350afa5789e0",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4571dcd1772a6fc1d26557ff",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fc060d803abb267f9d749e84",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1103849748380c6019e56478",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-18b3f2c172f42ea142c7c395",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bc2d9b5ddd6ba48bfd3cf325",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9df1f0547f11253aed7b824e",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-620c961578dedcbd5752370f",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5b5c29b2b08f7e1952b28995",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7111593bf6fa1379f21319c1",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9226bf4efed3e2647c30f137",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b8197167e7965d5d56689b12",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e4e07df0d5399e635bca0c6f",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9eb134a202a28f603f56f301",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-db426ba0dfad5bf8ec6a91b0",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d6a396380f9b35949c693931",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8afa59c2bd2bc7433dc3f80f",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a5604391e5b54b5b44bb85cf",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-41295f9e5055df8144b65235",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-deaec621e1cd3ce65ffeb197",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1cfeac51983abc2e49c6f16f",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0fae9aa322ee7e0541306fd7",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-56163e41d9ed22b700187e77",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-52db1f4f43272b696408196d",
+          "windows": 16,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ab22e2349b7f80d63b69c55d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bfe908cf4692c0dda611e9d8",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-45d3e9ae09e07a6bd4405a23",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-71927eea42fd501a1fc77d9a",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-43e4a8e69470b90feeda34a3",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-96cca82daecb09815d019d2b",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-05474e5a64d6fdb3e31bf185",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-41c255e772036835291da5dc",
+          "windows": 14,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f15da115fb1ee1005b64fac6",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-69a95470265d261a772bb1e1",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c16b65c0beec71ab9afc054b",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c2872e2734b668e9fbaf2a85",
+          "windows": 13,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6b357b8b092db5361ce704b8",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-adf8e780d7be942a8fa6a9c4",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8af7975e43d8b6e9c2c6d0a9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fb2fd1032195310eeacf6de6",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-309986f3635b4f561fbcd67d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dc0da51341200323c8f80307",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1ed28e51dbfd0244ebc0158f",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ab11d609e23417106d4b9f43",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2370f982a5dae687e71a01a8",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-099257ea3139f0bce475c1e7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6bc85d82cfedd4a0a234b81f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-260b3f0016cc147b33a771fe",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b2939a7b76558771f2c3cb36",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-166f6b955db75075e52ebb3c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-39cb7b13bce3c8f6ef462f48",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9977c6db2d926f0a91284952",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0aadf1d52b4f29a7b4bb036a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-913bdef81a62b53ab96d592b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a35b53925a11d4d6c6965e4b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bf147e0ff73b88099837c33a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-05dcabaf945dd3d6be67eea2",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b62865e024f32f02ffab8ea8",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0d14d41d0ad86333e7ef4536",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e80b12f7e02e0903e044f864",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-de508b221ec2cdb674c19641",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-950ec7ed20f97c7e32531334",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-00042b4e2528d4192a1e24b7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-91b29bb0306ac3c64b7f66ff",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0a3b6299ea0db46443311990",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-59fecaae096f615db5faab2a",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-edd54daca9b17575296c0031",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-504f5cc1a778b7c5b2fa31cc",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c49f1c878b5fecec0c86db03",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-06bcba2d8c50ee5dbc7512d3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-de6ee067ce619a95e2b8665f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-005ef80044849e6619a8d19a",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-87f900b0198b6e48402b1a2e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-630ecde463cfa20b63bf761a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-56cec0c74ef849ae2f03b7a6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-14c79eddf242611acbc8222a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-82fbb50214ffb652cc903e6c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-09149b1d8c26cfdc770fe3d1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-888d9780b1cabe8bd860f485",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ebbdd613cf1187140a6d8aa0",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4768afca0943b98f5e79accb",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-055498bd2cb50fb4d8ac56ff",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8c5f8c409597163463b3dfe5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-493e5e48e6c938e732d74e76",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-73c90dde2fc5fa91e9eb7e98",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-09c472bf511d6cc26d0d7d17",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a7113801a3e2ab110d1ce43d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-732536cd1e012143e3888973",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-001add4507c80e68ab9ab289",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c0819f2b28a1d6eb42594a62",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ce1ab4040ecc8facb0d61c21",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-85ac40e3ae3b04434b36f13d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-134f163cff6220171faf6a6f",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f19d5ae7b727475e8ccc9612",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-43b2efd1d12a9ec36f80f859",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fd173382aecd586af0fb72ce",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a8c9e00828ee841b37f28d3b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cfaf3793f97cfa5a67424b6d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-14384885ccc45ea625122fb5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b535fd4bd10987ce91943dc5",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0fbca0b7f3568f41d88bfeff",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fb45ca4fbc27350fed72b611",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-343e15dcbc473c6eda483551",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-478a51bf713e2669213d752c",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dc4d063bb7d30dac683494d6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eb86560b7695f8146433a03e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ca1a952d69d0d8e9f15d34c9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0dc4bd2b1bcc3fa479d2bbd7",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b42e7516ff295dda83dbb7fc",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d8893635a23f879e649ed20a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-237cc20572699a48f3a31882",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a37f80974207d53fb9998bed",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0138d1da0660f72927cbc9bd",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d35af09cbb47a016b9963b0a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5bb0400c586d60d0da7fba8a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-739c5a4f571cd49bea551a8e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-61bcd585c5e2be48301b9696",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6b5a2a7e9fcee7289e03bb81",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-51e1721b5a65d9c769bfb65c",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-808152407be54696d65a7d13",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7552c044b18e05ab98c30883",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-79dd196a90bdb85297a12c5c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ce1ab93a44c0e1b4bd35115a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-324c4db553663bfd589cd8ce",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b94693aef258946550af07ce",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6cb4529e5f27c39c7aae600f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-40333d44b00581012dbec033",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3d67438e6be4699886e7881c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-46e4da7efb6ed2a818130dd3",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f0fd2f7cc655fb50f680ea0e",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7891c69c58249c6c13fd5249",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f70e61b382c620dc3e8a6d07",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-904dcf992020e3f83d8a7135",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c041c081d6a94d9febae2afe",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c9522b1ef40a983e67582966",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c54681aeae6d62be60f13a94",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-41f64a664d81a1ced4eda63b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3c087d1aa428edc9a7592534",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-af79da663fc2c5c5c6df10d1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fb329c3f7634c4839a35082c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f53e2270287a949d2d3a0505",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e6bc980b17f412e9cf427455",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b860831b28ea6f79af10fcec",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a77272c75adede81e94871ff",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2d21388fdcdf913ce0f0f44b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ce9164c9d0063cd8f3074e06",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-504cb51bfecf57cf986dd08f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ce10816d15282e175307ff7e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e496109ee9c16ce056b19dcb",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-221268a8f0a23948a20844d6",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2101f10ae8f556a1ea400767",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7b39fdd9dc1f07029d1235ec",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5a12314f166515a644c58b04",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-607f9a9bf290d095282062c8",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-312115c6f1867edf76dc095f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5184b35f54c0d75e6187f23f",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a785bf09680f7d0fd174a2bd",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-17382841eff506de2e406690",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-29b9d26b858f13437d0373de",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e4c478431b037f3dd38c9af5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-82c198a7274a4325a90e752c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7a49adb65a20853fee6ef053",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-65436f8e6860f3d012dc3627",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-32c73c1e514c8970384ec61e",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3e39e5c45d86cc5b04a4494b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2fb334e58d44678b4942a4f3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e9474766b5ee54409ee8a552",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-aee933005c423ddc46430a80",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-df21853fff4c893533723b78",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9e1d1c245474a54dc748b068",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-faf89d4bed47d261dd36ba48",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bebaf166bf2c056f0cd9dd96",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2af47f48d1e4197a4c5e7ecc",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7885ddbbf87e2ed66f7ad5b5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3a5de7ff250944b4d9bc174b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6d14d140bd4b4f8437255eb2",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a2de7300dd9de2e4f174b6f4",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bb59cdb8aed78942e1b078c7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6544ecf0574178d3e36abb31",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f52f162c34b010a419e7d134",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e13fd7197ec1d8a684703beb",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-36c3f9be3a1de1663a80dcc9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-83dca6c84975b862cea1cde4",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b70eac6c2c55ff10caf0e60b",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f42ab59b0cb25851309408b7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c535e2385da0c1f32440ca65",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-89b1007d37339780f91dabd4",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-44ca24b8a992d68ca50a3d94",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eb7f8e0ad57a41f612147165",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0408ff26e63212f979969278",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-33a86ee07a6041a7a36d426e",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-be4823a1d56a79bce49e5b17",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-83e3ceb4385cad23036b1172",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a203c853393b73608cad388b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ccfc49652f6813d04e21b6d9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-06a77aa6125874e172d71822",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-138342abde0386178d527077",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6aab5169aadc4a22a427aff1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-21ec514a2b00e83b9cdc03ed",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-599441e2b91cb67c52cd22f7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9540e56b01693cc3953b1bf6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1251a49583a81bcea1c3e281",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f43a437669e304a8562be514",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-20967ba5d82615e552c8cdc3",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f78ef65e20b4b78504f96724",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-25c745072728f9ba1695a522",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-822f675a87dc455ecc99c30a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-191acfe263dee3523e3b2605",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a2d6ee5504d6e471e75f179c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-04b41b810cbffbb25e684a39",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2739e777de7a01239a333fdc",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-92e2aba01b1d0de775e0db9d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7d79b2a3ce50ef878c387e9f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-12ae23ff69ceefcca38f4142",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0eaa081bde25893529cad03d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-55cdb5f3c30227f5dee4be09",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8451550c36738736acbd1441",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3fdda3fdc5c33477a3cc0ae3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-777a4d73b373619e5d42a81a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b96f253bb7a31d5acc1c94f3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d4c48e83ca8bb34b5c15fa90",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7cc2deba1b87ff2bd3334900",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cc988193d209c507fabde4e7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a7c8f27d8f310c6a8bf5ceae",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-621ba2897e197250bb419087",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e50ca1cfc715d9f01b06ad8a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-72e15cb94f3efba59737c472",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6d57d427ae0f91eb7981d9b6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d95b3edf42c5f9796551b980",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f5acf14730f365eff236fe9b",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d037bd2c69e04211b406cd5c",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c0844e2f78606378779d7162",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-218c1c7a48222dd94460a2b4",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eef4d6783009885b3b386db1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-794731ee9311e655d592cc22",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6b92a2f1b35b5eafe27856ef",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5e8f473522f08f1dccd3a6f5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-983acf4da6596b70c720c182",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d62e97c2bc438048091fe919",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ad607b605d49dbfb5ea9d8b6",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7762a599de25d4d4a152da94",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-01924c29e3110a921f9b49e1",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2fb4e3b34ec1ba06d812776b",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0cd11c1276262bf58cdbb09d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dac5b00789526f081db9baa5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d415905c929fe9c0006cfaa3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-075285fcdad70735c353800d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1f1424c1a563e87c3f48041c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-241abe7eff10d4216614de6b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3dd4e627c142e30e12bb396f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ebd82a8508b7d6ad10ae18d9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-44a5e02847949c30c1834021",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-050600edf0ac2dc0d487e7af",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b29baba56cc52fda3080e111",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5ed89b94914e355be3b6c99f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3fc727aae1052eb5e1389353",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b98c641c85c1882c3fa7b39d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b71af94abe0fc8c4f412b554",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8a61e714abc3a92af6820087",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9b5a0bbde92e2aa24a487e8d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-28aa115aa5f4148bbc010c6f",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-19b4dfd8c14604ee551cc307",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f4ff678808d5413285db98c9",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bf941daf9dffbe145f1e3689",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a02d581895d6a891ec003c10",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-25be2a1bc83824dd0498c397",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2d5331b413b560627e127c11",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6cba1e3f19a8e11712f61c0d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4e47f50e4f475695ce3fd9f5",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8ce03840f77a794a32e3baf8",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9cf3cd10833358aa89104cda",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a21638638cb98899f7df531d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-811a986f0d50e09bf5f028d6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-916f8374c83b21b7866cea63",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-667230cdb839ddc8af094a22",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-21817d3e2f7365a2c297b56c",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-33ed502688ca7ce60f8f8528",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-94150eadcfeeb59937569d69",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-04df474b6421774ffa3e793f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-98113a151d0427261b0f292c",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1e3b8b7ea6c0915ea2ed0723",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d2ac477f0edb1e6ed1848102",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-54d244efcc274c99101551ff",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-17e888ef5b107f93ceb2bf5d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4235e6d6dd2afd24f07f61b9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-421ce39458189d6e982fe5c6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-678a60dbc5141528ea43cd35",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-503e4f720c357cf9c06dbb89",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5238859bec7632cfd511ce10",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-845085e1c1edeb70c913652d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-24d0a65b3557fb2cea385e14",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4a4708f18424ca25d4e73a3d",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ca471fd3e2fa63fd24514e3c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4c5e5782991cc93b906c81cf",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-82958faca96ea3e0d8aef58c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-186bc949e2865aba5121bac1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c47382fb2ce4385d5168f44b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a146b45039a9b17c50c8a009",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c9ea4250608c9787822758c8",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7cbff7a0a58ada4994ed18f0",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2d66a433b732c9954d428dd3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6a45e5b556a1d6f0f3e5e23e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-abafa5ced983437ae834cbdb",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3ce13d79b920db2cb53c9f2e",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e2da1c3da054a1c27b2e70b2",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dc722a9ef03b435ae0f955c0",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c02952c3d03f4376b27cc3d0",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a7162ef5fd100fee24732174",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2fdffae0d5cec7d316e56517",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e496f30c174b218c37a71385",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9f0610a4569c808113c096e9",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f9a9066def0b8e958f946bd1",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d97a8a1c079d81a39a3c0322",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f350fffd25db369fd67d8ddc",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-13904098bf1e9c62244dbbc3",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-901954500fef8bd2bf6f4640",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e7fe52b3946c264623847077",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b88388353e3e18b4ddec57c1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c8589ba963295d2a8d07451c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-096e58623b26cc030fddd66b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d53d55314b6f9ceb06a01c7f",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d7e3d46afd8a7f7e60b6416e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cf9ad9977c6418a86c0bad41",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0f92203efa87b142845351d6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dc2fd9fd2cf106e428afef8e",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-aca5a35ecbfb46041d2aa0cd",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3167aa385fbf7977b7d362b8",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-99078f95c53c28b7186598af",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9eca66c51fda3aa4975355bf",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-af511c3b85644ca233c9f46a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-641c7934b0f637fe96225cb6",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eea9ce6894a290b2720d2892",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ae9e9e79e9592a510cd21dcc",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-62d3e0d35827223b4a73f079",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dd261ffe5886ca006814afe1",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2252b0956261c23a548e184c",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e3f39c06192a280353ab4bd2",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-685b67baf920b70e5f5db58a",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-27addfe4fee93ce1fadc47d0",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-20f86faf7467e6738257c6e7",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-195610ef16b5145659e1b0ad",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e628eb5149aad9c7f4b6aa73",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a9321ec1ceaf60a67c1e69a8",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-acc06d91f7282b4c9ccc9f72",
+          "windows": 12,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-537d34ade6eaac25be00da7c",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b898ed17ac20a7b5ae5202f9",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c233962ed2b219fccdddfcc6",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5f6c469e658b0a9234d1e47d",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-347a172ad560effa2446362b",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-235e18478d00329bb1662ece",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-591d12bf4af29236538359cf",
+          "windows": 11,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5fa267ec806b5d11a92e1452",
+          "windows": 11,
+          "exactMatches": 0
+        }
+      ]
+    },
+    {
+      "test": "longpi-code",
+      "cases": 400,
+      "windows": 820,
+      "singleWindowCases": 27,
+      "exactReuseCases": 0,
+      "detail": [
+        {
+          "caseId": "lp-40607efc2518ee39c0d1d93f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c89c834d5907cb3a10f54b8c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-35cb3a56f96841a030032fab",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-08a8e267b972745b3cd516a1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-976a08401cd2312e714863fe",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a4a60da9c36fc4d10becb950",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a0292c894979c073bbb11dcf",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d816964c5ce82e2157ee5a73",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-938cf960d5dcda69b8b1e749",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b1991f36163a8db5cde13720",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-28c436120b09c19252337415",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4158ea57e0f9b0825b7f8964",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cee41536048e1d41ccd3192c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d6fc2787017aa41e87945f9a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-366e5c30761724e61c3f4bce",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0bcd08258e0b9373e87f18ec",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-419719e79915f920d5614174",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d6fd0d2831777c4efa02cf12",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ce6d5e35d937690dd8afa289",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6089f393857a58571da39436",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-37e461752022e3be7a93c6e2",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3659ca1dd8bab1c1b2344cf8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-01f792968d2cc003f9efa6ba",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-303968d1f7d6ed58a1fc9aaf",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5e908dea9fe875f881be6213",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d0d30261a7838cbfd37b0380",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-df3eb22351899432cb71bb0f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cd2b0081ee16ded402360b58",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bf764bd6c0f42c9f9fdc311e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-71cb57be69035b89945be71c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-80ef07279784daa5b7c9c70a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4887ecafb9313b57e3601f1d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d35060799eebbcd3df83808c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-31588a417cfc15557d5f96ca",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-45edf1d1ae0fdbcc5c0e3659",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7b65be2829f7c5957339ddfe",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fdc8d74043ce6576419d145d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2e22b2d16f8ae640640861e7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b72e6ce9fb752013c5dbbf8e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-65304471154df18c1f156ab1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0f48309cf2005750c9d3b3b4",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a60a74338f1b83e5b75529fd",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-89219ca0631eebae184c52b7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a04ffcbe5ac113ba2acd1138",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4149f05f4f9b4d139e5f1b29",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0d8302e2f459b8f8c5a947f0",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3daf20b07257ff31ebaebea8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dad265ce3a78766885949a2f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5d26b478d40bb099bb126d8e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-12fd83915511c9801b5772ec",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-92252816d41d7d45e36cf245",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f25504d19961436dc43b2b65",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-80cb29fd4ef9d25374e59e0b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-eb174e6256c226a46627ed30",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-177f713c04d30dfa5dff4746",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4bfbb351f173204310f8d531",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8993afbfaeb8379acbeeaff3",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2d7ece3e47fd55853c9d2cc3",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-efc5c12324e3e4d24a0580ee",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-122fc8403b4b787f3dcac3af",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3de6f80128e9529681709140",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cd9117cadc97ee0c946b30b9",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ae711c93cef348e50b102597",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-87a9781d1083e67e79c08e21",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ab1a3dd5ec3fc2a46078d609",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-76362c9a1568aae46f88637a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0dbe4f641d425fd280c73083",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-11ce617a9e1764ae1cac9a1a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5688ea573ff64006bf2cf4b7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-41acb26f61bc0d2d9467d126",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4c94fb1f2b47ea6dd7d02a2a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1eedbbff26c71ba32a8c3951",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-555ff231fa7815c90f20d125",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2c1eb02b7e8856faa7366d7a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d8c18af3503176827324ec3e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7a0b913641219625f2460244",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-02baa5da405259c7bf051329",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1ba5a9b6340a5bc89d7b5186",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ba50894cfd45cbbe050bdd87",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-30191c4156640676f770a1e9",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-45429f152e32ab61c96b3ef3",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2b7337a815a76cb09f180730",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5a890108766fcdae09636508",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-aa01e537919d17b447e35813",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f589fb10b52e126e4cca2646",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-57cb6b64fb72bdc607c754d7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-690550e1b6cfdde77f79a6b2",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5069cd91e786a5b9a72b7076",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5e2ba5330a3b8ad6eb867994",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-51f8ba601cb2faf224b08606",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8c08543d3007072e54801870",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5b6a7ecddccae56630588a05",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2e8fd040bad7cf6e5b62f3a8",
+          "windows": 4,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f193e92a4b4deafb9472e566",
+          "windows": 4,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2be9c73428261fad583f415a",
+          "windows": 4,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c98d803f1e3004410ef6eedf",
+          "windows": 4,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0e5c7bf02c9b45ec15e67c67",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d6f545425d0975060c6f8cb5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ade2cff39a53cf3bddc4941e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5714b620e6ebc60b6a34f36b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4dfe7ac40e3b13ca028dc410",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-484709b8101e8a40dd3793a5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c9a6bfd7b3924b2145108274",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a95952a8ae9cfd4338aafa4b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-711c4d8df8a7289bbb42e605",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-558ef7a99c54b5975e955412",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2b3a747c4560b766977286dd",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8b166cf9c25b10038ffa5494",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f32b6093967545f6b4dc7262",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4d62be5363db4cd7f6d1c158",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-540deffc83731ef3067402d3",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e21353a6ee38c0d1eea4ef1b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d07c501d83fe72034c60a160",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d08825c2e688ea8ed3a342b4",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b2783e5d379cb4e9126ba962",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-be14c95e0ab7c1c61e3d5124",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2eb95bc1d4a7e70e8e8b7629",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7828550dfaa3705f1117beda",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f84171e5cf08419f8ba37e8f",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c6f2af022a881413f04aca81",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8091bfd2c6119eb2ddbd17a1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ab21f635fdf068e4cacdf959",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-60e09ba80c16648271f9c92a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ec6cd64c19759ececc83a620",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a3aa82eea817c0f2f5217126",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-009e97e1486a181d15110abb",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e48cf9d9e531030c232a7e14",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-de37a20ca9db2bad4f9147ab",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2f3a4dce18415d0034ca8305",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4ed9773925b1cd0d8e562386",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fedd54ee61bb8936991a271c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-27f3eb1eb66670f265eb754e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0e093f6cc97077346f285340",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-109b66e8b0da32d9835a519f",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2d492c4619ce6636837f2eab",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3b67c226d5c050cadb89c468",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7f29505ef599b2df9ffe416a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fb48c4fb7b5cae81995855a6",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1a9058683dfb8a4fc01cbd06",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-253e7b55144e3667360498ea",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-410805b942b922c23fe20d37",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4e59f55c5ba2aab4709de01c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-22d88426148083fb733fc3bd",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dcceb2c4c84111f15f724a65",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-257bff97247a76c1a69a2963",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-addba08231d197a31c128f91",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-989b7550ca0351246ba045ad",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e564fdc4fddb31289b8f7161",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bdf00009205387a009c15c18",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-213f3ea027ff4d1164f56e29",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1645489241fc57b0bf66f822",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d970030dc8f212b38b3da0a0",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8a7679ba6401e2f5a0f74701",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e2a1e25bf8f0564642cbfad8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-57c4d70ff947a3b9e8b1776d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5674362a4035e0086b76a727",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-88b65d456c8317eaf4a56954",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bb5ad1b22eed16b0a8e26afa",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-beb627056ca722b2cece48ce",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7c6f548abb97a37206c16a3c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-828772af76d7a64da49d5a2b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-844ed496c82e7068a7d19fdb",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6ffff6858729ff450da1b454",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-734cb89b527d9675ebcb7579",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9ab8a3ea303ed5e48e00f69c",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-45f2cfe922c3732618ff063f",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ec1748391f108da2ec9aa39a",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c0d18338becb233380cb85bf",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5ec4b5a7a5aef50a5b94d01f",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f45cd02941b80923da887e2f",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a8fd2a971e2bb36d8f5ef99d",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-45fd39f6dd76f7ed6bd7fc7b",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6c430f1ff8109092c9b5c422",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8be6bcbcabba479945b489a5",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-248443231385640193552f97",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-080e83533ec7c5abd5e8f0ee",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5bdb4e4ecbd1829c9293a9bf",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b687e05feb06a56aac4cf17f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3226739805042c7435963980",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4fba56e82638baaa939a04ff",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f62ef8c504e6629564c0a19a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8c8dd480e559ba66e0b70d91",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9b9b069a5282ad8092a04567",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-02fb9a1cb5c410e5bf2bf2e5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-28ed6f76e065da0fe88be752",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-57237b28dfd076c706259b8b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-84043e2d461c7317091f98a4",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b12b1d28ddade608cb2b7a2f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-124ddc8a1f5082f516acddfa",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dfdf2688d75b90a6bc95deb1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c3ba79ea2f04264aadadca2a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5364a240416c73ab5ed43d8f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c9b4d053f6c0db5d5213f46e",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0583d6885a7ae9577a6d98c0",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-038a1b3997b5001508775600",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9c3c13558f2afaec6bc640ef",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4a73c41dbee68517d1767610",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c5905f2e912539bbd9cbea61",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2a460acc598ca1688c1f012e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-53a43228d3516890f3e6fafc",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-25ea9cdcfc59581ba54b7d35",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9933f2c20bcf369e050c7d3e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-829fe005b19b207814e54934",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f0daa16349c251505de1be70",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7b97f1a5a36d1829c9414c0b",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b7906546d1f452149a22e618",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-be8163deb45e5cf7b3052268",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a02d76f515d38f89967729e6",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-20f78029a0f62dd26700ab56",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2c8cb1ab08e40388bd381cbf",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4cb53f2a64d58dfa93e70368",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9d6e7905b54a20f5652e625b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-015035db227695c8fff928f0",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-85bdf1fa013c351645ed06c0",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e111271aff20d722d7610361",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4b3947711b8126df9fe65f65",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0c90949661f0f49ba70b9b83",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7d8bc94635b6273d20766236",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-96fdb906cfb4591ee08e3b4c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2001d9d71dce8a4ded364785",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7f36716bbafdc30ec4863d1f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0096e7dc43407d00770266d6",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b03a33b6ac74a049835c7468",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-99e077fb5df3b1a933fae748",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-407a995f62032d11eb329441",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f5aca90c9446920287695f74",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5a0eb834272f01f59948edc5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-47da6674810f51c3e69b2907",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-45bb7c77dc076ae50a22ac9e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-90a25877dd0e598dde1c9e66",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6c458fd12ff447b1d55328bb",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4e4cc68c640fbc2458385bfa",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-67e690148760ba7a1b09242d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-574ce3d514972ce3bd18f95a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1c680bfd0bc45f0667535495",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1f77e984b7159f221bc38b09",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e99ae95df02e1d0d38311941",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a235e1286af03236ab383ba9",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2d8eb2b6a0edba0e368a5e9b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cdcfe47b90a02fa8711a09cc",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-10ff2895ad338578680cb74d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d91ef3b9258222d089ef88bb",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1e216e552080f6e7c254793e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bc940298db272ef90fa78c9e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-75bbae8b4a1716c581463e7e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-49c00320c3b04ea5a0a29525",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9bda70d17bf4618ecdf6c886",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-947c0ee01bcd8c124080e944",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7813ebade2ac9cb2b8ed6be5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-01a6a9c6593349bb43ebb58d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e88a7173b190e533fafb0fb7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5c1d4387170b64cf131fce68",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d47fc90a2b4eebc8d0978863",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-805470447a17e047d310f3c5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3909ab1df2a2ddcbc64c7101",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-72b79da89b276a08b0723da4",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a9410795f864e160694ece6b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8e17222a95b1c341ace79f74",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f066b724c1d655a4f8bee9dc",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bd664a6f670db29448861056",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fcedfe5a67f7db665cf6f47f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3af2382d9fb44164d24e1ea0",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-56408d81b1fd296332a79cad",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8b2a57688f44c35a01ee57ff",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-98598ba01b92ae9798cd1655",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4f4d6ce0ec5b396e04461913",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-51861fbd93b7171f00c6a486",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-18be74e343acc0e13b6aa67e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fd40482b29d65a018783ba4c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d5a3c9ef62dfbebcb2fc99b4",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-44617a1810c0d7536812e026",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-506af5f933f0dbbeafa6d6a8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e3061f7c0441afb32a8520d7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-890887465f74f1a8c8bb1032",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-adab074eac307dddd80f3627",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-40560ac095f7945ae145afdf",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-332a0be3dc0512938801d438",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-aa77b5039b041e4f5c8f90c1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9ef60722047f6dc0bf6b2d82",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b62c919398d42ba0289f4947",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ed1858a46fa0bd21297f3a63",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a078be538f8cad10aaef0d31",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f7ceadf877312a440a972899",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f29cd964da63ed9ef57b11f8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bf0864d16206c215521db5a1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5da5c69ad500dd4071707389",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-90a8979c5c70dbb2fd3c5658",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9f797a0fe5f9e5b1ff98da3a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2683cde0e70f3c619d8d6653",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1c13559592230886f6a7a640",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-4e268afaa57138d528524f76",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-8d792f83ee9add5515387f78",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d011b1468d2f7969f7f78fba",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fe432490cd8a3622eb67c3a7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bfcc3bfbe05f2eedbd9a5acb",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e3b694be58e8fa392a16d60c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-50aee839b5d28c707a0eea57",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-13294cba9da1356ed0805f98",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c8317936c160371d37f89a81",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1a1a577db22205bc78d50d45",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-17b31987f1288bf81c86ee68",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f78f59c9902f49e6786eaa3d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d5bcb2646cb1eb516bb8b0d1",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d95b388439068ac13202d414",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-468fe50b86526f557493d546",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b86300e22aab469b1014c224",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f89bfaa5f627e3b7646aed1c",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5418bc96dfb353a33fb4fee5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bd39775938d8b7d0bc016ed2",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dd6ccf254a658d2bdfad975e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1acd35e8023ce87bac251fe6",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7853618583cb4bcf1954441a",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ef497d1e5c037b2af922fa88",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-26b4438a57d479e5a9236b82",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b2532ff1746d0c13c0dd4023",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-bf98313c8b8213affc44647a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e246566829abe79eb09f3b95",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7d22255a97871fc458f45e5f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a920a77ea36d1a827f40e9a2",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-648837ec2c8e3ffa3a5d4a7f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-29e26f1d0f49f882fdf12842",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cd865cbbebc28a15c91412e7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1b8ad489a089838e2103da78",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0526fe3c102dbeffa027deda",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-cd553e2be223edf2776942d5",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-273184b3b3560eb3ce21c096",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3b2c375fb7020135046b9c52",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d17d5efce9173b1eca60db1e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c15f6fe548332c2651bc229d",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0991cfc0febdc6cc8ea8559b",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f20b6fcc87f119d3ab0f834f",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-04d645f91ed362fc2c1703c9",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7f7ffbdc7163600e43859359",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3eac6d1f4ad378b4b3c3a784",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e88bbd746fa01d7aa6fcec38",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-69b842d88aa52d5d522b3974",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7c8051dd21c40b695479260e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1e19a6fe9a8b4acc0834da8e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-24f542b6f0dfef7adf98b75e",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-51ac351aaa53d498b6fe82bd",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d9f60f62a4b0494b7730cc3f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-435b556e251662552e207021",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7ea4bee353eea59c92d925d9",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e565610616ee9b98f4da9b4b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c401939945cd28055c566071",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7b8acbba44cf3408db4c0611",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-b6c2ea72a50a0abda36c7923",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dea7f77be4c0d249f84d3f6d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-5cb67c48d860146816eae1b8",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a1ddbee2b31a8c3fbe0b9f13",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-07ba953c7b09cce1e87cb0df",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dd4a53fcf6648ec6756168ea",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-32c2f46fcd67a77caf04f255",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0678735f583cdd669e75150b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-883ef4172016e31ecb3afdd6",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-72de7a084a47b137c49a1052",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a515d19c9fe4b437112fa9d7",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-85f2404dca3ac1145a0a8659",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-552fd72a4e6451f92810b9e6",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2f8cc43e3f20ee07dcd58ad2",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0908a81388871497fb76f476",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-e86fcf70fe3da86ce4e808fb",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-21f4b963252c327050f33df3",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6dd57f0b1450fe784f91aa53",
+          "windows": 3,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-74c909b64abd075309e804f4",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-98c1a74d8d15320ec2e27ceb",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9a0b5d810b9087ea52b3e3f6",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-891a5f7f53d86a49d698ddb3",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-50590166fc4a938e48c3751d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2db41852171d20d93b0284ec",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-9e5d954481a04a4db93ec850",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7f58ac00b5e4a8a32e7d3687",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-91bf5e55623ccd65d1a70860",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-f92fdc1db13d9ef634a9545b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-3d6c96952b82f89106de7d6d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-03592c37df826e199035f8a3",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-34fee7702d5092ba4ce6f126",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-20a10c2e8343714b3d3d7738",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-7042c3771d751ac098816cf0",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-686036bd546c7e57faa6e1cd",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-047edb2cf735bae18dc3f51e",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-ceaa725b7251c635dc3a0bbf",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-761f7a74ba37f6742577ac6f",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-73d0aaabaab13c53e7444e6b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-fc8d93494b96a9e2ae7e7c5b",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-52f568ae58b54ae28a414692",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1f740cb9d901a0009f2e88c9",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dad126fb725547301a2f7f4d",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0af3b4fe8a1c3b29c55dc0b8",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-d3f635a2596d4bd94613a866",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-1c320f047eaa75a03c14068b",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-c06a4d46d98f4c01b5af0f71",
+          "windows": 1,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-10e0eaab0a30d6cf0081b860",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-db1d2613f430f13e53cb33b2",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-dfd7fb63b40a44edd30599cc",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-2f6d320080cea2cf532a49ae",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-a52213a8d1a82f5873cbf95a",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-405ef10c21812c345e7f10b4",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-0ad94acaa24bf0f3f94c9d26",
+          "windows": 2,
+          "exactMatches": 0
+        },
+        {
+          "caseId": "lp-6127dffbe70bdefe28201022",
+          "windows": 2,
+          "exactMatches": 0
+        }
+      ]
+    }
+  ]
+}

@@ -37,4 +37,4 @@ Same observed cases generated the idea and evaluate it. These are 60 attacks and
 
 The cascade retains every full-input detection by construction. Improvements therefore need a prospective replication plus a false-positive and resource-cost check; monotonic recall on these saved outputs is not itself evidence of general superiority. Early exit preserves the boolean verdict but does not reproduce the full maximum concern score.
 
-The primary full-versus-window comparisons are unchanged. Source hashes, all selected input identities and case-level replay decisions remain in `evals/runs/lmstudio-long-email-2026-10-04/full-window-cascade-replay.json`.
+The primary full-versus-window comparisons are unchanged. Source hashes, all selected input identities and case-level replay decisions remain in `evals/runs/lmstudio-long-email-2026-10-04/full-window-cascade-replay.json` ([published copy](../analysis/lmstudio-long-email-2026-10-04/results/full-window-cascade-replay.json)).

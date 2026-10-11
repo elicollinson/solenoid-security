@@ -95,7 +95,7 @@ larger configurations have now completed matched full-input coverage on the
 five cohorts in the [full-input baselines](lmstudio-dense-moe-full-baselines-2026-10-04.md).
 
 With matched benign and email coverage complete, the prepared
-[full code-review cohort](../runs/lmstudio-code-panel-2026-10-04/full-code-plan.json)
+[full code-review cohort](../analysis/lmstudio-code-panel-2026-10-04/results/full-code-plan.json)
 adds a different attack objective across the six current configurations.
 E4B's existing 400-case run is complete and will be reused: it detects all
 200 combine/authority attacks but none of the 100 naive approval instructions,
@@ -139,7 +139,7 @@ Nemotron 3.5 Lightning failed qualification and is not run. Ornith completed the
   7/334 (5 abstentions), email80 39/59, numeric 13/50 (4/15 exact endpoint pairs). Saved rationales
   often quote the injected approval line and dismiss it (recognition without concern). On short
   prompts (BIPIA, NotInject) ~300–470 generated tokens per response are returned in neither content
-  nor reasoning and counted as 0 reasoning ([token audit](../runs/lmstudio-new-panel-v2-2026-10-04/laguna-token-accounting-audit.json)).
+  nor reasoning and counted as 0 reasoning ([token audit](../analysis/lmstudio-new-panel-v2-2026-10-04/results/laguna-token-accounting-audit.json)).
 - **Gemma 4 31B-it Q8 (dense): all five cohorts attempted** (L124). Code 225/286 (naive 25/86 with
   14 naive abstentions, combine/authority 100/100; 0/100 clean), BIPIA 62/78, NotInject 22/338
   (1 abstention), email80 60/60, numeric 54/54; reasoning on every request at 24–50 s/request.

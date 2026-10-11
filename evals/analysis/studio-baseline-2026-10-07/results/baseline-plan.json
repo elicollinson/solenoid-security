@@ -1,0 +1,1057 @@
+{
+  "id": "studio-baseline-q8-fulltext-2026-10-07",
+  "frozenAtUtc": "2026-10-07T12:25:36Z",
+  "frozenBy": "Claude Code (overseer)",
+  "suite": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-v1.json",
+  "suiteSha256": "4246d6ce521b03da8e0f0985a849b35d1ec3f21fb0b6ea101bf0584ead924f7e",
+  "outputDir": "evals/runs/studio-baseline-2026-10-07",
+  "device": {
+    "id": "2e1a82366471bc1a78e9b74d2469172d",
+    "name": "Elis-Mac-Studio.local",
+    "guard": "--require-device + lms link set-preferred-device; MacBook never loaded"
+  },
+  "protocol": {
+    "input": "full text, turnSelection last_external (full-last-external-v1)",
+    "prompt": "security-eval-score-only-json-v1",
+    "schema": "concern-score-only-json-v1 (strict json_schema)",
+    "temperature": 0,
+    "reasoning_effort": "high",
+    "max_tokens": 1024,
+    "contextLength": 65536,
+    "decision": "max score > 0.5 (max-score-gt-05-v1)",
+    "transport": "LM Studio native-v0 (/api/v0/chat/completions)",
+    "parallel": 1,
+    "clientConcurrency": 1,
+    "errorPolicy": "--continue-after-output-errors; abstentions recorded, never retried or re-run under new settings; no --retry-uncertain; no per-model tuning",
+    "inventoryPinning": "modelKey + indexedModelIdentifier + quantization + sizeBytes + format + device, from lms ls --variants",
+    "reuse": "none: every model runs every case fresh in this suite; no earlier Studio checkpoint is reused; within-run dedup is off (incompatible with error continuation)",
+    "linkFailure": "a provenance/transport failure halts the chain; the cohort is rerun in full under a fresh condition in a new suite version, never resumed (L141)"
+  },
+  "datasets": [
+    {
+      "test": "longpi-paper",
+      "datasetId": "longpibench-paper-default-v1",
+      "revision": "sha256:a894883dc318735a99ce98012592c8e2d95432a411ce20ef419c9d19e6e467af",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 400,
+      "uniqueInputs": 400,
+      "meanChars": 36127
+    },
+    {
+      "test": "longpi-paper-abstract",
+      "datasetId": "longpibench-paper-abstract-v1",
+      "revision": "sha256:330de55dc303c9058f43eddf7c6b2b855c65f15b839ce94213dc5bbbc876c163",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "positive",
+      "cases": 300,
+      "uniqueInputs": 300,
+      "meanChars": 36204
+    },
+    {
+      "test": "longpi-paper-method",
+      "datasetId": "longpibench-paper-method-v1",
+      "revision": "sha256:cbdfe7646b351367ebb5aa3cb76550c179c51465716b7277149f242f41690c33",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "positive",
+      "cases": 300,
+      "uniqueInputs": 300,
+      "meanChars": 36204
+    },
+    {
+      "test": "longpi-resume",
+      "datasetId": "longpibench-resume-default-v1",
+      "revision": "sha256:7f3b4e92c08e642fcdd8dbe61131a41ff72be7f9a33a7da10c9709f9dbef914f",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 400,
+      "uniqueInputs": 400,
+      "meanChars": 2264
+    },
+    {
+      "test": "longpi-code",
+      "datasetId": "longpibench-code-default-v1",
+      "revision": "sha256:dad890219b8481413fbc7fa2e61bbec4c36d2459620ad05f448c2386833797b1",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 400,
+      "uniqueInputs": 400,
+      "meanChars": 5723
+    },
+    {
+      "test": "bipia-email-mixed",
+      "datasetId": "bipia-email-paired-v1",
+      "revision": "sha256:386e8275a8bf5b805e0f74f0700a254e4ec219ec4f533f516263139e6ad9365a",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 156,
+      "uniqueInputs": 156,
+      "meanChars": 540
+    },
+    {
+      "test": "longpi-email",
+      "datasetId": "longpibench-email-default-v1",
+      "revision": "sha256:15a0827d9e321c924af35b69d6c7ed11328a3848f19257f24b9fdc22f7c590cb",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 400,
+      "uniqueInputs": 400,
+      "meanChars": 9332
+    },
+    {
+      "test": "attempt-detection",
+      "datasetId": "llmail-phase2-positive-400",
+      "revision": "sha256:46d0267fc7f555161eb22e7ec67ec994ac931b6cbf679b146b5aa212def16d51",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "positive",
+      "cases": 400,
+      "uniqueInputs": 400,
+      "meanChars": 1627
+    },
+    {
+      "test": "web-mixed",
+      "datasetId": "in-page-wild-sample-v1",
+      "revision": "sha256:ddb2aea2f235040bf06101b4da12c1f6cd2e5aed115a7431b3929a4625d0ff1e",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 480,
+      "uniqueInputs": 480,
+      "meanChars": 614
+    },
+    {
+      "test": "agentdyn-shopping",
+      "datasetId": "agentdyn-shopping-exposures-v1",
+      "revision": "sha256:b5bc56e656072a3049c500c010f5c25388fc35cd98000c0b8e03b37e59109de4",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 183,
+      "uniqueInputs": 150,
+      "meanChars": 1276
+    },
+    {
+      "test": "agentdyn-github",
+      "datasetId": "agentdyn-github-exposures-v1",
+      "revision": "sha256:99be17bc74ebe4e511e7d7e59434e11cc59310043bf95bfcd2b2dd306715b2a7",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 237,
+      "uniqueInputs": 164,
+      "meanChars": 2649
+    },
+    {
+      "test": "agentdyn-dailylife",
+      "datasetId": "agentdyn-dailylife-exposures-v1",
+      "revision": "sha256:1733e7bce0486cf2153dc9154146c4d531d512a04efd86f25c485e42287a9dfd",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 411,
+      "uniqueInputs": 262,
+      "meanChars": 995
+    },
+    {
+      "test": "agentdojo-travel-mixed",
+      "datasetId": "agentdojo-travel-v1",
+      "revision": "sha256:0de1eebe5a0efe605cfece925fbcf5ab87a02eaf556b1be04f98320fcd9361da",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 21,
+      "uniqueInputs": 8,
+      "meanChars": 210
+    },
+    {
+      "test": "agent-injection-bench-mixed",
+      "datasetId": "agent-injection-bench-v1",
+      "revision": "sha256:b2728d62dcf32c17570446d694152c2500531e96146e083d767de80d94875175",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 182,
+      "uniqueInputs": 182,
+      "meanChars": 484
+    },
+    {
+      "test": "pids-obfuscated",
+      "datasetId": "pids-obfuscated-v1",
+      "revision": "sha256:40a8205503ed5bad79650aad4608bd2aa09852dfd58a13f54738e4002d2b7bf1",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 405,
+      "uniqueInputs": 405,
+      "meanChars": 597
+    },
+    {
+      "test": "encoding-eligible-existing-v1",
+      "datasetId": "encoding-eligible-existing-v1",
+      "revision": "sha256:dfee4b4001ee5335261ee7795797401ef51b1d51cb71a08ce354109ca4bd8d3a",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 229,
+      "uniqueInputs": 229,
+      "meanChars": 510
+    },
+    {
+      "test": "encoding-benign-controls-v1",
+      "datasetId": "encoding-benign-controls-v1",
+      "revision": "sha256:59d1f946156a3da602f068b4c3fecacdf2b78f12376228e7c0c099ce51baa1d5",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 969,
+      "uniqueInputs": 969,
+      "meanChars": 443
+    },
+    {
+      "test": "benign-false-positives",
+      "datasetId": "notinject-benign-339",
+      "revision": "sha256:f8d28adfb5895e33a6e28270fe13c21c3739b5a6fb02f565bf71c4756d9cca61",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "negative",
+      "cases": 339,
+      "uniqueInputs": 339,
+      "meanChars": 87
+    },
+    {
+      "test": "pids-hard-benign-public",
+      "datasetId": "pids-hard-benign-public-v1",
+      "revision": "sha256:254db8c56dc61487007493ac01dfbde15238529d1ebacca8821d9cf1d287b926",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 808,
+      "uniqueInputs": 808,
+      "meanChars": 134
+    },
+    {
+      "test": "skill-policy-pairs",
+      "datasetId": "skill-inject-policy-pairs-v1",
+      "revision": "sha256:b7da8738ddd9815e377f50323da72d8111e712bb6f3c3fc4d98d42eedb032312",
+      "annotationKey": "policy_violation",
+      "caseSelector": "all",
+      "cases": 234,
+      "uniqueInputs": 92,
+      "meanChars": 15059
+    },
+    {
+      "test": "paper-score-counterfactual",
+      "datasetId": "longpibench-paper-score-counterfactual-v1",
+      "revision": "sha256:4444b2de79a4631149f98da506534a50884b6d5158de2f255a81f2c370325dd4",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "cases": 72,
+      "uniqueInputs": 72,
+      "meanChars": 44900
+    }
+  ],
+  "casesPerModel": 7326,
+  "roster": [
+    "ornith-q8",
+    "gemma26-q8",
+    "qwen38-q8gguf",
+    "muse-q8",
+    "gemma31-q8"
+  ],
+  "excluded": {
+    "qwen36-35b-a3b-q8": {
+      "name": "Qwen3.6 35B-A3B Q8_0",
+      "reason": "failed Studio first6 qualification: request 10 (lp-a263ca251a0643721984f590, the same case that failed Gemma26 QAT Q4_0 in L129) stopped at length with 1,024 reasoning tokens and empty content",
+      "audit": "qualification/baseline-qwen36-35b-a3b-q8-full-qualification-audit.json"
+    },
+    "laguna-xs21-q8": {
+      "name": "Laguna XS 2.1 Q8_0",
+      "reason": "failed Studio first6 qualification: request 10 (lp-a263ca251a0643721984f590) stopped at length with 1,024 reasoning tokens and empty content; passed 24/24 on the MacBook (L119), so the failure is Studio-specific",
+      "audit": "qualification/baseline-laguna-xs21-q8-full-qualification-audit.json"
+    },
+    "qwen36-27b-q8": {
+      "name": "Qwen3.6 27B Q8_0",
+      "reason": "failed Studio first6 qualification: request 2 (lp-bb0d9140f99f59b386bf9b1a, a clean paper) stopped at length with 1,024 reasoning tokens and empty content after writing the answer JSON inside its reasoning; request 1 used 768 reasoning tokens and 36 s",
+      "audit": "qualification/baseline-qwen36-27b-q8-full-qualification-audit.json"
+    }
+  },
+  "ordering": "MoE first (Ornith, Gemma26, Qwen3.6 35B-A3B, Laguna), then Qwen3.8, Qwen3.6 27B, Muse, Gemma31; models that fail qualification are skipped without reordering the rest; each model runs all 21 datasets (one driver invocation, suite test order) before the next starts",
+  "runtimeEstimate": {
+    "method": "paper-family tests use the measured Studio full-input paper mean (Study A; first6 qualification mean for new models); code uses the Study A code full80 mean; all other tests use (chars/4.2+250)/cold-prefill + median completion tokens/median decode + 0.45 s, multiplied by the model's code calibration factor (measured/formula; the mean factor 0.894 for models without Study A data). Short prompts are dominated by ~300 reasoning tokens of decode, so they are much faster than long documents only for prefill-bound models. Prefix-cache hits within LongPI families are not modelled except via measured paper means. Load time ~1 min per model.",
+    "totalHours": 71.4,
+    "projectedFinishUtc": "2026-10-10T11:47:12Z",
+    "projectedFinishEDT": "2026-10-10 07:47 EDT"
+  },
+  "models": {
+    "ornith-q8": {
+      "rates": {
+        "source": "evals/runs/lmstudio-studio-2026-10-05/studio-ornith-q8-thinking1024-full-qualification-audit.json",
+        "meanValidSeconds": 3.49725,
+        "prefillTokPerSecCold": 3486.629447628263,
+        "decodeTokPerSecMedian": 146.03166596979673,
+        "completionTokensMedian": 313.5
+      },
+      "measured": {
+        "paper": {
+          "meanS": 3.27,
+          "n": 400
+        },
+        "code": {
+          "meanS": 2.06,
+          "n": 80
+        }
+      },
+      "order": 1,
+      "name": "Ornith 1.5 35B-A3B Q8_0",
+      "architecture": "MoE",
+      "condition": "baseline-ornith-q8-full",
+      "engine": "studio-ornith-q8-lmstudio-score-v1-thinking1024-native-v0-v1",
+      "calibrationFactor": 0.673,
+      "perDataset": {
+        "longpi-paper": {
+          "cases": 400,
+          "secondsPerRequest": 3.27,
+          "hours": 0.36,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-abstract": {
+          "cases": 300,
+          "secondsPerRequest": 3.27,
+          "hours": 0.27,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-method": {
+          "cases": 300,
+          "secondsPerRequest": 3.27,
+          "hours": 0.27,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-resume": {
+          "cases": 400,
+          "secondsPerRequest": 1.9,
+          "hours": 0.21,
+          "basis": "calibrated formula"
+        },
+        "longpi-code": {
+          "cases": 400,
+          "secondsPerRequest": 2.06,
+          "hours": 0.23,
+          "basis": "Study A code full80 mean"
+        },
+        "bipia-email-mixed": {
+          "cases": 156,
+          "secondsPerRequest": 1.82,
+          "hours": 0.08,
+          "basis": "calibrated formula"
+        },
+        "longpi-email": {
+          "cases": 400,
+          "secondsPerRequest": 2.23,
+          "hours": 0.25,
+          "basis": "calibrated formula"
+        },
+        "attempt-detection": {
+          "cases": 400,
+          "secondsPerRequest": 1.87,
+          "hours": 0.21,
+          "basis": "calibrated formula"
+        },
+        "web-mixed": {
+          "cases": 480,
+          "secondsPerRequest": 1.83,
+          "hours": 0.24,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-shopping": {
+          "cases": 183,
+          "secondsPerRequest": 1.86,
+          "hours": 0.09,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-github": {
+          "cases": 237,
+          "secondsPerRequest": 1.92,
+          "hours": 0.13,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-dailylife": {
+          "cases": 411,
+          "secondsPerRequest": 1.84,
+          "hours": 0.21,
+          "basis": "calibrated formula"
+        },
+        "agentdojo-travel-mixed": {
+          "cases": 21,
+          "secondsPerRequest": 1.81,
+          "hours": 0.01,
+          "basis": "calibrated formula"
+        },
+        "agent-injection-bench-mixed": {
+          "cases": 182,
+          "secondsPerRequest": 1.82,
+          "hours": 0.09,
+          "basis": "calibrated formula"
+        },
+        "pids-obfuscated": {
+          "cases": 405,
+          "secondsPerRequest": 1.82,
+          "hours": 0.21,
+          "basis": "calibrated formula"
+        },
+        "encoding-eligible-existing-v1": {
+          "cases": 229,
+          "secondsPerRequest": 1.82,
+          "hours": 0.12,
+          "basis": "calibrated formula"
+        },
+        "encoding-benign-controls-v1": {
+          "cases": 969,
+          "secondsPerRequest": 1.82,
+          "hours": 0.49,
+          "basis": "calibrated formula"
+        },
+        "benign-false-positives": {
+          "cases": 339,
+          "secondsPerRequest": 1.8,
+          "hours": 0.17,
+          "basis": "calibrated formula"
+        },
+        "pids-hard-benign-public": {
+          "cases": 808,
+          "secondsPerRequest": 1.8,
+          "hours": 0.4,
+          "basis": "calibrated formula"
+        },
+        "skill-policy-pairs": {
+          "cases": 234,
+          "secondsPerRequest": 2.49,
+          "hours": 0.16,
+          "basis": "calibrated formula"
+        },
+        "paper-score-counterfactual": {
+          "cases": 72,
+          "secondsPerRequest": 3.27,
+          "hours": 0.07,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        }
+      },
+      "estimatedHours": 4.3,
+      "projectedStartUtc": "2026-10-07T12:25:36Z",
+      "projectedEndUtc": "2026-10-07T16:44:48Z"
+    },
+    "gemma26-q8": {
+      "rates": {
+        "source": "evals/runs/lmstudio-studio-2026-10-05/studio-gemma26-q8-thinking1024-full-qualification-audit.json",
+        "meanValidSeconds": 4.247625,
+        "prefillTokPerSecCold": 4179.392315134739,
+        "decodeTokPerSecMedian": 105.52770788945179,
+        "completionTokensMedian": 300.0
+      },
+      "measured": {
+        "paper": {
+          "meanS": 3.9,
+          "n": 398
+        },
+        "code": {
+          "meanS": 3.49,
+          "n": 70
+        }
+      },
+      "order": 2,
+      "name": "Gemma 4 26B-A4B-it Q8_0",
+      "architecture": "MoE",
+      "condition": "baseline-gemma26-q8-full",
+      "engine": "studio-gemma26-q8-lmstudio-score-v1-thinking1024-native-v0-v1",
+      "calibrationFactor": 0.949,
+      "perDataset": {
+        "longpi-paper": {
+          "cases": 400,
+          "secondsPerRequest": 3.9,
+          "hours": 0.43,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-abstract": {
+          "cases": 300,
+          "secondsPerRequest": 3.9,
+          "hours": 0.33,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-method": {
+          "cases": 300,
+          "secondsPerRequest": 3.9,
+          "hours": 0.33,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-resume": {
+          "cases": 400,
+          "secondsPerRequest": 3.3,
+          "hours": 0.37,
+          "basis": "calibrated formula"
+        },
+        "longpi-code": {
+          "cases": 400,
+          "secondsPerRequest": 3.49,
+          "hours": 0.39,
+          "basis": "Study A code full80 mean"
+        },
+        "bipia-email-mixed": {
+          "cases": 156,
+          "secondsPerRequest": 3.21,
+          "hours": 0.14,
+          "basis": "calibrated formula"
+        },
+        "longpi-email": {
+          "cases": 400,
+          "secondsPerRequest": 3.69,
+          "hours": 0.41,
+          "basis": "calibrated formula"
+        },
+        "attempt-detection": {
+          "cases": 400,
+          "secondsPerRequest": 3.27,
+          "hours": 0.36,
+          "basis": "calibrated formula"
+        },
+        "web-mixed": {
+          "cases": 480,
+          "secondsPerRequest": 3.21,
+          "hours": 0.43,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-shopping": {
+          "cases": 183,
+          "secondsPerRequest": 3.25,
+          "hours": 0.17,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-github": {
+          "cases": 237,
+          "secondsPerRequest": 3.32,
+          "hours": 0.22,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-dailylife": {
+          "cases": 411,
+          "secondsPerRequest": 3.23,
+          "hours": 0.37,
+          "basis": "calibrated formula"
+        },
+        "agentdojo-travel-mixed": {
+          "cases": 21,
+          "secondsPerRequest": 3.19,
+          "hours": 0.02,
+          "basis": "calibrated formula"
+        },
+        "agent-injection-bench-mixed": {
+          "cases": 182,
+          "secondsPerRequest": 3.21,
+          "hours": 0.16,
+          "basis": "calibrated formula"
+        },
+        "pids-obfuscated": {
+          "cases": 405,
+          "secondsPerRequest": 3.21,
+          "hours": 0.36,
+          "basis": "calibrated formula"
+        },
+        "encoding-eligible-existing-v1": {
+          "cases": 229,
+          "secondsPerRequest": 3.21,
+          "hours": 0.2,
+          "basis": "calibrated formula"
+        },
+        "encoding-benign-controls-v1": {
+          "cases": 969,
+          "secondsPerRequest": 3.2,
+          "hours": 0.86,
+          "basis": "calibrated formula"
+        },
+        "benign-false-positives": {
+          "cases": 339,
+          "secondsPerRequest": 3.19,
+          "hours": 0.3,
+          "basis": "calibrated formula"
+        },
+        "pids-hard-benign-public": {
+          "cases": 808,
+          "secondsPerRequest": 3.19,
+          "hours": 0.72,
+          "basis": "calibrated formula"
+        },
+        "skill-policy-pairs": {
+          "cases": 234,
+          "secondsPerRequest": 3.99,
+          "hours": 0.26,
+          "basis": "calibrated formula"
+        },
+        "paper-score-counterfactual": {
+          "cases": 72,
+          "secondsPerRequest": 3.9,
+          "hours": 0.08,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        }
+      },
+      "estimatedHours": 7.0,
+      "projectedStartUtc": "2026-10-07T16:44:48Z",
+      "projectedEndUtc": "2026-10-07T23:42:24Z"
+    },
+    "qwen38-q8gguf": {
+      "rates": {
+        "source": "evals/runs/lmstudio-studio-2026-10-05/studio-qwen38-q8gguf-thinking1024-full-qualification-audit.json",
+        "meanValidSeconds": 8.628625,
+        "prefillTokPerSecCold": 930.1638550929657,
+        "decodeTokPerSecMedian": 64.81426833752302,
+        "completionTokensMedian": 277.0
+      },
+      "measured": {
+        "paper": {
+          "meanS": 8.61,
+          "n": 80
+        },
+        "code": {
+          "meanS": 5.9,
+          "n": 79
+        }
+      },
+      "order": 3,
+      "name": "Qwen3.8 27B GGUF Q8_0",
+      "architecture": "dense",
+      "condition": "baseline-qwen38-q8gguf-full",
+      "engine": "studio-qwen38-q8gguf-lmstudio-score-v1-thinking1024-native-v0-v1",
+      "calibrationFactor": 0.914,
+      "perDataset": {
+        "longpi-paper": {
+          "cases": 400,
+          "secondsPerRequest": 8.61,
+          "hours": 0.96,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-abstract": {
+          "cases": 300,
+          "secondsPerRequest": 8.61,
+          "hours": 0.72,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-method": {
+          "cases": 300,
+          "secondsPerRequest": 8.61,
+          "hours": 0.72,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-resume": {
+          "cases": 400,
+          "secondsPerRequest": 5.09,
+          "hours": 0.57,
+          "basis": "calibrated formula"
+        },
+        "longpi-code": {
+          "cases": 400,
+          "secondsPerRequest": 5.9,
+          "hours": 0.66,
+          "basis": "Study A code full80 mean"
+        },
+        "bipia-email-mixed": {
+          "cases": 156,
+          "secondsPerRequest": 4.69,
+          "hours": 0.2,
+          "basis": "calibrated formula"
+        },
+        "longpi-email": {
+          "cases": 400,
+          "secondsPerRequest": 6.74,
+          "hours": 0.75,
+          "basis": "calibrated formula"
+        },
+        "attempt-detection": {
+          "cases": 400,
+          "secondsPerRequest": 4.94,
+          "hours": 0.55,
+          "basis": "calibrated formula"
+        },
+        "web-mixed": {
+          "cases": 480,
+          "secondsPerRequest": 4.71,
+          "hours": 0.63,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-shopping": {
+          "cases": 183,
+          "secondsPerRequest": 4.86,
+          "hours": 0.25,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-github": {
+          "cases": 237,
+          "secondsPerRequest": 5.18,
+          "hours": 0.34,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-dailylife": {
+          "cases": 411,
+          "secondsPerRequest": 4.79,
+          "hours": 0.55,
+          "basis": "calibrated formula"
+        },
+        "agentdojo-travel-mixed": {
+          "cases": 21,
+          "secondsPerRequest": 4.61,
+          "hours": 0.03,
+          "basis": "calibrated formula"
+        },
+        "agent-injection-bench-mixed": {
+          "cases": 182,
+          "secondsPerRequest": 4.67,
+          "hours": 0.24,
+          "basis": "calibrated formula"
+        },
+        "pids-obfuscated": {
+          "cases": 405,
+          "secondsPerRequest": 4.7,
+          "hours": 0.53,
+          "basis": "calibrated formula"
+        },
+        "encoding-eligible-existing-v1": {
+          "cases": 229,
+          "secondsPerRequest": 4.68,
+          "hours": 0.3,
+          "basis": "calibrated formula"
+        },
+        "encoding-benign-controls-v1": {
+          "cases": 969,
+          "secondsPerRequest": 4.67,
+          "hours": 1.26,
+          "basis": "calibrated formula"
+        },
+        "benign-false-positives": {
+          "cases": 339,
+          "secondsPerRequest": 4.58,
+          "hours": 0.43,
+          "basis": "calibrated formula"
+        },
+        "pids-hard-benign-public": {
+          "cases": 808,
+          "secondsPerRequest": 4.59,
+          "hours": 1.03,
+          "basis": "calibrated formula"
+        },
+        "skill-policy-pairs": {
+          "cases": 234,
+          "secondsPerRequest": 8.08,
+          "hours": 0.53,
+          "basis": "calibrated formula"
+        },
+        "paper-score-counterfactual": {
+          "cases": 72,
+          "secondsPerRequest": 8.61,
+          "hours": 0.17,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        }
+      },
+      "estimatedHours": 11.5,
+      "projectedStartUtc": "2026-10-07T23:42:24Z",
+      "projectedEndUtc": "2026-10-08T11:10:36Z"
+    },
+    "muse-q8": {
+      "rates": {
+        "source": "evals/runs/lmstudio-studio-2026-10-05/studio-muse-q8-thinking1024-full-qualification-audit.json",
+        "meanValidSeconds": 12.893791666666665,
+        "prefillTokPerSecCold": 1001.2502079961033,
+        "decodeTokPerSecMedian": 32.279392321134345,
+        "completionTokensMedian": 304.0
+      },
+      "measured": {
+        "paper": {
+          "meanS": 13.35,
+          "n": 80
+        },
+        "code": {
+          "meanS": 12.84,
+          "n": 80
+        }
+      },
+      "order": 4,
+      "name": "Muse Glimmer 30B Q8_0",
+      "architecture": "dense",
+      "condition": "baseline-muse-q8-full",
+      "engine": "studio-muse-q8-lmstudio-score-v1-thinking1024-native-v0-v1",
+      "calibrationFactor": 1.119,
+      "perDataset": {
+        "longpi-paper": {
+          "cases": 400,
+          "secondsPerRequest": 13.35,
+          "hours": 1.48,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-abstract": {
+          "cases": 300,
+          "secondsPerRequest": 13.35,
+          "hours": 1.11,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-method": {
+          "cases": 300,
+          "secondsPerRequest": 13.35,
+          "hours": 1.11,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-resume": {
+          "cases": 400,
+          "secondsPerRequest": 11.92,
+          "hours": 1.32,
+          "basis": "calibrated formula"
+        },
+        "longpi-code": {
+          "cases": 400,
+          "secondsPerRequest": 12.84,
+          "hours": 1.43,
+          "basis": "Study A code full80 mean"
+        },
+        "bipia-email-mixed": {
+          "cases": 156,
+          "secondsPerRequest": 11.46,
+          "hours": 0.5,
+          "basis": "calibrated formula"
+        },
+        "longpi-email": {
+          "cases": 400,
+          "secondsPerRequest": 13.8,
+          "hours": 1.53,
+          "basis": "calibrated formula"
+        },
+        "attempt-detection": {
+          "cases": 400,
+          "secondsPerRequest": 11.75,
+          "hours": 1.31,
+          "basis": "calibrated formula"
+        },
+        "web-mixed": {
+          "cases": 480,
+          "secondsPerRequest": 11.48,
+          "hours": 1.53,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-shopping": {
+          "cases": 183,
+          "secondsPerRequest": 11.66,
+          "hours": 0.59,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-github": {
+          "cases": 237,
+          "secondsPerRequest": 12.02,
+          "hours": 0.79,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-dailylife": {
+          "cases": 411,
+          "secondsPerRequest": 11.58,
+          "hours": 1.32,
+          "basis": "calibrated formula"
+        },
+        "agentdojo-travel-mixed": {
+          "cases": 21,
+          "secondsPerRequest": 11.37,
+          "hours": 0.07,
+          "basis": "calibrated formula"
+        },
+        "agent-injection-bench-mixed": {
+          "cases": 182,
+          "secondsPerRequest": 11.45,
+          "hours": 0.58,
+          "basis": "calibrated formula"
+        },
+        "pids-obfuscated": {
+          "cases": 405,
+          "secondsPerRequest": 11.48,
+          "hours": 1.29,
+          "basis": "calibrated formula"
+        },
+        "encoding-eligible-existing-v1": {
+          "cases": 229,
+          "secondsPerRequest": 11.45,
+          "hours": 0.73,
+          "basis": "calibrated formula"
+        },
+        "encoding-benign-controls-v1": {
+          "cases": 969,
+          "secondsPerRequest": 11.44,
+          "hours": 3.08,
+          "basis": "calibrated formula"
+        },
+        "benign-false-positives": {
+          "cases": 339,
+          "secondsPerRequest": 11.34,
+          "hours": 1.07,
+          "basis": "calibrated formula"
+        },
+        "pids-hard-benign-public": {
+          "cases": 808,
+          "secondsPerRequest": 11.35,
+          "hours": 2.55,
+          "basis": "calibrated formula"
+        },
+        "skill-policy-pairs": {
+          "cases": 234,
+          "secondsPerRequest": 15.32,
+          "hours": 1.0,
+          "basis": "calibrated formula"
+        },
+        "paper-score-counterfactual": {
+          "cases": 72,
+          "secondsPerRequest": 13.35,
+          "hours": 0.27,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        }
+      },
+      "estimatedHours": 24.7,
+      "projectedStartUtc": "2026-10-08T11:10:36Z",
+      "projectedEndUtc": "2026-10-09T11:53:12Z"
+    },
+    "gemma31-q8": {
+      "rates": {
+        "source": "evals/runs/lmstudio-studio-2026-10-05/studio-gemma31-q8-thinking1024-full-qualification-audit.json",
+        "meanValidSeconds": 15.677041666666666,
+        "prefillTokPerSecCold": 782.5643891003242,
+        "decodeTokPerSecMedian": 25.430906277850987,
+        "completionTokensMedian": 306.5
+      },
+      "measured": {
+        "paper": {
+          "meanS": 16.0,
+          "n": 80
+        },
+        "code": {
+          "meanS": 11.86,
+          "n": 78
+        }
+      },
+      "order": 5,
+      "name": "Gemma 4 31B-it Q8_0",
+      "architecture": "dense",
+      "condition": "baseline-gemma31-q8-full",
+      "engine": "studio-gemma31-q8-lmstudio-score-v1-thinking1024-native-v0-v1",
+      "calibrationFactor": 0.814,
+      "perDataset": {
+        "longpi-paper": {
+          "cases": 400,
+          "secondsPerRequest": 16.0,
+          "hours": 1.78,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-abstract": {
+          "cases": 300,
+          "secondsPerRequest": 16.0,
+          "hours": 1.33,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-paper-method": {
+          "cases": 300,
+          "secondsPerRequest": 16.0,
+          "hours": 1.33,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        },
+        "longpi-resume": {
+          "cases": 400,
+          "secondsPerRequest": 11.0,
+          "hours": 1.22,
+          "basis": "calibrated formula"
+        },
+        "longpi-code": {
+          "cases": 400,
+          "secondsPerRequest": 11.86,
+          "hours": 1.32,
+          "basis": "Study A code full80 mean"
+        },
+        "bipia-email-mixed": {
+          "cases": 156,
+          "secondsPerRequest": 10.58,
+          "hours": 0.46,
+          "basis": "calibrated formula"
+        },
+        "longpi-email": {
+          "cases": 400,
+          "secondsPerRequest": 12.75,
+          "hours": 1.42,
+          "basis": "calibrated formula"
+        },
+        "attempt-detection": {
+          "cases": 400,
+          "secondsPerRequest": 10.85,
+          "hours": 1.21,
+          "basis": "calibrated formula"
+        },
+        "web-mixed": {
+          "cases": 480,
+          "secondsPerRequest": 10.59,
+          "hours": 1.41,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-shopping": {
+          "cases": 183,
+          "secondsPerRequest": 10.76,
+          "hours": 0.55,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-github": {
+          "cases": 237,
+          "secondsPerRequest": 11.1,
+          "hours": 0.73,
+          "basis": "calibrated formula"
+        },
+        "agentdyn-dailylife": {
+          "cases": 411,
+          "secondsPerRequest": 10.69,
+          "hours": 1.22,
+          "basis": "calibrated formula"
+        },
+        "agentdojo-travel-mixed": {
+          "cases": 21,
+          "secondsPerRequest": 10.49,
+          "hours": 0.06,
+          "basis": "calibrated formula"
+        },
+        "agent-injection-bench-mixed": {
+          "cases": 182,
+          "secondsPerRequest": 10.56,
+          "hours": 0.53,
+          "basis": "calibrated formula"
+        },
+        "pids-obfuscated": {
+          "cases": 405,
+          "secondsPerRequest": 10.59,
+          "hours": 1.19,
+          "basis": "calibrated formula"
+        },
+        "encoding-eligible-existing-v1": {
+          "cases": 229,
+          "secondsPerRequest": 10.57,
+          "hours": 0.67,
+          "basis": "calibrated formula"
+        },
+        "encoding-benign-controls-v1": {
+          "cases": 969,
+          "secondsPerRequest": 10.55,
+          "hours": 2.84,
+          "basis": "calibrated formula"
+        },
+        "benign-false-positives": {
+          "cases": 339,
+          "secondsPerRequest": 10.46,
+          "hours": 0.99,
+          "basis": "calibrated formula"
+        },
+        "pids-hard-benign-public": {
+          "cases": 808,
+          "secondsPerRequest": 10.48,
+          "hours": 2.35,
+          "basis": "calibrated formula"
+        },
+        "skill-policy-pairs": {
+          "cases": 234,
+          "secondsPerRequest": 14.17,
+          "hours": 0.92,
+          "basis": "calibrated formula"
+        },
+        "paper-score-counterfactual": {
+          "cases": 72,
+          "secondsPerRequest": 16.0,
+          "hours": 0.32,
+          "basis": "paper mean (Study A full400/80, or first6 qualification)"
+        }
+      },
+      "estimatedHours": 23.9,
+      "projectedStartUtc": "2026-10-09T11:53:12Z",
+      "projectedEndUtc": "2026-10-10T11:47:12Z"
+    }
+  },
+  "progressLog": "evals/runs/studio-baseline-2026-10-07/progress.log"
+}

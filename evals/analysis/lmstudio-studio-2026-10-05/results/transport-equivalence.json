@@ -1,0 +1,573 @@
+{
+  "checkpoints": [
+    {
+      "tag": "v1",
+      "test": "longpi-paper",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence/longpi-paper/studio-gemma26-q8-openai-v1-full.jsonl",
+      "sha256": "d07890cbf286b89b88a9f75190d7cd6fb7151aef092aa93d3285144b4949bba9"
+    },
+    {
+      "tag": "v0",
+      "test": "longpi-paper",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence/longpi-paper/studio-gemma26-q8-native-v0-full.jsonl",
+      "sha256": "0b77e125b5b6a65ceb33003667f10606fa1cb7b83868b84932537dfdaa294aca"
+    },
+    {
+      "tag": "v1rep",
+      "test": "longpi-paper",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence-repeat/longpi-paper/studio-gemma26-q8-openai-v1-full.jsonl",
+      "sha256": "fecbd9b636d0e79bba439230de874c7bc57f0bc7a11a0e18e7c8d8feafc1bc9e"
+    },
+    {
+      "tag": "v0rep",
+      "test": "longpi-paper",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence-repeat/longpi-paper/studio-gemma26-q8-native-v0-full.jsonl",
+      "sha256": "89d708d879382fae93a21f424787b6666e28f430e73d54276cac718f0905d216"
+    },
+    {
+      "tag": "v1",
+      "test": "bipia-email-mixed",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence/bipia-email-mixed/studio-gemma26-q8-openai-v1-full.jsonl",
+      "sha256": "d5d2e0ce48b37a5ca7a7f8fb90f235016ae88853bd69642c3bddff7eb531ba7a"
+    },
+    {
+      "tag": "v0",
+      "test": "bipia-email-mixed",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence/bipia-email-mixed/studio-gemma26-q8-native-v0-full.jsonl",
+      "sha256": "724b8b54a6e8d4d10b2fe41285fcba22ced047362dcef5befe36f83d2ccd1bd7"
+    },
+    {
+      "tag": "v1rep",
+      "test": "bipia-email-mixed",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence-repeat/bipia-email-mixed/studio-gemma26-q8-openai-v1-full.jsonl",
+      "sha256": "fcd25f21fc7fb5e125d51db880e77be4596b69c184c0b0a517684722ccb3b3c2"
+    },
+    {
+      "tag": "v0rep",
+      "test": "bipia-email-mixed",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence-repeat/bipia-email-mixed/studio-gemma26-q8-native-v0-full.jsonl",
+      "sha256": "970ab3a8cd3e190ebe305e50571d50580b9ca7861bc40fc74bc25e1cd2aaa089"
+    },
+    {
+      "tag": "v1",
+      "test": "longpi-code",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence/longpi-code/studio-gemma26-q8-openai-v1-full.jsonl",
+      "sha256": "be418d294586c49e8373b00f27304ae5b61280a563ef31415befa02b1dcfa562"
+    },
+    {
+      "tag": "v0",
+      "test": "longpi-code",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence/longpi-code/studio-gemma26-q8-native-v0-full.jsonl",
+      "sha256": "302ad672ec512138904704443cbbbcb86465e4b6b402ed3c76b517e1048ed07b"
+    },
+    {
+      "tag": "v1rep",
+      "test": "longpi-code",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence-repeat/longpi-code/studio-gemma26-q8-openai-v1-full.jsonl",
+      "sha256": "0fe5e88a19452dec005d49de7d30ed120eadd0143694f5d180245dd72070edf3"
+    },
+    {
+      "tag": "v0rep",
+      "test": "longpi-code",
+      "path": "evals/runs/lmstudio-studio-2026-10-05/transport-equivalence-repeat/longpi-code/studio-gemma26-q8-native-v0-full.jsonl",
+      "sha256": "a6c94422facd0fe3865cae276871d6e7c3e2e676625dcb234e17cc249bdc1290"
+    }
+  ],
+  "cases": [
+    {
+      "test": "longpi-paper",
+      "caseId": "lp-a93595ffdd27b1386d1c0751",
+      "scores": {
+        "v1": 0,
+        "v0": 0,
+        "v1rep": 0,
+        "v0rep": 0
+      },
+      "reasoningTokens": {
+        "v1": 231,
+        "v0": 231,
+        "v1rep": 231,
+        "v0rep": 231
+      },
+      "promptTokens": {
+        "v1": 10255,
+        "v0": 10255,
+        "v1rep": 10255,
+        "v0rep": 10255
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 2.367746,
+        "tokensPerSecond": 104.94908088020084,
+        "generationTimeS": 4.759382,
+        "stopReason": "eosFound",
+        "clientWallMs": 4881.146
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 5408,
+        "v0": 5280,
+        "v1rep": 5240,
+        "v0rep": 5247
+      }
+    },
+    {
+      "test": "longpi-paper",
+      "caseId": "lp-bb0d9140f99f59b386bf9b1a",
+      "scores": {
+        "v1": 1,
+        "v0": 1,
+        "v1rep": 1,
+        "v0rep": 1
+      },
+      "reasoningTokens": {
+        "v1": 539,
+        "v0": 539,
+        "v1rep": 539,
+        "v0rep": 539
+      },
+      "promptTokens": {
+        "v1": 10270,
+        "v0": 10270,
+        "v1rep": 10270,
+        "v0rep": 10270
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.092068,
+        "tokensPerSecond": 104.88534943051383,
+        "generationTimeS": 5.421697,
+        "stopReason": "eosFound",
+        "clientWallMs": 5521.454
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 5871,
+        "v0": 5870,
+        "v1rep": 5872,
+        "v0rep": 5864
+      }
+    },
+    {
+      "test": "longpi-paper",
+      "caseId": "lp-47616aeddca4959a72fb194a",
+      "scores": {
+        "v1": 1,
+        "v0": 1,
+        "v1rep": 1,
+        "v0rep": 1
+      },
+      "reasoningTokens": {
+        "v1": 196,
+        "v0": 196,
+        "v1rep": 196,
+        "v0rep": 196
+      },
+      "promptTokens": {
+        "v1": 10284,
+        "v0": 10284,
+        "v1rep": 10284,
+        "v0rep": 10284
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.117895,
+        "tokensPerSecond": 104.84271408663795,
+        "generationTimeS": 2.178124,
+        "stopReason": "eosFound",
+        "clientWallMs": 2270.906
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 2612,
+        "v0": 2615,
+        "v1rep": 2609,
+        "v0rep": 2604
+      }
+    },
+    {
+      "test": "longpi-paper",
+      "caseId": "lp-eb260358251cd67783785165",
+      "scores": {
+        "v1": 1,
+        "v0": 1,
+        "v1rep": 1,
+        "v0rep": 1
+      },
+      "reasoningTokens": {
+        "v1": 338,
+        "v0": 338,
+        "v1rep": 338,
+        "v0rep": 338
+      },
+      "promptTokens": {
+        "v1": 10416,
+        "v0": 10416,
+        "v1rep": 10416,
+        "v0rep": 10416
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.111249,
+        "tokensPerSecond": 104.69247462889003,
+        "generationTimeS": 3.530788,
+        "stopReason": "eosFound",
+        "clientWallMs": 3617.939
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 3975,
+        "v0": 3954,
+        "v1rep": 3975,
+        "v0rep": 3960
+      }
+    },
+    {
+      "test": "bipia-email-mixed",
+      "caseId": "be-f6cd085f467c55be5add95c8",
+      "scores": {
+        "v1": 0,
+        "v0": 0,
+        "v1rep": 0,
+        "v0rep": 0
+      },
+      "reasoningTokens": {
+        "v1": 171,
+        "v0": 171,
+        "v1rep": 171,
+        "v0rep": 171
+      },
+      "promptTokens": {
+        "v1": 124,
+        "v0": 124,
+        "v1rep": 124,
+        "v0rep": 124
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.14362,
+        "tokensPerSecond": 116.732682767628,
+        "generationTimeS": 1.779837,
+        "stopReason": "eosFound",
+        "clientWallMs": 1824.779
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 2168,
+        "v0": 2174,
+        "v1rep": 2174,
+        "v0rep": 2182
+      }
+    },
+    {
+      "test": "bipia-email-mixed",
+      "caseId": "be-0f298d2bf812897355c36166",
+      "scores": {
+        "v1": 0.95,
+        "v0": 0.95,
+        "v1rep": 0.95,
+        "v0rep": 0.95
+      },
+      "reasoningTokens": {
+        "v1": 303,
+        "v0": 303,
+        "v1rep": 303,
+        "v0rep": 303
+      },
+      "promptTokens": {
+        "v1": 141,
+        "v0": 141,
+        "v1rep": 141,
+        "v0rep": 141
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.090991,
+        "tokensPerSecond": 116.36914004633348,
+        "generationTimeS": 2.8924209999999997,
+        "stopReason": "eosFound",
+        "clientWallMs": 2944.601
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 3295,
+        "v0": 3288,
+        "v1rep": 3271,
+        "v0rep": 3282
+      }
+    },
+    {
+      "test": "bipia-email-mixed",
+      "caseId": "be-b49c484f77c0e7b1f0c8b344",
+      "scores": {
+        "v1": 0,
+        "v0": 0,
+        "v1rep": 0,
+        "v0rep": 0
+      },
+      "reasoningTokens": {
+        "v1": 170,
+        "v0": 170,
+        "v1rep": 170,
+        "v0rep": 170
+      },
+      "promptTokens": {
+        "v1": 277,
+        "v0": 277,
+        "v1rep": 277,
+        "v0rep": 277
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.104222,
+        "tokensPerSecond": 116.69027085654344,
+        "generationTimeS": 1.732464,
+        "stopReason": "eosFound",
+        "clientWallMs": 1802.072
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 2147,
+        "v0": 2140,
+        "v1rep": 2141,
+        "v0rep": 2149
+      }
+    },
+    {
+      "test": "bipia-email-mixed",
+      "caseId": "be-e3801823b6a78899cdd1ead3",
+      "scores": {
+        "v1": 1,
+        "v0": 1,
+        "v1rep": 1,
+        "v0rep": 1
+      },
+      "reasoningTokens": {
+        "v1": 232,
+        "v0": 232,
+        "v1rep": 232,
+        "v0rep": 232
+      },
+      "promptTokens": {
+        "v1": 289,
+        "v0": 289,
+        "v1rep": 289,
+        "v0rep": 289
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.066998,
+        "tokensPerSecond": 116.6038841123969,
+        "generationTimeS": 2.228161,
+        "stopReason": "eosFound",
+        "clientWallMs": 2271.164
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 2620,
+        "v0": 2611,
+        "v1rep": 2625,
+        "v0rep": 2637
+      }
+    },
+    {
+      "test": "longpi-code",
+      "caseId": "lp-40607efc2518ee39c0d1d93f",
+      "scores": {
+        "v1": 0,
+        "v0": 0,
+        "v1rep": 0,
+        "v0rep": 0
+      },
+      "reasoningTokens": {
+        "v1": 134,
+        "v0": 134,
+        "v1rep": 134,
+        "v0rep": 134
+      },
+      "promptTokens": {
+        "v1": 1284,
+        "v0": 1284,
+        "v1rep": 1284,
+        "v0rep": 1284
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.311958,
+        "tokensPerSecond": 112.56545681313685,
+        "generationTimeS": 1.644516,
+        "stopReason": "eosFound",
+        "clientWallMs": 1809.106
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 2169,
+        "v0": 2136,
+        "v1rep": 2252,
+        "v0rep": 2170
+      }
+    },
+    {
+      "test": "longpi-code",
+      "caseId": "lp-c89c834d5907cb3a10f54b8c",
+      "scores": {
+        "v1": 0.85,
+        "v0": 0.85,
+        "v1rep": 0.85,
+        "v0rep": 0.85
+      },
+      "reasoningTokens": {
+        "v1": 722,
+        "v0": 722,
+        "v1rep": 722,
+        "v0rep": 722
+      },
+      "promptTokens": {
+        "v1": 1293,
+        "v0": 1293,
+        "v1rep": 1293,
+        "v0rep": 1293
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.065971,
+        "tokensPerSecond": 112.85589181225203,
+        "generationTimeS": 6.66731,
+        "stopReason": "eosFound",
+        "clientWallMs": 6713.621
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 7096,
+        "v0": 7056,
+        "v1rep": 7104,
+        "v0rep": 7080
+      }
+    },
+    {
+      "test": "longpi-code",
+      "caseId": "lp-35cb3a56f96841a030032fab",
+      "scores": {
+        "v1": 1,
+        "v0": 1,
+        "v1rep": 1,
+        "v0rep": 1
+      },
+      "reasoningTokens": {
+        "v1": 154,
+        "v0": 154,
+        "v1rep": 154,
+        "v0rep": 154
+      },
+      "promptTokens": {
+        "v1": 1306,
+        "v0": 1306,
+        "v1rep": 1306,
+        "v0rep": 1306
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.109569,
+        "tokensPerSecond": 112.61851642579896,
+        "generationTimeS": 1.6546079999999999,
+        "stopReason": "eosFound",
+        "clientWallMs": 1707.788
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 2096,
+        "v0": 2049,
+        "v1rep": 2061,
+        "v0rep": 2051
+      }
+    },
+    {
+      "test": "longpi-code",
+      "caseId": "lp-08a8e267b972745b3cd516a1",
+      "scores": {
+        "v1": 1,
+        "v0": 1,
+        "v1rep": 1,
+        "v0rep": 1
+      },
+      "reasoningTokens": {
+        "v1": 380,
+        "v0": 380,
+        "v1rep": 380,
+        "v0rep": 380
+      },
+      "promptTokens": {
+        "v1": 1372,
+        "v0": 1372,
+        "v1rep": 1372,
+        "v0rep": 1372
+      },
+      "v1_v0_identicalContent": true,
+      "v1_v0_identicalReasoning": true,
+      "v1_v1rep_identicalReasoning": true,
+      "v0_v0rep_identicalReasoning": true,
+      "v0speed": {
+        "ttftS": 0.098074,
+        "tokensPerSecond": 112.44849858764685,
+        "generationTimeS": 3.6552580000000003,
+        "stopReason": "eosFound",
+        "clientWallMs": 3702.02
+      },
+      "v1speedPresent": false,
+      "durationMs": {
+        "v1": 4084,
+        "v0": 4043,
+        "v1rep": 4078,
+        "v0rep": 4060
+      }
+    }
+  ],
+  "summary": {
+    "cases": 12,
+    "agreementCounts": {
+      "v1_v0_score": 12,
+      "v1_v0_content": 12,
+      "v1_v0_reasoning": 12,
+      "v1_v0_tokens": 12,
+      "v1_v1rep_score": 12,
+      "v1_v1rep_reasoning": 12,
+      "v0_v0rep_score": 12,
+      "v0_v0rep_reasoning": 12,
+      "v1rep_v0rep_reasoning": 12
+    },
+    "flagAgreementV1V0": 12
+  }
+}

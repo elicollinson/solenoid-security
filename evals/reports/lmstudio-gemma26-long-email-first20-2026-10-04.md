@@ -15,4 +15,4 @@ The first 20 ordered email families were fixed before this local comparison: 60 
 
 Removing 27 redundant terminal windows changes 0 case flags. Full input and 512-word / 384-stride preserved windows share the same engine settings and >0.5 threshold. Different total generation work remains a confound. Exact reused scores are linked to their original native requests; they are not additional trials.
 
-Per-family counts, case scores, window provenance and captured checkpoint byte hashes are retained in evals/runs/lmstudio-long-email-2026-10-04/lmstudio-gemma26-long-email-first20-2026-10-04.json. Checkpoints may subsequently be extended; recorded hashes describe the captured bytes at analysis time.
+Per-family counts, case scores, window provenance and captured checkpoint byte hashes are retained in evals/runs/lmstudio-long-email-2026-10-04/lmstudio-gemma26-long-email-first20-2026-10-04.json ([published copy](../analysis/lmstudio-long-email-2026-10-04/results/lmstudio-gemma26-long-email-first20-2026-10-04.json)). Checkpoints may subsequently be extended; recorded hashes describe the captured bytes at analysis time.

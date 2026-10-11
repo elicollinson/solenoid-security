@@ -1,15 +1,16 @@
 import {expect,test} from 'bun:test';
 import {spawnSync} from 'node:child_process';
 import {randomUUID} from 'node:crypto';
-import {mkdtempSync,writeFileSync,readFileSync,rmSync,mkdirSync,chmodSync} from 'node:fs';
+import {mkdtempSync,writeFileSync,readFileSync,rmSync,chmodSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {resolve} from 'node:path';
 import {sha256} from '../src/strategies.js';
 import {SCORE_ONLY_PROMPT_ID,SCORE_ONLY_PROMPT_SHA256} from '../src/engines.js';
+import {fixtureRunDir} from './runDirFixture.js';
 test('local runner retains an invalid output and resumes without re-dispatching it',()=>{
  const root=process.cwd(),id='local-retention-'+randomUUID(),temp=mkdtempSync(resolve(tmpdir(),'local-retention-'));
- const dataset=resolve(root,`evals/datasets/${id}.json`),suite=resolve(temp,'suite.json'),outDir=resolve(root,'evals/runs',id),out=resolve(outDir,'run.jsonl');
- mkdirSync(outDir);
+ const dataset=resolve(root,`evals/datasets/${id}.json`),suite=resolve(temp,'suite.json');
+ const {outDir,cleanup}=fixtureRunDir(root,id),out=resolve(outDir,'run.jsonl');
  try{
   const raw=Array.from({length:3},(_,i)=>({id:'case'+i,label:'injection',turns:[{id:'source',role:'document',origin:'external',text:'fixture '+i}],text_sha256:sha256('fixture '+i)})).map(x=>JSON.stringify(x)).join('\n')+'\n';
   const source=resolve(temp,'source.jsonl');writeFileSync(source,raw);
@@ -28,5 +29,5 @@ test('local runner retains an invalid output and resumes without re-dispatching 
   expect(run(['--continue-after-output-errors']).status).toBe(0);expect(readFileSync(out,'utf8')).toBe(before);
   const events=before.trim().split('\n').map(x=>JSON.parse(x));
   expect(events.filter(e=>e.type==='dispatch')).toHaveLength(3);expect(events.filter(e=>e.type==='response')).toHaveLength(3);expect(events.filter(e=>e.type==='observation')).toHaveLength(2);expect(events.filter(e=>e.type==='error')).toHaveLength(1);expect(events.some(e=>e.type==='complete')).toBe(false);
- }finally{rmSync(dataset,{force:true});rmSync(outDir,{recursive:true,force:true});rmSync(temp,{recursive:true,force:true});}
+ }finally{rmSync(dataset,{force:true});cleanup();rmSync(temp,{recursive:true,force:true});}
 });

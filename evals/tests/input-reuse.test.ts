@@ -1,18 +1,18 @@
 import { expect, test } from "bun:test";
 import { spawnSync } from "node:child_process";
 import { randomUUID } from "node:crypto";
-import { chmodSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { relative, resolve } from "node:path";
 import { analyzeCheckpoint, auditPartialCheckpoint, readNativeInputSource, type Event } from "../scripts/analyze-research.js";
 import { sha256 } from "../src/strategies.js";
 import { SCORE_ONLY_PROMPT_ID, SCORE_ONLY_PROMPT_SHA256 } from "../src/engines.js";
+import { fixtureRunDir } from "./runDirFixture.js";
 
 function fixture(invalid: boolean, check: (f: { run: (args?: string[]) => ReturnType<typeof spawnSync>; events: () => Event[]; root: string; out: string }) => void, texts = ["same input", "same input", "same\ninput", "same input"]) {
   const root = process.cwd(), id = "input-reuse-" + randomUUID(), temp = mkdtempSync(resolve(tmpdir(), "input-reuse-"));
   const dataset = resolve(root, `evals/datasets/${id}.json`), suite = resolve(root, `evals/suites/${id}.json`);
-  const outDir = resolve(root, "evals/runs", id), out = resolve(outDir, "run.jsonl");
-  mkdirSync(outDir);
+  const { outDir, cleanup } = fixtureRunDir(root, id), out = resolve(outDir, "run.jsonl");
   try {
     const raw = texts.map((text, i) => ({ id: "case" + i, label: i === 1 ? "benign" : "injection", turns: [{ id: "source-" + i, role: "document", origin: "external", text }], text_sha256: sha256(text) })).map(c => JSON.stringify(c)).join("\n") + "\n";
     const source = resolve(temp, "source.jsonl"), revision = "sha256:" + sha256(raw);
@@ -29,7 +29,7 @@ function fixture(invalid: boolean, check: (f: { run: (args?: string[]) => Return
     const run = (args: string[] = []) => spawnSync(process.execPath, [script, ...args], { encoding: "utf8", env: { ...process.env, PATH: temp + ":" + process.env.PATH }, stdio: ["ignore", "pipe", "pipe"] });
     check({ run, events: () => readFileSync(out, "utf8").trimEnd().split("\n").map(s => JSON.parse(s)), root, out });
   } finally {
-    rmSync(dataset, { force: true }); rmSync(suite, { force: true }); rmSync(outDir, { recursive: true, force: true }); rmSync(temp, { recursive: true, force: true });
+    rmSync(dataset, { force: true }); rmSync(suite, { force: true }); cleanup(); rmSync(temp, { recursive: true, force: true });
   }
 }
 

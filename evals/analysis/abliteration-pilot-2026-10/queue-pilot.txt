@@ -1,0 +1,14 @@
+# Abliteration pilot queue, max_tokens 4096 (frozen with pilot-plan.json). Order: vanilla drift check, heretic, huihui.
+# Drift check: vanilla Qwen3.8 GGUF re-scores the first 24 pilot BIPIA cases; gate.ts compares them with the frozen baseline outputs.
+RUN|drift-qwen38-q8gguf|--suite=evals/suites/prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1.json --output-dir=evals/runs/abliteration-pilot-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-email-mixed --conditions=pilot-qwen38-q8gguf-t4096-full --max-new-segments=24 --continue-after-output-errors
+GATE|drift-qwen38-q8gguf|drift pilot-qwen38-q8gguf-t4096-full bipia-email-mixed 24
+MODEL|Qwen3.8 27B Heretic Ara Q8_0|1/2
+RUN|qualify-qwen38-heretic-ara-q8|--suite=evals/suites/prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1.json --output-dir=evals/runs/abliteration-pilot-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper --conditions=pilot-qwen38-heretic-ara-q8-t4096-full --max-new-segments=24 --continue-after-output-errors
+GATE|qualify-qwen38-heretic-ara-q8|qualify pilot-qwen38-heretic-ara-q8-t4096-full longpi-paper 24
+RUN|pilot-qwen38-heretic-ara-q8|--suite=evals/suites/prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1.json --output-dir=evals/runs/abliteration-pilot-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper,longpi-code,bipia-email-mixed,longpi-email,web-mixed,agentdyn-github,pids-obfuscated,benign-false-positives,paper-score-counterfactual --conditions=pilot-qwen38-heretic-ara-q8-t4096-full --continue-after-output-errors
+SUMMARY|pilot-qwen38-heretic-ara-q8-t4096-full|1/2|Qwen3.8 27B Heretic Ara Q8_0
+MODEL|Huihui Qwen3.8 27B Abliterated Q8_0|2/2
+RUN|qualify-qwen38-huihui-abl-q8|--suite=evals/suites/prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1.json --output-dir=evals/runs/abliteration-pilot-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper --conditions=pilot-qwen38-huihui-abl-q8-t4096-full --max-new-segments=24 --continue-after-output-errors
+GATE|qualify-qwen38-huihui-abl-q8|qualify pilot-qwen38-huihui-abl-q8-t4096-full longpi-paper 24
+RUN|pilot-qwen38-huihui-abl-q8|--suite=evals/suites/prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1.json --output-dir=evals/runs/abliteration-pilot-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper,longpi-code,bipia-email-mixed,longpi-email,web-mixed,agentdyn-github,pids-obfuscated,benign-false-positives,paper-score-counterfactual --conditions=pilot-qwen38-huihui-abl-q8-t4096-full --continue-after-output-errors
+SUMMARY|pilot-qwen38-huihui-abl-q8-t4096-full|2/2|Huihui Qwen3.8 27B Abliterated Q8_0

@@ -52,10 +52,18 @@ export function loadDataset(manifest: DatasetManifest, root = process.cwd()): Ev
 
 export function selectTestCases(cases: readonly EvalCase[], manifest: DatasetManifest, test: EvalTest): EvalCase[] {
   if (test.datasetId !== manifest.id || test.datasetRevision !== manifest.revision || test.annotationKey !== manifest.annotationKey) throw new Error("Test and dataset differ");
-  return cases.filter(item => {
+  const selected = cases.filter(item => {
     const positive = classify(item.annotations[test.annotationKey], manifest);
     return test.caseSelector === "all" || (test.caseSelector === "positive" ? positive === true : positive === false);
   });
+  if (test.caseIds === undefined) return selected;
+  const wanted = test.caseIds;
+  if (!Array.isArray(wanted) || !wanted.length || wanted.some(id => typeof id !== "string" || !id) || new Set(wanted).size !== wanted.length) throw new Error(`Invalid caseIds in test ${test.id}`);
+  const available = new Set(selected.map(item => item.id));
+  const missing = wanted.filter(id => !available.has(id));
+  if (missing.length) throw new Error(`Test ${test.id} caseIds not in selected cohort: ${missing.slice(0, 3).join(", ")}`);
+  const keep = new Set(wanted);
+  return selected.filter(item => keep.has(item.id));
 }
 
 export function expectedPositive(item: EvalCase, manifest: DatasetManifest): boolean {

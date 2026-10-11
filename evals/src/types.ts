@@ -44,6 +44,11 @@ export interface EvalTest {
   annotationKey: string;
   /** A test may select only one class, or both. */
   caseSelector: "positive" | "negative" | "all";
+  /**
+   * Optional explicit subset, applied after caseSelector. Every ID must exist and match the selector; cases keep
+   * dataset order. Omitted keeps the whole selected cohort (all historical suites).
+   */
+  caseIds?: readonly string[];
   metrics: readonly ("detection_rate" | "false_positive_rate" | "confusion_matrix")[];
 }
 

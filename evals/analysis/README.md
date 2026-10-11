@@ -45,6 +45,19 @@ drive LM Studio through `bun run eval:local`, cd into the original checkout path
 The research log is [`evals/reports/research-log-2026-09-29.md`](../reports/research-log-2026-09-29.md). Unless noted,
 each script below is named in it.
 
+### `abliteration-pilot-2026-10/`
+
+**Not yet run.** This folder holds the original, tracked scripts for the pre-registered
+[abliteration pilot plan](../reports/abliteration-pilot-plan-2026-10.md) (F7, #23). They are not copies from a run
+directory, so they have no `PROVENANCE.tsv` rows yet. At launch they are copied into `evals/runs/abliteration-pilot-2026-10/`.
+
+| File | Computes |
+|---|---|
+| `make-pilot-plan.ts` | Freezes the seeded case subsets, writes the pilot suite and `pilot-plan.json`, verifies vanilla input hashes and estimates runtime. |
+| `run-chain.sh`, `run-queue.sh`, `queue-pilot.txt` | Chain and queue orchestration: drift check, then heretic, then huihui. |
+| `gate.ts`, `summarize-pilot.ts`, `pilot-rows.ts` | The drift and qualification gates, `MODEL_DONE` progress lines and read-only checkpoint extraction. |
+| `compare-pilot.ts` | Three-way comparison on identical cases: per-test and band metrics, paired McNemar flips and probe score shifts. |
+
 ### `attack-following-evidence-2026-10-04/`
 
 Cited by [injection-following findings](../reports/injection-following-findings-2026-10-04.md) and `FINDINGS.md`.

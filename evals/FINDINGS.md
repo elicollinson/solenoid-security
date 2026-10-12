@@ -5,7 +5,8 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-06. **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
+**Last updated:** 2026-10-12. The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+[Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
 pairs for five Q8 builds, is complete ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md); O45–O47). Paused by user decision on 2026-10-07 and pending as follow-ups: the Qwen3.8 MLX
 diagnostic (schema vs prompt-only JSON) and the Studio quantization × chunking ladder (Study B); neither has run (log
@@ -363,6 +364,9 @@ alarms by up to 92% (Qwen27B, 140→11) while largely keeping recall.**
   385→52, Armor base 51→20 (Base64 0→27). See [decoded preview](reports/decoded-preview-research-2026-09-29.md).
 - Strength: **Strong** for the specificity effect (969 × 9). The encodings are synthetic.
 - Follow-up: naturally occurring encoded benign data (logs, data URIs, JWTs).
+- **Update 2026-10-12 (Studio baseline):** the over-flagging recurs on local full text without previews. Gemma 4 31B-it
+  flags 519/964 and Gemma 4 26B-A4B 389/960 scored encoded benign controls; the other five Studio Q8 models flag
+  33–180. See O50 and the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md).
 
 ### 2.5 False positives and benign behavior
 
@@ -410,6 +414,10 @@ exceed within-group spread; only request cost separates the groups. The "expert 
 - Follow-up: within-model full-vs-window pairs (P2) — done on the Studio (O45); a Muse Q8 full-input row on BIPIA,
   NotInject and numeric (Study B, pending); more same-family MoE/dense pairs; MoE candidates with full-input headroom.
   A routing claim would need an instrumented open-weights study.
+- **Update 2026-10-12 (Studio baseline):** the 7-model Q8 full-text baseline (4 MoE, 3 dense, 21 datasets, Muse now
+  Q8) agrees. MoE mean balanced accuracy is 0.861 (0.910 without Laguna) vs dense 0.904, and the ranges overlap on every
+  data type. Decode rate separates cleanly (115–151 vs 28–66 tok/s), but mean request time overlaps at the edges
+  (Qwen3.6 35B-A3B 6.35 s vs Qwen3.8 6.03 s). See O48, O52 and the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md).
 
 **O27: In the hosted data, the paper chunking benefit appears in both MoE and dense models; MoE status does not predict
 its size.**
@@ -435,6 +443,8 @@ its size.**
   trails on BIPIA (49 vs 60). Hosted Qwen27B: 89/100 naive paper vs 22/78 BIPIA.
 - Strength: **Strong** (a methodological lesson repeated many times).
 - Follow-up: qualify on a mixed mini-cohort, not one domain.
+- **Update 2026-10-12 (Studio baseline):** repeats on full cohorts at 4,096 tokens: Qwen3.8 291/300 paper attacks vs
+  19/78 BIPIA ([Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)).
 
 **O31: Different models make complementary errors, which motivates ensembles or cascades.**
 - Evidence: BIPIA: E4B catches 4 attacks Gemma26 misses (alphanumeric, space-removal, Base64). Gemma26∪Ornith = 65/78 vs
@@ -525,6 +535,9 @@ reported reasoning counts are not always trustworthy.**
   pause was an output abstention.
 - Strength: **Strong.**
 - Follow-up: report abstention rate as a first-class metric.
+- **Update 2026-10-12 (Studio baseline):** at a 4,096-token cap, six models abstain on 3–17 of 7,326 cases. Laguna
+  abstains on 114, all length cut-offs at exactly 4,096 completion tokens, 84 of them encoded benign controls. All are
+  excluded from rates and reported separately ([Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)).
 
 **O41: Invalid or out-of-range outputs are not automatically evidence of obedience.**
 - Evidence: a scan of 8,329 local responses found 26 out-of-range scores. 25 match the attacker's target, but the retired
@@ -585,6 +598,10 @@ no reasoning, and its short-prompt token accounting is unreliable.**
   exact-0 scores and its lack of deliberation.
 - Follow-up: F3, which this result argues against (a coding specialist is worst on code review). Inspect raw
   llama.cpp output for the unreturned tokens, and retest under a corrected chat template if one ships.
+- **Update 2026-10-12 (Studio baseline):** at 4,096 tokens on 21 datasets, Laguna has the lowest TPR on every
+  attack-bearing dataset except the three where all seven models reach 1.00 (AgentDyn GitHub and daily-life, AgentDojo
+  travel). Examples: paper 57/299, BIPIA 4/78. Overall 0.712 vs 0.895–0.923 for the others. It reports zero reasoning on
+  5,521/7,212 scored responses. See O48 and the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md).
 
 
 ### 2.12 Mac Studio Study A: within-model window pairs (2026-10-06)
@@ -633,6 +650,71 @@ loss, the full document flags the attack but every window holding the whole payl
 - Caveats: the one mismatch's cause (prompt-cache state is the leading guess) is unconfirmed. Batched serving was not
   tested (F5).
 - Follow-up: count reruns as repeated draws, not independent trials; repeat the mismatch case cold and warm.
+- **Update 2026-10-12 (Studio baseline):** within single runs, byte-identical scored inputs (both members of each
+  Skill-Inject pair, 117 per model) got different raw scores in 16 pairs for Gemma 4 26B-A4B, 5 for Laguna, 2 for
+  Gemma 4 31B-it, 1 for Muse and 0 for Ornith, Qwen3.6 35B-A3B and Qwen3.8. Three Gemma26 pairs changed decision. The
+  order and cache state of the pair members was not analyzed (O49, [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)).
+
+### 2.13 Mac Studio Q8 full-text baseline (2026-10-12)
+
+> **Caveat (LongPIBench design):** single fixed attack sentence per template per domain (~12 sentences total); generalization pending the varied-template cohorts ([extension datasets](datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08)). Seven of the 21 baseline datasets are LongPIBench.
+
+**O48: Under one frozen full-text protocol, six of seven self-hostable reasoning models finish within 0.03 mean
+balanced accuracy. The differences between them sit in specific data types.**
+- Evidence ✔: seven Studio GGUF Q8_0 models × 21 datasets (7,326 cases each), full text, score-only, temperature 0,
+  4,096 tokens. Datasets are weighted equally, and abstentions are excluded from rates. Overall: Gemma 4 26B-A4B 0.923,
+  Gemma 4 31B-it 0.915, Ornith 0.906, Muse 0.903, Qwen3.6 35B-A3B 0.901, Qwen3.8 0.895, Laguna 0.712. Ranges among the
+  six non-Laguna models by data type: email 0.712–0.909, obfuscated 0.760–0.855, long docs 0.940–0.993, web
+  0.842–0.867, agent 0.968–0.992, benign 0.956–0.994. Per-type leaders: long docs Gemma26, email/web/agent Gemma31
+  (Ornith ties on web at 0.866), obfuscated Qwen3.6 35B-A3B, benign Qwen3.8. See the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md) and [`baseline-results.json`](analysis/studio-baseline-t4096-2026-10-07/results/baseline-results.json) (all 147
+  checkpoints re-audited; matches the run's `MODEL_DONE` lines).
+- Strength: **Moderate** (complete, audited cohorts under one pre-registered protocol).
+- Caveats: one quantization, runtime and device. Equal dataset weights give a 21-case set the same weight as a
+  969-case set. Seven datasets have only one class. The policy dataset adds a constant 0.5 for every model (O49).
+  Leaders separated by less than about 0.01 are ties.
+- Follow-up: the extension suite (varied templates) under the same protocol; per-content recommendation profiles.
+
+**O49: Skill-Inject policy pairs cannot rank full-text detectors. Every model scores exactly 0.500 (Gemma26 0.513)
+because both members of each pair send a byte-identical input.**
+- Evidence ✔: for all seven models, 117/117 pairs have the same scored-input sha256. The trusted policy sits in the
+  operator task turn, and `full-last-external-v1` does not send it. Decisions match within every pair except 3 Gemma26
+  pairs (nondeterminism on identical input; O47 update), so TPR = FPR. This is not an all-flag or all-pass pattern:
+  flag rates run from 8.5% (Laguna) to 91.5% (Gemma31). The dataset manifest predicts exactly 50% for policy-blind
+  classifiers. See the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md) (policy section).
+- Strength: **Strong** (structural, verified per pair).
+- Follow-up: run the policy pairs only with a task-context technique (O22). Report this dataset separately from
+  full-text overall means.
+
+**O50: On full text, the two Gemma 4 models lead encoded-attack recall and trail encoded-benign specificity. The
+encoded benign controls decide the obfuscated-text ranking.**
+- Evidence ✔: encoded benign controls flagged / scored: Gemma31 519/964 (53.8%), Gemma26 389/960 (40.5%), Muse 180/967,
+  Ornith 95/962, Laguna 75/885, Qwen3.6 35B-A3B 74/968, Qwen3.8 33/962. PIDS obfuscated detection: Gemma31 366/405 and
+  Gemma26 363/405 (top two; next Muse 331/404). Encoding-eligible attacks: 173–174/191 vs 85–155 (of 189–190 scored) for the rest. The
+  obfuscated type leader (Qwen3.6 35B-A3B, 0.855) wins on specificity. See the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md).
+- Strength: **Moderate** (969 controls × 7 models, complete; the two over-flaggers share a family).
+- Caveats: synthetic encodings (O23); Gemma31's cell is the L148 rerun.
+- Follow-up: bounded decoded previews (O23) on the Studio panel.
+
+**O51: Web pages cap every detector near 0.87 balanced accuracy, through benign false alarms rather than misses.**
+- Evidence ✔: `web-mixed` (240 attacks / 240 benign): benign pages flagged 52–81/240 (21.7–33.9%) while attacks are
+  detected 212–235/240. Balanced accuracy is 0.772–0.867, and 0.842–0.867 for the six non-Laguna models. Every model's
+  false-alarm rate here is several times its NotInject rate (0.9–6.5%). See the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md).
+- Strength: **Moderate** (one dataset; all seven models agree).
+- Caveats: the flagged benign pages were not inspected, so whether they contain instruction-like text is unknown;
+  label quality of the in-page wild sample is unaudited.
+- Follow-up: aggregate audit of the benign pages most often flagged; a web-specific prompt or a two-axis score (O18).
+
+**O52: The MoE builds decode about 3× faster than the dense builds on the same Studio, but reasoning length varies as
+much within groups, and more reasoning did not buy accuracy.**
+- Evidence ✔: native stats over about 7,300 scored requests per model. Median decode: MoE 115–151 tok/s vs dense
+  28–66 (group means 129 vs 42; no overlap). Mean request time: 2.3–6.4 s vs 6.0–15.6 s. Total inference wall time:
+  4.7 h (Ornith) to 31.9 h (Gemma31). Mean reasoning tokens vs overall balanced accuracy: Qwen3.6 35B-A3B 702 (0.901),
+  Gemma26 437 (0.923), Muse 419 (0.903), Gemma31 364 (0.915), Qwen3.8 299 (0.895), Ornith 276 (0.906), Laguna 114
+  (0.712; zero reported on 77% of responses, and its counts understate work per O44). See the [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md) (speed section).
+- Strength: **Strong** as a measurement. **Suggestive** for the absence of a reasoning-accuracy link (seven models from
+  different families; reasoning length is not manipulated).
+- Caveats: TTFT is cache-affected (shared LongPIBench prefixes); serial, parallel 1, over LM Link.
+- Follow-up: a within-model reasoning-budget arm (O29, issue #11).
 
 ---
 
@@ -672,7 +754,7 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
    authorized-instruction controls in four domains (`longpi-authorized-instructions-v1`), LLMail payloads in long emails
    (`longpi-email-llmail-v1`), plus BrowseSafe long HTML, BIPIA TableQA/CodeQA, Nemotron IPI, all four AgentDojo suites,
    RepoGuardBench, Inj-SQuAD/TriviaQA and an LLMail payload pool. All are in suite
-   `prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1` (same engines and conditions as the running
+   `prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1` (same engines and conditions as the completed
    baseline); see [PUBLIC_SOURCES](datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08). Real
    (non-synthetic) long papers, code and résumés remain open.
    _Tracked in [#9](https://github.com/elicollinson/solenoid-security/issues/9)._

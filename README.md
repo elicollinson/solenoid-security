@@ -19,32 +19,39 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 | **Build format matters more than architecture.** Same weights, different runtime. | Gemma 4 26B-A4B naive code: 0/100 as MLX 8-bit (no reasoning emitted) vs 44/53 as GGUF Q8 (reasoning). No MoE-vs-dense difference in detection; MoE is 4–6× faster. | Moderate | [O42](evals/FINDINGS.md), [O26](evals/FINDINGS.md), [MoE vs dense panel](evals/reports/lmstudio-moe-dense-panel-2026-10-05.md) |
 | **A cheap decode step fixes encoded-text false alarms.** | Decoded previews cut false flags on 969 encoded benign controls by up to 92% (Qwen3.6 27B 140 → 11) and largely keep Base64 recall. | Strong | [O23](evals/FINDINGS.md), [decoded-preview report](evals/reports/decoded-preview-research-2026-09-29.md) |
 | **A managed guardrail misses embedded attacks.** | Model Armor catches 0–3/78 BIPIA email attacks and ~0 subtle long-document attacks, but has the lowest benign false-positive rate. | Strong | [O35–O37](evals/FINDINGS.md) |
+| **On full text, six of seven self-hostable models score within 0.03.** One frozen protocol, 21 datasets, Q8 on one Mac Studio. | Mean balanced accuracy 0.895–0.923 (Gemma 4 26B-A4B highest); Laguna XS 2.1 0.712. The gaps are in email (0.71–0.91) and encoded text, where the Gemma models flag 40–54% of encoded benign controls. | Moderate | [O48–O52](evals/FINDINGS.md), [Studio baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md) |
 | **Rankings flip between datasets, so small checks mislead.** | Qwen3.8 27B: 18/18 on a paper qualification tranche, 18/75 on BIPIA. | Strong | [O30](evals/FINDINGS.md) |
 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
-reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The full-text baseline now running is described [below](#now-running-as-of-2026-10-09).
+reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline is summarized [below](#now-running-as-of-2026-10-12).
 
-## Now running (as of 2026-10-10)
+## Now running (as of 2026-10-12)
 
-**Mac Studio Q8 full-text baseline.** Eight self-hostable models, each run on all 21 datasets (7,326 cases per model)
-under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0, reasoning on with a 4,096-token
-budget, and one request at a time on a single machine. This becomes the reference point for later quantization,
-abliterated-model, prompt and technique comparisons.
+**Mac Studio Q8 full-text baseline: complete** ([report](evals/reports/studio-baseline-q8-t4096-2026-10.md)). Seven self-hostable models, each run on all 21
+datasets (7,326 cases per model) under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0,
+reasoning on with a 4,096-token budget, one request at a time on a single machine. It is the reference point for
+later quantization, abliterated-model, prompt and technique comparisons.
 
-| Model | Type | Status |
-|---|---|---|
-| Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.906; 12 abstentions in 7,326) |
-| Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.923; 9 abstentions) |
-| Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.901; 3 abstentions) |
-| Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.712; 114 abstentions) |
-| Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.895; 17 abstentions) |
-| Qwen3.6 27B | Dense | ⏸ Deferred (about 3.7× slower than Qwen3.8; will resume later) |
-| Muse Glimmer | Dense | ✅ Done (mean balanced accuracy 0.903; 5 abstentions) |
-| Gemma 4 31B-it | Dense | ▶ Running (started 2026-10-10) |
+| Model | Type | Mean balanced accuracy | Abstentions (of 7,326) |
+|---|---|---|---|
+| Gemma 4 26B-A4B | MoE | 0.923 | 9 |
+| Gemma 4 31B-it | Dense | 0.915 | 5 |
+| Ornith 1.5 35B-A3B | MoE | 0.906 | 12 |
+| Muse Glimmer 30B | Dense | 0.903 | 5 |
+| Qwen3.6 35B-A3B | MoE | 0.901 | 3 |
+| Qwen3.8 27B | Dense | 0.895 | 17 |
+| Laguna XS 2.1 | MoE (coding) | 0.712 | 114 |
+| Qwen3.6 27B | Dense | ⏸ Deferred (about 3.7× slower than Qwen3.8; can resume later) | — |
 
-Projected finish is about 2026-10-12. The budget was raised from 1,024 tokens after the first attempt cut off verbose
-reasoning models before they answered ([Appendix A](evals/FINDINGS.md)). Progress is logged in the
-[research log](evals/reports/research-log-2026-09-29.md). Jev and Model Armor results remain hosted references.
+Every model scores 0.500 on the Skill-Inject policy pairs. On full text, both members of a pair send identical
+input, so that dataset cannot rank these detectors ([O49](evals/FINDINGS.md)). Gemma 4 31B-it's encoded-benign cell
+was rerun in full after an LM Link route change. The budget was raised from 1,024 tokens after the first attempt cut
+off verbose reasoning models ([Appendix A](evals/FINDINGS.md)).
+
+**Next up: the abliteration pilot** ([#23](https://github.com/elicollinson/solenoid-security/issues/23)). Two
+abliterated builds of Qwen3.8 27B (heretic-ara and huihui) will run against the vanilla model on 9 datasets (998
+cases per model), under the same protocol. After that come the varied-template extension suite and the deferred
+Qwen3.6 27B. Jev and Model Armor results remain hosted references.
 
 ## Design
 
@@ -62,7 +69,7 @@ inconclusive outcome so a judge that runs out of tokens is never read as a pass.
 output, encoded text, user prompts), per common self-hostable model, and per technique, each traceable to an
 observation in [`FINDINGS.md`](evals/FINDINGS.md).
 
-**What the evidence suggests so far** (provisional until the eight-model baseline finishes):
+**What the evidence suggests so far** (provisional; the full-text baseline is complete, the varied-template extension suite has not run):
 
 | Content | Current recommendation | Why |
 |---|---|---|
@@ -93,7 +100,7 @@ The library's chunking techniques run on the same code as the eval input strateg
 
 ## Where to look
 
-1. **[`evals/FINDINGS.md`](evals/FINDINGS.md):** 47 observations, each with numbers, sample size, strength rating,
+1. **[`evals/FINDINGS.md`](evals/FINDINGS.md):** 52 observations, each with numbers, sample size, strength rating,
    confounds and a follow-up, plus an open-questions backlog and future research avenues.
 2. **Key reports:** [MoE vs dense panel](evals/reports/lmstudio-moe-dense-panel-2026-10-05.md) ·
    [Studio chunking study](evals/reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md) ·

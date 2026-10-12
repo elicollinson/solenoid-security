@@ -4551,3 +4551,71 @@ loaded; LM Link wait before each model. The read-only `summarize-model.ts` (a t4
 the chain or queue, writes `HALTED|<ISO>|<reason>`. Link or provenance failures follow L141. Chain started
 13:56:34Z. Ornith loaded on the Studio (`solenoid-studio-ornith-q8-thinking4096`) and had 17 paper cases scored
 with no errors within 80 s.
+
+### L147 — 2026-10-09: Qwen3.6 27B deferred from the Studio Q8 baseline; Muse and Gemma31 resume
+
+User decision. Qwen3.6 27B (Q8_0) ran about 3.7× slower than Qwen3.8 27B on the same first 94 paper cases: median
+28.1 s vs 7.6 s per request. It generated 793 vs 322 mean reasoning tokens, at 31 vs 64 tok/s. That projected about
+55–60 h for its full 21-dataset run, and Qwen3.8 is the newer dense model in the same family. At 17:43Z the chain,
+queue and driver were stopped with SIGTERM. Their traps wrote a HALTED line, the driver unloaded the model, and no
+lock or loaded instance remained. Qwen3.6 27B's partial checkpoints are retained untouched and marked in
+`QWEN36-27B-DEFERRED.json`. They are not part of baseline results. `queue-resume.txt` copies the Muse and Gemma31
+RUN/SUMMARY lines verbatim from the frozen queue; only the progress labels change to 6/7 and 7/7.
+`run-chain-resume.sh` is `run-chain.sh` with only the queue and log paths and the CHAIN_START text changed. The
+suite hash and protocol are unchanged. The resumed chain started 17:44:38Z. The baseline roster is now 7 models: 4 MoE
+and 3 dense (Qwen3.8, Muse, Gemma31-it). Qwen3.6 27B can be resumed later from its queue lines.
+
+### L148 — 2026-10-12: LM Link route change stops Gemma31 encoding-benign-controls at 943/969; L141 rerun
+
+Muse Glimmer 30B finished all 21 datasets at 23:46Z on 2026-10-10 (mean balanced accuracy 0.903, 5 abstentions).
+Gemma31-it Q8 then completed 16 of 21 datasets. At 03:35:47Z on 2026-10-12, in `encoding-benign-controls-v1`
+(condition `baseline-gemma31-q8-t4096-full`), request 982b155e-7ffd-4cda-8e61-8592d9dd89bf (case
+ctrl-0a6c9777f45806a3a0a2e6eb) returned `{"error":"LM Link route changed from personal:neuraldev/829bb8c1… to
+personal:neuraldev/02c5f5dd…"}`. No model output was produced. The runner classified it as
+`provenance_or_validation_failure` after 943 of 969 cases and stopped. The queue halted as designed (`HALTED` in
+`progress.log`). LM Link showed the Studio connected again within two minutes.
+
+Under the L141 rule, the partial checkpoint is retained untouched and excluded. The cohort reruns in full (969 cases)
+under a fresh condition, `baseline-gemma31-q8-t4096-rerun1-full`, in a new suite version,
+`evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-rerun1-v1.json`. That suite holds only this test and
+this condition. Its engine (`gemma31-q8`, engine id
+`studio-gemma31-q8-lmstudio-score-v1-thinking4096-native-v0-v1`) and its test definition are byte-identical to the
+frozen suite (checked with a sorted-JSON diff). The frozen suite's hash is unchanged.
+
+`queue-rerun1.txt` first runs Gemma31's four unstarted cells under the original condition: benign-false-positives,
+pids-hard-benign-public, skill-policy-pairs and paper-score-counterfactual. Their args are copied verbatim, with only
+`--tests` narrowed. It then runs the rerun cell and the summary. `run-chain-rerun1.sh` and `run-queue-rerun1.sh` differ
+from the resume copies only in their paths and labels. The chain also waits up to 20 minutes for the idle Gemma31
+instance, left loaded after the halt, to expire by TTL. `summarize-model-rerun1.ts` differs from `summarize-model.ts`
+only in reading the rerun1 checkpoint for the Gemma31 encoding-benign-controls cell. Both queue steps were dry-run
+before launch. The chain started at 03:39Z. Expected cost is about 15 h, using the Muse pace for the four remaining
+cells and the failed attempt's pace (≈40 s per case) for the rerun cell.
+
+### L149 — 2026-10-12: Studio Q8 full-text baseline complete (7 models × 21 datasets)
+
+The rerun1 chain finished at 19:08:45Z (`BASELINE_DONE`). Gemma31's four remaining cells ran under the original
+condition, and the encoding-benign-controls rerun1 cell finished with 964 of 969 scored and 5 length abstentions. No
+provenance or transport errors occurred. Gemma31-it Q8: mean balanced accuracy 0.915 over 21 datasets, 5 abstentions
+(long docs 0.981, email 0.909, web 0.867, agent 0.992, obfuscated 0.760, benign 0.958, policy 0.500). Nothing is
+loaded on the Studio, and no new inference was started.
+
+**Final analysis.** `evals/analysis/studio-baseline-t4096-2026-10-07/analyze-baseline.ts` (new, offline) revalidates
+all 147 checkpoints with `auditPartialCheckpoint`, uses the rerun1 file for the Gemma31 encoding-benign cell and
+records the excluded attempt by sha256 (the auditor rejects it as a provenance failure). It writes
+`results/baseline-results.json`, aggregate only. Its overall and per-type means and its abstention counts match all
+seven `MODEL_DONE` lines. Overall: Gemma26 0.923, Gemma31 0.915, Ornith 0.906, Muse 0.903, Qwen3.6 35B-A3B 0.901,
+Qwen3.8 0.895, Laguna 0.712. Abstentions: 9, 5, 12 (one output), 5, 3, 17, 114. Laguna's 114 are all length cut-offs
+at 4,096 completion tokens, and 84 of them are encoded benign controls. MoE mean 0.861 (0.910 without Laguna) vs dense
+0.904. The ranges overlap on every data type. Median decode rate is 115–151 tok/s (MoE) vs 28–66 tok/s (dense).
+
+**Policy 0.500.** In all 117 Skill-Inject pairs, the two members send a byte-identical scored input for every model.
+The full-text technique scores only the last external turn, and the policy sits in the operator task turn. Decisions
+are therefore identical within a pair, so TPR equals FPR and balanced accuracy is exactly 0.5. Flag rates run from
+8.5% (Laguna) to 91.5% (Gemma31). Gemma26's 0.513 comes from 3 pairs whose identical inputs crossed the threshold in
+opposite directions. Its raw scores differ in 16 pairs (Laguna 5, Gemma31 2, Muse 1, the others 0), which is
+within-run nondeterminism at temperature 0. The dataset cannot rank full-text detectors.
+
+Report: [`studio-baseline-q8-t4096-2026-10.md`](studio-baseline-q8-t4096-2026-10.md). FINDINGS O48–O52 added, with
+dated notes on O23, O26, O30, O40, O44 and O47. Next: the abliteration pilot (F7, #23): vanilla vs heretic-ara and
+huihui abliterated Qwen3.8 on 9 datasets (998 cases per model). After that come the PR #6 extension suite and the
+deferred Qwen3.6 27B.

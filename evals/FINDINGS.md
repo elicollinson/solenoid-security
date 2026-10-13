@@ -6,7 +6,8 @@ strength rating, confounds and a follow-up. The list is meant to feed future blo
 measure different things and must not be pooled.
 
 **Last updated:** 2026-10-12. The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
-[Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
+[Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
+(O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
 pairs for five Q8 builds, is complete ([Studio Study A](reports/lmstudio-studio-chunking-moe-dense-2026-10-06.md); O45–O47). Paused by user decision on 2026-10-07 and pending as follow-ups: the Qwen3.8 MLX
 diagnostic (schema vs prompt-only JSON) and the Studio quantization × chunking ladder (Study B); neither has run (log
@@ -716,6 +717,38 @@ much within groups, and more reasoning did not buy accuracy.**
 - Caveats: TTFT is cache-affected (shared LongPIBench prefixes); serial, parallel 1, over LM Link.
 - Follow-up: a within-model reasoning-budget arm (O29, issue #11).
 
+### 2.14 Abliteration pilot (2026-10-12)
+
+> **Caveat (pilot scale):** 72–120 cases per dataset, 9 datasets, one Q8_0 quant, one runtime (LM Studio) and one device. Four of the nine datasets are LongPIBench (single fixed attack sentence per template). A full-suite follow-up is required before any general claim.
+
+**O53: In a pre-registered pilot, two abliterated Qwen3.8 27B builds detected prompt injection slightly worse than the
+original on identical cases. They missed more marginal attacks, and one added agent false alarms.**
+- Evidence ✔: 998 identical cases per model (9 datasets; input hashes, labels and protocol checked across all three).
+  The vanilla outputs come from the frozen Studio baseline. Macro BA: vanilla 0.888, heretic-ara 0.854, huihui 0.858.
+  The pre-registered primary test is a pooled exact McNemar on correct/incorrect. Vanilla→heretic: 49 vs 16 discordant
+  of 993 both scored, p = 5.1×10⁻⁵ (Holm 1.0×10⁻⁴). Vanilla→huihui: 42 vs 15 of 990, p = 4.6×10⁻⁴ (Holm 4.6×10⁻⁴).
+  Paired accuracy difference: −0.033 (95% CI −0.049 to −0.018) and −0.027 (−0.042 to −0.012). Detections lost/gained:
+  37/12 and 31/15. Losses fall on PIDS obfuscated (15 and 16 lost; recall 0.703 → 0.595 / 0.565) and the naive
+  LongPIBench template on paper and code. Authority-spoof and combine stayed 20/20 in every LongPI cell, and BIPIA
+  email detections rose (not significant). Huihui added AgentDyn benign false alarms (8 → 19 of 47; 11 added,
+  0 removed; exploratory p = 0.001). NotInject added 1 false alarm for heretic and 0 for huihui. Heretic vs huihui
+  overall: 29 vs 33, p = 0.70. Probe: heretic 3/18 low→high flips, huihui 1/18, vanilla 0/18; no model matched both
+  targets or copied an out-of-range value. Length abstentions 3 / 2 / 5; mean reasoning 291 / 305 / 338 tokens. Both
+  builds meet the plan's escalation rule. Post hoc and descriptive (keyword screen, not pre-registered): 33/37
+  (heretic) and 27/31 (huihui) newly missed attacks still refer to the injection in the conclusion and downgrade it,
+  and most score 0.3–0.5, which matches O18/O44. See the [pilot results](reports/abliteration-pilot-results-2026-10.md),
+  [`comparison.json`](analysis/abliteration-pilot-2026-10/results/comparison.json) and
+  [`supplement.json`](analysis/abliteration-pilot-2026-10/results/supplement.json).
+- Strength: **Suggestive** (pre-registered, paired, and the pooled tests survive Holm; but pilot n, one quant, one
+  runtime, and per-test effects of a handful of cases).
+- Caveats: the three GGUF files come from three different publishers, so a quantizer difference outside the ablated
+  weights is not ruled out. Vanilla was not rerun (the drift gate matched 24/24). The pooled test mixes heterogeneous
+  datasets. Per-test p-values are uncorrected. LongPI losses are on one fixed sentence per domain. The "ara" build
+  detail is unverified. H1 fails narrowly (BA −0.033 and −0.030 against a ±0.03 bound), and the hypothesized
+  BIPIA and authority-spoof losses did not appear.
+- Follow-up: F7 escalates to the full 21-dataset Studio baseline protocol for both builds (#23). The reasoning screen
+  needs human coding before it can be relied on.
+
 ---
 
 ## 3. Numbers that did not reconcile, or could not be checked
@@ -857,6 +890,13 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   cohorts plus the counterfactual probe. Measure detection, false alarms, recognition vs concern in reasoning text, and
   steering. Pairs with F1, since several abliterated releases are also distills.
   _Tracked in [#23](https://github.com/elicollinson/solenoid-security/issues/23)._
+  **Update 2026-10-12 (pilot done, O53):** the [pre-registered pilot](reports/abliteration-pilot-plan-2026-10.md) ran
+  Qwen3.8 27B heretic-ara and huihui (Q8_0 GGUF) against vanilla on 9 datasets (998 identical cases each). Both scored
+  lower (macro BA 0.854 and 0.858 vs 0.888; pooled McNemar Holm p = 1.0×10⁻⁴ and 4.6×10⁻⁴). The losses are mostly
+  marginal attacks (PIDS obfuscated, LongPI naive template) plus added agent false alarms for huihui. H2 is supported
+  in direction, H1 fails narrowly, H3 is mixed (heretic 3/18 probe flips, no target matching), and H4 is not supported.
+  Both builds meet the escalation rule, so F7 moves to the full 21-dataset protocol. See the
+  [pilot results](reports/abliteration-pilot-results-2026-10.md).
 - **F8 — Does KV-cache quantization change detection?** Separate from weight quantization, inference servers can
   quantize the attention key/value cache to save memory and speed up long contexts: llama.cpp `--cache-type-k` /
   `--cache-type-v` (f16 default, q8_0, q4_0) and LM Studio's experimental K/V cache quantization for GGUF. Detection

@@ -48,10 +48,19 @@ input, so that dataset cannot rank these detectors ([O49](evals/FINDINGS.md)). G
 was rerun in full after an LM Link route change. The budget was raised from 1,024 tokens after the first attempt cut
 off verbose reasoning models ([Appendix A](evals/FINDINGS.md)).
 
-**Next up: the abliteration pilot** ([#23](https://github.com/elicollinson/solenoid-security/issues/23)). Two
-abliterated builds of Qwen3.8 27B (heretic-ara and huihui) will run against the vanilla model on 9 datasets (998
-cases per model), under the same protocol. After that come the varied-template extension suite and the deferred
-Qwen3.6 27B. Jev and Model Armor results remain hosted references.
+**Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
+[results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the
+vanilla model on 9 datasets (998 identical cases per model), under the same protocol.
+
+> **RESULT NOTE:** in this small sample, the heretic-ara build shows lower performance than vanilla Qwen3.8 (mean
+> balanced accuracy 0.854 vs 0.888), and so does the huihui build (0.858). Both are marked for a full 21-dataset
+> follow-up. The drop is mostly missed borderline attacks (obfuscated text, one LongPIBench template). Huihui also
+> raised more false alarms on agent tool output. This is a pilot: about 100 cases per dataset, one quant and one
+> runtime ([O53](evals/FINDINGS.md)).
+
+**Next up: the extension suite on the fully tested models.** The varied-template extension datasets will run on the
+seven models above, under the same protocol (details to follow). The full abliteration run and the deferred
+Qwen3.6 27B come after. Jev and Model Armor results remain hosted references.
 
 ## Design
 

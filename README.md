@@ -25,7 +25,50 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
 reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline is summarized [below](#now-running-as-of-2026-10-12).
 
-## Now running (as of 2026-10-12)
+## Now running (as of 2026-10-13)
+
+**Extension suite on the fully tested models: running** (started 2026-10-13). The seven models that finished the
+baseline now run 14 new datasets (6,759 cases per model) under the identical frozen protocol. Estimated about 94 hours
+in total (realistic range 85–115).
+
+*Why expand.* The baseline is saturating. Six of seven models finish within 0.03 of each other
+([O48](evals/FINDINGS.md)). Long documents (0.94–0.99) and agent tool output (0.97–0.99) are at ceiling for most
+models. Much of the long-document score rests on LongPIBench, which reuses about 12 fixed attack sentences. The policy
+pairs cannot separate full-text detectors at all ([O49](evals/FINDINGS.md)). A benchmark that cannot separate models
+cannot drive per-content recommendations, so the next round adds harder and more varied data rather than more of the
+same.
+
+*How it is expanded* ([sources](evals/datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08)):
+
+- **Varied, subtle long documents:** new LongPIBench-style paper, code and résumé cohorts with many distinct subtle
+  attacks instead of one template; LLMail attacks embedded in long emails; and an authorized-benign set of documents
+  that legitimately contain instructions, to measure false alarms on hard negatives.
+- **New formats:** BIPIA table and code tasks.
+- **New sources and environments:** BrowseSafe web pages, the full AgentDojo suites, Nemotron indirect-injection
+  attacks, RepoGuard repository content, and the LLMail attack pool.
+- **QA contexts:** injections inside SQuAD and TriviaQA passages (1,200 cases each).
+
+What to watch: whether the stronger models start to separate on the subtle and hard-negative sets.
+
+| Model | Type | Status |
+|---|---|---|
+| Ornith 1.5 35B-A3B | MoE | ▶ Running |
+| Gemma 4 26B-A4B | MoE | Queued |
+| Laguna XS 2.1 | MoE (coding) | Queued |
+| Qwen3.8 27B | Dense | Queued |
+| Qwen3.6 35B-A3B | MoE | Queued |
+| Gemma 4 31B-it | Dense | Queued |
+| Muse Glimmer 30B | Dense | Queued |
+
+**Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
+[results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the
+vanilla model on 9 datasets (998 identical cases per model), under the same protocol.
+
+> **RESULT NOTE:** in this small sample, the heretic-ara build shows lower performance than vanilla Qwen3.8 (mean
+> balanced accuracy 0.854 vs 0.888), and so does the huihui build (0.858). Both are marked for a full 21-dataset
+> follow-up. The drop is mostly missed borderline attacks (obfuscated text, one LongPIBench template). Huihui also
+> raised more false alarms on agent tool output. This is a pilot: about 100 cases per dataset, one quant and one
+> runtime ([O53](evals/FINDINGS.md)).
 
 **Mac Studio Q8 full-text baseline: complete** ([report](evals/reports/studio-baseline-q8-t4096-2026-10.md)). Seven self-hostable models, each run on all 21
 datasets (7,326 cases per model) under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0,
@@ -48,19 +91,8 @@ input, so that dataset cannot rank these detectors ([O49](evals/FINDINGS.md)). G
 was rerun in full after an LM Link route change. The budget was raised from 1,024 tokens after the first attempt cut
 off verbose reasoning models ([Appendix A](evals/FINDINGS.md)).
 
-**Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
-[results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the
-vanilla model on 9 datasets (998 identical cases per model), under the same protocol.
-
-> **RESULT NOTE:** in this small sample, the heretic-ara build shows lower performance than vanilla Qwen3.8 (mean
-> balanced accuracy 0.854 vs 0.888), and so does the huihui build (0.858). Both are marked for a full 21-dataset
-> follow-up. The drop is mostly missed borderline attacks (obfuscated text, one LongPIBench template). Huihui also
-> raised more false alarms on agent tool output. This is a pilot: about 100 cases per dataset, one quant and one
-> runtime ([O53](evals/FINDINGS.md)).
-
-**Next up: the extension suite on the fully tested models.** The varied-template extension datasets will run on the
-seven models above, under the same protocol (details to follow). The full abliteration run and the deferred
-Qwen3.6 27B come after. Jev and Model Armor results remain hosted references.
+After the extension suite come the full abliteration run and the deferred Qwen3.6 27B. Jev and Model Armor results remain
+hosted references.
 
 ## Design
 

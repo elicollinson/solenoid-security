@@ -495,6 +495,20 @@ export function ruleRow(rule: any, origin: "suite" | "replay" = "suite") {
   };
 }
 
+/**
+ * `evals.tests` row for one suite test. `case_ids` carries EvalTest.caseIds (an explicit subset applied after
+ * caseSelector; null when absent). It fails closed on an empty, non-string or duplicate list, as selectTestCases does.
+ */
+export function testRow(t: any) {
+  let caseIds: string[] | null = null;
+  if (t.caseIds !== undefined && t.caseIds !== null) {
+    if (!Array.isArray(t.caseIds) || !t.caseIds.length || t.caseIds.some((id: unknown) => typeof id !== "string" || !id)) throw new Error(`Test ${t.id}: caseIds must be a non-empty list of case IDs`);
+    if (new Set(t.caseIds).size !== t.caseIds.length) throw new Error(`Test ${t.id}: caseIds has duplicates`);
+    caseIds = [...t.caseIds];
+  }
+  return { test_id: t.id, dataset_id: t.datasetId, revision: t.datasetRevision, annotation_key: t.annotationKey, case_selector: t.caseSelector, metrics: t.metrics ?? [], case_ids: caseIds };
+}
+
 /** Same rules analyze-research.ts replays (exploratory thresholds) as stored rule configs. */
 export const REPLAY_THRESHOLDS = [0.3, 0.5, 0.7, 0.9, 0.95, 0.99] as const;
 export function replayRules(): any[] {

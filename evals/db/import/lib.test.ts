@@ -4,7 +4,7 @@ import {
   artifactKind, checkpointCompleteness, checkpointRank, classifyGoal, completeLines, counterfactualArm, deploymentFor, derivedMethod, diffInsertion,
   driverEventRow, engineRow, evidenceRefs, facetProjections, isAnomalousResponse, jsonSha, logEntryRefs, mapLimit, normalizeRepoPath, parseBatchLedger,
   parseCheckpoint, parseFindings, parseJsonLines, parseOutput, parseResearchLog, pgJson, replayRules, requestedNumbers, requestedValueFrom,
-  responseObjectFor, responseShape, ruleRow, segmentIndexOf, sha256Hex, storableVerbatim, storageObjectFor, strategyRow, summarizeResponse,
+  responseObjectFor, responseShape, ruleRow, segmentIndexOf, sha256Hex, storableVerbatim, storageObjectFor, strategyRow, summarizeResponse, testRow,
 } from "./lib.ts";
 import { parseArgs } from "./cli.ts";
 import { canReuseObject, existingObjectSizes, pgTextArray } from "./storage.ts";
@@ -191,6 +191,15 @@ describe("catalog mappers", () => {
     const lm = deploymentFor({ ...meta.engine, lmStudio: { indexedModelIdentifier: "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit", format: "safetensors", quantization: "8bit", deviceIdentifier: "c575a267c1d9cc0df57f986171b2b0e6" } });
     expect(lm).toMatchObject({ backend: "lmstudio", weight_format: "safetensors", model_alias: "lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit" });
     expect(deploymentFor({ id: "a", kind: "model_armor", templateId: "low-intensity" })).toMatchObject({ deployment_key: "model-armor/low-intensity", model_alias: "google/model-armor" });
+  });
+  test("test rows carry an explicit caseIds subset, or null without one", () => {
+    const base = { id: "longpi-paper", datasetId: "d", datasetRevision: "sha256:" + "b".repeat(64), annotationKey: "k", caseSelector: "all", metrics: ["tpr"] };
+    expect(testRow(base)).toEqual({ test_id: "longpi-paper", dataset_id: "d", revision: base.datasetRevision, annotation_key: "k", case_selector: "all", metrics: ["tpr"], case_ids: null });
+    expect(testRow({ ...base, caseIds: ["c2", "c1"] }).case_ids).toEqual(["c2", "c1"]);
+    expect(testRow({ ...base, metrics: undefined }).metrics).toEqual([]);
+    expect(() => testRow({ ...base, caseIds: [] })).toThrow("non-empty");
+    expect(() => testRow({ ...base, caseIds: ["c1", 2] })).toThrow("non-empty");
+    expect(() => testRow({ ...base, caseIds: ["c1", "c1"] })).toThrow("duplicates");
   });
   test("strategies and rules; replay rules match analyze-research.ts", () => {
     expect(strategyRow({ id: "w", kind: "sliding_word_window", windowWords: 512, strideWords: 384, turnSelection: "last_external" })).toMatchObject({ window_words: 512, stride_words: 384 });

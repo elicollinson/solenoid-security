@@ -22,6 +22,7 @@ it meaning (`evals/datasets/*.json`, `evals/suites/*.json`, `evals/src/types.ts`
 | `…20261005090000_importer_behavior_lineage.sql` | importer bookkeeping (`import_files`), response detail (`reasoning_text`, `parsed_output`, Storage path of the raw body), model-card provenance, R/L log ids, injection payload columns on `cases`, `counterfactual_pairs`, `behavior_assessments`, prompt lineage, and the views `v_prompt_lineage`, `v_paired_target_tracking`, `v_observation_behavior`, `v_window_level_following` |
 | `…20261006090000_lmstudio_native_speed.sql` | nullable LM Studio native-v0 speed columns on `responses` (`ttft_s`, `tokens_per_second`, `generation_time_s`, `stop_reason`, `model_format`, `model_quant`, `client_http_wall_ms`) and `envelope_version` widened to `lmstudio-provenance/v1|v2`. See [LM Studio native-v0 speed stats](#lm-studio-native-v0-speed-stats-migration-20261006090000) |
 | `…20261006091000_lmstudio_speed_comment_fix.sql` | comment-only: `generation_time_s` includes TTFT on llama.cpp but not on MLX |
+| `…20261012090000_test_case_ids.sql` | nullable `tests.case_ids` (`EvalTest.caseIds`, an explicit subset applied after the selector) and `v_run_cases` filtered by it, so subset runs (the abliteration pilot) count only their own cases. Applied to the hosted project on 2026-10-12 with `supabase db push`; no data changes |
 | `evals/db/import/` | The TypeScript/Bun importer (`bun run db:import`), its model-card catalog and its unit tests. See [Importer](#importer) |
 | `supabase/optional/publish_aggregate_views.sql` | **Not applied.** A commented template for publishing aggregate-only materialized views later |
 | `evals/db/check_import_assumptions.py` | Read-only scan of `evals/runs` that checks the identity assumptions below |
@@ -186,7 +187,7 @@ was added), `jev_answers` (20k: `answers.injection.noul`), `lmstudio_envelope` (
 
 | View | Use |
 | --- | --- |
-| `v_run_cases` | Cohort membership (dataset revision + selector + `case_limit` by ordinal) |
+| `v_run_cases` | Cohort membership (dataset revision + selector + the test's `case_ids`, if any, + `case_limit` by ordinal) |
 | `v_segment_outcomes` | Every expected (run, segment): `scored` / `abstained` / `error` / `unscored` |
 | `v_case_verdicts_by_rule`, `v_case_verdicts` | Case verdicts under any applicable rule, or under the run's own rule |
 | `v_condition_rates_by_rule`, `v_condition_rates` | Per run (test × condition): detected/missed/clean flags/abstained/incomplete and rates |

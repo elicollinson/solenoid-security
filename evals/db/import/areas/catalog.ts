@@ -7,7 +7,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Ctx } from "../context.ts";
 import type { Tx } from "../db.ts";
-import { deploymentFor, engineRow, IMPORTER_VERSION, jsonSha, replayRules, ruleRow, sha256Hex, strategyRow } from "../lib.ts";
+import { deploymentFor, engineRow, IMPORTER_VERSION, jsonSha, replayRules, ruleRow, sha256Hex, strategyRow, testRow } from "../lib.ts";
 import {
   BOUNDARY_SCORE_PROMPT, DIRECT_LLM_PROMPT, LEGACY_JEV_QUESTION, SCORE_ONLY_PROMPT, TASK_CONTEXT_PROMPT, TASK_POLICY_PROMPT,
 } from "../../../src/engines.ts";
@@ -214,17 +214,16 @@ export async function writeSuite(ctx: Ctx, tx: Tx, file: SuiteFile, isCurrent: b
       is_current = excluded.is_current, schema_version = excluded.schema_version
     where evals.suite_revisions.content is null or evals.suite_revisions.is_current is distinct from excluded.is_current`,
     [s.id, file.sha, s.schemaVersion ?? "security-eval-suite/v1", file.path, file.text, isCurrent]);
-  const tests = (s.tests ?? []).map((t: any) => ({
-    test_id: t.id, dataset_id: t.datasetId, revision: t.datasetRevision, annotation_key: t.annotationKey,
-    case_selector: t.caseSelector, metrics: t.metrics ?? [],
-  }));
+  const tests = (s.tests ?? []).map(testRow);
+  // case_ids (migration 20261012090000) is only ever filled in, never changed: a suite revision is content-addressed.
   const written = await ctx.db.write(tx, "tests", tests, rs => `
-    insert into evals.tests (suite_revision_id, test_id, dataset_revision_id, annotation_key, case_selector, metrics)
-    select sr.suite_revision_id, t.test_id, dr.dataset_revision_id, t.annotation_key, t.case_selector, t.metrics
-    from ${rs} as t(test_id text, dataset_id text, revision text, annotation_key text, case_selector evals.case_selector, metrics text[])
+    insert into evals.tests (suite_revision_id, test_id, dataset_revision_id, annotation_key, case_selector, metrics, case_ids)
+    select sr.suite_revision_id, t.test_id, dr.dataset_revision_id, t.annotation_key, t.case_selector, t.metrics, t.case_ids
+    from ${rs} as t(test_id text, dataset_id text, revision text, annotation_key text, case_selector evals.case_selector, metrics text[], case_ids text[])
     join evals.suite_revisions sr on sr.sha256 = $2
     join evals.dataset_revisions dr on dr.dataset_id = t.dataset_id and dr.revision = t.revision
-    on conflict (suite_revision_id, test_id) do nothing`, [file.sha]);
+    on conflict (suite_revision_id, test_id) do update set case_ids = excluded.case_ids
+      where evals.tests.case_ids is null and excluded.case_ids is not null`, [file.sha]);
   if (!ctx.dryRun && written < tests.length) {
     const have = await ctx.db.query<{ n: number }>(tx, `select count(*)::int n from evals.tests t join evals.suite_revisions sr using (suite_revision_id) where sr.sha256 = $1`, [file.sha]);
     if ((have[0]?.n ?? 0) < tests.length) ctx.stats.warn(`${file.path}: ${tests.length - (have[0]?.n ?? 0)} test(s) reference a dataset revision that is not loaded`);

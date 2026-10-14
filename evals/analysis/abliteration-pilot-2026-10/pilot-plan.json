@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "abliteration-pilot-plan/v1",
+  "frozenBy": "make-pilot-plan.ts",
+  "seed": "abliteration-pilot-2026-10-v1",
+  "suiteId": "prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1",
+  "suitePath": "evals/suites/prompt-injection-lmstudio-studio-abliteration-pilot-q8-t4096-v1.json",
+  "suiteSha256": "445ecbe2012868a397275ac2e1c94fd8c78e95726e276ca6eb4000db2659c112",
+  "baselineSuiteSha256": "60024e05e323d97cf8227f37b250c251afb7c0b2773f53fd7ae826ad9d306051",
+  "vanillaCondition": "baseline-qwen38-q8gguf-t4096-full",
+  "vanillaCheckpointDir": "evals/runs/studio-baseline-t4096-2026-10-07",
+  "roster": [
+    {
+      "engine": "qwen38-heretic-ara-q8",
+      "condition": "pilot-qwen38-heretic-ara-q8-t4096-full",
+      "modelKey": "qwen3.8-27b-heretic-ara",
+      "file": "Qwen3.8-27B-heretic-ara.Q8_0.gguf",
+      "quantization": "Q8_0",
+      "sizeBytes": 29974692064,
+      "source": "mradermacher static Q8_0 of trohrbaugh/Qwen3.8-27B-heretic-ara"
+    },
+    {
+      "engine": "qwen38-huihui-abl-q8",
+      "condition": "pilot-qwen38-huihui-abl-q8-t4096-full",
+      "modelKey": "huihui-qwen3.8-27b-abliterated",
+      "file": "Huihui-Qwen3.8-27B-abliterated-Q8_0.gguf",
+      "quantization": "Q8_0",
+      "sizeBytes": 29978230208,
+      "source": "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF"
+    }
+  ],
+  "reference": {
+    "engine": "qwen38-q8gguf",
+    "modelKey": "qwen/qwen3.8-27b@q8_0",
+    "file": "Qwen3.8-27B-Q8_0.gguf",
+    "quantization": "Q8_0",
+    "sizeBytes": 29978410384,
+    "lmStudioVersionAtBaseline": "0.4.25 build 1"
+  },
+  "selection": [
+    {
+      "testId": "longpi-paper",
+      "datasetId": "longpibench-paper-default-v1",
+      "length": "long",
+      "content": "doc (paper)",
+      "cohortCases": 400,
+      "cases": 120,
+      "positives": 60,
+      "negatives": 60,
+      "spec": {
+        "testId": "longpi-paper",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": 60,
+        "negative": 60,
+        "stratumFacet": "attack"
+      },
+      "caseIdsSha256": "64335eb055c9d5675f33a9c30492ec97d01c51e91e6ae99985e5091a78508697",
+      "vanillaInputHashesVerified": 120,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.29,
+      "vanillaMeanWallSeconds": 8.69
+    },
+    {
+      "testId": "longpi-code",
+      "datasetId": "longpibench-code-default-v1",
+      "length": "long",
+      "content": "code",
+      "cohortCases": 400,
+      "cases": 120,
+      "positives": 60,
+      "negatives": 60,
+      "spec": {
+        "testId": "longpi-code",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": 60,
+        "negative": 60,
+        "stratumFacet": "attack"
+      },
+      "caseIdsSha256": "af08f1248ad35e9ac8c69805e24a77d2df2fe7c852a52407ed1212d32237da3e",
+      "vanillaInputHashesVerified": 120,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.176,
+      "vanillaMeanWallSeconds": 5.29
+    },
+    {
+      "testId": "bipia-email-mixed",
+      "datasetId": "bipia-email-paired-v1",
+      "length": "medium",
+      "content": "email (paired)",
+      "cohortCases": 156,
+      "cases": 120,
+      "positives": 60,
+      "negatives": 60,
+      "spec": {
+        "testId": "bipia-email-mixed",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "pairFacet": "pair_id",
+        "groups": 60
+      },
+      "caseIdsSha256": "413899e7e55805aa8bcfdc927a2571a3d0fe812295d3d15fdd1f1d588e2a334a",
+      "vanillaInputHashesVerified": 120,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.155,
+      "vanillaMeanWallSeconds": 4.66
+    },
+    {
+      "testId": "longpi-email",
+      "datasetId": "longpibench-email-default-v1",
+      "length": "long",
+      "content": "email",
+      "cohortCases": 400,
+      "cases": 120,
+      "positives": 60,
+      "negatives": 60,
+      "spec": {
+        "testId": "longpi-email",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": 60,
+        "negative": 60,
+        "stratumFacet": "attack"
+      },
+      "caseIdsSha256": "a780dd67cb62b12805ef975093236669e8de872b090978fedd9dd34d2adc94d6",
+      "vanillaInputHashesVerified": 120,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.156,
+      "vanillaMeanWallSeconds": 4.67
+    },
+    {
+      "testId": "web-mixed",
+      "datasetId": "in-page-wild-sample-v1",
+      "length": "medium",
+      "content": "web",
+      "cohortCases": 480,
+      "cases": 120,
+      "positives": 60,
+      "negatives": 60,
+      "spec": {
+        "testId": "web-mixed",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": 60,
+        "negative": 60
+      },
+      "caseIdsSha256": "615d540375f2c9ad8987219dc93881bd50807bc2e7481dde5b11453b93b39fd0",
+      "vanillaInputHashesVerified": 120,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.163,
+      "vanillaMeanWallSeconds": 4.89
+    },
+    {
+      "testId": "agentdyn-github",
+      "datasetId": "agentdyn-github-exposures-v1",
+      "length": "medium",
+      "content": "agent tool output",
+      "cohortCases": 237,
+      "cases": 94,
+      "positives": 47,
+      "negatives": 47,
+      "spec": {
+        "testId": "agentdyn-github",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": 47,
+        "negative": "all",
+        "stratumFacet": "tool"
+      },
+      "caseIdsSha256": "0b48b23646195a7355f0468468cff3714f6e0e9e331a164fc5c72fc6edb36b14",
+      "vanillaInputHashesVerified": 94,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.161,
+      "vanillaMeanWallSeconds": 6.18
+    },
+    {
+      "testId": "pids-obfuscated",
+      "datasetId": "pids-obfuscated-v1",
+      "length": "short",
+      "content": "obfuscated (attack-only)",
+      "cohortCases": 405,
+      "cases": 112,
+      "positives": 112,
+      "negatives": 0,
+      "spec": {
+        "testId": "pids-obfuscated",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": 112,
+        "stratumFacet": "obfuscation"
+      },
+      "caseIdsSha256": "3a5e0384be90d2aaf262ae18e2bb471b2b8f9dfe1b1cdbaf0bcf140fcfe0bac2",
+      "vanillaInputHashesVerified": 111,
+      "vanillaAbstentions": 1,
+      "vanillaWallHours": 0.287,
+      "vanillaMeanWallSeconds": 9.23
+    },
+    {
+      "testId": "benign-false-positives",
+      "datasetId": "notinject-benign-339",
+      "length": "short",
+      "content": "benign false-positive (benign-only)",
+      "cohortCases": 339,
+      "cases": 120,
+      "positives": 0,
+      "negatives": 120,
+      "spec": {
+        "testId": "benign-false-positives",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "negative": 120,
+        "stratumFacet": "technique"
+      },
+      "caseIdsSha256": "5eb470d67083050dbf63cae7ed2e9d9fca71c9577e277b1ce12a3424942b8742",
+      "vanillaInputHashesVerified": 118,
+      "vanillaAbstentions": 2,
+      "vanillaWallHours": 0.156,
+      "vanillaMeanWallSeconds": 4.69
+    },
+    {
+      "testId": "paper-score-counterfactual",
+      "datasetId": "longpibench-paper-score-counterfactual-v1",
+      "length": "long",
+      "content": "score counterfactual probe",
+      "cohortCases": 72,
+      "cases": 72,
+      "positives": 54,
+      "negatives": 18,
+      "spec": {
+        "testId": "paper-score-counterfactual",
+        "seed": "abliteration-pilot-2026-10-v1",
+        "positive": "all",
+        "negative": "all"
+      },
+      "caseIdsSha256": "07c7b1a84ddcfe40ef0b772da32c1dad09fc898a2ae7a0654640638b2dcdf9c7",
+      "vanillaInputHashesVerified": 72,
+      "vanillaAbstentions": 0,
+      "vanillaWallHours": 0.173,
+      "vanillaMeanWallSeconds": 8.63
+    }
+  ],
+  "totalCases": 998,
+  "estimate": {
+    "basis": "vanilla Qwen3.8 GGUF Q8_0 per-case wall time on the identical cases (dispatch to next dispatch), Studio, serial",
+    "vanillaReplayHoursPerModel": 1.72,
+    "perModelHours": 1.78,
+    "perModelHoursIfReasoning1_5x": 2.44,
+    "perModelHoursIfReasoning2x": 3.1,
+    "driftCheckHours": 0.07,
+    "totalHoursBothModels": 3.64
+  }
+}

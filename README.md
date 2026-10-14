@@ -60,8 +60,15 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Gemma 4 31B-it | Dense | Queued |
 | Muse Glimmer 30B | Dense | Queued |
 
-**Abliteration pilot: complete**; results are in review in
-[#30](https://github.com/elicollinson/solenoid-security/pull/30).
+**Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
+[results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the
+vanilla model on 9 datasets (998 identical cases per model), under the same protocol.
+
+> **RESULT NOTE:** in this small sample, the heretic-ara build shows lower performance than vanilla Qwen3.8 (mean
+> balanced accuracy 0.854 vs 0.888), and so does the huihui build (0.858). Both are marked for a full 21-dataset
+> follow-up. The drop is mostly missed borderline attacks (obfuscated text, one LongPIBench template). Huihui also
+> raised more false alarms on agent tool output. This is a pilot: about 100 cases per dataset, one quant and one
+> runtime ([O53](evals/FINDINGS.md)).
 
 **Mac Studio Q8 full-text baseline: complete** ([report](evals/reports/studio-baseline-q8-t4096-2026-10.md)). Seven self-hostable models, each run on all 21
 datasets (7,326 cases per model) under one frozen protocol: Q8 GGUF, full text, score-only prompt, temperature 0,

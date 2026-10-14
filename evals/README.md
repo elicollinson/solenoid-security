@@ -53,7 +53,7 @@ The score threshold is recorded with the decision rule, even when it is tuned al
 - [`WEB_SMALL_CHUNKS.md`](WEB_SMALL_CHUNKS.md) records the 7/14/21-word in-page web chunk plans, runnable suites, and the distinct Gemma score-only protocol used for complete chunked comparisons.
 - [`reports/public-detector-comparison-2026-09-28.md`](reports/public-detector-comparison-2026-09-28.md) contains aggregate findings from the completed runs; raw observations and generated inputs remain ignored.
 
-The suite model also supports a dataset with both positive and benign labels: use `caseSelector: "all"` and request both detection and false-positive metrics. Facets such as technique, category, split, or future attack surface remain case metadata rather than new engine types.
+The suite model also supports a dataset with both positive and benign labels: use `caseSelector: "all"` and request both detection and false-positive metrics. A test can also name an explicit subset with an optional `caseIds` list. The list is applied after `caseSelector`, keeps dataset order and fails closed on unknown or excluded IDs. Because the IDs live in the suite file, the subset is bound to the suite hash. It differs from `--limit` and tranches, which take a prefix. [`analysis/abliteration-pilot-2026-10/make-pilot-plan.ts`](analysis/abliteration-pilot-2026-10/make-pilot-plan.ts) builds seeded, label-balanced lists with `src/caseSubset.ts`. Facets such as technique, category, split, or future attack surface remain case metadata rather than new engine types.
 
 ## Historical migration
 

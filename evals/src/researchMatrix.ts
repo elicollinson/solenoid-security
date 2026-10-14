@@ -35,6 +35,7 @@ export function validateMatrixSuite(value: unknown, conditions: readonly string[
   const validId = (id: unknown) => typeof id === "string" && /^[A-Za-z0-9._-]+$/.test(id);
   const testIds = suite.tests.map(test => {
     if (!validId(test.id) || !validId(test.datasetId) || typeof test.datasetRevision !== "string" || typeof test.annotationKey !== "string" || !["all", "positive", "negative"].includes(test.caseSelector) || !Array.isArray(test.metrics) || !test.metrics.length || test.metrics.some(metric => !["detection_rate", "false_positive_rate", "confusion_matrix"].includes(metric))) throw new Error("Invalid matrix test");
+    if (test.caseIds !== undefined && (!Array.isArray(test.caseIds) || !test.caseIds.length || test.caseIds.some(id => typeof id !== "string" || !id) || new Set(test.caseIds).size !== test.caseIds.length)) throw new Error("Invalid matrix test caseIds");
     return test.id;
   });
   object(suite.engines); object(suite.inputStrategies); object(suite.decisionRules);

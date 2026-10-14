@@ -4619,3 +4619,61 @@ Report: [`studio-baseline-q8-t4096-2026-10.md`](studio-baseline-q8-t4096-2026-10
 dated notes on O23, O26, O30, O40, O44 and O47. Next: the abliteration pilot (F7, #23): vanilla vs heretic-ara and
 huihui abliterated Qwen3.8 on 9 datasets (998 cases per model). After that come the PR #6 extension suite and the
 deferred Qwen3.6 27B.
+
+### L150 — 2026-10-12: Abliteration pilot (F7) run and analyzed; both abliterated builds score lower; F7 escalates
+
+The pre-registered pilot ([plan](abliteration-pilot-plan-2026-10.md), suite SHA-256 `445ecbe2…c112`) launched after
+the baseline chain finished. Nothing was loaded, no lock existed, and no driver was running. `run-chain.sh` started at
+19:29:14Z (`CHAIN_START`), with LM Link online and preflight passing for 3 conditions × 9 tests. The main checkout was
+detached at the pilot commit `6b1ec42`.
+
+**Drift gate.** Vanilla Qwen3.8 GGUF Q8_0 re-scored the first 24 pilot BIPIA cases (`pilot-qwen38-q8gguf-t4096-full`).
+Outcome agreement with the frozen 2026-10-09 baseline outputs was 24/24, and final answers were byte-identical 24/24.
+LM Studio was 0.4.25 build 1, the same as the baseline. The halt threshold was < 22/24.
+
+**Qualification gates.** On the first 24 longpi-paper cases, heretic-ara had 0 abstentions (9 flags, median reasoning
+246, max 947) and huihui had 0 (11 flags, median 292, max 830). The rule is ≤ 3, so both qualified and each resumed
+the same checkpoint for the full nine tests. Heretic finished at 21:33Z (`MODEL_DONE 1/2`, about 2.0 h) and huihui at
+23:46Z (`MODEL_DONE 2/2`, about 2.2 h). `PILOT_DONE` came at 23:46:17Z. The chain took about 4.3 h against a plan
+estimate of 3.6 h at the vanilla pace. No manual stop, rerun, threshold change or case swap occurred. Nothing remained
+loaded.
+
+**Results.** `compare-pilot.ts` ran unchanged and offline. Its tracked copy is byte-identical to the run-directory
+copy. It audited all 27 cells and confirmed identical protocol, labels and input hashes. Macro BA was vanilla 0.888,
+heretic 0.854, huihui 0.858. Pooled exact McNemar: vanilla→heretic 49 vs 16 (p = 5.1×10⁻⁵, Holm 1.0×10⁻⁴) and
+vanilla→huihui 42 vs 15 (p = 4.6×10⁻⁴, Holm 4.6×10⁻⁴). Heretic→huihui was 29 vs 33 (p = 0.70). Detections lost and
+gained were 37/12 and 31/15. Losses came on PIDS obfuscated (15 and 16 lost) and the naive LongPI template (paper and
+code). Authority-spoof and combine stayed 20/20. BIPIA email detections rose (+6/−2 and +8/−3). Huihui added AgentDyn
+benign false alarms (8 → 19 of 47). The probe showed heretic 3/18 low→high flips, huihui 1/18 and vanilla 0/18, with
+no target matching and no out-of-range copies. Length abstentions were 3, 2 and 5, and mean reasoning 291, 305 and
+338. Against the hypotheses: H1 fails narrowly (BA −0.033 and −0.030), H2 is supported in direction but not in its
+predicted locations, H3 is mixed, H4 is not supported, and H5 shows small changes. The escalation rule fires for both
+builds: Holm-significant pooled McNemar and a short-band BA drop of at least 0.05 (−0.058 and −0.069), plus heretic's
+3/18 probe flips. Decision: F7 moves to the full 21-dataset protocol.
+
+`supplement-pilot.ts` (new, offline) adds Holm, the hypothesis thresholds, attack strata, paired accuracy intervals
+and a post-hoc, descriptive keyword screen of reasoning on newly missed attacks (counts only; no text published). The
+whole-reasoning variant saturated and is not interpreted. The conclusion-window variant was defined after that and
+after reading three conclusion windows. It found 33/37 (heretic) and 27/31 (huihui) newly missed attacks that refer
+to the injection and downgrade it, against 68/76 and 65/74 on attacks both models miss. Most newly missed scores are
+0.3–0.5.
+
+Published: `evals/analysis/abliteration-pilot-2026-10/results/` (`comparison.json`, `comparison.md`,
+`supplement.json`) and PROVENANCE rows. Report:
+[`abliteration-pilot-results-2026-10.md`](abliteration-pilot-results-2026-10.md). FINDINGS O53 was added, with a
+dated note under F7.
+
+**Supabase.** The importer had no notion of `EvalTest.caseIds`. `v_run_cases` built a run's cohort from selector and
+`case_limit` only, so every pilot run would have shown its unselected cohort cases as unscored. Migration
+`20261012090000_test_case_ids.sql` adds a nullable `evals.tests.case_ids` and filters `v_run_cases` by it. It is
+additive, with no data changes, and was applied to the hosted project with `supabase db push`. The suites area now
+writes `case_ids`, with a unit test. After this, the pilot suite was imported from the branch worktree. The 19 pilot
+checkpoints (18 cells plus the drift-check cell) were imported from the main checkout: 19 runs, 2,013 observations,
+2,020 responses with bodies, 35 artifacts and 0 Storage errors. Cohorts in `v_run_cases` match `expected_cases`
+(998 per model; 120 for the drift cell, whose 96 unrun cases show as unscored). The documents merged in PR #29 were
+loaded from the worktree (52 findings, 174 log entries). `evals/runs` was rsynced additively to the raw backup (35 new
+files, none modified).
+
+Next: the extension suite (`prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1`, 14 tests, 6,759 cases
+per model) on the seven fully tested models. Details follow separately. The full F7 run and the deferred Qwen3.6 27B
+come after.

@@ -11,11 +11,12 @@ those numbers without rerunning inference. Folder names mirror the original run 
   case text, prompt text or model rationale. The only model output kept is the score-only final answer
   (`{"concernScore":0.2}`) in a few audit files.
 - **[`PROVENANCE.tsv`](PROVENANCE.tsv)** maps every published file to its original path and original SHA-256.
-  129 files are `verbatim`. 22 scripts are `path-adjusted`: they found their run directory from their own location or
+  140 files are `verbatim`. 22 scripts are `path-adjusted`: they found their run directory from their own location or
   a hard-coded absolute path. The only change is that line, which now reads `RUN_DIR` (default
-  `evals/runs/<run-id>`), and it is marked `published copy`. Nothing else was edited. Two later files were never in a
+  `evals/runs/<run-id>`), and it is marked `published copy`. Nothing else was edited. Four later files were never in a
   run directory and have `-` for the original path and hash: `studio-baseline-t4096-2026-10-07/analyze-baseline.ts`
-  (`authored`) and its output `results/baseline-results.json` (`generated`).
+  (`authored`) and its output `results/baseline-results.json` (`generated`), plus
+  `abliteration-pilot-2026-10/make-pilot-plan.ts` and `supplement-pilot.ts` (`authored`).
 
 ## Running them
 
@@ -46,6 +47,22 @@ drive LM Studio through `bun run eval:local`, cd into the original checkout path
 
 The research log is [`evals/reports/research-log-2026-09-29.md`](../reports/research-log-2026-09-29.md). Unless noted,
 each script below is named in it.
+
+### `abliteration-pilot-2026-10/`
+
+The pre-registered [abliteration pilot](../reports/abliteration-pilot-plan-2026-10.md) (F7, #23), run on 2026-10-12
+([results](../reports/abliteration-pilot-results-2026-10.md), `FINDINGS.md` O53, research log L150). These are the
+original tracked scripts. The ones copied into `evals/runs/abliteration-pilot-2026-10/` at launch are byte-identical,
+and `PROVENANCE.tsv` records them as `verbatim`.
+
+| File | Computes |
+|---|---|
+| `make-pilot-plan.ts` | Freezes the seeded case subsets, writes the pilot suite and `pilot-plan.json`, verifies vanilla input hashes and estimates runtime. |
+| `run-chain.sh`, `run-queue.sh`, `queue-pilot.txt` | Chain and queue orchestration: drift check, then heretic, then huihui. |
+| `gate.ts`, `summarize-pilot.ts`, `pilot-rows.ts` | The drift and qualification gates, `MODEL_DONE` progress lines and read-only checkpoint extraction. |
+| `compare-pilot.ts` | The pre-registered three-way comparison on identical cases: per-test and band metrics, paired McNemar flips and probe score shifts (`comparison.json`, `comparison.md`). |
+| `supplement-pilot.ts` | **Authored after the run.** Holm over the two primary tests, H1/H2 thresholds, attack strata, paired accuracy intervals, escalation-rule checks, and a post-hoc descriptive keyword screen of reasoning on newly missed attacks (counts only) (`supplement.json`). |
+| `results/` | `comparison.json`, `comparison.md`, `supplement.json`: counts, rates, scores, token/timing statistics and case IDs only. |
 
 ### `attack-following-evidence-2026-10-04/`
 

@@ -54,8 +54,8 @@ What to watch: whether the stronger models start to separate on the subtle and h
 |---|---|---|
 | Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.895; 2 abstentions in 6,759) |
 | Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.922; 2 abstentions) |
-| Laguna XS 2.1 | MoE (coding) | ▶ Running |
-| Qwen3.8 27B | Dense | Queued |
+| Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.702; 8 abstentions) |
+| Qwen3.8 27B | Dense | ▶ Running |
 | Qwen3.6 35B-A3B | MoE | Queued |
 | Gemma 4 31B-it | Dense | Queued |
 | Muse Glimmer 30B | Dense | Queued |

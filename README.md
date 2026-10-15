@@ -56,8 +56,8 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.922; 2 abstentions) |
 | Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.702; 8 abstentions) |
 | Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.865; 2 abstentions) |
-| Qwen3.6 35B-A3B | MoE | ▶ Running |
-| Gemma 4 31B-it | Dense | Queued |
+| Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.866; 2 abstentions) |
+| Gemma 4 31B-it | Dense | ▶ Running |
 | Muse Glimmer 30B | Dense | Queued |
 
 **Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),

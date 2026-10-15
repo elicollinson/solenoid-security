@@ -25,7 +25,7 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
 reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline is summarized [below](#now-running-as-of-2026-10-12).
 
-## Now running (as of 2026-10-14)
+## Now running (as of 2026-10-15)
 
 **Extension suite on the fully tested models: running** (started 2026-10-13). The seven models that finished the
 baseline now run 14 new datasets (6,759 cases per model) under the identical frozen protocol. Estimated about 94 hours
@@ -55,8 +55,8 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.895; 2 abstentions in 6,759) |
 | Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.922; 2 abstentions) |
 | Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.702; 8 abstentions) |
-| Qwen3.8 27B | Dense | ▶ Running |
-| Qwen3.6 35B-A3B | MoE | Queued |
+| Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.865; 2 abstentions) |
+| Qwen3.6 35B-A3B | MoE | ▶ Running |
 | Gemma 4 31B-it | Dense | Queued |
 | Muse Glimmer 30B | Dense | Queued |
 

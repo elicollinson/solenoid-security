@@ -1,0 +1,752 @@
+{
+ "schema": "qwen38-effort-audit-v1",
+ "systemPromptId": "security-eval-score-only-json-v1",
+ "requestedReasoningEffort": "high",
+ "templates": {
+  "qwen38": {
+   "hfRepo": "lmstudio-community/Qwen3.8-27B-GGUF",
+   "sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041",
+   "published": true,
+   "readsVariables": [
+    "enable_thinking",
+    "preserve_thinking",
+    "reasoning_effort"
+   ],
+   "probe": {
+    "default": {
+     "systemTurn": "Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\n‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\n",
+     "injectedTokens": 38,
+     "promptTokens": 110,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "reasoning_effort=xhigh": {
+     "systemTurn": "Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\n‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\n",
+     "injectedTokens": 38,
+     "promptTokens": 110,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "reasoning_effort=medium": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 72,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "reasoning_effort=low": {
+     "systemTurn": "Reasoning effort is set to low. Keep your thinking brief and focused, moving directly to the conclusion without unnecessary elaboration.\n\n‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "Reasoning effort is set to low. Keep your thinking brief and focused, moving directly to the conclusion without unnecessary elaboration.\n\n",
+     "injectedTokens": 26,
+     "promptTokens": 98,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "reasoning_effort=high": {
+     "raises": "Unexpected reasoning effort high. Supported types are xhigh (default), medium, and low."
+    },
+    "enable_thinking=false": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 74,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+    }
+   }
+  },
+  "qwen36": {
+   "hfRepo": "unsloth/Qwen3.6-35B-A3B-GGUF",
+   "sha256": "55d4931433fe502b794226ee7f4d206a6bdd436ac9f80eb7d8ebb4c639f9ea0c",
+   "published": true,
+   "readsVariables": [
+    "enable_thinking",
+    "preserve_thinking"
+   ],
+   "probe": {
+    "default": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 72,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "reasoning_effort=high": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 72,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "enable_thinking=false": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 74,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+    }
+   }
+  },
+  "ornith": {
+   "hfRepo": "ornith-ai/Ornith-1.5-35B-A3B-GGUF",
+   "sha256": "f55f52930aa8bf44ab5cb85f99370fcc3c56e9a85640b812086d5330bce5d86b",
+   "published": true,
+   "readsVariables": [
+    "enable_thinking"
+   ],
+   "probe": {
+    "default": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 72,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "reasoning_effort=high": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 72,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n"
+    },
+    "enable_thinking=false": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 74,
+     "generationTail": "<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n"
+    }
+   }
+  },
+  "gemma4": {
+   "hfRepo": "lmstudio-community/gemma-4-26B-A4B-it-GGUF",
+   "sha256": "85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98",
+   "published": true,
+   "readsVariables": [
+    "enable_thinking"
+   ],
+   "probe": {
+    "default": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 75,
+     "generationTail": "<turn|>\n<|turn>model\n<|channel>thought\n<channel|>"
+    },
+    "enable_thinking=true": {
+     "systemTurn": "<|think|>\n‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "<|think|>\n",
+     "injectedTokens": 2,
+     "promptTokens": 73,
+     "generationTail": "<turn|>\n<|turn>model\n"
+    },
+    "reasoning_effort=high": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 75,
+     "generationTail": "<turn|>\n<|turn>model\n<|channel>thought\n<channel|>"
+    }
+   }
+  },
+  "muse": {
+   "hfRepo": "unsloth/Muse-Glimmer-30B-GGUF",
+   "sha256": "114f55ebdc1804c1af371197b9fdf2d6bb925966c9dfe46b73782a71bc07965e",
+   "published": true,
+   "readsVariables": [
+    "reasoning_strength"
+   ],
+   "probe": {
+    "default": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedText": "\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedTokens": 17,
+     "promptTokens": 84,
+     "generationTail": "<|eot|><|start|>assistant"
+    },
+    "reasoning_effort=high": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedText": "\n\nReasoning strength: high.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedTokens": 17,
+     "promptTokens": 84,
+     "generationTail": "<|eot|><|start|>assistant"
+    },
+    "reasoning_strength=medium": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›\n\nReasoning strength: medium.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedText": "\n\nReasoning strength: medium.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedTokens": 17,
+     "promptTokens": 84,
+     "generationTail": "<|eot|><|start|>assistant"
+    },
+    "reasoning_strength=low": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedText": "\n\nReasoning strength: low.\n\n# Valid recipients: \"self\", \"user\".",
+     "injectedTokens": 17,
+     "promptTokens": 84,
+     "generationTail": "<|eot|><|start|>assistant"
+    }
+   }
+  },
+  "laguna": {
+   "hfRepo": "lmstudio-community/Laguna-XS-2.1-GGUF",
+   "sha256": "2d3c724b3c2e9eb71fe9ccc5423ff268a370a8bfa89e9238b6de14fe000825c8",
+   "published": false,
+   "readsVariables": [
+    "enable_thinking"
+   ],
+   "probe": {
+    "default": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 71,
+     "generationTail": "</user>\n<assistant></think>"
+    },
+    "enable_thinking=true": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 71,
+     "generationTail": "</user>\n<assistant><think>"
+    },
+    "reasoning_effort=high": {
+     "systemTurn": "‹CALLER_SYSTEM_PROMPT›",
+     "injectedText": "",
+     "injectedTokens": 0,
+     "promptTokens": 71,
+     "generationTail": "</user>\n<assistant></think>"
+    }
+   }
+  }
+ },
+ "models": [
+  {
+   "model": "Ornith 1.5 35B-A3B",
+   "checkpointKey": "ornith-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "ornith",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7314,
+   "reasoningTokens": {
+    "n": 7314,
+    "min": 40,
+    "p10": 114,
+    "median": 217,
+    "p90": 497,
+    "max": 4060,
+    "mean": 276.3
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 7314,
+     "mode": 0,
+     "shareAtMode": 0.983,
+     "min": -2,
+     "max": 20,
+     "distinct": 18
+    }
+   }
+  },
+  {
+   "model": "Gemma 4 26B-A4B-it",
+   "checkpointKey": "gemma26-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "gemma4",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-26b-a4b@lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7317,
+   "reasoningTokens": {
+    "n": 7317,
+    "min": 60,
+    "p10": 151,
+    "median": 262,
+    "p90": 965,
+    "max": 4018,
+    "mean": 436.5
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 7317,
+     "mode": -2,
+     "shareAtMode": 1.0,
+     "min": -2,
+     "max": -2,
+     "distinct": 1
+    },
+    "enable_thinking=true": {
+     "n": 7317,
+     "mode": 0,
+     "shareAtMode": 1.0,
+     "min": 0,
+     "max": 0,
+     "distinct": 1
+    }
+   }
+  },
+  {
+   "model": "Qwen3.6 35B-A3B",
+   "checkpointKey": "qwen36-35b-a3b-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "qwen36",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7323,
+   "reasoningTokens": {
+    "n": 7323,
+    "min": 57,
+    "p10": 287,
+    "median": 630,
+    "p90": 1241,
+    "max": 3731,
+    "mean": 702.1
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 7323,
+     "mode": 0,
+     "shareAtMode": 0.9831,
+     "min": -2,
+     "max": 20,
+     "distinct": 18
+    }
+   }
+  },
+  {
+   "model": "Laguna XS 2.1",
+   "checkpointKey": "laguna-xs21-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "laguna",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:lmstudio-community/Laguna-XS-2.1-GGUF/Laguna-XS-2.1-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7212,
+   "reasoningTokens": {
+    "n": 7212,
+    "min": 0,
+    "p10": 0,
+    "median": 0,
+    "p90": 438,
+    "max": 3403,
+    "mean": 114.0
+   },
+   "shareZeroReasoningTokens": 0.7655,
+   "shareWithReasoningContent": 0.2345,
+   "offsets": {
+    "default": {
+     "n": 7212,
+     "mode": 0,
+     "shareAtMode": 0.9972,
+     "min": 0,
+     "max": 44,
+     "distinct": 7
+    },
+    "enable_thinking=true": {
+     "n": 7212,
+     "mode": 0,
+     "shareAtMode": 0.9972,
+     "min": 0,
+     "max": 44,
+     "distinct": 7
+    }
+   }
+  },
+  {
+   "model": "Qwen3.8 27B",
+   "checkpointKey": "qwen38-q8gguf",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "qwen38",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:qwen/qwen3.8-27b@lmstudio-community/Qwen3.8-27B-GGUF/Qwen3.8-27B-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7309,
+   "reasoningTokens": {
+    "n": 7309,
+    "min": 44,
+    "p10": 123,
+    "median": 240,
+    "p90": 514,
+    "max": 3704,
+    "mean": 299.0
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 7309,
+     "mode": 0,
+     "shareAtMode": 0.983,
+     "min": -2,
+     "max": 20,
+     "distinct": 18
+    },
+    "reasoning_effort=medium": {
+     "n": 7309,
+     "mode": 38,
+     "shareAtMode": 0.983,
+     "min": 36,
+     "max": 58,
+     "distinct": 18
+    }
+   }
+  },
+  {
+   "model": "Muse Glimmer 30B",
+   "checkpointKey": "muse-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "muse",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:unsloth/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7321,
+   "reasoningTokens": {
+    "n": 7321,
+    "min": 108,
+    "p10": 218,
+    "median": 363,
+    "p90": 670,
+    "max": 3094,
+    "mean": 418.9
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 7321,
+     "mode": 0,
+     "shareAtMode": 0.9992,
+     "min": 0,
+     "max": 1,
+     "distinct": 2
+    }
+   }
+  },
+  {
+   "model": "Gemma 4 31B-it",
+   "checkpointKey": "gemma31-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "gemma4",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:google/gemma-4-31b@lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 21
+   },
+   "responsesWithObservation": 7321,
+   "reasoningTokens": {
+    "n": 7321,
+    "min": 41,
+    "p10": 116,
+    "median": 241,
+    "p90": 765,
+    "max": 4073,
+    "mean": 363.6
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 7321,
+     "mode": -2,
+     "shareAtMode": 1.0,
+     "min": -2,
+     "max": -2,
+     "distinct": 1
+    },
+    "enable_thinking=true": {
+     "n": 7321,
+     "mode": 0,
+     "shareAtMode": 1.0,
+     "min": 0,
+     "max": 0,
+     "distinct": 1
+    }
+   }
+  },
+  {
+   "model": "Qwen3.6 27B (deferred; partial longpi-paper)",
+   "checkpointKey": "qwen36-27b-q8",
+   "run": "studio-baseline-t4096-2026-10-07",
+   "family": "qwen36",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:unsloth/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 1
+   },
+   "responsesWithObservation": 281,
+   "reasoningTokens": {
+    "n": 281,
+    "min": 200,
+    "p10": 404,
+    "median": 730,
+    "p90": 1288,
+    "max": 2192,
+    "mean": 788.0
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 281,
+     "mode": 0,
+     "shareAtMode": 1.0,
+     "min": 0,
+     "max": 0,
+     "distinct": 1
+    }
+   }
+  },
+  {
+   "model": "Qwen3.8 27B (pilot vanilla)",
+   "checkpointKey": "qwen38-q8gguf",
+   "run": "abliteration-pilot-2026-10",
+   "family": "qwen38",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:qwen/qwen3.8-27b@lmstudio-community/Qwen3.8-27B-GGUF/Qwen3.8-27B-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 1
+   },
+   "responsesWithObservation": 24,
+   "reasoningTokens": {
+    "n": 24,
+    "min": 66,
+    "p10": 71,
+    "median": 182,
+    "p90": 338,
+    "max": 575,
+    "mean": 206.0
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 24,
+     "mode": 0,
+     "shareAtMode": 1.0,
+     "min": 0,
+     "max": 0,
+     "distinct": 1
+    },
+    "reasoning_effort=medium": {
+     "n": 24,
+     "mode": 38,
+     "shareAtMode": 1.0,
+     "min": 38,
+     "max": 38,
+     "distinct": 1
+    }
+   }
+  },
+  {
+   "model": "Qwen3.8 27B heretic-ara (pilot)",
+   "checkpointKey": "qwen38-heretic-ara-q8",
+   "run": "abliteration-pilot-2026-10",
+   "family": "qwen38",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:mradermacher/Qwen3.8-27B-heretic-ara-GGUF/Qwen3.8-27B-heretic-ara.Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 9
+   },
+   "responsesWithObservation": 996,
+   "reasoningTokens": {
+    "n": 996,
+    "min": 40,
+    "p10": 135,
+    "median": 222,
+    "p90": 514,
+    "max": 3032,
+    "mean": 297.8
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 996,
+     "mode": 0,
+     "shareAtMode": 0.991,
+     "min": -1,
+     "max": 15,
+     "distinct": 7
+    },
+    "reasoning_effort=medium": {
+     "n": 996,
+     "mode": 38,
+     "shareAtMode": 0.991,
+     "min": 37,
+     "max": 53,
+     "distinct": 7
+    }
+   }
+  },
+  {
+   "model": "Qwen3.8 27B huihui abliterated (pilot)",
+   "checkpointKey": "qwen38-huihui-abl-q8",
+   "run": "abliteration-pilot-2026-10",
+   "family": "qwen38",
+   "indexedModelIdentifier": [
+    "2e1a82366471bc1a78e9b74d2469172d:huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF/Huihui-Qwen3.8-27B-abliterated-Q8_0.gguf"
+   ],
+   "requestedEffortInMetadata": {
+    "high": 9
+   },
+   "responsesWithObservation": 993,
+   "reasoningTokens": {
+    "n": 993,
+    "min": 64,
+    "p10": 135,
+    "median": 252,
+    "p90": 542,
+    "max": 3177,
+    "mean": 318.9
+   },
+   "shareZeroReasoningTokens": 0.0,
+   "shareWithReasoningContent": 1.0,
+   "offsets": {
+    "default": {
+     "n": 993,
+     "mode": 0,
+     "shareAtMode": 0.9909,
+     "min": -1,
+     "max": 15,
+     "distinct": 7
+    },
+    "reasoning_effort=medium": {
+     "n": 993,
+     "mode": 38,
+     "shareAtMode": 0.9909,
+     "min": 37,
+     "max": 53,
+     "distinct": 7
+    }
+   }
+  }
+ ],
+ "ggufVerification": {
+  "ornith-ai/Ornith-1.5-35B-A3B-GGUF/Ornith-1.5-35B-Q8_0.gguf": {
+   "sha256": "f55f52930aa8bf44ab5cb85f99370fcc3c56e9a85640b812086d5330bce5d86b",
+   "headerBytesRead": 16777216,
+   "family": "ornith",
+   "matchesRenderedTemplate": true
+  },
+  "lmstudio-community/gemma-4-26B-A4B-it-GGUF/gemma-4-26B-A4B-it-Q8_0.gguf": {
+   "sha256": "85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98",
+   "headerBytesRead": 16777216,
+   "family": "gemma4",
+   "matchesRenderedTemplate": true
+  },
+  "unsloth/Qwen3.6-35B-A3B-GGUF/Qwen3.6-35B-A3B-Q8_0.gguf": {
+   "sha256": "55d4931433fe502b794226ee7f4d206a6bdd436ac9f80eb7d8ebb4c639f9ea0c",
+   "headerBytesRead": 16777216,
+   "family": "qwen36",
+   "matchesRenderedTemplate": true
+  },
+  "lmstudio-community/Laguna-XS-2.1-GGUF/Laguna-XS-2.1-Q8_0.gguf": {
+   "sha256": "2d3c724b3c2e9eb71fe9ccc5423ff268a370a8bfa89e9238b6de14fe000825c8",
+   "headerBytesRead": 8388608,
+   "family": "laguna",
+   "matchesRenderedTemplate": true
+  },
+  "lmstudio-community/Qwen3.8-27B-GGUF/Qwen3.8-27B-Q8_0.gguf": {
+   "sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041",
+   "headerBytesRead": 16777216,
+   "family": "qwen38",
+   "matchesRenderedTemplate": true
+  },
+  "unsloth/Qwen3.6-27B-GGUF/Qwen3.6-27B-Q8_0.gguf": {
+   "sha256": "55d4931433fe502b794226ee7f4d206a6bdd436ac9f80eb7d8ebb4c639f9ea0c",
+   "headerBytesRead": 16777216,
+   "family": "qwen36",
+   "matchesRenderedTemplate": true
+  },
+  "unsloth/Muse-Glimmer-30B-GGUF/Muse-Glimmer-30B-Q8_0.gguf": {
+   "sha256": "114f55ebdc1804c1af371197b9fdf2d6bb925966c9dfe46b73782a71bc07965e",
+   "headerBytesRead": 16777216,
+   "family": "muse",
+   "matchesRenderedTemplate": true
+  },
+  "lmstudio-community/gemma-4-31B-it-GGUF/gemma-4-31B-it-Q8_0.gguf": {
+   "sha256": "85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98",
+   "headerBytesRead": 16777216,
+   "family": "gemma4",
+   "matchesRenderedTemplate": true
+  },
+  "mradermacher/Qwen3.8-27B-heretic-ara-GGUF/Qwen3.8-27B-heretic-ara.Q8_0.gguf": {
+   "sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041",
+   "headerBytesRead": 16777216,
+   "family": "qwen38",
+   "matchesRenderedTemplate": true
+  },
+  "huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF/Huihui-Qwen3.8-27B-abliterated-Q8_0.gguf": {
+   "sha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041",
+   "headerBytesRead": 16777216,
+   "family": "qwen38",
+   "matchesRenderedTemplate": true
+  }
+ },
+ "promptTokenDifferences": {
+  "qwen38-q8gguf minus qwen36-35b-a3b-q8": {
+   "n": 6627,
+   "distribution": {
+    "38": 6627
+   }
+  },
+  "qwen38-q8gguf minus ornith-q8": {
+   "n": 6623,
+   "distribution": {
+    "38": 6623
+   }
+  },
+  "extension: qwen38-q8gguf minus qwen36-35b-a3b-q8": {
+   "n": 6755,
+   "distribution": {
+    "38": 6755
+   }
+  },
+  "MacBook 2026-10-04 qwen38-27b-q8 minus Studio qwen38-q8gguf": {
+   "n": 976,
+   "distribution": {
+    "0": 976
+   }
+  },
+  "qwen38-heretic-ara-q8 minus pilot qwen38-q8gguf": {
+   "n": 24,
+   "distribution": {
+    "0": 24
+   }
+  },
+  "qwen38-huihui-abl-q8 minus pilot qwen38-q8gguf": {
+   "n": 24,
+   "distribution": {
+    "0": 24
+   }
+  }
+ }
+}

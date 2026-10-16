@@ -16,7 +16,11 @@ those numbers without rerunning inference. Folder names mirror the original run 
   `evals/runs/<run-id>`), and it is marked `published copy`. Nothing else was edited. Four later files were never in a
   run directory and have `-` for the original path and hash: `studio-baseline-t4096-2026-10-07/analyze-baseline.ts`
   (`authored`) and its output `results/baseline-results.json` (`generated`), plus
-  `abliteration-pilot-2026-10/make-pilot-plan.ts` and `supplement-pilot.ts` (`authored`).
+  `abliteration-pilot-2026-10/make-pilot-plan.ts` and `supplement-pilot.ts` (`authored`). The
+  `qwen38-effort-calibration-2026-10/` folder adds four `authored` scripts, two `generated` results and five
+  `third-party` chat templates. For a template, the original column holds the GGUF file URL it was read from and the
+  copy column holds its license. Laguna's template is recorded by URL and hash only (`not-redistributed`, published
+  path `-`).
 
 ## Running them
 
@@ -177,6 +181,22 @@ Study A (chunking, MoE vs dense) and Study B planning on the Mac Studio. Cited b
 | `audit-cross-study-reuse.ts`, `audit-cross-study-reuse-e2b.ts` | Cross-study exact-input window reuse audits. |
 | `analyze-paper-baseline.ts`, `score-overlap.ts`, `inspect-generation-score-overlap.ts` | Paper baseline diagnostics and score-overlap threshold replays. `score-overlap.ts` also writes `bipia-payload-inspection.json`, which is **not** published because it keeps recovered payload text. |
 | `results/` | The three paper-window first-20 summaries (cited by their reports), `benign-split-comparison.json`, `segment-equivalence-audit.json`, `bipia-comparison.json`, `first20-full-generation-comparison.json`, `cross-study-window-reuse-audit{,-e2b}.json`. |
+
+### `qwen38-effort-calibration-2026-10/`
+
+The Qwen3.8 effort finding and calibration analysis ([#33](https://github.com/elicollinson/solenoid-security/issues/33);
+[report](../reports/qwen38-effort-calibration-2026-10.md), `FINDINGS.md` Appendix B, O54 and O55, research log L151).
+It is offline and reads the Studio baseline, extension, pilot and 2026-10-04 Qwen3.8 checkpoints. Intermediates go to
+the git-ignored `evals/runs/qwen38-effort-calibration-2026-10/`.
+
+| File | Computes |
+|---|---|
+| `extract.ts` | Audits the baseline and extension checkpoints for Qwen3.8, Qwen3.6 35B-A3B and Gemma26 with `auditPartialCheckpoint` and writes per-case max scores to `cases.json` in the work directory. **Not published**, because it holds per-case IDs and scores. |
+| `analyze.py` | Calibration vs recognition: per-dataset and group BA@0.5, AUROC, score histograms, a global threshold chosen on the baseline and applied to the extension, paired newly-missed score bins, and a paired bootstrap of the AUROC difference (`results/results.json`). |
+| `effort-inputs.ts` | Rebuilds the user-message text for every saved response (verified against `inputSha256`) into `inputs.jsonl` in the work directory. **Not published**, because it holds case text. |
+| `effort-audit.py` | Effort audit: which effort or thinking variables each embedded template reads, the system text it injects per setting, a GGUF-header check of each engine's exact Q8_0 template, hand-rendered vs server `prompt_tokens` offsets per model, and paired `prompt_tokens` differences (`results/effort-audit.json`). |
+| `templates/` | Embedded chat templates of the Q8_0 files (Qwen3.8, Qwen3.6, Ornith 1.5, Gemma 4, Muse Glimmer), third-party, with source and license in `PROVENANCE.tsv`. |
+| `results/` | `results.json` and `effort-audit.json`: aggregates, template hashes and template-authored strings only. |
 
 ### `reuse-verification-2026-10-03/`
 

@@ -135,6 +135,18 @@ evals/analysis/lmstudio-thinking1024-2026-10-03/results/lmstudio-e4b-paper-windo
 evals/analysis/lmstudio-thinking1024-2026-10-03/results/lmstudio-gemma26-paper-window-first20-2026-10-04.json	evals/runs/lmstudio-thinking1024-2026-10-03/lmstudio-gemma26-paper-window-first20-2026-10-04.json	d4eb9e091d592ea3fbf19ea44e067e3f1a69702f5b229cce1e7e15809c165569	verbatim
 evals/analysis/lmstudio-thinking1024-2026-10-03/results/segment-equivalence-audit.json	evals/runs/lmstudio-thinking1024-2026-10-03/segment-equivalence-audit.json	069fc171d65b7e85ab1d41f693fdbffcc7a173f35e2f8c264ca75dc1cf6cd270	verbatim
 evals/analysis/lmstudio-thinking1024-2026-10-03/score-overlap.ts	evals/runs/lmstudio-thinking1024-2026-10-03/score-overlap.ts	278dd94b58301083f5c6f26791ab39ab33dc421380c14b13a280b4b9b1143ba6	verbatim
+evals/analysis/qwen38-effort-calibration-2026-10/analyze.py	-	-	authored
+evals/analysis/qwen38-effort-calibration-2026-10/effort-audit.py	-	-	authored
+evals/analysis/qwen38-effort-calibration-2026-10/effort-inputs.ts	-	-	authored
+evals/analysis/qwen38-effort-calibration-2026-10/extract.ts	-	-	authored
+evals/analysis/qwen38-effort-calibration-2026-10/results/effort-audit.json	-	-	generated
+evals/analysis/qwen38-effort-calibration-2026-10/results/results.json	-	-	generated
+evals/analysis/qwen38-effort-calibration-2026-10/templates/lmstudio-community_Qwen3.8-27B-GGUF.jinja	https://huggingface.co/lmstudio-community/Qwen3.8-27B-GGUF/resolve/main/Qwen3.8-27B-Q8_0.gguf#tokenizer.chat_template	c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041	third-party (apache-2.0)
+evals/analysis/qwen38-effort-calibration-2026-10/templates/lmstudio-community_gemma-4-26B-A4B-it-GGUF_Q8_0.jinja	https://huggingface.co/lmstudio-community/gemma-4-26B-A4B-it-GGUF/resolve/main/gemma-4-26B-A4B-it-Q8_0.gguf#tokenizer.chat_template	85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98	third-party (apache-2.0)
+evals/analysis/qwen38-effort-calibration-2026-10/templates/ornith-ai_Ornith-1.5-35B-A3B-GGUF.jinja	https://huggingface.co/ornith-ai/Ornith-1.5-35B-A3B-GGUF/resolve/main/Ornith-1.5-35B-Q8_0.gguf#tokenizer.chat_template	f55f52930aa8bf44ab5cb85f99370fcc3c56e9a85640b812086d5330bce5d86b	third-party (mit)
+evals/analysis/qwen38-effort-calibration-2026-10/templates/unsloth_Muse-Glimmer-30B-GGUF.jinja	https://huggingface.co/unsloth/Muse-Glimmer-30B-GGUF/resolve/main/Muse-Glimmer-30B-Q8_0.gguf#tokenizer.chat_template	114f55ebdc1804c1af371197b9fdf2d6bb925966c9dfe46b73782a71bc07965e	third-party (apache-2.0)
+evals/analysis/qwen38-effort-calibration-2026-10/templates/unsloth_Qwen3.6-35B-A3B-GGUF.jinja	https://huggingface.co/unsloth/Qwen3.6-35B-A3B-GGUF/resolve/main/Qwen3.6-35B-A3B-Q8_0.gguf#tokenizer.chat_template	55d4931433fe502b794226ee7f4d206a6bdd436ac9f80eb7d8ebb4c639f9ea0c	third-party (apache-2.0)
+-	https://huggingface.co/lmstudio-community/Laguna-XS-2.1-GGUF/resolve/main/Laguna-XS-2.1-Q8_0.gguf#tokenizer.chat_template	2d3c724b3c2e9eb71fe9ccc5423ff268a370a8bfa89e9238b6de14fe000825c8	not-redistributed (openmdw-1.1; hash and URL only)
 evals/analysis/reuse-verification-2026-10-03/results/summary.json	evals/runs/reuse-verification-2026-10-03/summary.json	ae6277134b32889cc14f88d60e6cb4150d53ca871ba080d14029fefe3053d072	verbatim
 evals/analysis/reuse-verification-2026-10-03/verify-reuse.ts	evals/runs/reuse-verification-2026-10-03/verify-reuse.ts	25982a644c40af109640e40872639eacaf3f262db27a313f6c6104c5e5127b81	verbatim
 evals/analysis/studio-baseline-2026-10-07/make-baseline-plan.py	evals/runs/studio-baseline-2026-10-07/make-baseline-plan.py	6f29134a94f36ba9baf682eca79c467911da0703e962d743aa71a50fdfc27803	path-adjusted

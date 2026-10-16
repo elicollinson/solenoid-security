@@ -25,6 +25,11 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
 reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline is summarized [below](#now-running-as-of-2026-10-12).
 
+> **Qwen3.8 caveat (2026-10-16):** every local Qwen3.8 27B result ran at `xhigh` reasoning effort, with an
+> instruction its chat template adds to the system prompt, not at the requested `high`. Its scores are also
+> under-calibrated at the 0.5 threshold: a 0.15 threshold chosen on the baseline lifts its extension mean balanced
+> accuracy from 0.865 to 0.891 out of sample ([report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
+
 ## Now running (as of 2026-10-16)
 
 **Extension suite on the fully tested models: running** (started 2026-10-13). The seven models that finished the
@@ -60,6 +65,8 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Gemma 4 31B-it | Dense | ✅ Done (mean balanced accuracy 0.923; 0 abstentions) |
 | Muse Glimmer 30B | Dense | ▶ Running |
 
+Qwen3.8 ran at `xhigh` effort with a template-injected instruction, and its 0.5-threshold scores are under-calibrated (see the [caveat above](#results), [report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
+
 **Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
 [results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the
 vanilla model on 9 datasets (998 identical cases per model), under the same protocol.
@@ -85,6 +92,8 @@ later quantization, abliterated-model, prompt and technique comparisons.
 | Qwen3.8 27B | Dense | 0.895 | 17 |
 | Laguna XS 2.1 | MoE (coding) | 0.712 | 114 |
 | Qwen3.6 27B | Dense | ⏸ Deferred (about 3.7× slower than Qwen3.8; can resume later) | — |
+
+Qwen3.8 ran at `xhigh` effort with a template-injected instruction, and its 0.5-threshold scores are under-calibrated (see the [caveat above](#results), [report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 
 Every model scores 0.500 on the Skill-Inject policy pairs. On full text, both members of a pair send identical
 input, so that dataset cannot rank these detectors ([O49](evals/FINDINGS.md)). Gemma 4 31B-it's encoded-benign cell

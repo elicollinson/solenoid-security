@@ -1,5 +1,6 @@
 import { AuthoredTextRegistry } from "./authoredText.js";
-import { aggregate, isInconclusive, segmentText, validateAggregator, validateTechnique } from "./techniques.js";
+import { CONTENT_RECOMMENDATIONS, CONTENT_TYPES, mergeScreeningConfig, parseScreeningOverrides } from "./recommendations.js";
+import { aggregate, applyPreprocess, isInconclusive, segmentText, validateAggregator, validatePreprocess, validateTechnique } from "./techniques.js";
 import { actionFor } from "./trust.js";
 export class ScreeningError extends Error {
     code;
@@ -33,24 +34,58 @@ export function createSecurity(options) {
     const onInconclusive = options.onInconclusive ?? "error";
     if (!["error", "quarantine", "block"].includes(onInconclusive))
         throw new TypeError("onInconclusive must be error, quarantine or block");
-    function resolve(overrides = {}) {
-        const technique = overrides.technique ?? options.screening?.technique ?? { kind: "full_text" };
-        const models = overrides.models ?? options.screening?.models ?? Object.keys(providers);
-        const aggregator = overrides.aggregator ?? options.screening?.aggregator ?? "any";
+    for (const [name, provider] of Object.entries(providers)) {
+        if (provider.threshold !== undefined && !(typeof provider.threshold === "number" && provider.threshold >= 0 && provider.threshold <= 1)) {
+            throw new TypeError(`Provider ${name} has a threshold outside 0-1`);
+        }
+    }
+    for (const type of Object.keys(options.contentTypes ?? {})) {
+        if (!CONTENT_TYPES.includes(type))
+            throw new TypeError(`contentTypes.${type} is not a content type`);
+    }
+    const local = options.localOverrides === undefined ? undefined : parseScreeningOverrides(options.localOverrides, "localOverrides");
+    const modelThresholds = Object.fromEntries(Object.entries(providers)
+        .map(([name, { threshold, comparator }]) => [name, { threshold, comparator }]));
+    /** Layers lowest first; each field takes the last layer that sets it (see ./recommendations.ts). */
+    function resolve(contentType, overrides = {}) {
+        if (contentType !== undefined && !CONTENT_TYPES.includes(contentType))
+            throw new TypeError(`Unknown content type: ${String(contentType)}`);
+        const typed = (entries) => contentType === undefined ? undefined : entries?.[contentType];
+        const layers = [
+            ["default", { technique: { kind: "full_text" }, preprocess: [], models: Object.keys(providers), aggregator: "any" }],
+            ["recommendation", contentType === undefined ? undefined : CONTENT_RECOMMENDATIONS[contentType].screening],
+            ["app", options.screening],
+            ["app_content_type", typed(options.contentTypes)],
+            ["local", local?.screening],
+            ["local_content_type", typed(local?.contentTypes)],
+            ["call", overrides],
+        ];
+        const merged = mergeScreeningConfig(...layers.map(([, config]) => config));
+        const source = (field) => [...layers].reverse().find(([, config]) => config?.[field] !== undefined)[0];
+        const { technique, preprocess, models, aggregator } = merged;
         validateTechnique(technique);
+        validatePreprocess(preprocess);
         validateAggregator(aggregator);
         if (models.length === 0)
             throw new TypeError("At least one screening model is required");
         const unknown = models.filter((model) => !Object.hasOwn(providers, model));
         if (unknown.length)
             throw new TypeError(`Unknown screening model: ${unknown.join(", ")}`);
-        return { technique, models: [...new Set(models)], aggregator };
+        return {
+            technique, preprocess, models: [...new Set(models)], aggregator,
+            sources: { technique: source("technique"), preprocess: source("preprocess"), models: source("models"), aggregator: source("aggregator") },
+        };
     }
+    // Fail at creation, not on the first screen, for every layer the app supplied.
     resolve();
+    for (const type of CONTENT_TYPES)
+        resolve(type);
     /** One pass: segment, have every model judge every segment, aggregate. */
     async function runStage(redacted, technique, config, name) {
         // Full text keeps the caller's parts intact; chunking works on their join.
-        const segments = technique.kind === "full_text"
+        // The decoded_preview_v1 technique on text already previewed by `preprocess`
+        // is plain full text: the preview is not applied twice.
+        const segments = technique.kind === "full_text" || (config.previewed && technique.kind === "decoded_preview_v1")
             ? [{ index: 0, parts: redacted }]
             : segmentText(redacted.join("\n"), technique).map(({ text, ...segment }) => ({ ...segment, parts: [text] }));
         let assessments;
@@ -63,7 +98,7 @@ export function createSecurity(options) {
             throw new ScreeningError(error, { code: "provider_failed" });
         }
         try {
-            return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator) };
+            return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator, modelThresholds) };
         }
         catch (error) {
             throw new ScreeningError(error, { code: "invalid_assessment" });
@@ -71,6 +106,10 @@ export function createSecurity(options) {
     }
     return {
         authoredText: registry,
+        /** The settings a screen of this content type, with these overrides, would run with, and where each came from. */
+        resolveScreening(contentType, overrides) {
+            return resolve(contentType, overrides);
+        },
         async screen(input, overrides) {
             if (input.type !== "text")
                 throw new TypeError("Only text input is supported in this release");
@@ -78,15 +117,18 @@ export function createSecurity(options) {
             if (!Array.isArray(content) || content.length === 0 || content.some((part) => typeof part !== "string")) {
                 throw new TypeError("Text input must contain at least one string");
             }
-            const config = resolve(overrides);
+            const config = resolve(input.contentType, overrides);
             const origin = input.origin ?? "external";
             const boundary = input.boundary ?? "input";
             const redacted = content.map((part) => registry.redact(part));
             const authoredCharsRedacted = content.reduce((sum, part) => sum + part.length, 0) -
                 redacted.reduce((sum, part) => sum + part.length, 0);
-            const base = { origin, boundary, authoredCharsRedacted };
+            const base = { origin, boundary, ...(input.contentType ? { contentType: input.contentType } : {}), authoredCharsRedacted };
             if (redacted.every((part) => !part.trim()))
                 return { ...base, decision: "allow" };
+            // Preprocessing runs once, after authored text is removed, and every pass sees its output.
+            const prepared = applyPreprocess(redacted, config.preprocess);
+            const stageConfig = { ...config, previewed: config.preprocess.includes("decoded_preview_v1") };
             // A cascade's second pass runs only when the first did not settle the
             // outcome. A flag settles it (the stages are OR-ed, so nothing later can
             // clear it), and so does another content filter's match, which blocks
@@ -98,7 +140,7 @@ export function createSecurity(options) {
                 : [[config.technique]];
             const stages = [];
             for (const [technique, name] of plan) {
-                const stage = await runStage(redacted, technique, config, name);
+                const stage = await runStage(prepared, technique, stageConfig, name);
                 stages.push(stage);
                 if (stage.verdict.flagged || stage.assessments.some(({ assessment }) => contentBlocked(assessment)))
                     break;

@@ -1,3 +1,36 @@
+export const PREPROCESSORS = ["decoded_preview_v1"];
+export function validatePreprocess(preprocess) {
+    if (!Array.isArray(preprocess))
+        throw new Error("Invalid preprocess: expected an array");
+    for (const step of preprocess)
+        if (!PREPROCESSORS.includes(step))
+            throw new Error(`Unknown preprocessor: ${String(step)}`);
+    if (new Set(preprocess).size !== preprocess.length)
+        throw new Error("Invalid preprocess: a step is listed twice");
+}
+/** Joins the parts and applies each step in order. No steps: the parts are returned untouched. */
+export function applyPreprocess(parts, preprocess) {
+    validatePreprocess(preprocess);
+    if (!preprocess.length)
+        return [...parts];
+    let text = parts.join("\n");
+    for (const step of preprocess)
+        if (step === "decoded_preview_v1")
+            text = decodedPreviewV1(text);
+    return [text];
+}
+/** The score threshold when neither the aggregator nor the provider sets one: the eval decision rule's 0.5. */
+export const DEFAULT_SCORE_THRESHOLD = 0.5;
+/** The threshold a `lengthAdjust` gives a pass of `segments` segments. */
+export function adjustThreshold(threshold, segments, lengthAdjust) {
+    if (!lengthAdjust || segments <= 1)
+        return threshold;
+    const n = segments;
+    const raw = lengthAdjust.kind === "sidak" ? threshold ** (1 / n)
+        : lengthAdjust.kind === "bonferroni" ? 1 - (1 - threshold) / n
+            : threshold + lengthAdjust.perSegment * (n - 1);
+    return Math.max(threshold, Math.min(lengthAdjust.cap ?? 1, raw));
+}
 export function seededRandom(seed) {
     let state = seed >>> 0;
     return () => { state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return state / 0x100000000; };
@@ -27,12 +60,20 @@ export function validateTechnique(technique) {
         throw new Error(`Unknown screening technique: ${technique.kind}`);
     }
 }
+const unit = (value) => typeof value === "number" && value >= 0 && value <= 1;
 export function validateAggregator(aggregator) {
     if (aggregator === "any" || aggregator === "all" || typeof aggregator === "function")
         return;
     if (aggregator?.kind !== "score" || !["max", "mean", "min"].includes(aggregator.reduce) || ![undefined, ">", ">="].includes(aggregator.comparator) ||
-        typeof aggregator.threshold !== "number" || aggregator.threshold < 0 || aggregator.threshold > 1) {
+        (aggregator.threshold !== undefined && !unit(aggregator.threshold))) {
         throw new Error("Invalid screening aggregator");
+    }
+    const adjust = aggregator.lengthAdjust;
+    if (adjust === undefined)
+        return;
+    if (!["sidak", "bonferroni", "linear"].includes(adjust?.kind) || (adjust.cap !== undefined && !unit(adjust.cap)) ||
+        (adjust.kind === "linear" && !(typeof adjust.perSegment === "number" && Number.isFinite(adjust.perSegment) && adjust.perSegment >= 0))) {
+        throw new Error("Invalid screening aggregator: lengthAdjust");
     }
 }
 /** Splits text into the segments a technique screens. Whitespace-only text has none. */
@@ -135,30 +176,41 @@ function summarize(results, aggregator) {
         : aggregator.reduce === "min" ? Math.min(...scores)
             : scores.reduce((sum, value) => sum + value, 0) / scores.length;
 }
-function vote(results, aggregator) {
+function vote(results, aggregator, models) {
     if (aggregator === "any")
         return results.some(({ assessment }) => assessment.flagged);
     if (aggregator === "all")
         return results.length > 0 && results.every(({ assessment }) => assessment.flagged);
     if (typeof aggregator === "function")
         return aggregator(results) === true;
-    const score = summarize(results, aggregator);
-    return aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold;
+    const segments = new Set(results.map(({ segment }) => segment)).size;
+    const crosses = (score, threshold, comparator) => {
+        const adjusted = adjustThreshold(threshold, segments, aggregator.lengthAdjust);
+        return comparator === ">=" ? score >= adjusted : score > adjusted;
+    };
+    if (aggregator.threshold !== undefined)
+        return crosses(summarize(results, aggregator), aggregator.threshold, aggregator.comparator);
+    // No threshold on the rule: each model is held to its own (see ScoreAggregator).
+    const byModel = new Map();
+    for (const result of results)
+        byModel.set(result.model, [...byModel.get(result.model) ?? [], result]);
+    return [...byModel].some(([model, own]) => crosses(summarize(own, aggregator), models[model]?.threshold ?? DEFAULT_SCORE_THRESHOLD, aggregator.comparator ?? models[model]?.comparator));
 }
 /**
  * Applies an aggregator, returning the case flag and the score that summarizes
  * it. Inconclusive assessments are resolved by the two-reading rule documented
- * on `ScreeningAggregator`.
+ * on `ScreeningAggregator`. `models` supplies each model's own threshold for a
+ * score rule that sets none.
  */
-export function aggregate(results, aggregator) {
+export function aggregate(results, aggregator, models = {}) {
     const conclusive = results.filter(({ assessment }) => !isInconclusive(assessment));
     const score = conclusive.length || !results.length ? summarize(conclusive, aggregator) : Number.NaN;
     if (conclusive.length === results.length)
-        return { flagged: vote(results, aggregator), inconclusive: false, score };
+        return { flagged: vote(results, aggregator, models), inconclusive: false, score };
     const assume = (flagged) => results.map((result) => isInconclusive(result.assessment)
         ? { ...result, assessment: { ...result.assessment, flagged, score: flagged ? 1 : 0 } }
         : result);
-    const worst = vote(assume(true), aggregator);
-    const best = vote(assume(false), aggregator);
+    const worst = vote(assume(true), aggregator, models);
+    const best = vote(assume(false), aggregator, models);
     return worst === best ? { flagged: worst, inconclusive: false, score } : { flagged: false, inconclusive: true, score };
 }

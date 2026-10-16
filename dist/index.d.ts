@@ -1,11 +1,13 @@
 export { createSecurity, ScreeningError } from "./screen.js";
-export type { CascadeStageResult, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningDecision, ScreeningErrorCode, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
-export { segmentText } from "./techniques.js";
-export type { CascadeTechnique, ScreeningAggregator, ScreeningTechnique, SegmentAssessment, SegmentingTechnique, SingleStageTechnique, TextSegment } from "./techniques.js";
+export type { CascadeStageResult, ResolvedScreeningConfig, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningConfigSource, ScreeningDecision, ScreeningErrorCode, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
+export { adjustThreshold, applyPreprocess, DEFAULT_SCORE_THRESHOLD, PREPROCESSORS, segmentText } from "./techniques.js";
+export type { CascadeTechnique, LengthAdjust, ModelThreshold, Preprocessor, ScoreAggregator, ScreeningAggregator, ScreeningTechnique, SegmentAssessment, SegmentingTechnique, SingleStageTechnique, TextSegment } from "./techniques.js";
+export { CONTENT_RECOMMENDATIONS, CONTENT_TYPES, DEFAULT_JUDGE_PROFILE_ID, JUDGE_PROFILES, mergeScreeningConfig, parseScreeningOverrides } from "./recommendations.js";
+export type { ContentRecommendation, ContentType, EvidenceStatus, JudgeProfile, JudgeProfileId, ScreeningLayer } from "./recommendations.js";
 export { ModelArmorScanner } from "./modelArmor.js";
 export type { ModelArmorAssessment, ModelArmorFilterVerdict, ModelArmorScannerOptions, PromptTextParts, FetchLike } from "./modelArmor.js";
 export { OpenAICompatibleJudge, SCORE_ONLY_PROMPT, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_SCHEMA, SCORE_ONLY_SCHEMA_ID } from "./llmJudge.js";
-export type { JudgeAbstentionReason, JudgeUsage, OpenAICompatibleJudgeAssessment, OpenAICompatibleJudgeOptions } from "./llmJudge.js";
+export type { JudgeAbstentionReason, JudgeReasoningEffort, JudgeUsage, OpenAICompatibleJudgeAssessment, OpenAICompatibleJudgeOptions } from "./llmJudge.js";
 export { AuthoredTextRegistry, MIN_AUTHORED_LENGTH, authoredText } from "./authoredText.js";
 export type { AuthoredEntry } from "./authoredText.js";
 export { actionFor, DEFAULT_ORIGIN, ORIGIN_ACTION } from "./trust.js";

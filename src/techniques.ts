@@ -53,6 +53,36 @@ export interface CascadeTechnique {
 
 export type ScreeningTechnique = SingleStageTechnique | CascadeTechnique;
 
+/**
+ * A transformation of the whole text before any technique segments it. The
+ * caller's parts are joined with "\n" first, so a preprocessed screen always
+ * sends providers one string per segment.
+ *
+ * `decoded_preview_v1` appends bounded decoded views of encoded spans (see
+ * `decodedPreviewV1`). As a preprocessing step it composes with any technique,
+ * windows and cascades included: `{ preprocess: ["decoded_preview_v1"],
+ * technique: { kind: "sliding_word_window_preserve_v1", ... } }` windows the
+ * source plus its previews. The technique `{ kind: "decoded_preview_v1" }` is
+ * the same preview followed by full text, byte for byte.
+ */
+export type Preprocessor = "decoded_preview_v1";
+export const PREPROCESSORS: readonly Preprocessor[] = ["decoded_preview_v1"];
+
+export function validatePreprocess(preprocess: readonly Preprocessor[]): void {
+  if (!Array.isArray(preprocess)) throw new Error("Invalid preprocess: expected an array");
+  for (const step of preprocess) if (!PREPROCESSORS.includes(step)) throw new Error(`Unknown preprocessor: ${String(step)}`);
+  if (new Set(preprocess).size !== preprocess.length) throw new Error("Invalid preprocess: a step is listed twice");
+}
+
+/** Joins the parts and applies each step in order. No steps: the parts are returned untouched. */
+export function applyPreprocess(parts: readonly string[], preprocess: readonly Preprocessor[]): string[] {
+  validatePreprocess(preprocess);
+  if (!preprocess.length) return [...parts];
+  let text = parts.join("\n");
+  for (const step of preprocess) if (step === "decoded_preview_v1") text = decodedPreviewV1(text);
+  return [text];
+}
+
 export interface TextSegment {
   index: number;
   text: string;
@@ -90,8 +120,77 @@ export interface SegmentAssessment {
 export type ScreeningAggregator =
   | "any"
   | "all"
-  | { kind: "score"; reduce: "max" | "mean" | "min"; threshold: number; comparator?: ">" | ">=" }
+  | ScoreAggregator
   | ((results: readonly SegmentAssessment[]) => boolean);
+
+/**
+ * Reduces provider scores and compares them with a threshold.
+ *
+ * The threshold resolves in this order:
+ *   1. `threshold` here, when set (at whichever configuration layer set this aggregator);
+ *   2. otherwise each model's own threshold: a provider's `threshold` property,
+ *      which for `OpenAICompatibleJudge` is its `threshold` option, else its
+ *      judge profile's, else 0.5;
+ *   3. otherwise `DEFAULT_SCORE_THRESHOLD` (0.5).
+ * With an explicit threshold, every assessment's score is reduced together, as
+ * before. Without one, each model's segment scores are reduced separately and
+ * compared with that model's threshold, and the text is flagged if any model
+ * flags. With one model, or models sharing a threshold under `"max"`, the two
+ * readings agree. The comparator resolves the same way, defaulting to `">"`.
+ */
+export interface ScoreAggregator {
+  kind: "score";
+  reduce: "max" | "mean" | "min";
+  threshold?: number;
+  comparator?: ">" | ">=";
+  /** Raises the threshold with the number of segments in the pass. Off by default; see `LengthAdjust`. */
+  lengthAdjust?: LengthAdjust;
+}
+
+/**
+ * Raises a score threshold as a pass screens more segments, because every
+ * segment is another chance for clean text to cross it: max-over-windows adds
+ * false alarms as documents grow (FINDINGS O9). DeFuse (arXiv 2609.22510)
+ * puts a 1% per-window false-positive rate at a ~98% document-level rate for a
+ * 402-window document. With `n` segments in the pass and base threshold `t`:
+ *
+ *   - `sidak`:      t' = t^(1/n). Reads 1 − t as a document-level false-positive
+ *                   budget α and keeps it: per-segment α_s = 1 − (1 − α)^(1/n).
+ *   - `bonferroni`: t' = 1 − (1 − t) / n. The same budget split evenly, α_s = α / n.
+ *   - `linear`:     t' = t + perSegment × (n − 1).
+ *
+ * The result is clamped to [t, cap] (cap defaults to 1), so an adjustment never
+ * lowers the threshold, and n = 1 (full text) leaves it unchanged. In a cascade
+ * each pass counts its own segments.
+ *
+ * UNCALIBRATED. `sidak` and `bonferroni` treat the score as a calibrated tail
+ * probability, which no judge here has been shown to produce (most score near
+ * 0 or 1), and `linear` has no measured slope. Long benign controls are needed
+ * before any of these is recommended (FINDINGS O9, backlog item 3; issue #4).
+ */
+export type LengthAdjust =
+  | { kind: "sidak"; cap?: number }
+  | { kind: "bonferroni"; cap?: number }
+  | { kind: "linear"; perSegment: number; cap?: number };
+
+/** The score threshold when neither the aggregator nor the provider sets one: the eval decision rule's 0.5. */
+export const DEFAULT_SCORE_THRESHOLD = 0.5;
+
+/** A model's own flag threshold, read from its provider. */
+export interface ModelThreshold {
+  threshold?: number;
+  comparator?: ">" | ">=";
+}
+
+/** The threshold a `lengthAdjust` gives a pass of `segments` segments. */
+export function adjustThreshold(threshold: number, segments: number, lengthAdjust?: LengthAdjust): number {
+  if (!lengthAdjust || segments <= 1) return threshold;
+  const n = segments;
+  const raw = lengthAdjust.kind === "sidak" ? threshold ** (1 / n)
+    : lengthAdjust.kind === "bonferroni" ? 1 - (1 - threshold) / n
+      : threshold + lengthAdjust.perSegment * (n - 1);
+  return Math.max(threshold, Math.min(lengthAdjust.cap ?? 1, raw));
+}
 
 export function seededRandom(seed: number): () => number {
   let state = seed >>> 0;
@@ -117,11 +216,19 @@ export function validateTechnique(technique: ScreeningTechnique): void {
   }
 }
 
+const unit = (value: unknown) => typeof value === "number" && value >= 0 && value <= 1;
+
 export function validateAggregator(aggregator: ScreeningAggregator): void {
   if (aggregator === "any" || aggregator === "all" || typeof aggregator === "function") return;
   if (aggregator?.kind !== "score" || !["max", "mean", "min"].includes(aggregator.reduce) || ![undefined, ">", ">="].includes(aggregator.comparator) ||
-    typeof aggregator.threshold !== "number" || aggregator.threshold < 0 || aggregator.threshold > 1) {
+    (aggregator.threshold !== undefined && !unit(aggregator.threshold))) {
     throw new Error("Invalid screening aggregator");
+  }
+  const adjust = aggregator.lengthAdjust;
+  if (adjust === undefined) return;
+  if (!["sidak", "bonferroni", "linear"].includes(adjust?.kind) || (adjust.cap !== undefined && !unit(adjust.cap)) ||
+    (adjust.kind === "linear" && !(typeof adjust.perSegment === "number" && Number.isFinite(adjust.perSegment) && adjust.perSegment >= 0))) {
+    throw new Error("Invalid screening aggregator: lengthAdjust");
   }
 }
 
@@ -219,27 +326,37 @@ function summarize(results: readonly SegmentAssessment[], aggregator: ScreeningA
       : scores.reduce((sum, value) => sum + value, 0) / scores.length;
 }
 
-function vote(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): boolean {
+function vote(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator, models: Readonly<Record<string, ModelThreshold>>): boolean {
   if (aggregator === "any") return results.some(({ assessment }) => assessment.flagged);
   if (aggregator === "all") return results.length > 0 && results.every(({ assessment }) => assessment.flagged);
   if (typeof aggregator === "function") return aggregator(results) === true;
-  const score = summarize(results, aggregator);
-  return aggregator.comparator === ">=" ? score >= aggregator.threshold : score > aggregator.threshold;
+  const segments = new Set(results.map(({ segment }) => segment)).size;
+  const crosses = (score: number, threshold: number, comparator: ">" | ">=" | undefined) => {
+    const adjusted = adjustThreshold(threshold, segments, aggregator.lengthAdjust);
+    return comparator === ">=" ? score >= adjusted : score > adjusted;
+  };
+  if (aggregator.threshold !== undefined) return crosses(summarize(results, aggregator), aggregator.threshold, aggregator.comparator);
+  // No threshold on the rule: each model is held to its own (see ScoreAggregator).
+  const byModel = new Map<string, SegmentAssessment[]>();
+  for (const result of results) byModel.set(result.model, [...byModel.get(result.model) ?? [], result]);
+  return [...byModel].some(([model, own]) => crosses(summarize(own, aggregator),
+    models[model]?.threshold ?? DEFAULT_SCORE_THRESHOLD, aggregator.comparator ?? models[model]?.comparator));
 }
 
 /**
  * Applies an aggregator, returning the case flag and the score that summarizes
  * it. Inconclusive assessments are resolved by the two-reading rule documented
- * on `ScreeningAggregator`.
+ * on `ScreeningAggregator`. `models` supplies each model's own threshold for a
+ * score rule that sets none.
  */
-export function aggregate(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator): AggregateVerdict {
+export function aggregate(results: readonly SegmentAssessment[], aggregator: ScreeningAggregator, models: Readonly<Record<string, ModelThreshold>> = {}): AggregateVerdict {
   const conclusive = results.filter(({ assessment }) => !isInconclusive(assessment));
   const score = conclusive.length || !results.length ? summarize(conclusive, aggregator) : Number.NaN;
-  if (conclusive.length === results.length) return { flagged: vote(results, aggregator), inconclusive: false, score };
+  if (conclusive.length === results.length) return { flagged: vote(results, aggregator, models), inconclusive: false, score };
   const assume = (flagged: boolean) => results.map((result) => isInconclusive(result.assessment)
     ? { ...result, assessment: { ...result.assessment, flagged, score: flagged ? 1 : 0 } }
     : result);
-  const worst = vote(assume(true), aggregator);
-  const best = vote(assume(false), aggregator);
+  const worst = vote(assume(true), aggregator, models);
+  const best = vote(assume(false), aggregator, models);
   return worst === best ? { flagged: worst, inconclusive: false, score } : { flagged: false, inconclusive: true, score };
 }

@@ -1,5 +1,6 @@
 import type { ScreeningAssessment } from "./screen.js";
 import type { FetchLike, PromptTextParts } from "./modelArmor.js";
+import { type JudgeProfile, type JudgeProfileId } from "./recommendations.js";
 /** The eval prompt id this judge reproduces (evals/src/engines.ts `SCORE_ONLY_PROMPT_ID`). */
 export declare const SCORE_ONLY_PROMPT_ID = "security-eval-score-only-json-v1";
 /** The system prompt, byte-identical to the measured eval prompt. */
@@ -33,6 +34,8 @@ export type JudgeAbstentionReason =
  | "invalid_json"
 /** The object lacked a finite `concernScore` from 0 to 1, or carried other fields. */
  | "invalid_score";
+/** Values accepted for `reasoning_effort`. Which ones a model honors depends on its chat template. */
+export type JudgeReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
 export interface JudgeUsage {
     promptTokens?: number;
     completionTokens?: number;
@@ -62,6 +65,15 @@ export interface OpenAICompatibleJudgeOptions {
     fetchFn?: FetchLike;
     /** Per-request timeout. Defaults to 120,000 ms. */
     timeoutMs?: number;
+    /**
+     * The measured settings for a model, by id from `JUDGE_PROFILES` or as a
+     * profile object. Each setting resolves in this order: the option set here,
+     * then the profile's value, then the library default below. The profile's
+     * threshold also becomes this judge's `threshold` property, which a score
+     * aggregator without a threshold reads. `model` is still required: the profile's
+     * `modelHint` is the key the measurements used, and your server's alias may differ.
+     */
+    profile?: JudgeProfileId | JudgeProfile;
     /** Defaults to 0, as measured. */
     temperature?: number;
     /**
@@ -72,9 +84,14 @@ export interface OpenAICompatibleJudgeOptions {
      * (FINDINGS Appendix A). A budget that low turns detections into abstentions.
      */
     maxTokens?: number;
-    /** Sent as `reasoning_effort` when set (LM Studio, vLLM and OpenRouter accept it). */
-    reasoningEffort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
-    /** A score above this flags. Defaults to 0.5. */
+    /**
+     * Sent as `reasoning_effort` when set (LM Studio, vLLM and OpenRouter accept
+     * it). A value outside the profile's `acceptedReasoningEfforts` is rejected:
+     * Qwen3.8's template, for one, silently ignores anything but xhigh, medium
+     * or low and falls back to xhigh (issue #33).
+     */
+    reasoningEffort?: JudgeReasoningEffort;
+    /** A score above this flags. Defaults to the profile's threshold, else 0.5. */
     threshold?: number;
     /** Defaults to `">"`, the comparator the eval decision rules used. */
     comparator?: ">" | ">=";
@@ -102,6 +119,11 @@ export declare function parseScoreOnly(content: string): {
 /** Implements `TextScreeningProvider`, like `ModelArmorScanner`. */
 export declare class OpenAICompatibleJudge {
     private readonly options;
+    /** The resolved profile, when one was given. */
+    readonly profile?: JudgeProfile;
     constructor(options: OpenAICompatibleJudgeOptions);
+    /** The score above which this judge flags. `screen` reads it for a score aggregator that sets no threshold. */
+    get threshold(): number;
+    get comparator(): ">" | ">=";
     assess(parts: PromptTextParts): Promise<OpenAICompatibleJudgeAssessment>;
 }

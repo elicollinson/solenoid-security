@@ -17,6 +17,41 @@ const FILTER_RESULT_FIELDS = [
     "csamFilterFilterResult",
     "virusScanFilterResult",
 ];
+/**
+ * MIME types Model Armor screens natively as a `byteItem`, mapped to its
+ * `byteDataType`. From Google's documentation (DataItem reference and the
+ * overview's document screening section): PDF, Word, Excel and PowerPoint
+ * OOXML formats, TXT and CSV. Legacy binary Office formats are not listed by
+ * Google beyond POT, so they are not declared here.
+ */
+export const MODEL_ARMOR_DOCUMENT_TYPES = {
+    "application/pdf": "PDF",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "WORD_DOCUMENT",
+    "application/vnd.ms-word.document.macroenabled.12": "WORD_DOCUMENT",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.template": "WORD_DOCUMENT",
+    "application/vnd.ms-word.template.macroenabled.12": "WORD_DOCUMENT",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "EXCEL_DOCUMENT",
+    "application/vnd.ms-excel.sheet.macroenabled.12": "EXCEL_DOCUMENT",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.template": "EXCEL_DOCUMENT",
+    "application/vnd.ms-excel.template.macroenabled.12": "EXCEL_DOCUMENT",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": "POWERPOINT_DOCUMENT",
+    "application/vnd.ms-powerpoint.presentation.macroenabled.12": "POWERPOINT_DOCUMENT",
+    "application/vnd.openxmlformats-officedocument.presentationml.template": "POWERPOINT_DOCUMENT",
+    "application/vnd.ms-powerpoint.template.macroenabled.12": "POWERPOINT_DOCUMENT",
+    "text/plain": "TXT",
+    "text/csv": "CSV",
+};
+/** Image types Model Armor screens: JPEG, PNG and BMP. */
+export const MODEL_ARMOR_IMAGE_TYPES = ["image/jpeg", "image/png", "image/bmp"];
+/**
+ * Google's limit for both files and images is "4 MB"; read as decimal so the
+ * library refuses anything Model Armor might skip. A larger file is not an
+ * error there: Model Armor skips scanning it, which this library must never
+ * read as clean, so it fails closed before the request instead.
+ */
+export const MODEL_ARMOR_MAX_BYTES = 4_000_000;
+/** Model Armor rejects files under 69 bytes as invalid. */
+const MODEL_ARMOR_MIN_DOCUMENT_BYTES = 69;
 const KNOWN_FILTERS = new Set(["rai", "sdp", "pi_and_jailbreak", "malicious_uris", "csam", "virus_scan"]);
 function object(value) {
     return value !== null && typeof value === "object" && !Array.isArray(value)
@@ -66,6 +101,8 @@ function combineParts(parts) {
 export class ModelArmorScanner {
     options;
     auth;
+    /** Text, natively screened documents, and images when `imageScreening` is on. `screen` reads this to route inputs. */
+    supports;
     constructor(options = {}) {
         this.options = {
             projectId: options.projectId,
@@ -77,6 +114,14 @@ export class ModelArmorScanner {
             credentialsBase64: options.credentialsBase64,
             fetchFn: options.fetchFn ?? fetch,
             getAuthToken: options.getAuthToken,
+        };
+        if (options.imageScreening && !["us", "eu"].includes(this.options.location)) {
+            throw new TypeError("Model Armor image screening is available only in the us and eu multi-regions; set location to \"us\" or \"eu\"");
+        }
+        this.supports = {
+            text: true,
+            document: { mimeTypes: Object.keys(MODEL_ARMOR_DOCUMENT_TYPES), maxBytes: MODEL_ARMOR_MAX_BYTES },
+            ...(options.imageScreening ? { image: { mimeTypes: MODEL_ARMOR_IMAGE_TYPES, maxBytes: MODEL_ARMOR_MAX_BYTES } } : {}),
         };
     }
     async getAuthorizationHeader() {
@@ -148,6 +193,37 @@ export class ModelArmorScanner {
         if (!text.trim()) {
             return { ...EMPTY_ASSESSMENT };
         }
+        return this.sanitize({ text });
+    }
+    /**
+     * Screens a document's bytes as a `byteItem`. Throws for a type Model Armor
+     * does not list, a file over 4 MB (which Model Armor would skip, not scan) or
+     * under 69 bytes (which it rejects). The response is read with the same
+     * strict rules as text: a missing or incomplete PI verdict throws.
+     */
+    async assessDocument(document) {
+        const byteDataType = MODEL_ARMOR_DOCUMENT_TYPES[document?.mimeType];
+        if (!byteDataType)
+            throw new TypeError(`Model Armor does not screen ${String(document?.mimeType)} documents`);
+        const size = document.bytes.byteLength;
+        if (size > MODEL_ARMOR_MAX_BYTES)
+            throw new RangeError(`Document of ${size} bytes exceeds Model Armor's 4 MB limit`);
+        if (size < MODEL_ARMOR_MIN_DOCUMENT_BYTES)
+            throw new RangeError(`Document of ${size} bytes is under Model Armor's 69-byte minimum`);
+        return this.sanitize({ byteItem: { byteDataType, byteData: document.base64, ...(document.filename ? { fileLabel: document.filename } : {}) } });
+    }
+    /** Screens one image as a `byteItem` of type IMAGE. Requires `imageScreening: true`. */
+    async assessImage(image) {
+        const capability = this.supports.image;
+        if (!capability)
+            throw new TypeError("Model Armor image screening needs imageScreening: true");
+        if (!capability.mimeTypes.includes(image?.mimeType))
+            throw new TypeError(`Model Armor does not screen ${String(image?.mimeType)} images`);
+        if (image.bytes.byteLength > capability.maxBytes)
+            throw new RangeError(`Image of ${image.bytes.byteLength} bytes exceeds Model Armor's 4 MB limit`);
+        return this.sanitize({ byteItem: { byteDataType: "IMAGE", byteData: image.base64 } });
+    }
+    async sanitize(userPromptData) {
         const url = this.getEndpointUrl();
         const authHeaders = await this.getAuthorizationHeader();
         const response = await this.options.fetchFn(url, {
@@ -157,11 +233,7 @@ export class ModelArmorScanner {
                 "User-Agent": "solenoid-security/0.1.0",
                 ...authHeaders,
             },
-            body: JSON.stringify({
-                userPromptData: {
-                    text,
-                },
-            }),
+            body: JSON.stringify({ userPromptData }),
         });
         if (!response.ok) {
             const errorText = await response.text().catch(() => "");

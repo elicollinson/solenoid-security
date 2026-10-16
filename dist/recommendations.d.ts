@@ -5,7 +5,9 @@ export type EvidenceStatus =
 /** This setup was run on this kind of content under a frozen protocol. */
 "measured"
 /** Inferred from adjacent measurements, or the measurement is still running. */
- | "provisional";
+ | "provisional"
+/** No eval has covered this kind of input yet; the entry is a starting point, not a result. */
+ | "unmeasured";
 /**
  * The settings a model was measured with, for `OpenAICompatibleJudge`'s
  * `profile` option. Every model below ran under one frozen protocol: GGUF Q8_0 in
@@ -38,6 +40,15 @@ export interface JudgeProfile {
     };
     readonly notes: string;
     readonly evidence: readonly string[];
+    /**
+     * Present when the model ships a vision encoder, so `OpenAICompatibleJudge`
+     * accepts `vision: true` with this profile. Always unmeasured so far: the
+     * evals are text-only, and an image-injection eval is the needed follow-up.
+     */
+    readonly vision?: {
+        readonly status: "unmeasured";
+        readonly notes: string;
+    };
 }
 export declare const JUDGE_PROFILES: {
     readonly "gemma-4-26b-a4b": {
@@ -48,6 +59,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.922;
         };
         readonly notes: string;
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json"];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -67,6 +82,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.923;
         };
         readonly notes: string;
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json"];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -105,6 +124,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.866;
         };
         readonly notes: string;
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json", "https://github.com/elicollinson/solenoid-security/issues/33"];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -125,6 +148,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.865;
         };
         readonly notes: "Threshold 0.15, chosen on the baseline and checked out of sample: it lifts extension balanced accuracy from 0.865 (at 0.5) to 0.891. Its scores are graded rather than near-binary, and its misses in email and code are mostly calibration (attacks scored 0.05-0.5). The chat template accepts only xhigh, medium or low and defaults to xhigh, which prepends a 38-token instruction to the system prompt; every measurement ran at xhigh, so that is what this profile sends (#33).";
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json", "https://github.com/elicollinson/solenoid-security/issues/33"];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -177,8 +204,8 @@ export declare const JUDGE_PROFILES: {
 export type JudgeProfileId = keyof typeof JUDGE_PROFILES;
 /** The recommended judge when the caller has no other preference. */
 export declare const DEFAULT_JUDGE_PROFILE_ID: JudgeProfileId;
-/** What kind of text a screen is looking at. Names a recommendation; `screen` reads it from `TextInput.contentType`. */
-export type ContentType = "long_document" | "code" | "email" | "resume" | "web_page" | "retrieved_passage" | "tool_output" | "encoded" | "user_prompt" | "unknown";
+/** What kind of content a screen is looking at. Names a recommendation; `screen` reads it from the input's `contentType`. */
+export type ContentType = "long_document" | "code" | "email" | "resume" | "web_page" | "retrieved_passage" | "tool_output" | "encoded" | "user_prompt" | "image" | "unknown";
 export declare const CONTENT_TYPES: readonly ContentType[];
 export interface ContentRecommendation {
     /** The fields this recommendation fills. It never names models: those are the app's providers. */

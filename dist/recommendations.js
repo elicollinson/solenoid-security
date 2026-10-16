@@ -6,6 +6,10 @@ const DECODED_PREVIEW = "evals/reports/decoded-preview-research-2026-09-29.md";
 const EXTENSION_SUITE = "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json";
 const ISSUE_33 = "https://github.com/elicollinson/solenoid-security/issues/33";
 const finding = (...ids) => ids.map((id) => `${FINDINGS}#${id}`);
+const VISION = {
+    status: "unmeasured",
+    notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.",
+};
 const MEASURED = { comparator: ">", temperature: 0, maxTokens: 4096 };
 // Every baseline and extension run sent `reasoning_effort: "high"`. Whether each
 // model's template honored it is under audit (issue #33); Qwen3.8's did not.
@@ -16,6 +20,7 @@ export const JUDGE_PROFILES = {
         status: "recommended", threshold: 0.5, ...MEASURED, reasoningEffort: "high", scores: "near_binary",
         measured: { baseline: 0.923, extension: 0.922 },
         notes: "The default. Best or tied-best accuracy on both suites, and the fewest false alarms on the extension's hard benign sets (1.4% pooled, 4.5% on BrowseSafe pages). MoE, about 3x the decode speed of the dense models. Flags 40.5% of encoded benign text on raw full text, so screen encoded content with decoded previews. " + SENT_HIGH,
+        vision: VISION,
         evidence: [...finding("O48", "O50", "O52"), STUDIO_BASELINE, EXTENSION_SUITE],
     },
     "gemma-4-31b-it": {
@@ -23,6 +28,7 @@ export const JUDGE_PROFILES = {
         status: "recommended", threshold: 0.5, ...MEASURED, reasoningEffort: "high", scores: "near_binary",
         measured: { baseline: 0.915, extension: 0.923 },
         notes: "Leads email, web and agent tool output on the baseline. Dense and the slowest of the panel. Flags 53.8% of encoded benign text on raw full text; use decoded previews for encoded content. " + SENT_HIGH,
+        vision: VISION,
         evidence: [...finding("O48", "O50", "O52"), STUDIO_BASELINE, EXTENSION_SUITE],
     },
     "ornith-1.5-35b-a3b": {
@@ -37,6 +43,7 @@ export const JUDGE_PROFILES = {
         status: "recommended", threshold: 0.5, ...MEASURED, reasoningEffort: "high", scores: "near_binary",
         measured: { baseline: 0.901, extension: 0.866 },
         notes: "Leads obfuscated text on the baseline through specificity. The most verbose reasoner (mean 702 reasoning tokens), so keep the 4,096 budget. Near-binary scores: a lower threshold did not help out of sample (#33). " + SENT_HIGH,
+        vision: VISION,
         evidence: [...finding("O48", "O50", "O52", "A"), STUDIO_BASELINE, EXTENSION_SUITE, ISSUE_33],
     },
     "qwen3.8-27b": {
@@ -44,6 +51,7 @@ export const JUDGE_PROFILES = {
         status: "recommended", threshold: 0.15, ...MEASURED, reasoningEffort: "xhigh", acceptedReasoningEfforts: ["xhigh", "medium", "low"],
         scores: "graded", measured: { baseline: 0.895, extension: 0.865 },
         notes: "Threshold 0.15, chosen on the baseline and checked out of sample: it lifts extension balanced accuracy from 0.865 (at 0.5) to 0.891. Its scores are graded rather than near-binary, and its misses in email and code are mostly calibration (attacks scored 0.05-0.5). The chat template accepts only xhigh, medium or low and defaults to xhigh, which prepends a 38-token instruction to the system prompt; every measurement ran at xhigh, so that is what this profile sends (#33).",
+        vision: VISION,
         evidence: [...finding("O48", "O30"), STUDIO_BASELINE, EXTENSION_SUITE, ISSUE_33],
     },
     "muse-glimmer-30b": {
@@ -64,7 +72,7 @@ export const JUDGE_PROFILES = {
 /** The recommended judge when the caller has no other preference. */
 export const DEFAULT_JUDGE_PROFILE_ID = "gemma-4-26b-a4b";
 export const CONTENT_TYPES = [
-    "long_document", "code", "email", "resume", "web_page", "retrieved_passage", "tool_output", "encoded", "user_prompt", "unknown",
+    "long_document", "code", "email", "resume", "web_page", "retrieved_passage", "tool_output", "encoded", "user_prompt", "image", "unknown",
 ];
 // The measured decision rule: the max score over segments against the model's
 // own threshold (0.5 unless its profile says otherwise).
@@ -123,6 +131,11 @@ export const CONTENT_RECOMMENDATIONS = {
         screening: FULL_TEXT, status: "provisional",
         summary: "Full text. Benign request sets (NotInject and similar) are near ceiling for every Studio model, but direct user prompts were not the measured threat. Declare origin \"operator\" for the person operating the assistant: a flag is then observed, not blocked.",
         evidence: [...finding("O24", "O48"), STUDIO_BASELINE],
+    },
+    image: {
+        screening: FULL_TEXT, status: "unmeasured",
+        summary: "An image input, screened whole by a vision judge (OpenAICompatibleJudge with vision: true and a profile whose model has a vision encoder) and the measured decision rule. Techniques and preprocessing do not apply to images. Unmeasured: the image prompt has never been evaluated, so an image-injection eval (text rendered into screenshots, documents and photos, with benign image controls) is the needed follow-up before relying on it.",
+        evidence: ["src/llmJudge.ts"],
     },
     unknown: {
         screening: FULL_TEXT, status: "provisional",

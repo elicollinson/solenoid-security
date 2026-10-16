@@ -25,7 +25,7 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
 reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline is summarized [below](#now-running-as-of-2026-10-12).
 
-## Now running (as of 2026-10-15)
+## Now running (as of 2026-10-16)
 
 **Extension suite on the fully tested models: running** (started 2026-10-13). The seven models that finished the
 baseline now run 14 new datasets (6,759 cases per model) under the identical frozen protocol. Estimated about 94 hours
@@ -57,8 +57,8 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.702; 8 abstentions) |
 | Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.865; 2 abstentions) |
 | Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.866; 2 abstentions) |
-| Gemma 4 31B-it | Dense | ▶ Running |
-| Muse Glimmer 30B | Dense | Queued |
+| Gemma 4 31B-it | Dense | ✅ Done (mean balanced accuracy 0.923; 0 abstentions) |
+| Muse Glimmer 30B | Dense | ▶ Running |
 
 **Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
 [results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the

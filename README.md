@@ -230,17 +230,17 @@ Every entry uses the measured decision rule, the maximum score against each mode
 
 **Judge profiles** (`JUDGE_PROFILES`) record the settings each model was measured with: GGUF Q8_0, temperature 0, 4,096 tokens, score-only prompt. Accuracy is mean balanced accuracy on the 21-dataset [baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md) and the 14-dataset extension suite.
 
-| Profile | Threshold | Effort | Baseline / extension | Status |
+| Profile | Threshold | Effort sent (measured template behavior) | Baseline / extension | Status |
 | --- | --- | --- | --- | --- |
-| `gemma-4-26b-a4b` (default) | 0.5 | high | 0.923 / 0.922 | recommended: fewest false alarms on hard benign sets (1.4% pooled), MoE and fast |
-| `gemma-4-31b-it` | 0.5 | high | 0.915 / 0.923 | recommended (dense, slowest) |
-| `ornith-1.5-35b-a3b` | 0.5 | high | 0.906 / 0.895 | recommended |
-| `qwen3.6-35b-a3b` | 0.5 | high | 0.901 / 0.866 | recommended |
-| `qwen3.8-27b` | **0.15** | **xhigh** | 0.895 / 0.865 (0.891 at 0.15) | recommended: graded scores, threshold chosen on the baseline and checked out of sample ([#33](https://github.com/elicollinson/solenoid-security/issues/33)) |
-| `muse-glimmer-30b` | 0.5 | high | 0.903 / pending | provisional |
-| `laguna-xs-2.1` | 0.5 | high | 0.712 / 0.702 | not recommended |
+| `gemma-4-26b-a4b` (default) | 0.5 | none (no effort variable; thinking on) | 0.923 / 0.922 | recommended: fewest false alarms on hard benign sets (1.4% pooled), MoE and fast |
+| `gemma-4-31b-it` | 0.5 | none (no effort variable; thinking on) | 0.915 / 0.923 | recommended (dense, slowest) |
+| `ornith-1.5-35b-a3b` | 0.5 | none (no effort variable) | 0.906 / 0.895 | recommended |
+| `qwen3.6-35b-a3b` | 0.5 | none (no effort variable) | 0.901 / 0.866 | recommended |
+| `qwen3.8-27b` | **0.15** | **xhigh** (template default; injects a 38-token instruction) | 0.895 / 0.865 (0.891 at 0.15) | recommended: graded scores, threshold chosen on the baseline and checked out of sample ([#33](https://github.com/elicollinson/solenoid-security/issues/33)) |
+| `muse-glimmer-30b` | 0.5 | none (template's own `reasoning_strength` defaults to high) | 0.903 / pending | provisional |
+| `laguna-xs-2.1` | 0.5 | none (thinking state unresolved) | 0.712 / 0.702 | not recommended |
 
-Every judge setting resolves as: the option you pass, then the profile's value, then the library default. `"high"` is the effort the evals sent; whether each model's template honored it is under audit ([#33](https://github.com/elicollinson/solenoid-security/issues/33)). Qwen3.8's template accepts only `xhigh`, `medium` or `low`, so its profile sends `xhigh` (what every measurement actually ran at) and the judge rejects other values. The Gemma models flag 40–54% of encoded benign text on raw full text ([O50](evals/FINDINGS.md)), so screen encoded content with `contentType: "encoded"`.
+Every judge setting resolves as: the option you pass, then the profile's value, then the library default. The evals requested `reasoning_effort: "high"`, but LM Studio did not forward it to any template, so each model ran on its template's defaults. Each profile reproduces that and records it in `profile.template` (FINDINGS O54 and Appendix B, from the effort audit in [#35](https://github.com/elicollinson/solenoid-security/pull/35); [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Qwen3.8's template accepts only `xhigh`, `medium` or `low` and prepends an instruction at `xhigh`. Its profile sends `xhigh`, which is what every measurement ran at, and the judge rejects other values. The Gemma models flag 40–54% of encoded benign text on raw full text ([O50](evals/FINDINGS.md)), so screen encoded content with `contentType: "encoded"`.
 
 **Layers.** Each setting (`technique`, `preprocess`, `models`, `aggregator`) is resolved separately, and the highest layer that sets it wins:
 

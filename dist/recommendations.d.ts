@@ -25,7 +25,10 @@ export interface JudgeProfile {
     readonly comparator: ">" | ">=";
     readonly temperature: number;
     readonly maxTokens: number;
-    /** Sent as `reasoning_effort`. */
+    /**
+     * Sent as `reasoning_effort`. Set only where the model's template reads that
+     * variable and the measurement ran at this value; see `template`.
+     */
     readonly reasoningEffort?: JudgeReasoningEffort;
     /** When known, the values the model's chat template accepts; the judge rejects any other. */
     readonly acceptedReasoningEfforts?: readonly JudgeReasoningEffort[];
@@ -36,19 +39,39 @@ export interface JudgeProfile {
         readonly baseline: number;
         readonly extension?: number;
     };
+    /**
+     * What the model's embedded chat template received in the measured runs.
+     * The evals requested `reasoning_effort: "high"`, but LM Studio 0.4.25 did not
+     * forward it on /api/v0, so each template ran on its own defaults (FINDINGS
+     * O54, Appendix B).
+     */
+    readonly template: {
+        /** The template's effort variable, if it has one. */
+        readonly effortVariable: "none" | "reasoning_effort" | "reasoning_strength";
+        /** The value it rendered with: the template default in every case. */
+        readonly effortApplied?: string;
+        /** Whether thinking was on; `unresolved` when prompt tokens cannot tell. */
+        readonly thinking: "on" | "unresolved";
+        /** Text the template added to the prompt, beyond control tokens. */
+        readonly injectedText?: string;
+    };
     readonly notes: string;
     readonly evidence: readonly string[];
 }
 export declare const JUDGE_PROFILES: {
     readonly "gemma-4-26b-a4b": {
-        readonly reasoningEffort: "high";
+        readonly template: {
+            readonly injectedText: "none (a think control token only; LM Studio set enable_thinking=true)";
+            readonly effortVariable: "none";
+            readonly thinking: "on";
+        };
         readonly scores: "near_binary";
         readonly measured: {
             readonly baseline: 0.923;
             readonly extension: 0.922;
         };
         readonly notes: string;
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json"];
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;
@@ -60,14 +83,18 @@ export declare const JUDGE_PROFILES: {
         readonly threshold: 0.5;
     };
     readonly "gemma-4-31b-it": {
-        readonly reasoningEffort: "high";
+        readonly template: {
+            readonly injectedText: "none (a think control token only; LM Studio set enable_thinking=true)";
+            readonly effortVariable: "none";
+            readonly thinking: "on";
+        };
         readonly scores: "near_binary";
         readonly measured: {
             readonly baseline: 0.915;
             readonly extension: 0.923;
         };
         readonly notes: string;
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json"];
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;
@@ -79,14 +106,17 @@ export declare const JUDGE_PROFILES: {
         readonly threshold: 0.5;
     };
     readonly "ornith-1.5-35b-a3b": {
-        readonly reasoningEffort: "high";
+        readonly template: {
+            readonly effortVariable: "none";
+            readonly thinking: "on";
+        };
         readonly scores: "near_binary";
         readonly measured: {
             readonly baseline: 0.906;
             readonly extension: 0.895;
         };
         readonly notes: string;
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json"];
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;
@@ -98,14 +128,17 @@ export declare const JUDGE_PROFILES: {
         readonly threshold: 0.5;
     };
     readonly "qwen3.6-35b-a3b": {
-        readonly reasoningEffort: "high";
+        readonly template: {
+            readonly effortVariable: "none";
+            readonly thinking: "on";
+        };
         readonly scores: "near_binary";
         readonly measured: {
             readonly baseline: 0.901;
             readonly extension: 0.866;
         };
         readonly notes: string;
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json", "https://github.com/elicollinson/solenoid-security/issues/33"];
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;
@@ -119,13 +152,19 @@ export declare const JUDGE_PROFILES: {
     readonly "qwen3.8-27b": {
         readonly reasoningEffort: "xhigh";
         readonly acceptedReasoningEfforts: readonly ["xhigh", "medium", "low"];
+        readonly template: {
+            readonly effortVariable: "reasoning_effort";
+            readonly effortApplied: "xhigh";
+            readonly thinking: "on";
+            readonly injectedText: "\"Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\" prepended to the system prompt (38 tokens)";
+        };
         readonly scores: "graded";
         readonly measured: {
             readonly baseline: 0.895;
             readonly extension: 0.865;
         };
-        readonly notes: "Threshold 0.15, chosen on the baseline and checked out of sample: it lifts extension balanced accuracy from 0.865 (at 0.5) to 0.891. Its scores are graded rather than near-binary, and its misses in email and code are mostly calibration (attacks scored 0.05-0.5). The chat template accepts only xhigh, medium or low and defaults to xhigh, which prepends a 38-token instruction to the system prompt; every measurement ran at xhigh, so that is what this profile sends (#33).";
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json", "https://github.com/elicollinson/solenoid-security/issues/33"];
+        readonly notes: "Threshold 0.15, chosen on the baseline and checked out of sample: it lifts extension balanced accuracy from 0.865 (at 0.5) to 0.891. Its scores are graded rather than near-binary, and its misses in email and code are mostly calibration (attacks scored 0.05-0.5). The chat template accepts only xhigh, medium or low and defaults to xhigh, which prepends a 38-token instruction to the system prompt; every measurement ran at xhigh (LM Studio never forwarded the requested \"high\"), so this profile sends xhigh and the instruction comes with it (O54, Appendix B, #33, #35).";
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;
@@ -137,13 +176,18 @@ export declare const JUDGE_PROFILES: {
         readonly threshold: 0.15;
     };
     readonly "muse-glimmer-30b": {
-        readonly reasoningEffort: "high";
+        readonly template: {
+            readonly effortVariable: "reasoning_strength";
+            readonly effortApplied: "high";
+            readonly thinking: "on";
+            readonly injectedText: "\"Reasoning strength: high.\" plus a fixed \"# Valid recipients\" line, after the system prompt";
+        };
         readonly scores: "near_binary";
         readonly measured: {
             readonly baseline: 0.903;
         };
-        readonly notes: string;
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md"];
+        readonly notes: "Extension suite still running; baseline only. Its template reads reasoning_strength, not reasoning_effort, and defaults to \"high\", which is what every run used; no reasoning_effort is sent. The template also appends a fixed reasoning-strength line and a recipients line at any setting (O54, Appendix B, #33, #35).";
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;
@@ -155,14 +199,17 @@ export declare const JUDGE_PROFILES: {
         readonly threshold: 0.5;
     };
     readonly "laguna-xs-2.1": {
-        readonly reasoningEffort: "high";
+        readonly template: {
+            readonly effortVariable: "none";
+            readonly thinking: "unresolved";
+        };
         readonly scores: "near_binary";
         readonly measured: {
             readonly baseline: 0.712;
             readonly extension: 0.702;
         };
-        readonly notes: "Not recommended as a detector: it recognizes injected instructions without treating them as a concern, and misses attacks rather than raising false alarms. Most abstentions of the panel (length cut-offs). Listed so its measured settings are on record.";
-        readonly evidence: readonly [...string[], "evals/reports/studio-baseline-q8-t4096-2026-10.md", "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json"];
+        readonly notes: "Not recommended as a detector: it recognizes injected instructions without treating them as a concern, and misses attacks rather than raising false alarms. Most abstentions of the panel (length cut-offs). Listed so its measured settings are on record. No effort variable and no injected text; whether thinking was on is unresolved (O54, Appendix B).";
+        readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
         readonly maxTokens: 4096;

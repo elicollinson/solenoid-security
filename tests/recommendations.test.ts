@@ -62,6 +62,25 @@ describe("judge profiles", () => {
     expect(JUDGE_PROFILES["laguna-xs-2.1"].status).toBe("not_recommended");
   });
 
+  test("profiles reproduce what each template received: effort is sent only to Qwen3.8 (O54, Appendix B)", async () => {
+    for (const profile of Object.values(JUDGE_PROFILES) as JudgeProfile[]) {
+      if (profile.id === "qwen3.8-27b") continue;
+      expect(profile.reasoningEffort).toBeUndefined();
+      const { judge, bodies } = judgeAt(0.1, { profile: profile.id as never });
+      await judge.assess(["text"]);
+      expect("reasoning_effort" in bodies[0]!).toBe(false);
+      expect(profile.evidence).toContain("evals/FINDINGS.md#O54");
+    }
+    expect(JUDGE_PROFILES["qwen3.8-27b"].template).toMatchObject({ effortVariable: "reasoning_effort", effortApplied: "xhigh", thinking: "on" });
+    expect(JUDGE_PROFILES["qwen3.8-27b"].template.injectedText).toContain("consider plausible alternatives");
+    expect(JUDGE_PROFILES["muse-glimmer-30b"].template).toMatchObject({ effortVariable: "reasoning_strength", effortApplied: "high" });
+    expect(JUDGE_PROFILES["muse-glimmer-30b"].template.injectedText).toContain("Reasoning strength: high.");
+    for (const id of ["gemma-4-26b-a4b", "gemma-4-31b-it", "ornith-1.5-35b-a3b", "qwen3.6-35b-a3b"] as const) {
+      expect(JUDGE_PROFILES[id].template).toMatchObject({ effortVariable: "none", thinking: "on" });
+    }
+    expect(JUDGE_PROFILES["laguna-xs-2.1"].template).toEqual({ effortVariable: "none", thinking: "unresolved" });
+  });
+
   test("settings resolve option, then profile, then library default", async () => {
     const fromProfile = judgeAt(0.3, { profile: "qwen3.8-27b" });
     expect(fromProfile.judge.threshold).toBe(0.15);

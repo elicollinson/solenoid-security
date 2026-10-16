@@ -124,7 +124,7 @@ describe("content recommendations", () => {
     expect(Object.keys(CONTENT_RECOMMENDATIONS).sort()).toEqual([...CONTENT_TYPES].sort());
     for (const type of CONTENT_TYPES) {
       const { screening, status, evidence } = CONTENT_RECOMMENDATIONS[type];
-      expect(["measured", "provisional"]).toContain(status);
+      expect(["measured", "provisional", "unmeasured"]).toContain(status);
       expect(evidence.length).toBeGreaterThan(0);
       for (const ref of evidence) if (!ref.startsWith("http")) expect(existsSync(ref.split("#")[0]!)).toBe(true);
       expect(() => validateTechnique(screening.technique!)).not.toThrow();

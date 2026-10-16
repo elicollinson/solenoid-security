@@ -105,17 +105,19 @@ comes from a layered, overridable configuration whose defaults are set by measur
 call (see [Screening configuration](#screening-configuration)). That part exists today, along with the pieces the
 evidence so far points to: a self-hostable LLM judge that asks the exact score-only question the evals measured
 ([`OpenAICompatibleJudge`](#self-hosted-llm-judge)), the full-then-windows `cascade` technique, and an explicit
-inconclusive outcome so a judge that runs out of tokens is never read as a pass. The planned layer is
-**recommendation profiles**: evidence-backed defaults per content type (long documents, code, email, web pages, tool
-output, encoded text, user prompts), per common self-hostable model, and per technique, each traceable to an
-observation in [`FINDINGS.md`](evals/FINDINGS.md).
+inconclusive outcome so a judge that runs out of tokens is never read as a pass. **Recommendation profiles** now
+exist too ([`src/recommendations.ts`](src/recommendations.ts)): evidence-backed defaults per content type and per
+measured self-hostable model, each traceable to an observation in [`FINDINGS.md`](evals/FINDINGS.md). See
+[Recommended setup](#recommended-setup).
 
-**What the evidence suggests so far** (provisional; the full-text baseline is complete, the varied-template extension suite has not run):
+**What the evidence suggests so far.** These rows now ship as data in [`src/recommendations.ts`](src/recommendations.ts)
+(`CONTENT_RECOMMENDATIONS`, each entry marked measured or provisional, and `JUDGE_PROFILES`), applied when a screen
+names a `contentType`:
 
 | Content | Current recommendation | Why |
 |---|---|---|
 | Long documents and code | Full text with a reasoning detector; add a windows pass only when the full-text verdict is negative | Windows lift subtle-injection recall on papers, but can lower concern for a payload. The full-then-windows cascade never lost a full-text detection ([O1](evals/FINDINGS.md), [O10](evals/FINDINGS.md), [O46](evals/FINDINGS.md)) |
-| Email, résumés, web pages | Full text | Windows were neutral or harmful ([O4](evals/FINDINGS.md), [O9](evals/FINDINGS.md)) |
+| Email, résumés, web pages, retrieved passages | Full text | Windows were neutral or harmful ([O4](evals/FINDINGS.md), [O9](evals/FINDINGS.md)) |
 | Encoded or obfuscated text | Full text plus bounded decoded previews | Up to 92% fewer encoded-text false alarms with recall largely kept ([O23](evals/FINDINGS.md)) |
 | Agent tool output | Full text with an LLM detector rather than a managed filter alone | LLM detectors ≈97% vs 47% for Model Armor ([O35](evals/FINDINGS.md)) |
 | Any content, small or fast judges | Avoid trusting a generated score from small non-reasoning models | They can be steered into the requested score ([O12](evals/FINDINGS.md)) |
@@ -194,6 +196,73 @@ if (result.decision === "block" || result.decision === "quarantine") {
 
 `content` can be one string or an array of strings screened together. Use a separate call for each independent source so one quarantined item does not stop unrelated work. Unknown origins default to `external`, even if the content is placed in the first message of a conversation.
 
+### Recommended setup
+
+Point a judge at your own endpoint serving the recommended model, give it that model's measured profile, and say what kind of content each screen is looking at:
+
+```ts
+import { createSecurity, OpenAICompatibleJudge } from "@elicollinson/solenoid-security";
+
+const security = createSecurity({
+  provider: new OpenAICompatibleJudge({
+    baseUrl: "http://127.0.0.1:1234/v1",
+    model: "google/gemma-4-26b-a4b", // your server's name for the weights
+    profile: "gemma-4-26b-a4b",      // DEFAULT_JUDGE_PROFILE_ID: threshold, effort, temperature, max tokens as measured
+  }),
+});
+
+await security.screen({ type: "text", content: paper, contentType: "long_document" }); // full text, then windows
+await security.screen({ type: "text", content: blob, contentType: "encoded" });        // decoded previews, then full text
+```
+
+A `contentType` fills any screening setting your configuration leaves unset with the recommendation in [`CONTENT_RECOMMENDATIONS`](src/recommendations.ts). Without one, nothing is recommended and screens behave exactly as before.
+
+| `contentType` | Technique | Status | Evidence |
+| --- | --- | --- | --- |
+| `long_document`, `code` | `cascade`: `full_text`, then `sliding_word_window_preserve_v1` 512/384 | measured (post-hoc replay) | [O1](evals/FINDINGS.md), [O10](evals/FINDINGS.md), [O46](evals/FINDINGS.md) |
+| `email`, `resume`, `web_page` | `full_text` | measured | [O4](evals/FINDINGS.md), [O9](evals/FINDINGS.md), [O51](evals/FINDINGS.md) |
+| `retrieved_passage` (QA and RAG context) | `full_text` | provisional | extension suite; windows not measured |
+| `tool_output` | `full_text` with an LLM judge | measured | [O35](evals/FINDINGS.md), [O48](evals/FINDINGS.md) |
+| `encoded` | `preprocess: ["decoded_preview_v1"]`, then `full_text` | measured (hosted panel) | [O23](evals/FINDINGS.md), [O50](evals/FINDINGS.md) |
+| `user_prompt`, `unknown` | `full_text` | provisional | [O48](evals/FINDINGS.md) |
+
+Every entry uses the measured decision rule, the maximum score against each model's own threshold (`{ kind: "score", reduce: "max" }`).
+
+**Judge profiles** (`JUDGE_PROFILES`) record the settings each model was measured with: GGUF Q8_0, temperature 0, 4,096 tokens, score-only prompt. Accuracy is mean balanced accuracy on the 21-dataset [baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md) and the 14-dataset extension suite.
+
+| Profile | Threshold | Effort | Baseline / extension | Status |
+| --- | --- | --- | --- | --- |
+| `gemma-4-26b-a4b` (default) | 0.5 | high | 0.923 / 0.922 | recommended: fewest false alarms on hard benign sets (1.4% pooled), MoE and fast |
+| `gemma-4-31b-it` | 0.5 | high | 0.915 / 0.923 | recommended (dense, slowest) |
+| `ornith-1.5-35b-a3b` | 0.5 | high | 0.906 / 0.895 | recommended |
+| `qwen3.6-35b-a3b` | 0.5 | high | 0.901 / 0.866 | recommended |
+| `qwen3.8-27b` | **0.15** | **xhigh** | 0.895 / 0.865 (0.891 at 0.15) | recommended: graded scores, threshold chosen on the baseline and checked out of sample ([#33](https://github.com/elicollinson/solenoid-security/issues/33)) |
+| `muse-glimmer-30b` | 0.5 | high | 0.903 / pending | provisional |
+| `laguna-xs-2.1` | 0.5 | high | 0.712 / 0.702 | not recommended |
+
+Every judge setting resolves as: the option you pass, then the profile's value, then the library default. `"high"` is the effort the evals sent; whether each model's template honored it is under audit ([#33](https://github.com/elicollinson/solenoid-security/issues/33)). Qwen3.8's template accepts only `xhigh`, `medium` or `low`, so its profile sends `xhigh` (what every measurement actually ran at) and the judge rejects other values. The Gemma models flag 40–54% of encoded benign text on raw full text ([O50](evals/FINDINGS.md)), so screen encoded content with `contentType: "encoded"`.
+
+**Layers.** Each setting (`technique`, `preprocess`, `models`, `aggregator`) is resolved separately, and the highest layer that sets it wins:
+
+1. library defaults: `full_text`, no preprocessing, every provider, `"any"`;
+2. the built-in recommendation, only when the input names a `contentType`;
+3. `createSecurity({ screening })`, then `createSecurity({ contentTypes: { [type]: ... } })`;
+4. `localOverrides.screening`, then `localOverrides.contentTypes[type]`;
+5. the per-call overrides passed to `screen`.
+
+`security.resolveScreening(contentType?, overrides?)` returns the settings a screen would use and the layer each came from. Local overrides are plain data the host loads. The library never reads files or environment variables, so a host that wants a git-ignored local file wires it like this:
+
+```ts
+import { existsSync, readFileSync } from "node:fs";
+import { createSecurity, parseScreeningOverrides } from "@elicollinson/solenoid-security";
+
+const path = "solenoid.local.json"; // e.g. { "contentTypes": { "code": { "technique": { "kind": "full_text" } } } }
+const localOverrides = existsSync(path) ? parseScreeningOverrides(JSON.parse(readFileSync(path, "utf8")), path) : undefined;
+const security = createSecurity({ provider, localOverrides });
+```
+
+`parseScreeningOverrides` accepts only `screening` and `contentTypes`, validates every technique, preprocessor and aggregator, refuses functions, and names the offending path in its error. `mergeScreeningConfig(...configs)` is the same field-by-field merge, exported for hosts that build their own layers.
+
 ### Screening configuration
 
 A screen has three settings: the **technique** that decides what text each provider call sees, the **models** that judge it, and the **aggregator** that turns their verdicts into one flag. Register named providers and set app-wide defaults once:
@@ -209,6 +278,8 @@ const security = createSecurity({
     models: ["armor"],
     aggregator: "any",
   },
+  // Optional, per content type; see Recommended setup for how layers combine.
+  contentTypes: { web_page: { models: ["armor", "armorHigh"] } },
 });
 ```
 
@@ -224,10 +295,24 @@ await security.screen(
 | Setting | Options | Default |
 | --- | --- | --- |
 | `technique` | `{ kind: "full_text" }`; `{ kind: "decoded_preview_v1" }`; `{ kind: "random_word_chunks", minWords, maxWords, seed? }`; `{ kind: "sliding_word_window" \| "sliding_word_window_preserve_v1", windowWords, strideWords }`; `{ kind: "cascade", first, then }` | `full_text` |
+| `preprocess` | `["decoded_preview_v1"]`: applied to the whole text before the technique | none |
 | `models` | Names from `providers`. A single `provider` is named `"default"`. | Every configured provider |
-| `aggregator` | `"any"`, `"all"`, `{ kind: "score", reduce: "max" \| "mean" \| "min", threshold, comparator?: ">" \| ">=" }`, or a function over every segment-by-model assessment | `"any"` |
+| `aggregator` | `"any"`, `"all"`, `{ kind: "score", reduce: "max" \| "mean" \| "min", threshold?, comparator?: ">" \| ">=", lengthAdjust? }`, or a function over every segment-by-model assessment | `"any"` |
 
 Every model screens every segment, and the aggregator sees the whole matrix, so a function can express rules such as "two of three models agree". The score comparator defaults to `>`. Without a `seed`, random chunk boundaries are unpredictable; pass one only when you need reproducible chunks. The chunk techniques split on the same code as the [eval workspace](evals/README.md) input strategies of the same `kind`, so evaluate a technique, model, and threshold together before adopting them. A Model Armor PI verdict is binary and scores 1 or 0.
+
+**Per-model thresholds.** A score rule's threshold resolves in this order: the `threshold` on the rule, then each model's own threshold (an `OpenAICompatibleJudge`'s `threshold` option, else its profile's, else 0.5; any provider can expose a `threshold` property), then 0.5. Without a threshold on the rule, each model's segment scores are reduced separately and compared with that model's threshold, and the text is flagged if any model flags. So a Qwen3.8 judge at 0.15 and a Gemma judge at 0.5 can share one screen. The comparator resolves the same way and defaults to `>`.
+
+**Decoded previews compose.** `preprocess: ["decoded_preview_v1"]` appends bounded decoded views of Base64, percent- and `\u`-escaped and invisible-character text, then hands the result to any technique, windows included. In a cascade, both passes see the previewed text. Preprocessing joins the parts with a newline first. `{ kind: "decoded_preview_v1" }` remains as an alias for preview plus `full_text` and sends the same bytes as before.
+
+```ts
+await security.screen({ type: "text", content: longLogWithBlobs }, {
+  preprocess: ["decoded_preview_v1"],
+  technique: { kind: "cascade", first: { kind: "full_text" }, then: { kind: "sliding_word_window_preserve_v1", windowWords: 512, strideWords: 384 } },
+});
+```
+
+**Length-aware thresholds (off by default, uncalibrated).** Every extra window is another chance for clean text to cross the threshold ([O9](evals/FINDINGS.md); DeFuse puts a 1% per-window false-positive rate at about 98% for a 402-window document). `lengthAdjust` raises a score rule's threshold `t` with the pass's segment count `n`: `{ kind: "sidak" }` gives `t^(1/n)`, `{ kind: "bonferroni" }` gives `1 − (1 − t)/n`, and `{ kind: "linear", perSegment }` gives `t + perSegment × (n − 1)`. Each takes an optional `cap` (default 1) and never lowers the threshold. Full text (`n = 1`) is unchanged, and each cascade pass counts its own segments. Šidák and Bonferroni treat the score as a calibrated probability, which these judges' mostly near-binary scores are not, so no setting is recommended until long benign controls are measured ([#4](https://github.com/elicollinson/solenoid-security/issues/4)).
 
 The aggregator decides only prompt injection. A match on any other content filter from any model or segment still blocks. `result.assessment` is the aggregated assessment and `result.assessments` lists each model's result for each segment. Any provider failure fails the whole screen with `ScreeningError`. Chunking multiplies provider calls by the number of segments, and the calls run concurrently.
 
@@ -254,6 +339,7 @@ const security = createSecurity({
   provider: new OpenAICompatibleJudge({
     baseUrl: "http://127.0.0.1:1234/v1", // LM Studio; `/chat/completions` is appended
     model: "qwen3.6-35b-a3b",
+    profile: "qwen3.6-35b-a3b", // optional: measured settings from JUDGE_PROFILES
     // apiKey, timeoutMs (120000), temperature (0), maxTokens (4096),
     // reasoningEffort, threshold (0.5, compared with ">"), responseFormat ("json_schema")
   }),
@@ -263,8 +349,9 @@ const security = createSecurity({
 | Setting | Default | Notes |
 | --- | --- | --- |
 | `maxTokens` | `4096` | Shared by reasoning and the answer. A 1,024 cap cut verbose reasoning models off before they answered ([Appendix A](evals/FINDINGS.md)). |
-| `reasoningEffort` | unset | Sent as `reasoning_effort`. Prefer builds that actually reason ([O42](evals/FINDINGS.md)). |
-| `threshold`, `comparator` | `0.5`, `">"` | A score above the threshold flags. |
+| `profile` | unset | A `JUDGE_PROFILES` id or a `JudgeProfile` object. Supplies the defaults for the settings below; an option you pass wins. |
+| `reasoningEffort` | profile's, else unset | Sent as `reasoning_effort`. Rejected if the profile lists accepted values and this is not one. Prefer builds that actually reason ([O42](evals/FINDINGS.md)). |
+| `threshold`, `comparator` | profile's, else `0.5`, `">"` | A score above the threshold flags. Exposed as `judge.threshold` for score aggregators. |
 | `responseFormat` | `"json_schema"` | `"prompt_json"` omits `response_format`, for LM Studio MLX builds that route schema-constrained output to `reasoning_content`. |
 
 The answer must be exactly `{"concernScore": <0..1>}`. A cut-off response (`finish_reason: "length"`), an answer only in the reasoning channel, malformed JSON, or an out-of-range score is never clamped or guessed: it is an **inconclusive** assessment (`label: "INCONCLUSIVE"`, `inconclusive: true`, `inconclusiveReason`, `score: NaN`). An HTTP error or a body that is not a chat completion throws. Each assessment also records `usage` (including `reasoningTokens`), `finishReason`, `responseId` and the answering `model`. Small non-reasoning judges can be steered into the score an injection asks for ([O12](evals/FINDINGS.md)), so evaluate a model before relying on it.

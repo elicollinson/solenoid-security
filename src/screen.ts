@@ -1,5 +1,6 @@
 import { AuthoredTextRegistry } from "./authoredText.js";
-import { aggregate, isInconclusive, segmentText, validateAggregator, validateTechnique, type AggregateVerdict, type ScreeningAggregator, type ScreeningTechnique, type SegmentAssessment, type SingleStageTechnique } from "./techniques.js";
+import { CONTENT_RECOMMENDATIONS, CONTENT_TYPES, mergeScreeningConfig, parseScreeningOverrides, type ContentType, type ScreeningLayer } from "./recommendations.js";
+import { aggregate, applyPreprocess, isInconclusive, segmentText, validateAggregator, validatePreprocess, validateTechnique, type AggregateVerdict, type ModelThreshold, type Preprocessor, type ScreeningAggregator, type ScreeningTechnique, type SegmentAssessment, type SingleStageTechnique } from "./techniques.js";
 import { actionFor, type TextOrigin } from "./trust.js";
 
 export type ScreeningBoundary = "input" | "tool_output" | "model_output" | "reviewer_output";
@@ -31,17 +32,29 @@ export interface TextInput {
   /** Defaults to external, including when external content appears in an initial prompt. */
   origin?: TextOrigin;
   boundary?: ScreeningBoundary;
+  /**
+   * What kind of text this is. Names a built-in recommendation (see
+   * `CONTENT_RECOMMENDATIONS`) that fills any setting no other layer set, and
+   * selects the app's and local overrides' `contentTypes` entry. Omitted: no
+   * recommendation applies, exactly as before.
+   */
+  contentType?: ContentType;
 }
 
 /** A provider can be backed by Model Armor, a self-hosted LLM judge, or another text detector. */
 export interface TextScreeningProvider {
   assess(parts: readonly [string, ...string[]]): Promise<ScreeningAssessment>;
+  /** The score above which this provider flags, read by a score aggregator that sets no threshold. */
+  readonly threshold?: number;
+  readonly comparator?: ">" | ">=";
 }
 
 /** How text is screened. Set app-wide in `createSecurity`, override per `screen` call. */
 export interface ScreeningConfig {
   /** Defaults to `full_text`. */
   technique?: ScreeningTechnique;
+  /** Steps applied to the whole text before the technique segments it, in order. Defaults to none. */
+  preprocess?: readonly Preprocessor[];
   /** Names from `providers`. Defaults to every configured provider. */
   models?: readonly string[];
   /** Defaults to `"any"`: one flagged segment from one model flags the text. */
@@ -72,7 +85,21 @@ export interface ScreeningResult {
   cascade?: { decidedBy: "first" | "then"; stages: CascadeStageResult[] };
   boundary: ScreeningBoundary;
   origin: TextOrigin;
+  /** Echoed from the input when it named one. */
+  contentType?: ContentType;
   authoredCharsRedacted: number;
+}
+
+/** Where a resolved setting came from, lowest precedence first. */
+export type ScreeningConfigSource = "default" | "recommendation" | "app" | "app_content_type" | "local" | "local_content_type" | "call";
+
+/** The settings a screen will run with, and the layer each came from. */
+export interface ResolvedScreeningConfig {
+  technique: ScreeningTechnique;
+  preprocess: readonly Preprocessor[];
+  models: string[];
+  aggregator: ScreeningAggregator;
+  sources: Record<"technique" | "preprocess" | "models" | "aggregator", ScreeningConfigSource>;
 }
 
 export interface SecurityOptions {
@@ -82,6 +109,14 @@ export interface SecurityOptions {
   providers?: Readonly<Record<string, TextScreeningProvider>>;
   /** App-wide screening defaults. */
   screening?: ScreeningConfig;
+  /** Per content type, above `screening`, for inputs that name that `contentType`. */
+  contentTypes?: Partial<Record<ContentType, ScreeningConfig>>;
+  /**
+   * A plain-data layer above the app's settings, typically loaded by the host
+   * from a git-ignored local JSON file (see `parseScreeningOverrides`, which
+   * this is passed through). Per-call overrides still win.
+   */
+  localOverrides?: ScreeningLayer;
   authoredText?: AuthoredTextRegistry;
   /** A flagged read-tool result is quarantined by default. */
   onToolOutputInjection?: "quarantine" | "block";
@@ -145,29 +180,60 @@ export function createSecurity(options: SecurityOptions) {
   if (Object.keys(providers).length === 0) throw new TypeError("At least one screening provider is required");
   const onInconclusive = options.onInconclusive ?? "error";
   if (!["error", "quarantine", "block"].includes(onInconclusive)) throw new TypeError("onInconclusive must be error, quarantine or block");
+  for (const [name, provider] of Object.entries(providers)) {
+    if (provider.threshold !== undefined && !(typeof provider.threshold === "number" && provider.threshold >= 0 && provider.threshold <= 1)) {
+      throw new TypeError(`Provider ${name} has a threshold outside 0-1`);
+    }
+  }
+  for (const type of Object.keys(options.contentTypes ?? {})) {
+    if (!(CONTENT_TYPES as readonly string[]).includes(type)) throw new TypeError(`contentTypes.${type} is not a content type`);
+  }
+  const local = options.localOverrides === undefined ? undefined : parseScreeningOverrides(options.localOverrides, "localOverrides");
+  const modelThresholds: Record<string, ModelThreshold> = Object.fromEntries(Object.entries(providers)
+    .map(([name, { threshold, comparator }]) => [name, { threshold, comparator }]));
 
-  function resolve(overrides: ScreeningConfig = {}) {
-    const technique = overrides.technique ?? options.screening?.technique ?? { kind: "full_text" };
-    const models = overrides.models ?? options.screening?.models ?? Object.keys(providers);
-    const aggregator = overrides.aggregator ?? options.screening?.aggregator ?? "any";
+  /** Layers lowest first; each field takes the last layer that sets it (see ./recommendations.ts). */
+  function resolve(contentType?: ContentType, overrides: ScreeningConfig = {}): ResolvedScreeningConfig {
+    if (contentType !== undefined && !CONTENT_TYPES.includes(contentType)) throw new TypeError(`Unknown content type: ${String(contentType)}`);
+    const typed = <T>(entries?: Partial<Record<ContentType, T>>) => contentType === undefined ? undefined : entries?.[contentType];
+    const layers: [ScreeningConfigSource, ScreeningConfig | undefined][] = [
+      ["default", { technique: { kind: "full_text" }, preprocess: [], models: Object.keys(providers), aggregator: "any" }],
+      ["recommendation", contentType === undefined ? undefined : CONTENT_RECOMMENDATIONS[contentType].screening],
+      ["app", options.screening],
+      ["app_content_type", typed(options.contentTypes)],
+      ["local", local?.screening],
+      ["local_content_type", typed(local?.contentTypes)],
+      ["call", overrides],
+    ];
+    const merged = mergeScreeningConfig(...layers.map(([, config]) => config)) as Required<ScreeningConfig>;
+    const source = (field: keyof ScreeningConfig) => [...layers].reverse().find(([, config]) => config?.[field] !== undefined)![0];
+    const { technique, preprocess, models, aggregator } = merged;
     validateTechnique(technique);
+    validatePreprocess(preprocess);
     validateAggregator(aggregator);
     if (models.length === 0) throw new TypeError("At least one screening model is required");
     const unknown = models.filter((model) => !Object.hasOwn(providers, model));
     if (unknown.length) throw new TypeError(`Unknown screening model: ${unknown.join(", ")}`);
-    return { technique, models: [...new Set(models)], aggregator };
+    return {
+      technique, preprocess, models: [...new Set(models)], aggregator,
+      sources: { technique: source("technique"), preprocess: source("preprocess"), models: source("models"), aggregator: source("aggregator") },
+    };
   }
+  // Fail at creation, not on the first screen, for every layer the app supplied.
   resolve();
+  for (const type of CONTENT_TYPES) resolve(type);
 
   /** One pass: segment, have every model judge every segment, aggregate. */
   async function runStage(
     redacted: readonly string[],
     technique: SingleStageTechnique,
-    config: { models: string[]; aggregator: ScreeningAggregator },
+    config: { models: string[]; aggregator: ScreeningAggregator; previewed: boolean },
     name?: "first" | "then",
   ): Promise<Stage> {
     // Full text keeps the caller's parts intact; chunking works on their join.
-    const segments = technique.kind === "full_text"
+    // The decoded_preview_v1 technique on text already previewed by `preprocess`
+    // is plain full text: the preview is not applied twice.
+    const segments = technique.kind === "full_text" || (config.previewed && technique.kind === "decoded_preview_v1")
       ? [{ index: 0, parts: redacted as [string, ...string[]] }]
       : segmentText(redacted.join("\n"), technique).map(({ text, ...segment }) => ({ ...segment, parts: [text] as [string] }));
 
@@ -180,7 +246,7 @@ export function createSecurity(options: SecurityOptions) {
       throw new ScreeningError(error, { code: "provider_failed" });
     }
     try {
-      return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator) };
+      return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator, modelThresholds) };
     } catch (error) {
       throw new ScreeningError(error, { code: "invalid_assessment" });
     }
@@ -188,21 +254,28 @@ export function createSecurity(options: SecurityOptions) {
 
   return {
     authoredText: registry,
+    /** The settings a screen of this content type, with these overrides, would run with, and where each came from. */
+    resolveScreening(contentType?: ContentType, overrides?: ScreeningConfig): ResolvedScreeningConfig {
+      return resolve(contentType, overrides);
+    },
     async screen(input: TextInput, overrides?: ScreeningConfig): Promise<ScreeningResult> {
       if (input.type !== "text") throw new TypeError("Only text input is supported in this release");
       const content = typeof input.content === "string" ? [input.content] : input.content;
       if (!Array.isArray(content) || content.length === 0 || content.some((part) => typeof part !== "string")) {
         throw new TypeError("Text input must contain at least one string");
       }
-      const config = resolve(overrides);
+      const config = resolve(input.contentType, overrides);
 
       const origin = input.origin ?? "external";
       const boundary = input.boundary ?? "input";
       const redacted = content.map((part) => registry.redact(part));
       const authoredCharsRedacted = content.reduce((sum, part) => sum + part.length, 0) -
         redacted.reduce((sum, part) => sum + part.length, 0);
-      const base = { origin, boundary, authoredCharsRedacted };
+      const base = { origin, boundary, ...(input.contentType ? { contentType: input.contentType } : {}), authoredCharsRedacted };
       if (redacted.every((part) => !part.trim())) return { ...base, decision: "allow" };
+      // Preprocessing runs once, after authored text is removed, and every pass sees its output.
+      const prepared = applyPreprocess(redacted, config.preprocess);
+      const stageConfig = { ...config, previewed: config.preprocess.includes("decoded_preview_v1") };
 
       // A cascade's second pass runs only when the first did not settle the
       // outcome. A flag settles it (the stages are OR-ed, so nothing later can
@@ -215,7 +288,7 @@ export function createSecurity(options: SecurityOptions) {
         : [[config.technique]];
       const stages: Stage[] = [];
       for (const [technique, name] of plan) {
-        const stage = await runStage(redacted, technique, config, name);
+        const stage = await runStage(prepared, technique, stageConfig, name);
         stages.push(stage);
         if (stage.verdict.flagged || stage.assessments.some(({ assessment }) => contentBlocked(assessment))) break;
       }

@@ -170,7 +170,7 @@ The library's chunking techniques run on the same code as the eval input strateg
 
 ## Using the library
 
-Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. Text can be judged by Google Cloud Model Armor or by a [self-hosted LLM judge](#self-hosted-llm-judge) on any OpenAI-compatible endpoint; the input API can grow to images and documents in later releases.
+Screen untrusted source content before an AI agent consumes it. Configure a provider once, then call `screen` at the boundary where text enters your agent. Text can be judged by Google Cloud Model Armor or by a [self-hosted LLM judge](#self-hosted-llm-judge) on any OpenAI-compatible endpoint. [Images and documents](#images-and-documents) use the same `screen` call.
 
 ```ts
 import { createSecurity, ModelArmorScanner } from "@elicollinson/solenoid-security";
@@ -225,6 +225,7 @@ A `contentType` fills any screening setting your configuration leaves unset with
 | `tool_output` | `full_text` with an LLM judge | measured | [O35](evals/FINDINGS.md), [O48](evals/FINDINGS.md) |
 | `encoded` | `preprocess: ["decoded_preview_v1"]`, then `full_text` | measured (hosted panel) | [O23](evals/FINDINGS.md), [O50](evals/FINDINGS.md) |
 | `user_prompt`, `unknown` | `full_text` | provisional | [O48](evals/FINDINGS.md) |
+| `image` | whole image, vision judge | **unmeasured** | none yet; an image-injection eval is the follow-up |
 
 Every entry uses the measured decision rule, the maximum score against each model's own threshold (`{ kind: "score", reduce: "max" }`).
 
@@ -355,6 +356,62 @@ const security = createSecurity({
 | `responseFormat` | `"json_schema"` | `"prompt_json"` omits `response_format`, for LM Studio MLX builds that route schema-constrained output to `reasoning_content`. |
 
 The answer must be exactly `{"concernScore": <0..1>}`. A cut-off response (`finish_reason: "length"`), an answer only in the reasoning channel, malformed JSON, or an out-of-range score is never clamped or guessed: it is an **inconclusive** assessment (`label: "INCONCLUSIVE"`, `inconclusive: true`, `inconclusiveReason`, `score: NaN`). An HTTP error or a body that is not a chat completion throws. Each assessment also records `usage` (including `reasoningTokens`), `finishReason`, `responseId` and the answering `model`. Small non-reasoning judges can be steered into the score an injection asks for ([O12](evals/FINDINGS.md)), so evaluate a model before relying on it.
+
+### Images and documents
+
+`screen` also accepts `{ type: "image" }` and `{ type: "document" }` inputs. `origin`, `boundary` and `contentType` mean exactly what they mean for text, and an unlabeled input is `external`.
+
+```ts
+import { createSecurity, OpenAICompatibleJudge, ModelArmorScanner } from "@elicollinson/solenoid-security";
+
+const security = createSecurity({
+  providers: {
+    judge: new OpenAICompatibleJudge({ baseUrl, model: "google/gemma-4-26b-a4b", profile: "gemma-4-26b-a4b", vision: true }),
+    armor: new ModelArmorScanner({ projectId, templateId: "base-detector" }),
+  },
+  documents: { extractors: [pdfExtractor] }, // optional, see below
+});
+
+await security.screen({ type: "image", data: screenshotBytes, mimeType: "image/png", boundary: "tool_output" });
+await security.screen({ type: "image", data: "data:image/jpeg;base64,/9j/4AAQ..." });
+await security.screen({ type: "document", mimeType: "text/html", text: pageHtml, contentType: "web_page" });
+await security.screen({ type: "document", mimeType: "application/pdf", data: pdfBytes, filename: "cv.pdf", contentType: "resume" });
+```
+
+**No implicit URL fetching.** `data` is a `Uint8Array`, a base64 string, or a base64 `data:` URL. An `http(s)` URL is refused with a `TypeError`, never fetched: fetching would let injected text steer the screen's network requests, and would screen whatever the server returned at that moment rather than what your agent reads. Download it with your own allowlist and size cap, then pass the bytes. Declared image types are checked against the file signature.
+
+**Capabilities and failing closed.** Providers declare the inputs they accept with `supports` (`{ text?, image?: { mimeTypes, maxBytes }, document?: { mimeTypes, maxBytes } }`); a provider without `supports` is text-only. When no model is selected explicitly, a screen uses every provider that accepts the input and lists the rest in `result.skippedModels`. Models you select explicitly (in `screening`, a content-type entry, local overrides or the call) are a requirement. An input no selected model can read throws `ScreeningError` with code `"unsupported_input"` and is never allowed. Inputs over a provider's `maxBytes`, or over `documents.maxBytes` (10 MiB by default), throw `"input_too_large"`.
+
+**Images.** `OpenAICompatibleJudge` with `vision: true` sends PNG, JPEG, WebP or GIF up to `maxImageBytes` (4 MiB by default) as an OpenAI-compatible `image_url` part holding a base64 data URL. It uses a separate image prompt (`SCORE_ONLY_IMAGE_PROMPT_ID`, `security-image-score-only-json-v1`) with the same schema and strict parser, so text screens still send the measured prompt byte for byte. The Gemma 4, Qwen3.6 and Qwen3.8 profiles record a vision encoder (`profile.vision`), and a profile without one rejects `vision: true`. Your server must load the model's projector (mmproj for GGUF). **Image screening is unmeasured.** No eval has run the image prompt, so treat it as a starting point until an image-injection eval exists. Techniques and preprocessing do not apply to images: each model sees the whole image once.
+
+**Documents.** A document's text is extracted, then screened as a text input. That means the content-type recommendation, preprocessing, technique and authored-text redaction all apply, and `result.extraction` records the extractor id, input bytes, extracted characters and segment count. Pass `data` (bytes) or `text` (an already-decoded text format). The built-in extractors need no dependencies:
+
+| MIME type | Extractor | Output |
+| --- | --- | --- |
+| `text/plain` | `builtin:text` | The text (strict decoding; a `charset` parameter is honored) |
+| `text/markdown` | `builtin:markdown` | The source as written, so comments a renderer would hide are still screened |
+| `text/html`, `application/xhtml+xml` | `builtin:html` | Visible text, then **hidden text** as a second segment. Scripts and styles are dropped |
+| `application/json`, `application/ld+json` | `builtin:json` | Every string value in order, plus keys that contain spaces |
+| `text/csv` | `builtin:csv` | Unquoted cells, tab-separated, one row per line |
+
+The HTML extractor surfaces text a reader would not see but a model reading the source would: comments, elements hidden with `hidden`, `aria-hidden="true"`, `<template>` or an inline `display:none`/`visibility:hidden`/zero-size/off-screen style, hidden form values, `alt`/`title`/`aria-label`/`placeholder` and `<meta>` content. Hidden text is a classic injection carrier, so it is screened rather than discarded. Detection of inline styles is a heuristic: text hidden by a stylesheet class is reported as visible, and is still screened. Hidden text in extracted pages is unmeasured. The `web_page` recommendation (full text) was measured on page text.
+
+PDF, DOCX and other binary formats need an extractor you provide. Yours are consulted before the built-ins, so you can also replace one. If no extractor matches the MIME type, a provider that screens the format natively gets the raw bytes (`result.input.via: "native"`). If none does, the screen throws `"unsupported_input"`. An extractor that throws, or returns something other than `{ text, segments?, metadata? }`, fails the screen with `"extraction_failed"`. An extractor that cannot read a file (a scanned PDF, say) should throw rather than return empty text, because empty text is allowed. Images embedded in documents are out of scope. Screen them as image inputs if your extractor surfaces them.
+
+```ts
+import type { DocumentExtractor } from "@elicollinson/solenoid-security";
+
+const pdfExtractor: DocumentExtractor = {
+  id: "pdfjs",
+  mimeTypes: ["application/pdf"],
+  async extract({ bytes }) {
+    const pages = await extractPdfPages(bytes);                // your PDF library
+    return { text: pages.join("\n"), segments: pages, metadata: { pages: pages.length } };
+  },
+};
+```
+
+**Model Armor.** Per Google's [overview](https://docs.cloud.google.com/model-armor/overview) and [`DataItem` reference](https://docs.cloud.google.com/model-armor/reference/rest/v1/DataItem), Model Armor screens files sent as a `byteItem`: PDF, Word, Excel and PowerPoint OOXML formats, TXT and CSV, from 69 bytes to 4 MB. It skips scanning larger files, so the scanner refuses them with `"input_too_large"` before the request. `ModelArmorScanner` declares those types, so a PDF reaches it natively when you supply no PDF extractor. Images (JPEG, PNG, BMP, up to 4 MB, one per request) are screened by OCR for the text filters and by Sensitive Data Protection for visual content. Google offers image screening only in the `us` and `eu` multi-regions, so it is opt-in with `imageScreening: true` and requires `location: "us"` or `"eu"`. Model Armor does not screen images embedded in files. File and image responses are read with the same strict rules as text, so a missing prompt-injection verdict fails the screen.
 
 ### Decisions
 

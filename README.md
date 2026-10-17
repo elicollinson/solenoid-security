@@ -30,9 +30,9 @@ reported separately and never counted as misses. Labels mark injection *attempts
 > under-calibrated at the 0.5 threshold: a 0.15 threshold chosen on the baseline lifts its extension mean balanced
 > accuracy from 0.865 to 0.891 out of sample ([report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 
-## Now running (as of 2026-10-16)
+## Now running (as of 2026-10-17)
 
-**Extension suite on the fully tested models: running** (started 2026-10-13). The seven models that finished the
+**Extension suite on the fully tested models: complete** (2026-10-13 to 2026-10-17; write-up in progress). The seven models that finished the
 baseline now run 14 new datasets (6,759 cases per model) under the identical frozen protocol. Estimated about 94 hours
 in total (realistic range 85–115).
 
@@ -63,7 +63,7 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.865; 2 abstentions) |
 | Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.866; 2 abstentions) |
 | Gemma 4 31B-it | Dense | ✅ Done (mean balanced accuracy 0.923; 0 abstentions) |
-| Muse Glimmer 30B | Dense | ▶ Running |
+| Muse Glimmer 30B | Dense | ✅ Done (mean balanced accuracy 0.904; 0 abstentions) |
 
 Qwen3.8 ran at `xhigh` effort with a template-injected instruction, and its 0.5-threshold scores are under-calibrated (see the [caveat above](#results), [report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 

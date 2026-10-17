@@ -3,9 +3,9 @@
 Provenance-aware prompt-injection screening for AI agents, and the evaluation lab that decides how it should screen.
 
 The library screens untrusted text at the boundary where it enters an agent. The [evaluation workspace](evals/README.md)
-measures which detectors, input techniques and runtimes actually catch injections. It covers 21 public and synthetic
-datasets (7,326 cases), 33 detector configurations from 17 models, hosted APIs and local inference, and about 388,000
-scored judgments. Every claim below links to its evidence. Strength ratings and confounds are in
+measures which detectors, input techniques and runtimes actually catch injections. It covers 35 public and synthetic
+datasets (21 baseline and 14 extension; 14,085 cases), 33 detector configurations from 17 models, hosted APIs and
+local inference, and about 388,000 scored judgments. Every claim below links to its evidence. Strength ratings and confounds are in
 [`evals/FINDINGS.md`](evals/FINDINGS.md).
 
 ## Results
@@ -20,50 +20,45 @@ scored judgments. Every claim below links to its evidence. Strength ratings and 
 | **A cheap decode step fixes encoded-text false alarms.** | Decoded previews cut false flags on 969 encoded benign controls by up to 92% (Qwen3.6 27B 140 → 11) and largely keep Base64 recall. | Strong | [O23](evals/FINDINGS.md), [decoded-preview report](evals/reports/decoded-preview-research-2026-09-29.md) |
 | **A managed guardrail misses embedded attacks.** | Model Armor catches 0–3/78 BIPIA email attacks and ~0 subtle long-document attacks, but has the lowest benign false-positive rate. | Strong | [O35–O37](evals/FINDINGS.md) |
 | **On full text, six of seven self-hostable models score within 0.03.** One frozen protocol, 21 datasets, Q8 on one Mac Studio. | Mean balanced accuracy 0.895–0.923 (Gemma 4 26B-A4B highest); Laguna XS 2.1 0.712. The gaps are in email (0.71–0.91) and encoded text, where the Gemma models flag 40–54% of encoded benign controls. | Moderate | [O48–O52](evals/FINDINGS.md), [Studio baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md) |
+| **Harder, more varied data separates the models, except on agent output.** Same protocol, 14 new datasets. | Six non-Laguna models 0.865–0.923 (spread 0.028 → 0.059). QA, BIPIA tables, BrowseSafe, LLMail and RepoGuard separate them; agent tool output stays at 0.98–1.00. Gemma 4 31B-it and 26B-A4B tie (0.923, 0.922) with the fewest false alarms (0.9%, 1.4%). | Moderate | [O56–O60](evals/FINDINGS.md), [Studio extension](evals/reports/studio-extension-q8-t4096-2026-10.md) |
 | **Rankings flip between datasets, so small checks mislead.** | Qwen3.8 27B: 18/18 on a paper qualification tranche, 18/75 on BIPIA. | Strong | [O30](evals/FINDINGS.md) |
 
 Scores are computed per dataset and never pooled across datasets. Abstentions (answers cut off at the token limit) are
-reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline is summarized [below](#now-running-as-of-2026-10-12).
+reported separately and never counted as misses. Labels mark injection *attempts*, not downstream compromise. The completed full-text baseline and extension suite are summarized [below](#status-as-of-2026-10-17).
 
 > **Qwen3.8 caveat (2026-10-16):** every local Qwen3.8 27B result ran at `xhigh` reasoning effort, with an
 > instruction its chat template adds to the system prompt, not at the requested `high`. Its scores are also
 > under-calibrated at the 0.5 threshold: a 0.15 threshold chosen on the baseline lifts its extension mean balanced
 > accuracy from 0.865 to 0.891 out of sample ([report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 
-## Now running (as of 2026-10-17)
+## Status (as of 2026-10-17)
 
-**Extension suite on the fully tested models: complete** (2026-10-13 to 2026-10-17; write-up in progress). The seven models that finished the
-baseline now run 14 new datasets (6,759 cases per model) under the identical frozen protocol. Estimated about 94 hours
-in total (realistic range 85–115).
+Nothing is running. **Extension suite on the fully tested models: complete**
+([report](evals/reports/studio-extension-q8-t4096-2026-10.md)). The seven models that finished the baseline ran 14
+new datasets (6,759 cases per model) under the identical frozen protocol, 2026-10-13 to 2026-10-17, with no incidents.
+The new data adds varied subtle long-document attacks, documents that contain legitimate instructions, LLMail attacks,
+BIPIA tables and code, BrowseSafe web pages, all four AgentDojo suites, Nemotron agent payloads, RepoGuard repository
+content and injected SQuAD/TriviaQA passages ([sources](evals/datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08)).
 
-*Why expand.* The baseline is saturating. Six of seven models finish within 0.03 of each other
-([O48](evals/FINDINGS.md)). Long documents (0.94–0.99) and agent tool output (0.97–0.99) are at ceiling for most
-models. Much of the long-document score rests on LongPIBench, which reuses about 12 fixed attack sentences. The policy
-pairs cannot separate full-text detectors at all ([O49](evals/FINDINGS.md)). A benchmark that cannot separate models
-cannot drive per-content recommendations, so the next round adds harder and more varied data rather than more of the
-same.
+| Model | Type | Overall | Long docs | BIPIA | QA | Web | Agent | Email | Code | Pooled FPR | Abstentions (of 6,759) |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Gemma 4 31B-it | Dense | **0.923** | 0.917 | **0.917** | 0.921 | **0.825** | 0.999 | 0.920 | 0.923 | 0.9% | 0 |
+| Gemma 4 26B-A4B | MoE | 0.922 | 0.906 | 0.904 | **0.948** | 0.820 | 0.999 | **0.943** | 0.907 | 1.4% | 2 |
+| Muse Glimmer 30B | Dense | 0.904 | **0.929** | 0.839 | 0.815 | 0.765 | **1.000** | **0.943** | **1.000** | 3.0% | 0 |
+| Ornith 1.5 35B-A3B | MoE | 0.895 | 0.914 | 0.857 | 0.858 | 0.662 | 0.991 | 0.886 | 0.999 | 7.1% | 2 |
+| Qwen3.6 35B-A3B | MoE | 0.866 | 0.854 | 0.828 | 0.914 | 0.703 | 0.982 | 0.810 | 0.889 | 4.5% | 2 |
+| Qwen3.8 27B | Dense | 0.865 | 0.908 | 0.748 | 0.730 | 0.802 | 0.999 | 0.810 | **1.000** | 2.2% | 2 |
+| Laguna XS 2.1 | MoE (coding) | 0.702 | 0.685 | 0.644 | 0.591 | 0.608 | 0.955 | 0.701 | 0.709 | 7.5% | 8 |
 
-*How it is expanded* ([sources](evals/datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08)):
+Mean balanced accuracy, datasets weighted equally. Email is LLMail attack recall and code is RepoGuard. Pooled FPR is
+benign cases flagged out of 1,973.
 
-- **Varied, subtle long documents:** new LongPIBench-style paper, code and résumé cohorts with many distinct subtle
-  attacks instead of one template; LLMail attacks embedded in long emails; and an authorized-benign set of documents
-  that legitimately contain instructions, to measure false alarms on hard negatives.
-- **New formats:** BIPIA table and code tasks.
-- **New sources and environments:** BrowseSafe web pages, the full AgentDojo suites, Nemotron indirect-injection
-  attacks, RepoGuard repository content, and the LLMail attack pool.
-- **QA contexts:** injections inside SQuAD and TriviaQA passages (1,200 cases each).
-
-What to watch: whether the stronger models start to separate on the subtle and hard-negative sets.
-
-| Model | Type | Status |
-|---|---|---|
-| Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.895; 2 abstentions in 6,759) |
-| Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.922; 2 abstentions) |
-| Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.702; 8 abstentions) |
-| Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.865; 2 abstentions) |
-| Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.866; 2 abstentions) |
-| Gemma 4 31B-it | Dense | ✅ Done (mean balanced accuracy 0.923; 0 abstentions) |
-| Muse Glimmer 30B | Dense | ✅ Done (mean balanced accuracy 0.904; 0 abstentions) |
+*Saturation verdict.* The extension separates the models where the baseline could not. Among the six models other
+than Laguna, the overall spread doubles from 0.028 to 0.059 (+0.031, 95% CI +0.023 to +0.042), with the clearest
+separation on QA, BIPIA, BrowseSafe web pages, LLMail and RepoGuard. Agent tool output stays saturated (0.982–1.000),
+which is the case for the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31);
+[O56–O60](evals/FINDINGS.md)). The two Gemma models tie at the top, and Gemma 4 26B-A4B remains the default because
+it is about 3× faster than Gemma 4 31B-it.
 
 Qwen3.8 ran at `xhigh` effort with a template-injected instruction, and its 0.5-threshold scores are under-calibrated (see the [caveat above](#results), [report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 
@@ -100,8 +95,10 @@ input, so that dataset cannot rank these detectors ([O49](evals/FINDINGS.md)). G
 was rerun in full after an LM Link route change. The budget was raised from 1,024 tokens after the first attempt cut
 off verbose reasoning models ([Appendix A](evals/FINDINGS.md)).
 
-After the extension suite come the full abliteration run and the deferred Qwen3.6 27B. Jev and Model Armor results remain
-hosted references.
+Next candidates (not yet chosen): the Qwen3.8 effort ablation ([#33](https://github.com/elicollinson/solenoid-security/issues/33)),
+the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31), pending a design decision)
+and the full abliteration run ([#23](https://github.com/elicollinson/solenoid-security/issues/23)). The deferred
+Qwen3.6 27B remains open. Jev and Model Armor results remain hosted references.
 
 ## Design
 
@@ -119,7 +116,7 @@ inconclusive outcome so a judge that runs out of tokens is never read as a pass.
 output, encoded text, user prompts), per common self-hostable model, and per technique, each traceable to an
 observation in [`FINDINGS.md`](evals/FINDINGS.md).
 
-**What the evidence suggests so far** (provisional; the full-text baseline is complete, the varied-template extension suite has not run):
+**What the evidence suggests so far** (provisional; the full-text baseline and the varied-template extension suite are complete, at full text only):
 
 | Content | Current recommendation | Why |
 |---|---|---|

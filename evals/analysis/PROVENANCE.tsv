@@ -20,6 +20,14 @@ evals/analysis/attack-following-evidence-2026-10-04/results/source-audit.json	ev
 evals/analysis/bipia-score-distribution-2026-10-04/analyze.py	evals/runs/bipia-score-distribution-2026-10-04/analyze.py	9355fd1a11e62818b02382a16ffd6f75bbe10459a5aff8bfe94ab24663df5e84	verbatim
 evals/analysis/bipia-score-distribution-2026-10-04/results/comparison.json	evals/runs/bipia-score-distribution-2026-10-04/comparison.json	f4d1c5ce26ebcb5e516581cf054c4b7009cdeb1404c278bb826054c4d712d48a	verbatim
 evals/analysis/bipia-translation-diagnostic-2026-10-04/compare.ts	evals/runs/bipia-translation-diagnostic-2026-10-04/compare.ts	9a86452bfa6ba913afb03accc4088c10a2c0cdc54f81338e098f67cf352f50e9	verbatim
+evals/analysis/llada-pilot-2026-10/run-pilot.sh	evals/runs/llada-pilot-2026-10-18/run-pilot.sh	212cd8b9831a8ba72067c820542ed06ae31773be2f84b2f11e6f323b43329d95	host-redacted
+evals/analysis/llada-pilot-2026-10/run-variant.sh	evals/runs/llada-pilot-2026-10-18/run-variant.sh	1cb2d8eec058ae9f45fca5a4801b7dcc9efe68318f0dc785731861288ef1f5eb	host-redacted
+evals/analysis/llada-pilot-2026-10/console.log	evals/runs/llada-pilot-2026-10-18/console.log	a6edfa62e7fda1518d593ac552510f1e35491c533b0ce84e5f78bd06775f5378	host-redacted
+evals/analysis/llada-pilot-2026-10/progress.log	evals/runs/llada-pilot-2026-10-18/progress.log	72bc3d4409dce772ec96c51df4bd8d701ee8cd951af5896118400d70aedc4074	verbatim
+evals/analysis/llada-pilot-2026-10/progress-pilot-llada22-mini-4bit-t128-full.log	evals/runs/llada-pilot-2026-10-18/progress-pilot-llada22-mini-4bit-t128-full.log	5998cc64646d42070c0e097dc006970e6bfae5c68d75d85b781f97f83b062470	verbatim
+evals/analysis/llada-pilot-2026-10/progress-pilot-llada22-flash-4bit-t128-full.log	evals/runs/llada-pilot-2026-10-18/progress-pilot-llada22-flash-4bit-t128-full.log	401730c7b45074a6da55fe265c9fe7628f1eb1feefc088ba264cf303fe89a803	verbatim
+evals/analysis/llada-pilot-2026-10/analyze-llada-pilot.ts	-	-	authored
+evals/analysis/llada-pilot-2026-10/results/llada-pilot-results.json	-	-	generated
 evals/analysis/lmstudio-available-panel-2026-10-04/audit-domain-window-coverage.ts	evals/runs/lmstudio-available-panel-2026-10-04/audit-domain-window-coverage.ts	9882ae1a4269939a09d2ccf1e2e5c227adc65c77ee9d11bedd88d722c4109331	verbatim
 evals/analysis/lmstudio-available-panel-2026-10-04/audit-first6-work.py	evals/runs/lmstudio-available-panel-2026-10-04/audit-first6-work.py	acb808b17d721c4889f834798e198e53805c73962d978acb53069d61d884fb3e	verbatim
 evals/analysis/lmstudio-available-panel-2026-10-04/audit-full-cohort.ts	evals/runs/lmstudio-available-panel-2026-10-04/audit-full-cohort.ts	a335d6574ea4c12ad42985d1dab0f0451bd3667ccb98d035481a6acc43f37d43	verbatim

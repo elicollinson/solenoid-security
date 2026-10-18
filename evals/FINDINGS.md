@@ -749,6 +749,42 @@ original on identical cases. They missed more marginal attacks, and one added ag
 - Follow-up: F7 escalates to the full 21-dataset Studio baseline protocol for both builds (#23). The reasoning screen
   needs human coding before it can be relied on.
 
+### 2.17 LLaDA2.2 text-diffusion pilot (2026-10-18)
+
+> **Caveat (pilot scale):** the same 998-case, 9-dataset subset as §2.14. One MLX runtime (the user's port), one
+> decoding setting, MLX 6-bit and 4-bit weights against Q8_0 GGUF comparators, and no reasoning pass against
+> reasoning comparators. Numbering follows O54–O60 in the open PRs #35 and #37.
+
+**O61: Text-diffusion LLaDA2.2 builds are weak prompt-injection detectors at 1.4B–6B active parameters, about 0.24
+below Gemma 4 26B-A4B and level with Laguna XS 2.1. They are an order of magnitude faster, but their near-binary
+scores (AUROC ≈ 0.74) rule them out as a fast pre-screen.**
+- Evidence ✔: 998 identical cases per model (labels and input hashes checked across 12 models). The LLaDA2.2 decoder
+  ran with Levenshtein editing on, prompt-only JSON, temperature 0, steps 32, threshold 0.5 and max_tokens 128. Mean
+  BA: flash 4-bit 0.714 (9 abstentions), mini 6-bit 0.695 (31), mini 4-bit 0.649 (77). Comparators: Gemma26 0.953,
+  Gemma31 0.938, Ornith 0.898, Qwen3.6 35B 0.896, Muse 0.893, Qwen3.8 0.888, huihui 0.858, heretic 0.854, Laguna
+  0.689. Pooled exact McNemar against Gemma26: 250 vs 6 (flash), 257 vs 11 (mini 6-bit) and 287 vs 12 (mini 4-bit)
+  discordant. Against Qwen3.8: 194 vs 17, 210 vs 28 and 248 vs 35. All six have Holm p < 10⁻³⁴. Flash vs mini 6-bit
+  is not significant (92 vs 72, p = 0.14). Mini 6-bit beats mini 4-bit (82 vs 43, p = 6.2×10⁻⁴). The losses are
+  mostly missed attacks: LongPI recall is 0.20–0.81 against 0.92–1.00 for the references. The builds also add false
+  alarms on web pages (FPR 0.63–0.78 vs 0.32–0.33) and AgentDyn benign outputs (0.45–0.64 vs 0.00–0.17). Median server time
+  per request: 143 ms, 135 ms and 421 ms (p95 674, 1,064 and 2,253 ms), against client medians of 2.96 s for Gemma26
+  and 4.93 s for Qwen3.8. Every abstention is an output abstention. Out-of-range scores (2, 2.5, 8, 8.5, 8.9, 9) make
+  up 32% of mini 6-bit's and 19% of mini 4-bit's abstentions, and flash has none. At most 14 scored outputs per build
+  fall strictly between 0.15 and 0.8. Pooled AUROC is 0.741 / 0.745 / 0.689, against 0.955 for Gemma26. The mildest
+  simulated pre-screen clears only score 0 and escalates abstentions to Gemma26. It still escalates 70–80% of cases
+  and loses 41–83 of Gemma26's detections, so cascade mean BA falls to 0.875–0.917. See the
+  [pilot report](reports/llada-pilot-2026-10.md) and
+  [`llada-pilot-results.json`](analysis/llada-pilot-2026-10/results/llada-pilot-results.json).
+- Strength: **Moderate** for "weak at this scale under this protocol" (paired, large discordance, consistent across
+  three builds and seven datasets). **Suggestive** for anything about diffusion as such: reasoning, precision,
+  runtime and output constraint all differ from the comparators.
+- Caveats: the comparators reason first and requested a strict JSON schema. LLaDA's server ignores `response_format`.
+  MLX 6-bit and 4-bit are compared with Q8_0 GGUF. The mini 4-bit weight source is unconfirmed. Only one decoder and
+  one decoding setting were tested. The frozen prompt was not adapted, and the out-of-range values suggest the model
+  sometimes reads it as a 0–10 scale.
+- Follow-up: F10 ([#38](https://github.com/elicollinson/solenoid-security/issues/38)). Flash at 6-bit or 8-bit, and a
+  non-reasoning autoregressive comparator (e.g. Gemma26 with thinking off) on the same cases.
+
 ---
 
 ## 3. Numbers that did not reconcile, or could not be checked
@@ -915,6 +951,14 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   only Studio model whose reasoning text matched 0/24 across devices while flags matched 23/24 (O38, O47). Compare
   no-draft vs draft-model vs MTP builds on long documents, the score probe and the subtle templates.
   _Tracked in [#7](https://github.com/elicollinson/solenoid-security/issues/7)._
+- **F10 — Text-diffusion LLMs (dLLMs) as injection detectors.** dLLMs decode a block in parallel and can revise tokens.
+  As of 2026-10, no published work tests them as detectors. **Update 2026-10-18 (pilot done, O61):** LLaDA2.2-mini
+  (6-bit and 4-bit MLX) and LLaDA2.2-flash (4-bit MLX) ran on the 998-case pilot subset through the user's MLX port,
+  with editing on. Mean BA was 0.649–0.714, against 0.953 for Gemma26 (Laguna level). Requests were 7–18× faster,
+  but the near-binary scores give AUROC ≈ 0.74, too low for a cascade pre-screen. Open arms: flash at 6-bit or 8-bit
+  (the Studio has 96 GB), a non-reasoning autoregressive comparator, and a full run only if either changes the
+  picture. See the [pilot report](reports/llada-pilot-2026-10.md).
+  _Tracked in [#38](https://github.com/elicollinson/solenoid-security/issues/38)._
 
 ---
 

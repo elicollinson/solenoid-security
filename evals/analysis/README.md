@@ -16,7 +16,11 @@ those numbers without rerunning inference. Folder names mirror the original run 
   `evals/runs/<run-id>`), and it is marked `published copy`. Nothing else was edited. Four later files were never in a
   run directory and have `-` for the original path and hash: `studio-baseline-t4096-2026-10-07/analyze-baseline.ts`
   (`authored`) and its output `results/baseline-results.json` (`generated`), plus
-  `abliteration-pilot-2026-10/make-pilot-plan.ts` and `supplement-pilot.ts` (`authored`).
+  `abliteration-pilot-2026-10/make-pilot-plan.ts` and `supplement-pilot.ts` (`authored`). The LLaDA2.2 pilot adds one
+  `authored` script and its `generated` output, three `verbatim` progress logs, and three `host-redacted` files (two run
+  scripts and the console log). Those three passed the private tailnet endpoint to `--base-url`. The published copy
+  replaces that URL with the placeholder `$LLADA_BASE_URL`, and nothing else differs. The original SHA-256 is of the
+  unredacted file.
 
 ## Running them
 
@@ -85,6 +89,21 @@ Cited by [injection-following findings](../reports/injection-following-findings-
 | File | Computes |
 |---|---|
 | `compare.ts` | Outcome-selected comparison of the five translation-task attacks across saved protocols. Writes [the report](../reports/lmstudio-bipia-translation-diagnostic-2026-10-04.md). Its `comparison.json` is **not** published because it keeps model rationales that quote attack text. |
+
+### `llada-pilot-2026-10/`
+
+The LLaDA2.2 text-diffusion pilot ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), run on
+2026-10-18 ([report](../reports/llada-pilot-2026-10.md), `FINDINGS.md` O61, research log L153). Three MLX builds
+served by an OpenAI-compatible MLX port (the `openai_compatible` engine) were run on the abliteration pilot's 998
+cases. The run directory was `evals/runs/llada-pilot-2026-10-18/`. Checkpoints are under
+`evals/runs/prompt-injection-openai-compat-llada22-{mini,variants}-pilot-v1/`.
+
+| File | Computes |
+|---|---|
+| `analyze-llada-pilot.ts` | **Authored here, not copied from the run directory.** Audits all 108 cells (3 LLaDA builds + 9 comparators × 9 tests) through the abliteration pilot's `extractCheckpoint` and `auditPartialCheckpoint`, and checks identical labels and input hashes with `assertIdenticalCases`. It then writes `results/llada-pilot-results.json`: per model × test n, scored, abstentions, TPR, FPR/TNR, BA and AUROC; mean BA; pooled exact McNemar against Gemma26 and Qwen3.8 (Holm over 6) and per test; pre-screen recall, clearance and a simulated cascade into Gemma26; server timing statistics; the shapes of abstained outputs (counts only); and score-value distributions. Run with `DATA_ROOT` pointing at a checkout that holds `evals/runs` and the dataset sources. |
+| `run-pilot.sh`, `run-variant.sh` | Serial cell loops for the 6-bit mini suite and the variants suite (`$1` = condition). `host-redacted`: set `LLADA_BASE_URL` to the server's `/v1` URL. The header comment of `run-variant.sh` was copied from `run-pilot.sh` and still says 6-bit. |
+| `progress.log`, `progress-pilot-llada22-*-4bit-t128-full.log`, `console.log` | `START`/`CELL`/`PILOT_DONE` lines per condition and the runner's console output (`console.log` is `host-redacted`). The 6-bit feasibility-24 cell ran before `run-pilot.sh` and has no progress line. |
+| `results/` | `llada-pilot-results.json`: counts, rates, scores and timings only (`PROVENANCE.tsv` marks it `generated`). It has no case IDs, case text, model output or endpoint URLs. |
 
 ### `lmstudio-available-panel-2026-10-04/`
 
@@ -207,6 +226,6 @@ The Studio Q8 full-text baseline: the superseded 1,024-token attempt and the com
   payloads) and `lmstudio-thinking1024-2026-10-03/bipia-payload-inspection.json`.
 - **Scratch and logs:** `lmstudio-thinking1024-2026-10-03/inspect-e2b-paper-false-positive.ts` and
   `inspect-email-window-plan.ts` (one-off debugging that prints case segments), `lmstudio-studio-2026-10-05/brief.sh`
-  (console one-liner), and all `*.log`, `driver.ndjson` and LM Studio inventory snapshots.
+  (console one-liner), and all `*.log` except the `llada-pilot-2026-10/` logs above, `driver.ndjson` and LM Studio inventory snapshots.
 - **Third-party code:** `research-literature-2026-10-03/` (vendored upstream benchmark code from the literature scan).
 - **Run checkpoints** (`*.jsonl` with native responses) and anything under `evals/private/`.

@@ -1,0 +1,11 @@
+START|2026-10-18T17:15:46Z
+CELL|2026-10-18T17:17:08Z|longpi-paper|exit 0
+CELL|2026-10-18T17:17:41Z|longpi-code|exit 0
+CELL|2026-10-18T17:17:58Z|bipia-email-mixed|exit 0
+CELL|2026-10-18T17:18:37Z|longpi-email|exit 0
+CELL|2026-10-18T17:18:52Z|web-mixed|exit 0
+CELL|2026-10-18T17:19:07Z|agentdyn-github|exit 0
+CELL|2026-10-18T17:19:22Z|pids-obfuscated|exit 0
+CELL|2026-10-18T17:19:37Z|benign-false-positives|exit 0
+CELL|2026-10-18T17:20:29Z|paper-score-counterfactual|exit 0
+PILOT_DONE|2026-10-18T17:20:29Z

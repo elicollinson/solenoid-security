@@ -4677,3 +4677,42 @@ files, none modified).
 Next: the extension suite (`prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1`, 14 tests, 6,759 cases
 per model) on the seven fully tested models. Details follow separately. The full F7 run and the deferred Qwen3.6 27B
 come after.
+
+### L153 — 2026-10-18: LLaDA2.2 text-diffusion pilot (#38) run and analyzed; weak detectors, fast, not a viable pre-screen
+
+Numbered after L151 (#35) and L152 (#37), which are open PRs not on this branch. The run used the `openai_compatible`
+engine from PR #39 against the user's MLX port of the full LLaDA2.2 decoder on the Mac Studio, with Levenshtein
+editing on. The user verified that edits (rewrites, DELETE, INSERT) are applied. Every request carried temperature 0,
+max_tokens 128, block_length 32, steps 32, threshold 0.5, editing_threshold 0.0 and max_post_steps 16. Output was
+prompt-only JSON (the server ignores `response_format` and has no logprobs), requests were serial, and the base URL was
+overridden at run time. The main checkout was detached at #39's head.
+
+**Runs (UTC, 2026-10-18).** Mini 6-bit (suite `prompt-injection-openai-compat-llada22-mini-pilot-v1`): feasibility-24
+at 17:15 (24/24 scored), then `run-pilot.sh` from 17:15:46 to 17:20:29 over the 9 pilot cohorts (998 cases). Mini
+4-bit and flash 4-bit used the new suite `prompt-injection-openai-compat-llada22-variants-pilot-v1`, a copy of the 6-bit
+suite with only `id` and `conditions` changed (checked with a `jq` diff; the default base URL is still loopback).
+`run-variant.sh` ran mini 4-bit from 17:22:11 to 17:27:59 and flash from 20:14:49 to 20:28:50, each including
+feasibility-24. Every cell exited 0, with no reruns, and `load_ms` was 0 on every response. Flash's first request took
+65 s of client time (10.4 s on the server) and was not flagged as a model load. Abstentions over the 998 cases were 31,
+77 and 9, all output abstentions.
+
+**Analysis.** `evals/analysis/llada-pilot-2026-10/analyze-llada-pilot.ts` (new, offline) audits 108 checkpoints
+(3 LLaDA builds and 9 comparators × 9 tests) via `extractCheckpoint` and `auditPartialCheckpoint`, then checks identical
+labels and input hashes with `assertIdenticalCases`. The comparators are the seven Studio baseline models and the two
+abliterated Qwen3.8 builds. Mean BA: flash 0.714, mini 6-bit 0.695, mini 4-bit 0.649, against Gemma26 0.953 and
+Qwen3.8 0.888 (Laguna 0.689). Pooled exact McNemar: Gemma26 vs LLaDA 250/6, 257/11 and 287/12, and Qwen3.8 vs LLaDA
+194/17, 210/28 and 248/35, all with Holm p < 10⁻³⁴. Flash vs mini 6-bit: 92 vs 72, p = 0.14. Median server time was
+143, 135 and 421 ms. Out-of-range scores make up 32% and 19% of the mini abstentions. The scores are near-binary, and
+pooled AUROC is 0.741 / 0.745 / 0.689 against 0.955 for Gemma26. A simulated pre-screen into Gemma26 that clears only
+score 0 still escalates 70–80% of cases and lowers mean BA to 0.875–0.917, so it is not viable. The script reproduces
+the user's scratch comparison: all twelve means match to three decimals (Ornith's is 0.89751). Latency medians agree within
+1.5 ms and p95 values within 11 ms, which fits a different quantile method.
+
+Published: the script, `results/llada-pilot-results.json` (aggregates only), the run scripts and progress and console
+logs. The run scripts and console log are `host-redacted`: the tailnet URL is replaced by `$LLADA_BASE_URL`. There are
+PROVENANCE rows and an index entry. Report: [`llada-pilot-2026-10.md`](llada-pilot-2026-10.md). FINDINGS O61 (numbered
+after O54–O60 in #35/#37) and backlog item F10 were added, linked to #38.
+
+Next (not started): flash at 6-bit or 8-bit if memory allows (96 GB Studio), and a non-reasoning autoregressive
+comparator (e.g. Gemma26 with thinking off) on the same 998 cases. A dLLM cascade pre-screen is shelved unless a
+build's AUROC improves substantially.

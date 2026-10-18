@@ -68,6 +68,37 @@ export interface LMStudioConfig {
   endpoint?: "native-v0";
 }
 
+/**
+ * A generic OpenAI-compatible /v1 chat-completions server (for example a user-run MLX port of a text-diffusion model).
+ * Score-only JSON protocol only. Strictly serial, no load/placement checks; transport failures fail closed.
+ */
+export interface OpenAICompatibleConfig {
+  /**
+   * API root including its version path, e.g. `http://127.0.0.1:8088/v1`; `/chat/completions` is appended. https anywhere;
+   * plain http only to loopback, private-LAN, Tailscale (100.64.0.0/10, *.ts.net) or single-label/.local hosts.
+   */
+  baseUrl: string;
+  /** Serving runtime as declared by the operator (recorded, not checked). */
+  runtime: string;
+  /** Where the server actually runs and how it is reached (recorded, not checked). */
+  origin: string;
+  /** Weight format/quantization as declared by the operator, e.g. "6-bit MLX" (recorded, not checked). */
+  quantization?: string;
+  /** Weight provenance as declared by the operator (recorded, not checked). */
+  weights?: string;
+  /** Name of an environment variable holding a bearer token. Omitted: no Authorization header. Keys never live in suites. */
+  apiKeyEnv?: string;
+  timeoutMs: number;
+  /** "json_schema" sends the strict score-only schema as response_format; "prompt_json" sends none and relies on the frozen prompt. */
+  responseFormat: "json_schema" | "prompt_json";
+  /** Decoding settings recorded verbatim as engine identity (for diffusion: block_length, threshold, steps, gen_length, ...). */
+  decoding: Readonly<Record<string, AnnotationValue>>;
+  /** true: decoding fields are sent as extra top-level body params. false: recorded only, and the server's own defaults apply. */
+  sendDecodingParams: boolean;
+  /** Free-text provenance note about the decoding record (for example, that the values are model-card defaults not sent). */
+  decodingNote?: string;
+}
+
 export type EngineSpec = (
   | { id: string; kind: "jev"; model: string; provider: string; questionId: string; questionSha256: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: string; parameters?: Readonly<Record<string, AnnotationValue>> }
@@ -75,7 +106,7 @@ export type EngineSpec = (
   | { id: string; kind: "llm_score_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-only-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "task_context_llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "task-context-score-rationale-v1" | "task-context-score-rationale-neutral-v2"; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> }
-) & { lmStudio?: LMStudioConfig };
+) & { lmStudio?: LMStudioConfig; openaiCompatible?: OpenAICompatibleConfig };
 
 export type InputStrategy =
   | { id: string; kind: "decoded_preview_v1"; turnSelection: "all" | "last_external" | "all_external" }

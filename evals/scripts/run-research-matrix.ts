@@ -23,6 +23,7 @@ if (!outputDir.startsWith(resolve(root, "evals/runs") + "/")) throw new Error("O
 const conditionFilter = option("conditions").split(",").filter(Boolean);
 const testFilter = option("tests").split(",").filter(Boolean);
 const suite = validateMatrixSuite(JSON.parse(suiteText), conditionFilter, testFilter);
+if (Object.values(suite.engines).some(engine => engine.openaiCompatible)) throw new Error("Use run-suite.ts for openai_compatible engines; the paid matrix requires cloud budget accounting");
 if (Object.values(suite.engines).some(engine => engine.lmStudio)) throw new Error("Use run-lmstudio-matrix.ts for local inference; the paid matrix requires cloud budget accounting");
 const maxSpend = Number(option("max-spend", "6"));
 const reserve = Number(option("reserve", "2"));

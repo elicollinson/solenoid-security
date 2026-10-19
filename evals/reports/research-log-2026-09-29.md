@@ -4767,3 +4767,65 @@ dated note on O61 and an F10 pointer.
 Next (not started): the pre-registered confirmatory run in report §8. It uses Flash 256/256 and 128/128 plus the
 cascade, on fresh long documents with varied payload positions and ≥ 100 clean controls per domain, with Holm over 3
 domains and an FPR non-inferiority endpoint.
+
+### L155 — 2026-10-19: LLaDA2.2-flash full suites and pre-registered window test (#38); H1 9/13, H2 supported, H3 failed
+
+This entry follows L154. The user approved a full Flash run (not mini) plus a confirmatory window test on the
+long-document cohorts.
+
+**Pre-registration.** On a new branch `feature/llada-flash-full`, stacked on #41, the following were committed and
+pushed as `f122c8d` at 02:10:40 UTC, before any call:
+
+- the plan ([`llada-flash-full-plan-2026-10.md`](llada-flash-full-plan-2026-10.md), `plan.json`);
+- two suites built by `make-suites.ts`, with tests copied verbatim from the Studio Q8 t4096 baseline and extension
+  suites and the engine copied verbatim from the variants pilot;
+- the queue, the runner and the post-cell abstention check.
+
+It declared:
+
+- **Window cohorts:** a rule (prompt-injection label and either median > 512 words or LongPIBench-derived) that
+  selects 14 cohorts.
+- **Hypotheses:** H1 (256/256 beats full text, Holm over 13); H2 (non-end payloads: abstract, method, LLMail
+  attachment_middle, plus the three subtle cohorts, Holm over 6); H3 (pooled benign FPR non-inferior within 2 points,
+  Newcombe interval).
+- **Policy:** ignore-invalid as primary, with strict as secondary.
+- **Sensitivity:** a not-pilot repeat of H1 and H3.
+- **Stopping rules and fallback:** halt on provenance failure, retry transport failures up to 3 times, halt at > 10%
+  abstention on a window cohort. 128/128 would run on the H2 cohorts only, because the estimated total for 128/128 on
+  all cohorts was 14 h. Dry runs planned 88,163 calls.
+
+**Run.** The run used the main checkout's byte-identical copies, with the server URL passed only as `$LLADA_BASE_URL`.
+
+- **Timing:** 02:11:05–12:13:14 UTC, strictly serial. Full text took 2 h 34 min, 256/256 4 h 15 min and 128/128
+  3 h 13 min.
+- **Calls and failures:** 88,163 calls. There were 0 transport errors, retries, halts or model reloads.
+- **Abstentions:** 137 at full text. Nemotron's 9.7% was the highest, just under the flag. Ignore-invalid left 1
+  case abstention across all window cells.
+- **Determinism:** 971/971 pilot full-text scores and 907/907 sweep window scores reproduced.
+
+**Analysis.** `analyze-flash.ts` is offline and audits 312 checkpoints. It recomputes the 7 Q8 rows, which match the
+published baseline and extension aggregates.
+
+- **Full text:** Flash scores 0.718 (baseline) and 0.707 (extension), 7th of 8 just above Laguna.
+- **H1:** 9 of 13 supported at 256/256 (mean ΔBA +0.082). TriviaQA is significantly worse, with 76 end-position
+  detections lost. At 128/128, 6 of 6 are supported.
+- **H2 SUPPORTED at both sizes:** abstract TPR 0.223→0.385 (256) and 0.474 (128); method 0.175→0.377 and 0.469;
+  attachment_middle 0.253→0.444 and 0.596. The window that holds the payload fires (0 of 111 abstract/method
+  window-only detections from the last window).
+- **H3 NOT non-inferior:** pooled FPR 0.064→0.079 (CI upper 0.025), driven by BrowseSafe (+34/−16). At 128/128 it
+  was 0→0.030.
+- **Exploratory:**
+  - The cascade adds 0–0.02.
+  - Window cost per case is 1.3–6.2× full text.
+  - Gemma26 and Qwen3.8 stay ahead on every window cohort.
+
+**Published.**
+
+- `evals/analysis/llada-flash-full-2026-10/`: scripts, queue, plan, dry run, progress log, host-redacted console log,
+  results and README.
+- PROVENANCE rows and an index entry.
+- Report: [`llada-flash-full-2026-10.md`](llada-flash-full-2026-10.md).
+- FINDINGS O63, with dated notes on O61, O62 and F10.
+- README result tables gained a Flash row.
+
+The O62 claims "no added false alarms" and "parity on code and email" are withdrawn.

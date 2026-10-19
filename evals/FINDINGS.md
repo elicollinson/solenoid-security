@@ -787,6 +787,9 @@ scores (AUROC ≈ 0.74) rule them out as a fast pre-screen.**
 - **Note 2026-10-18 (window sweep, O62):** O61 measures full text only. In an exploratory follow-up, Flash with 256-
   or 128-word windows drew level with Gemma26 and Qwen3.8 on subsampled LongPIBench code and email. Short content and
   mini 6-bit did not improve, so the "weak general detector" conclusion stands.
+- **Note 2026-10-19 (full suites, O63):** O61's pilot ranking holds at full scale. Flash full text scores 0.718 on all
+  21 baseline datasets and 0.707 on the 14 extension datasets, 7th of 8, level with Laguna. The 971 pilot inputs that
+  overlap reproduced their scores exactly.
 
 **O62 (EXPLORATORY): Sliding windows lift LLaDA2.2-flash 4-bit on long synthetic documents without added false alarms
 at window sizes of 256 words or more. They are neutral on short content, add false alarms below 128 words, and the gain
@@ -827,6 +830,70 @@ does not transfer to mini 6-bit.**
   - Short-content BA stays far below Gemma26 (BIPIA 0.567 against 0.917).
 - Follow-up: the pre-registered confirmatory run under F10 (report §8): Flash 256/256 and 128/128 plus the cascade,
   on fresh long documents with varied payload positions and ≥ 100 clean controls per domain.
+- **Note 2026-10-19 (confirmatory run, O63):** the pre-registered test on the full suites confirms the long-document gain
+  (9 of 13 cohorts at 256/256) and shows it is not only an end-of-document artifact: payloads in abstracts, method
+  sections and mid-attachment are caught by the window that holds them. Two claims here do **not** replicate:
+  - "no added false alarms": pooled FPR rose 0.064→0.079 at 256/256, mostly on BrowseSafe, and 0→0.030 at 128/128;
+  - parity with Gemma26 and Qwen3.8 on code and email: 0.888 and 0.975 against 0.96–1.00.
+
+**O63 (PRE-REGISTERED): On the full Studio suites, LLaDA2.2-flash 4-bit ranks 7th of 8 at full text (mean BA 0.718
+baseline, 0.707 extension). Sliding windows raise its long-document recall, including where the payload is not at the
+end, but they add false alarms on web pages and at 128 words, and they never close the gap to the Q8 references.**
+> **Design:** pre-registered in `f122c8d` (pushed 2026-10-19 02:10 UTC, before any call). The run covered 35 tests
+> (14,085 cases) at full text, 256/256 windows on 14 long-document cohorts selected by a declared rule, and 128/128 on
+> the 6 H2 cohorts (a declared budget fallback). That is 88,163 calls in 10 h 02 min, strictly serial, with 0
+> transport errors. The primary policy is ignore-invalid with max > 0.5. Tests are exact McNemar with Holm per family;
+> H3 uses a Newcombe paired interval with a 2-point margin.
+- Evidence ✔:
+  - **Full text.** Flash's mean BA is 0.718 on the baseline (Gemma26 0.923 … Qwen3.8 0.895; Laguna 0.712) and 0.707
+    on the extension (Gemma31 0.923 … Qwen3.8 0.865; Laguna 0.702). The 7 Q8 rows were recomputed from checkpoints
+    and match the published aggregates.
+    - Losses are missed attacks: LongPI recall is 0.18–0.38 for papers, QA passages 0.11–0.14 and subtle templates
+      0.03–0.17.
+    - Flash raises almost no false alarms on clean long documents (authorized-benign FPR 0.003), but many on web
+      content (FPR 0.54–0.56).
+    - Paired over all 35 tests: 4,192 vs 525 discordant against Gemma26.
+  - **H1, supported on 9 of 13 cohorts** (mean ΔBA +0.082 at 256/256). Examples:
+    - code 0.750→0.888 (+91/−5);
+    - email 0.832→0.975 (+90/−6);
+    - LLMail-in-email 0.652→0.739.
+
+    Not supported: longpi-resume, BrowseSafe and subtle résumés. TriviaQA is significantly worse (−0.023, +42/−81).
+    At 128/128, 6 of 6 H2 cohorts are supported (mean +0.159).
+  - **H2, SUPPORTED.**
+    - Abstract-position payloads: TPR 0.223→0.385 at 256/256 and 0.474 at 128/128.
+    - Method position: 0.175→0.377 and 0.469.
+    - LLMail payloads mid-attachment: 0.253→0.444 and 0.596.
+    - Subtle paper and subtle code: also supported.
+
+    On LongPI paper, code and email (end position), 211 of 221 window-only detections came from the last window
+    alone. On the abstract and method cohorts, 0 of 111 did: the first firing window sits at a median relative
+    index of 0.06 (abstract) and 0.53 (method).
+  - **H3, NOT non-inferior.**
+    - Pooled benign FPR 0.064→0.079 (Δ +0.015, 95% CI 0.006–0.025). BrowseSafe adds 34 false alarms and removes 16.
+      Without it (exploratory) the change is 0.001→0.006.
+    - At 128/128: 0→0.030 (+12, 9 of them on subtle code).
+  - **Exploratory.**
+    - The cascade adds 0–0.02 over windows and recovers TriviaQA's end-position losses.
+    - Window cost per case is 1.3–3.5× full text at 256/256 and 2.2–6.2× at 128/128 (381 and 339 ms per call
+      against 654 ms).
+    - Gemma26 and Qwen3.8 full text stay ahead on every window cohort: pooled 1,893 vs 86 and 1,493 vs 129
+      discordant at 256/256.
+    - Determinism: 971/971 pilot and 907/907 sweep scores reproduced.
+  - See the [report](reports/llada-flash-full-2026-10.md) and
+    [`flash-full-results.json`](analysis/llada-flash-full-2026-10/results/flash-full-results.json).
+- Strength: **Strong** for "windows raise Flash's long-document recall on these synthetic cohorts, at any payload
+  position" (pre-registered, large paired discordance, Holm-corrected, replicated at two sizes). **Moderate** for "7th
+  of 8 at full text" (one quant and a different protocol from the Q8 rows). The false-alarm result is a **Strong
+  negative** against O62's claim.
+- Caveats:
+  - 11 of 14 window cohorts are LongPIBench-derived, and the two independent long cohorts (BrowseSafe, TriviaQA)
+    go the other way.
+  - Cases overlap the pilot, although a declared not-pilot sensitivity analysis agrees.
+  - The comparison is a protocol comparison: no reasoning, prompt-only JSON, MLX 4-bit against reasoning Q8 GGUF.
+  - 128/128 was not run on the end-position cohorts.
+- Follow-up: none planned for windows on Flash as a detector. Under F10, the open question is whether a larger Flash
+  quant or a reasoning-capable dLLM narrows the full-text gap.
 
 ---
 
@@ -1004,6 +1071,10 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   **Update 2026-10-18 (exploratory window sweep, O62):** windows of 256 words or more lifted Flash on long code and
   email to Gemma26 or Qwen3.8 level, with no added false alarms. Short content and mini 6-bit were not helped.
   **Confirmatory design** (not yet run): see [window-sweep report §8](reports/llada-window-sweep-2026-10.md).
+  **Update 2026-10-19 (pre-registered full run, O63):** Flash full text ran on both Studio suites (0.718 and 0.707,
+  7th of 8). Windows raised long-document recall at every payload position (H1 9/13, H2 supported). They did not keep
+  false alarms within 2 points (H3 failed, mostly on BrowseSafe) and did not reach the Q8 references. See the
+  [plan](reports/llada-flash-full-plan-2026-10.md) and the [report](reports/llada-flash-full-2026-10.md).
   _Tracked in [#38](https://github.com/elicollinson/solenoid-security/issues/38)._
 
 ---

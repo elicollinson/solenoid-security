@@ -59,6 +59,10 @@ What to watch: whether the stronger models start to separate on the subtle and h
 | Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.866; 2 abstentions) |
 | Gemma 4 31B-it | Dense | ✅ Done (mean balanced accuracy 0.923; 0 abstentions) |
 | Muse Glimmer 30B | Dense | ✅ Done (mean balanced accuracy 0.904; 0 abstentions) |
+| LLaDA2.2-flash ¹ | Diffusion, no reasoning (MLX 4-bit) | ✅ Done (mean balanced accuracy 0.707; 69 abstentions) |
+
+¹ Run separately on the user's MLX server through the `openai_compatible` engine, with the same 14 datasets and scoring, but no
+reasoning pass and prompt-only JSON ([O63](evals/FINDINGS.md), [report](evals/reports/llada-flash-full-2026-10.md)).
 
 **Abliteration pilot: complete** ([#23](https://github.com/elicollinson/solenoid-security/issues/23),
 [results](evals/reports/abliteration-pilot-results-2026-10.md)). Two abliterated builds of Qwen3.8 27B ran against the
@@ -83,8 +87,14 @@ later quantization, abliterated-model, prompt and technique comparisons.
 | Muse Glimmer 30B | Dense | 0.903 | 5 |
 | Qwen3.6 35B-A3B | MoE | 0.901 | 3 |
 | Qwen3.8 27B | Dense | 0.895 | 17 |
+| LLaDA2.2-flash ¹ | Diffusion, no reasoning (MLX 4-bit) | 0.718 | 68 |
 | Laguna XS 2.1 | MoE (coding) | 0.712 | 114 |
 | Qwen3.6 27B | Dense | ⏸ Deferred (about 3.7× slower than Qwen3.8; can resume later) | — |
+
+¹ A text-diffusion model, run as MLX 4-bit on the user's server with no reasoning pass and prompt-only JSON, so it is
+not the frozen Q8 protocol. Sliding windows raise its long-document recall at any payload position, but they add
+false alarms on web pages and stay well below the Q8 models ([O63](evals/FINDINGS.md),
+[pre-registered report](evals/reports/llada-flash-full-2026-10.md)).
 
 Every model scores 0.500 on the Skill-Inject policy pairs. On full text, both members of a pair send identical
 input, so that dataset cannot rank these detectors ([O49](evals/FINDINGS.md)). Gemma 4 31B-it's encoded-benign cell

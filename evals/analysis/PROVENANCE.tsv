@@ -194,3 +194,16 @@ evals/analysis/llada-window-sweep-2026-10/console-windows.log	evals/runs/llada-p
 evals/analysis/llada-window-sweep-2026-10/results/sweep-results.json	-	-	generated
 evals/analysis/llada-window-sweep-2026-10/results/first-window-results.json	-	-	generated
 evals/analysis/llada-window-sweep-2026-10/results/tables.md	-	-	generated
+evals/analysis/llada-flash-full-2026-10/plan.json	-	-	authored
+evals/analysis/llada-flash-full-2026-10/make-suites.ts	-	-	authored
+evals/analysis/llada-flash-full-2026-10/cohort-rule.ts	-	-	authored
+evals/analysis/llada-flash-full-2026-10/queue.txt	-	-	authored
+evals/analysis/llada-flash-full-2026-10/run-queue.sh	-	-	authored
+evals/analysis/llada-flash-full-2026-10/check-cell.ts	-	-	authored
+evals/analysis/llada-flash-full-2026-10/dryrun.tsv	-	-	authored
+evals/analysis/llada-flash-full-2026-10/analyze-flash.ts	-	-	authored
+evals/analysis/llada-flash-full-2026-10/README.md	-	-	authored
+evals/analysis/llada-flash-full-2026-10/progress.log	evals/runs/llada-flash-full-2026-10-19/progress.log	d4aff4131ce568d376da88aeba1b6f40947c2f1c80b9ab1142c3cb6196da9cfb	verbatim
+evals/analysis/llada-flash-full-2026-10/console.log	evals/runs/llada-flash-full-2026-10-19/console.log	058164982465443a7d23f2fe6827c2ba8ee44065e23fc15d492674185709eb26	host-redacted
+evals/analysis/llada-flash-full-2026-10/results/flash-full-results.json	-	-	generated
+evals/analysis/llada-flash-full-2026-10/results/tables.md	-	-	generated

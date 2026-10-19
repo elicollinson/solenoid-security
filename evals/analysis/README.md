@@ -20,7 +20,9 @@ those numbers without rerunning inference. Folder names mirror the original run 
   `authored` script and its `generated` output, three `verbatim` progress logs, and three `host-redacted` files (two run
   scripts and the console log). Those three passed the private tailnet endpoint to `--base-url`. The published copy
   replaces that URL with the placeholder `$LLADA_BASE_URL`, and nothing else differs. The original SHA-256 is of the
-  unredacted file.
+  unredacted file. The pre-registered Flash run (`llada-flash-full-2026-10/`) adds `authored` scripts, plan, queue and
+  dry run (they ran from byte-identical untracked copies in the main checkout), one `verbatim` progress log, one
+  `host-redacted` console log and two `generated` results files.
 
 ## Running them
 
@@ -114,6 +116,15 @@ Eight content types were covered, with offline aggregation, abstention-policy, c
 The folder also holds the first 512/384 window test's runner and logs. See the folder's own `README.md` for the file
 table. Scripts are `verbatim`, `path-adjusted` (default output path only) or `host-redacted` (console logs), as
 listed in `PROVENANCE.tsv`. `results/` is `generated`.
+
+### `llada-flash-full-2026-10/`
+
+**Pre-registered** LLaDA2.2-flash run ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), 2026-10-19
+([plan](../reports/llada-flash-full-plan-2026-10.md), [report](../reports/llada-flash-full-2026-10.md), `FINDINGS.md`
+O63, research log L155). It covers Flash full text on all 35 Studio baseline and extension tests, 256/256 windows on 14
+declared long-document cohorts, and 128/128 on the 6 H2 cohorts: 88,163 calls. `analyze-flash.ts` recomputes the 7 Q8
+rows, then runs H1–H3 as declared plus the exploratory position, firing-window, cascade, abstention, comparator,
+latency and determinism analyses. See the folder's own `README.md`.
 
 ### `lmstudio-available-panel-2026-10-04/`
 

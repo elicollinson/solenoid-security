@@ -226,3 +226,9 @@ evals/analysis/llada-flash-full-2026-10/progress.log	evals/runs/llada-flash-full
 evals/analysis/llada-flash-full-2026-10/console.log	evals/runs/llada-flash-full-2026-10-19/console.log	058164982465443a7d23f2fe6827c2ba8ee44065e23fc15d492674185709eb26	host-redacted
 evals/analysis/llada-flash-full-2026-10/results/flash-full-results.json	-	-	generated
 evals/analysis/llada-flash-full-2026-10/results/tables.md	-	-	generated
+evals/analysis/llada-flash-surface-cues-2026-10/coding.json	-	-	authored
+evals/analysis/llada-flash-surface-cues-2026-10/analyze-surface-cues.ts	-	-	authored
+evals/analysis/llada-flash-surface-cues-2026-10/README.md	-	-	authored
+evals/analysis/llada-flash-surface-cues-2026-10/PROVENANCE.tsv	-	-	authored
+evals/analysis/llada-flash-surface-cues-2026-10/results/surface-cue-results.json	-	-	generated
+evals/analysis/llada-flash-surface-cues-2026-10/results/tables.md	-	-	generated

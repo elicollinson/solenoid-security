@@ -31,9 +31,7 @@ reported separately and never counted as misses. Labels mark injection *attempts
 > under-calibrated at the 0.5 threshold: a 0.15 threshold chosen on the baseline lifts its extension mean balanced
 > accuracy from 0.865 to 0.891 out of sample ([report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 
-## Status (as of 2026-10-17)
-
-Nothing is running. **Extension suite on the fully tested models: complete**
+**Extension suite on the fully tested models: complete**
 ([report](evals/reports/studio-extension-q8-t4096-2026-10.md)). The seven models that finished the baseline ran 14
 new datasets (6,759 cases per model) under the identical frozen protocol, 2026-10-13 to 2026-10-17, with no incidents.
 The new data adds varied subtle long-document attacks, documents that contain legitimate instructions, LLMail attacks,
@@ -59,6 +57,42 @@ separation on QA, BIPIA, BrowseSafe web pages, LLMail and RepoGuard. Agent tool 
 which is the case for the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31);
 [O56–O60](evals/FINDINGS.md)). The two Gemma models tie at the top, and Gemma 4 26B-A4B remains the default because
 it is about 3× faster than Gemma 4 31B-it.
+
+## Now running (as of 2026-10-17)
+
+**Extension suite on the fully tested models: complete** (2026-10-13 to 2026-10-17; write-up in progress). The seven models that finished the
+baseline now run 14 new datasets (6,759 cases per model) under the identical frozen protocol. Estimated about 94 hours
+in total (realistic range 85–115).
+
+*Why expand.* The baseline is saturating. Six of seven models finish within 0.03 of each other
+([O48](evals/FINDINGS.md)). Long documents (0.94–0.99) and agent tool output (0.97–0.99) are at ceiling for most
+models. Much of the long-document score rests on LongPIBench, which reuses about 12 fixed attack sentences. The policy
+pairs cannot separate full-text detectors at all ([O49](evals/FINDINGS.md)). A benchmark that cannot separate models
+cannot drive per-content recommendations, so the next round adds harder and more varied data rather than more of the
+same.
+
+*How it is expanded* ([sources](evals/datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08)):
+
+- **Varied, subtle long documents:** new LongPIBench-style paper, code and résumé cohorts with many distinct subtle
+  attacks instead of one template; LLMail attacks embedded in long emails; and an authorized-benign set of documents
+  that legitimately contain instructions, to measure false alarms on hard negatives.
+- **New formats:** BIPIA table and code tasks.
+- **New sources and environments:** BrowseSafe web pages, the full AgentDojo suites, Nemotron indirect-injection
+  attacks, RepoGuard repository content, and the LLMail attack pool.
+- **QA contexts:** injections inside SQuAD and TriviaQA passages (1,200 cases each).
+
+What to watch: whether the stronger models start to separate on the subtle and hard-negative sets.
+
+| Model | Type | Status |
+|---|---|---|
+| Ornith 1.5 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.895; 2 abstentions in 6,759) |
+| Gemma 4 26B-A4B | MoE | ✅ Done (mean balanced accuracy 0.922; 2 abstentions) |
+| Laguna XS 2.1 | MoE (coding) | ✅ Done (mean balanced accuracy 0.702; 8 abstentions) |
+| Qwen3.8 27B | Dense | ✅ Done (mean balanced accuracy 0.865; 2 abstentions) |
+| Qwen3.6 35B-A3B | MoE | ✅ Done (mean balanced accuracy 0.866; 2 abstentions) |
+| Gemma 4 31B-it | Dense | ✅ Done (mean balanced accuracy 0.923; 0 abstentions) |
+| Muse Glimmer 30B | Dense | ✅ Done (mean balanced accuracy 0.904; 0 abstentions) |
+
 
 Qwen3.8 ran at `xhigh` effort with a template-injected instruction, and its 0.5-threshold scores are under-calibrated (see the [caveat above](#results), [report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
 

@@ -1,0 +1,60 @@
+START|2026-10-18T23:11:12Z|evals/runs/llada-sweep-2026-10-18/queue-flash-long.txt
+BEGIN|2026-10-18T23:11:12Z|sweep-flash-w512s512|longpi-code
+CELL|2026-10-18T23:11:43Z|sweep-flash-w512s512|longpi-code|exit 0
+BEGIN|2026-10-18T23:11:43Z|sweep-flash-w512s512|longpi-email
+CELL|2026-10-18T23:12:33Z|sweep-flash-w512s512|longpi-email|exit 0
+BEGIN|2026-10-18T23:12:33Z|sweep-flash-w512s512|longpi-paper
+CELL|2026-10-18T23:15:15Z|sweep-flash-w512s512|longpi-paper|exit 0
+BEGIN|2026-10-18T23:15:15Z|sweep-flash-w512s256|longpi-code
+CELL|2026-10-18T23:16:04Z|sweep-flash-w512s256|longpi-code|exit 0
+BEGIN|2026-10-18T23:16:04Z|sweep-flash-w512s256|longpi-email
+CELL|2026-10-18T23:17:34Z|sweep-flash-w512s256|longpi-email|exit 0
+BEGIN|2026-10-18T23:17:34Z|sweep-flash-w512s256|longpi-paper
+CELL|2026-10-18T23:22:48Z|sweep-flash-w512s256|longpi-paper|exit 0
+BEGIN|2026-10-18T23:22:48Z|sweep-flash-w512s128|longpi-code
+CELL|2026-10-18T23:24:16Z|sweep-flash-w512s128|longpi-code|exit 0
+BEGIN|2026-10-18T23:24:16Z|sweep-flash-w512s128|longpi-email
+CELL|2026-10-18T23:27:08Z|sweep-flash-w512s128|longpi-email|exit 0
+BEGIN|2026-10-18T23:27:08Z|sweep-flash-w512s128|longpi-paper
+CELL|2026-10-18T23:37:28Z|sweep-flash-w512s128|longpi-paper|exit 0
+BEGIN|2026-10-18T23:37:28Z|sweep-flash-w256s256|longpi-code
+CELL|2026-10-18T23:38:10Z|sweep-flash-w256s256|longpi-code|exit 0
+BEGIN|2026-10-18T23:38:10Z|sweep-flash-w256s256|longpi-email
+CELL|2026-10-18T23:39:26Z|sweep-flash-w256s256|longpi-email|exit 0
+BEGIN|2026-10-18T23:39:26Z|sweep-flash-w256s256|longpi-paper
+CELL|2026-10-18T23:43:48Z|sweep-flash-w256s256|longpi-paper|exit 0
+BEGIN|2026-10-18T23:43:48Z|sweep-flash-w256s128|longpi-code
+CELL|2026-10-18T23:45:03Z|sweep-flash-w256s128|longpi-code|exit 0
+BEGIN|2026-10-18T23:45:03Z|sweep-flash-w256s128|longpi-email
+CELL|2026-10-18T23:47:28Z|sweep-flash-w256s128|longpi-email|exit 0
+BEGIN|2026-10-18T23:47:28Z|sweep-flash-w256s128|longpi-paper
+CELL|2026-10-18T23:56:05Z|sweep-flash-w256s128|longpi-paper|exit 0
+BEGIN|2026-10-18T23:56:05Z|sweep-flash-w256s064|longpi-code
+CELL|2026-10-18T23:58:30Z|sweep-flash-w256s064|longpi-code|exit 0
+BEGIN|2026-10-18T23:58:30Z|sweep-flash-w256s064|longpi-email
+CELL|2026-10-19T00:03:11Z|sweep-flash-w256s064|longpi-email|exit 0
+BEGIN|2026-10-19T00:03:11Z|sweep-flash-w256s064|longpi-paper
+CELL|2026-10-19T00:20:14Z|sweep-flash-w256s064|longpi-paper|exit 0
+BEGIN|2026-10-19T00:20:14Z|sweep-flash-w128s128|longpi-code
+CELL|2026-10-19T00:21:23Z|sweep-flash-w128s128|longpi-code|exit 0
+BEGIN|2026-10-19T00:21:23Z|sweep-flash-w128s128|longpi-email
+CELL|2026-10-19T00:23:37Z|sweep-flash-w128s128|longpi-email|exit 0
+BEGIN|2026-10-19T00:23:37Z|sweep-flash-w128s128|longpi-paper
+CELL|2026-10-19T00:31:30Z|sweep-flash-w128s128|longpi-paper|exit 0
+BEGIN|2026-10-19T00:31:30Z|sweep-flash-w128s064|longpi-code
+CELL|2026-10-19T00:33:38Z|sweep-flash-w128s064|longpi-code|exit 0
+BEGIN|2026-10-19T00:33:38Z|sweep-flash-w128s064|longpi-email
+CELL|2026-10-19T00:37:58Z|sweep-flash-w128s064|longpi-email|exit 0
+BEGIN|2026-10-19T00:37:58Z|sweep-flash-w128s064|longpi-paper
+CELL|2026-10-19T00:53:40Z|sweep-flash-w128s064|longpi-paper|exit 0
+BEGIN|2026-10-19T00:53:40Z|sweep-flash-w064s064|longpi-code
+CELL|2026-10-19T00:55:38Z|sweep-flash-w064s064|longpi-code|exit 0
+BEGIN|2026-10-19T00:55:38Z|sweep-flash-w064s064|longpi-email
+CELL|2026-10-19T00:59:43Z|sweep-flash-w064s064|longpi-email|exit 0
+BEGIN|2026-10-19T00:59:43Z|sweep-flash-w064s064|longpi-paper
+CELL|2026-10-19T01:14:35Z|sweep-flash-w064s064|longpi-paper|exit 0
+BEGIN|2026-10-19T01:14:35Z|sweep-flash-w064s032|longpi-code
+CELL|2026-10-19T01:18:23Z|sweep-flash-w064s032|longpi-code|exit 0
+BEGIN|2026-10-19T01:18:23Z|sweep-flash-w064s032|longpi-email
+CELL|2026-10-19T01:26:35Z|sweep-flash-w064s032|longpi-email|exit 0
+DONE|2026-10-19T01:26:35Z|evals/runs/llada-sweep-2026-10-18/queue-flash-long.txt

@@ -1,11 +1,12 @@
 /** Run one explicit dataset test × engine/strategy condition. Never runs network calls without --execute. */
-import { isLMStudioOutputAbstention, validateLMStudioConfig } from "../src/lmStudio.js";
+import { validateLMStudioConfig } from "../src/lmStudio.js";
+import { resolveOpenAICompatibleBaseUrl, validateOpenAICompatibleConfig, type OpenAICompatibleEnvelope } from "../src/openaiCompatible.js";
 import { randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, truncateSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadDataset, selectTestCases } from "../src/datasets.js";
-import { EngineResponseError, inferText, isLengthLimitedResponse, taskContextForCase, validateTaskContextEngine } from "../src/engines.js";
+import { EngineResponseError, inferText, isLengthLimitedResponse, isOutputAbstention, taskContextForCase, validateTaskContextEngine } from "../src/engines.js";
 import { RateGate } from "../src/rateGate.js";
 import { openArmorBudget } from "../src/armorBudget.js";
 import { auditPartialCheckpoint, readNativeInputSource, rebindObservation, type Event, type Metadata, type NativeInputCacheEntry } from "./analyze-research.js";
@@ -47,6 +48,13 @@ const limitSuffix = caseLimit === undefined ? "" : `-limit${caseLimit}`;
 const tasks = cases.flatMap(item => segmentCase(item, strategy).map(segment => ({ item, segment })));
 validateTaskContextEngine(engine);
 validateLMStudioConfig(engine);
+validateOpenAICompatibleConfig(engine);
+// openai_compatible: --base-url= (or OPENAI_COMPATIBLE_BASE_URL) overrides the suite URL for transport only, e.g. another
+// local port forward. Engine identity keeps the suite URL; every response envelope records the URL actually used.
+const baseUrlOverride = option("base-url", process.env.OPENAI_COMPATIBLE_BASE_URL ?? "");
+if (baseUrlOverride && !engine.openaiCompatible) throw new Error("--base-url applies only to openai_compatible engines");
+const openAICompatibleBaseUrl = engine.openaiCompatible ? resolveOpenAICompatibleBaseUrl(engine.openaiCompatible, baseUrlOverride || undefined) : undefined;
+const serial = !!engine.lmStudio || !!engine.openaiCompatible;
 if (engine.kind === "task_context_llm") for (const task of tasks) taskContextForCase(task.item, task.segment);
 const contextHash = (task: (typeof tasks)[number]) => engine.kind === "task_context_llm" ? sha256(JSON.stringify(taskContextForCase(task.item, task.segment))) : undefined;
 const taskMap = new Map(tasks.map(task => [task.segment.id, task]));
@@ -69,18 +77,19 @@ if (inputCache) {
 }
 // Batched local execution is part of run identity: a non-serial client concurrency is recorded (absent = 1, serial),
 // so serial and batched checkpoints can never be resumed into or pooled with each other silently.
-const requestedConcurrency = Number(option("concurrency", engine.lmStudio ? "1" : "8"));
+const requestedConcurrency = Number(option("concurrency", serial ? "1" : "8"));
+if (engine.openaiCompatible && requestedConcurrency !== 1) throw new Error("openai_compatible engines run strictly serially (--concurrency=1)");
 if (engine.lmStudio && requestedConcurrency !== 1) metadata = { ...metadata, clientConcurrency: requestedConcurrency };
 const reusePlan = reuseSource ? prepareReusedRun(metadata, cases, reuseSource, root) : undefined;
 if (reusePlan) metadata = reusePlan.metadata;
 if (!args.includes("--execute")) {
   const plannedCalls = deduplicate ? new Set(tasks.filter(t => !inputCache?.inputs.has(t.segment.textSha256)).map(t => t.segment.textSha256)).size : tasks.length - (reusePlan?.observations.length ?? 0);
-  console.log(JSON.stringify({ dryRun: true, runId, testId, conditionId, engineKind: engine.kind, cases: cases.length, plannedCalls, ...(deduplicate ? { reusedObservations: tasks.length - plannedCalls } : reusePlan ? { reusedObservations: reusePlan.observations.length } : {}), output }, null, 2));
+  console.log(JSON.stringify({ dryRun: true, runId, testId, conditionId, engineKind: engine.kind, ...(openAICompatibleBaseUrl ? { baseUrl: openAICompatibleBaseUrl } : {}), cases: cases.length, plannedCalls, ...(deduplicate ? { reusedObservations: tasks.length - plannedCalls } : reusePlan ? { reusedObservations: reusePlan.observations.length } : {}), output }, null, 2));
   process.exit(0);
 }
 if (engine.kind === "llm" && engine.promptId !== "security-eval-direct-chat-v1") throw new Error("Historical Agent-based LLM protocol cannot be rerun by the direct-chat adapter");
 if (liveEngine.kind === "model_armor" && (!liveEngine.projectId || liveEngine.projectId.startsWith("${"))) throw new Error("MODEL_ARMOR_PROJECT_ID required for live Model Armor run");
-const concurrency = Number(option("concurrency", engine.lmStudio ? "1" : "8"));
+const concurrency = Number(option("concurrency", serial ? "1" : "8"));
 if (deduplicate && concurrency !== 1) throw new Error("Within-run reuse requires serial inference");
 if (engine.lmStudio && concurrency > engine.lmStudio.parallel) throw new Error("Concurrency exceeds pinned LM Studio parallel capacity");
 const maxDispatches = Number(option("max-dispatches", String(Math.ceil(tasks.length * 1.2))));
@@ -120,10 +129,10 @@ for (const event of events.slice(1)) {
   else if (!["response", "error", "rateLimit", "complete"].includes(event.type)) throw new Error("Unknown checkpoint event");
 }
 const continueOutputErrors = args.includes("--continue-after-output-errors");
-if (continueOutputErrors && !engine.lmStudio) throw new Error("Output-abstention continuation is local-only");
+if (continueOutputErrors && !serial) throw new Error("Output-abstention continuation is limited to local and openai_compatible engines");
 const outputFailures = new Set<string>();
 if (continueOutputErrors) for (const event of events) {
-  if (event.type === "response" && isLMStudioOutputAbstention(liveEngine, event.raw) && events.some(error => error.type === "error" && error.requestId === event.requestId && error.segmentId === event.segmentId && (error as {wireResponse?: {status: number}}).wireResponse?.status === 200)) {
+  if (event.type === "response" && isOutputAbstention(liveEngine, event.raw) && events.some(error => error.type === "error" && error.requestId === event.requestId && error.segmentId === event.segmentId && (error as {wireResponse?: {status: number}}).wireResponse?.status === 200)) {
     if (typeof event.segmentId !== "string" || !taskMap.has(event.segmentId)) throw new Error("Invalid output-abstention segment");
     if (!done.has(event.segmentId)) outputFailures.add(event.segmentId);
   }
@@ -215,8 +224,10 @@ async function worker(): Promise<void> {
       throw new Error("Unreachable retry state");
     };
     try {
-      const result = await inferText(liveEngine, task.segment.text, { fetchFn: send, ...(liveEngine.kind === "task_context_llm" ? { taskContext: taskContextForCase(task.item, task.segment) } : {}) });
+      const result = await inferText(liveEngine, task.segment.text, { fetchFn: send, ...(openAICompatibleBaseUrl ? { openAICompatibleBaseUrl } : {}), ...(liveEngine.kind === "task_context_llm" ? { taskContext: taskContextForCase(task.item, task.segment) } : {}) });
       append({ type: "response", caseId: task.item.id, segmentId: task.segment.id, requestId, raw: result.rawResponse });
+      // The server LRU-unloads models; a reported load (load_ms > 0) is kept in the envelope and surfaced here.
+      if (liveEngine.openaiCompatible && (result.rawResponse as OpenAICompatibleEnvelope).openaiCompatible.modelLoad) console.warn(`Server reported a model (re)load on request ${requestId}`);
       const observation: InferenceObservation = {
         schemaVersion: "security-eval-observation/v1", runId, datasetId: manifest.id, datasetRevision: manifest.revision, testId: test!.id,
         conditionId: condition!.id, caseId: task.item.id, segmentId: task.segment.id, segmentIndex: task.segment.index,
@@ -235,7 +246,7 @@ async function worker(): Promise<void> {
       // native error response. Requests still queued before dispatch cost nothing.
       if (fatal && !didDispatch) return;
       if (error instanceof EngineResponseError) append({ type: "response", caseId: task.item.id, segmentId: task.segment.id, requestId, raw: error.rawResponse });
-      const outputAbstention = wireResponse?.status === 200 && error instanceof EngineResponseError && isLMStudioOutputAbstention(liveEngine, error.rawResponse);
+      const outputAbstention = wireResponse?.status === 200 && error instanceof EngineResponseError && isOutputAbstention(liveEngine, error.rawResponse);
       const issue = outputAbstention ? {kind: "output_abstention"} : safeIssue(error);
       append({ type: "error", caseId: task.item.id, segmentId: task.segment.id, requestId, issue,
         errorName: error instanceof Error ? error.name : "unknown",

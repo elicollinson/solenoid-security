@@ -1,0 +1,962 @@
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper/llada22-flash-4bit-full","scored":398,"expected":400,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper-abstract" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/300
+Scored 200/300
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-abstract/llada22-flash-4bit-full","scored":291,"expected":300,"abstentions":9,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-abstract/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper-method" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/300
+Scored 200/300
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-method/llada22-flash-4bit-full","scored":292,"expected":300,"abstentions":8,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-method/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-resume" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+Scored 400/400
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-resume/llada22-flash-4bit-full","cases":400,"observations":400,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-resume/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-code" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+Scored 400/400
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-code/llada22-flash-4bit-full","cases":400,"observations":400,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-code/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=bipia-email-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/156
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/bipia-email-mixed/llada22-flash-4bit-full","cases":156,"observations":156,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/bipia-email-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-email" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-email/llada22-flash-4bit-full","scored":394,"expected":400,"abstentions":6,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-email/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=attempt-detection" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+Scored 400/400
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/attempt-detection/llada22-flash-4bit-full","cases":400,"observations":400,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/attempt-detection/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=web-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/480
+Scored 200/480
+Scored 300/480
+Scored 400/480
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/web-mixed/llada22-flash-4bit-full","cases":480,"observations":480,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/web-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=agentdyn-shopping" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/183
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdyn-shopping/llada22-flash-4bit-full","cases":183,"observations":183,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdyn-shopping/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=agentdyn-github" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/237
+Scored 200/237
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdyn-github/llada22-flash-4bit-full","cases":237,"observations":237,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdyn-github/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=agentdyn-dailylife" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/411
+Scored 200/411
+Scored 300/411
+Scored 400/411
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdyn-dailylife/llada22-flash-4bit-full","cases":411,"observations":411,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdyn-dailylife/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=agentdojo-travel-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdojo-travel-mixed/llada22-flash-4bit-full","cases":21,"observations":21,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/agentdojo-travel-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=agent-injection-bench-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/182
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/agent-injection-bench-mixed/llada22-flash-4bit-full","scored":181,"expected":182,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/agent-injection-bench-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=pids-obfuscated" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/405
+Scored 200/405
+Scored 300/405
+Scored 400/405
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/pids-obfuscated/llada22-flash-4bit-full","cases":405,"observations":405,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/pids-obfuscated/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=encoding-eligible-existing-v1" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/229
+Scored 200/229
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/encoding-eligible-existing-v1/llada22-flash-4bit-full","scored":222,"expected":229,"abstentions":7,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/encoding-eligible-existing-v1/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=encoding-benign-controls-v1" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/969
+Scored 200/969
+Scored 300/969
+Scored 400/969
+Scored 500/969
+Scored 600/969
+Scored 700/969
+Scored 800/969
+Scored 900/969
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/encoding-benign-controls-v1/llada22-flash-4bit-full","scored":962,"expected":969,"abstentions":7,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/encoding-benign-controls-v1/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=benign-false-positives" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/339
+Scored 200/339
+Scored 300/339
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/benign-false-positives/llada22-flash-4bit-full","scored":319,"expected":339,"abstentions":20,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/benign-false-positives/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=pids-hard-benign-public" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/808
+Scored 200/808
+Scored 300/808
+Scored 400/808
+Scored 500/808
+Scored 600/808
+Scored 700/808
+Scored 800/808
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/pids-hard-benign-public/llada22-flash-4bit-full","scored":802,"expected":808,"abstentions":6,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/pids-hard-benign-public/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=skill-policy-pairs" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/234
+Scored 200/234
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/skill-policy-pairs/llada22-flash-4bit-full","scored":232,"expected":234,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/skill-policy-pairs/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=paper-score-counterfactual" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/paper-score-counterfactual/llada22-flash-4bit-full","cases":72,"observations":72,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/paper-score-counterfactual/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=bipia-table-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/600
+Scored 200/600
+Scored 300/600
+Scored 400/600
+Scored 500/600
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/bipia-table-mixed/llada22-flash-4bit-full","scored":590,"expected":600,"abstentions":10,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/bipia-table-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=bipia-code-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/bipia-code-mixed/llada22-flash-4bit-full","scored":399,"expected":400,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/bipia-code-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=browsesafe-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+Scored 400/400
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/browsesafe-mixed/llada22-flash-4bit-full","cases":400,"observations":400,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/browsesafe-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=nemotron-ipi-attacks" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/360
+Scored 200/360
+Scored 300/360
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/nemotron-ipi-attacks/llada22-flash-4bit-full","scored":325,"expected":360,"abstentions":35,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/nemotron-ipi-attacks/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=agentdojo-suites-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/280
+Scored 200/280
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/agentdojo-suites-mixed/llada22-flash-4bit-full","cases":280,"observations":280,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/agentdojo-suites-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=repoguard-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/575
+Scored 200/575
+Scored 300/575
+Scored 400/575
+Scored 500/575
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/repoguard-mixed/llada22-flash-4bit-full","cases":575,"observations":575,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/repoguard-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=inj-squad-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1200
+Scored 200/1200
+Scored 300/1200
+Scored 400/1200
+Scored 500/1200
+Scored 600/1200
+Scored 700/1200
+Scored 800/1200
+Scored 900/1200
+Scored 1000/1200
+Scored 1100/1200
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/inj-squad-mixed/llada22-flash-4bit-full","scored":1197,"expected":1200,"abstentions":3,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/inj-squad-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=inj-triviaqa-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1200
+Scored 200/1200
+Scored 300/1200
+Scored 400/1200
+Scored 500/1200
+Scored 600/1200
+Scored 700/1200
+Scored 800/1200
+Scored 900/1200
+Scored 1000/1200
+Scored 1100/1200
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/inj-triviaqa-mixed/llada22-flash-4bit-full","scored":1198,"expected":1200,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/inj-triviaqa-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=llmail-pool-attacks" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/300
+Scored 200/300
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/llmail-pool-attacks/llada22-flash-4bit-full","scored":298,"expected":300,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/llmail-pool-attacks/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-email-llmail-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/400
+Scored 200/400
+Scored 300/400
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-email-llmail-mixed/llada22-flash-4bit-full","scored":393,"expected":400,"abstentions":7,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-email-llmail-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-paper-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/220
+Scored 200/220
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-paper-mixed/llada22-flash-4bit-full","scored":215,"expected":220,"abstentions":5,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-paper-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-code-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/220
+Scored 200/220
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-code-mixed/llada22-flash-4bit-full","cases":220,"observations":220,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-code-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-resume-mixed" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/220
+Scored 200/220
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-resume-mixed/llada22-flash-4bit-full","scored":219,"expected":220,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-resume-mixed/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-authorized-benign" "--condition=llada22-flash-4bit-full" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/384
+Scored 200/384
+Scored 300/384
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-authorized-benign/llada22-flash-4bit-full","scored":381,"expected":384,"abstentions":3,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-authorized-benign/llada22-flash-4bit-full.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/6982
+Scored 200/6982
+Scored 300/6982
+Scored 400/6982
+Scored 500/6982
+Scored 600/6982
+Scored 700/6982
+Scored 800/6982
+Scored 900/6982
+Scored 1000/6982
+Scored 1100/6982
+Scored 1200/6982
+Scored 1300/6982
+Scored 1400/6982
+Scored 1500/6982
+Scored 1600/6982
+Scored 1700/6982
+Scored 1800/6982
+Scored 1900/6982
+Scored 2000/6982
+Scored 2100/6982
+Scored 2200/6982
+Scored 2300/6982
+Scored 2400/6982
+Scored 2500/6982
+Scored 2600/6982
+Scored 2700/6982
+Scored 2800/6982
+Scored 2900/6982
+Scored 3000/6982
+Scored 3100/6982
+Scored 3200/6982
+Scored 3300/6982
+Scored 3400/6982
+Scored 3500/6982
+Scored 3600/6982
+Scored 3700/6982
+Scored 3800/6982
+Scored 3900/6982
+Scored 4000/6982
+Scored 4100/6982
+Scored 4200/6982
+Scored 4300/6982
+Scored 4400/6982
+Scored 4500/6982
+Scored 4600/6982
+Scored 4700/6982
+Scored 4800/6982
+Scored 4900/6982
+Scored 5000/6982
+Scored 5100/6982
+Scored 5200/6982
+Scored 5300/6982
+Scored 5400/6982
+Scored 5500/6982
+Scored 5600/6982
+Scored 5700/6982
+Scored 5800/6982
+Scored 5900/6982
+Scored 6000/6982
+Scored 6100/6982
+Scored 6200/6982
+Scored 6300/6982
+Scored 6400/6982
+Scored 6500/6982
+Scored 6600/6982
+Scored 6700/6982
+Scored 6800/6982
+Scored 6900/6982
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper/llada22-flash-4bit-w256s256","scored":6958,"expected":6982,"abstentions":24,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper-abstract" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/5251
+Scored 200/5251
+Scored 300/5251
+Scored 400/5251
+Scored 500/5251
+Scored 600/5251
+Scored 700/5251
+Scored 800/5251
+Scored 900/5251
+Scored 1000/5251
+Scored 1100/5251
+Scored 1200/5251
+Scored 1300/5251
+Scored 1400/5251
+Scored 1500/5251
+Scored 1600/5251
+Scored 1700/5251
+Scored 1800/5251
+Scored 1900/5251
+Scored 2000/5251
+Scored 2100/5251
+Scored 2200/5251
+Scored 2300/5251
+Scored 2400/5251
+Scored 2500/5251
+Scored 2600/5251
+Scored 2700/5251
+Scored 2800/5251
+Scored 2900/5251
+Scored 3000/5251
+Scored 3100/5251
+Scored 3200/5251
+Scored 3300/5251
+Scored 3400/5251
+Scored 3500/5251
+Scored 3600/5251
+Scored 3700/5251
+Scored 3800/5251
+Scored 3900/5251
+Scored 4000/5251
+Scored 4100/5251
+Scored 4200/5251
+Scored 4300/5251
+Scored 4400/5251
+Scored 4500/5251
+Scored 4600/5251
+Scored 4700/5251
+Scored 4800/5251
+Scored 4900/5251
+Scored 5000/5251
+Scored 5100/5251
+Scored 5200/5251
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-abstract/llada22-flash-4bit-w256s256","scored":5230,"expected":5251,"abstentions":21,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-abstract/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper-method" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/5251
+Scored 200/5251
+Scored 300/5251
+Scored 400/5251
+Scored 500/5251
+Scored 600/5251
+Scored 700/5251
+Scored 800/5251
+Scored 900/5251
+Scored 1000/5251
+Scored 1100/5251
+Scored 1200/5251
+Scored 1300/5251
+Scored 1400/5251
+Scored 1500/5251
+Scored 1600/5251
+Scored 1700/5251
+Scored 1800/5251
+Scored 1900/5251
+Scored 2000/5251
+Scored 2100/5251
+Scored 2200/5251
+Scored 2300/5251
+Scored 2400/5251
+Scored 2500/5251
+Scored 2600/5251
+Scored 2700/5251
+Scored 2800/5251
+Scored 2900/5251
+Scored 3000/5251
+Scored 3100/5251
+Scored 3200/5251
+Scored 3300/5251
+Scored 3400/5251
+Scored 3500/5251
+Scored 3600/5251
+Scored 3700/5251
+Scored 3800/5251
+Scored 3900/5251
+Scored 4000/5251
+Scored 4100/5251
+Scored 4200/5251
+Scored 4300/5251
+Scored 4400/5251
+Scored 4500/5251
+Scored 4600/5251
+Scored 4700/5251
+Scored 4800/5251
+Scored 4900/5251
+Scored 5000/5251
+Scored 5100/5251
+Scored 5200/5251
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-method/llada22-flash-4bit-w256s256","scored":5232,"expected":5251,"abstentions":19,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-method/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-resume" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/627
+Scored 200/627
+Scored 300/627
+Scored 400/627
+Scored 500/627
+Scored 600/627
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-resume/llada22-flash-4bit-w256s256","cases":400,"observations":627,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-resume/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-code" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1102
+Scored 200/1102
+Scored 300/1102
+Scored 400/1102
+Scored 500/1102
+Scored 600/1102
+Scored 700/1102
+Scored 800/1102
+Scored 900/1102
+Scored 1000/1102
+Scored 1100/1102
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-code/llada22-flash-4bit-w256s256","cases":400,"observations":1102,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-code/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-email" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/2138
+Scored 200/2138
+Scored 300/2138
+Scored 400/2138
+Scored 500/2138
+Scored 600/2138
+Scored 700/2138
+Scored 800/2138
+Scored 900/2138
+Scored 1000/2138
+Scored 1100/2138
+Scored 1200/2138
+Scored 1300/2138
+Scored 1400/2138
+Scored 1500/2138
+Scored 1600/2138
+Scored 1700/2138
+Scored 1800/2138
+Scored 1900/2138
+Scored 2000/2138
+Scored 2100/2138
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-email/llada22-flash-4bit-w256s256","scored":2134,"expected":2138,"abstentions":4,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-email/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=paper-score-counterfactual" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1539
+Scored 200/1539
+Scored 300/1539
+Scored 400/1539
+Scored 500/1539
+Scored 600/1539
+Scored 700/1539
+Scored 800/1539
+Scored 900/1539
+Scored 1000/1539
+Scored 1100/1539
+Scored 1200/1539
+Scored 1300/1539
+Scored 1400/1539
+Scored 1500/1539
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/paper-score-counterfactual/llada22-flash-4bit-w256s256","cases":72,"observations":1539,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/paper-score-counterfactual/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=browsesafe-mixed" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/4016
+Scored 200/4016
+Scored 300/4016
+Scored 400/4016
+Scored 500/4016
+Scored 600/4016
+Scored 700/4016
+Scored 800/4016
+Scored 900/4016
+Scored 1000/4016
+Scored 1100/4016
+Scored 1200/4016
+Scored 1300/4016
+Scored 1400/4016
+Scored 1500/4016
+Scored 1600/4016
+Scored 1700/4016
+Scored 1800/4016
+Scored 1900/4016
+Scored 2000/4016
+Scored 2100/4016
+Scored 2200/4016
+Scored 2300/4016
+Scored 2400/4016
+Scored 2500/4016
+Scored 2600/4016
+Scored 2700/4016
+Scored 2800/4016
+Scored 2900/4016
+Scored 3000/4016
+Scored 3100/4016
+Scored 3200/4016
+Scored 3300/4016
+Scored 3400/4016
+Scored 3500/4016
+Scored 3600/4016
+Scored 3700/4016
+Scored 3800/4016
+Scored 3900/4016
+Scored 4000/4016
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/browsesafe-mixed/llada22-flash-4bit-w256s256","scored":4015,"expected":4016,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/browsesafe-mixed/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=inj-triviaqa-mixed" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/3565
+Scored 200/3565
+Scored 300/3565
+Scored 400/3565
+Scored 500/3565
+Scored 600/3565
+Scored 700/3565
+Scored 800/3565
+Scored 900/3565
+Scored 1000/3565
+Scored 1100/3565
+Scored 1200/3565
+Scored 1300/3565
+Scored 1400/3565
+Scored 1500/3565
+Scored 1600/3565
+Scored 1700/3565
+Scored 1800/3565
+Scored 1900/3565
+Scored 2000/3565
+Scored 2100/3565
+Scored 2200/3565
+Scored 2300/3565
+Scored 2400/3565
+Scored 2500/3565
+Scored 2600/3565
+Scored 2700/3565
+Scored 2800/3565
+Scored 2900/3565
+Scored 3000/3565
+Scored 3100/3565
+Scored 3200/3565
+Scored 3300/3565
+Scored 3400/3565
+Scored 3500/3565
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/inj-triviaqa-mixed/llada22-flash-4bit-w256s256","scored":3560,"expected":3565,"abstentions":5,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/inj-triviaqa-mixed/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-email-llmail-mixed" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/2210
+Scored 200/2210
+Scored 300/2210
+Scored 400/2210
+Scored 500/2210
+Scored 600/2210
+Scored 700/2210
+Scored 800/2210
+Scored 900/2210
+Scored 1000/2210
+Scored 1100/2210
+Scored 1200/2210
+Scored 1300/2210
+Scored 1400/2210
+Scored 1500/2210
+Scored 1600/2210
+Scored 1700/2210
+Scored 1800/2210
+Scored 1900/2210
+Scored 2000/2210
+Scored 2100/2210
+Scored 2200/2210
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-email-llmail-mixed/llada22-flash-4bit-w256s256","scored":2204,"expected":2210,"abstentions":6,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-email-llmail-mixed/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-paper-mixed" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/3813
+Scored 200/3813
+Scored 300/3813
+Scored 400/3813
+Scored 500/3813
+Scored 600/3813
+Scored 700/3813
+Scored 800/3813
+Scored 900/3813
+Scored 1000/3813
+Scored 1100/3813
+Scored 1200/3813
+Scored 1300/3813
+Scored 1400/3813
+Scored 1500/3813
+Scored 1600/3813
+Scored 1700/3813
+Scored 1800/3813
+Scored 1900/3813
+Scored 2000/3813
+Scored 2100/3813
+Scored 2200/3813
+Scored 2300/3813
+Scored 2400/3813
+Scored 2500/3813
+Scored 2600/3813
+Scored 2700/3813
+Scored 2800/3813
+Scored 2900/3813
+Scored 3000/3813
+Scored 3100/3813
+Scored 3200/3813
+Scored 3300/3813
+Scored 3400/3813
+Scored 3500/3813
+Scored 3600/3813
+Scored 3700/3813
+Scored 3800/3813
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-paper-mixed/llada22-flash-4bit-w256s256","scored":3803,"expected":3813,"abstentions":10,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-paper-mixed/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-code-mixed" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/591
+Scored 200/591
+Scored 300/591
+Scored 400/591
+Scored 500/591
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-code-mixed/llada22-flash-4bit-w256s256","cases":220,"observations":591,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-code-mixed/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-resume-mixed" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/326
+Scored 200/326
+Scored 300/326
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-resume-mixed/llada22-flash-4bit-w256s256","scored":325,"expected":326,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-resume-mixed/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-authorized-benign" "--condition=llada22-flash-4bit-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/2566
+Scored 200/2566
+Scored 300/2566
+Scored 400/2566
+Scored 500/2566
+Scored 600/2566
+Scored 700/2566
+Scored 800/2566
+Scored 900/2566
+Scored 1000/2566
+Scored 1100/2566
+Scored 1200/2566
+Scored 1300/2566
+Scored 1400/2566
+Scored 1500/2566
+Scored 1600/2566
+Scored 1700/2566
+Scored 1800/2566
+Scored 1900/2566
+Scored 2000/2566
+Scored 2100/2566
+Scored 2200/2566
+Scored 2300/2566
+Scored 2400/2566
+Scored 2500/2566
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-authorized-benign/llada22-flash-4bit-w256s256","scored":2560,"expected":2566,"abstentions":6,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-authorized-benign/llada22-flash-4bit-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-code-mixed" "--condition=llada22-flash-4bit-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1086
+Scored 200/1086
+Scored 300/1086
+Scored 400/1086
+Scored 500/1086
+Scored 600/1086
+Scored 700/1086
+Scored 800/1086
+Scored 900/1086
+Scored 1000/1086
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-code-mixed/llada22-flash-4bit-w128s128","scored":1085,"expected":1086,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-code-mixed/llada22-flash-4bit-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-resume-mixed" "--condition=llada22-flash-4bit-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/564
+Scored 200/564
+Scored 300/564
+Scored 400/564
+Scored 500/564
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-resume-mixed/llada22-flash-4bit-w128s128","scored":560,"expected":564,"abstentions":4,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-resume-mixed/llada22-flash-4bit-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-email-llmail-mixed" "--condition=llada22-flash-4bit-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/4239
+Scored 200/4239
+Scored 300/4239
+Scored 400/4239
+Scored 500/4239
+Scored 600/4239
+Scored 700/4239
+Scored 800/4239
+Scored 900/4239
+Scored 1000/4239
+Scored 1100/4239
+Scored 1200/4239
+Scored 1300/4239
+Scored 1400/4239
+Scored 1500/4239
+Scored 1600/4239
+Scored 1700/4239
+Scored 1800/4239
+Scored 1900/4239
+Scored 2000/4239
+Scored 2100/4239
+Scored 2200/4239
+Scored 2300/4239
+Scored 2400/4239
+Scored 2500/4239
+Scored 2600/4239
+Scored 2700/4239
+Scored 2800/4239
+Scored 2900/4239
+Scored 3000/4239
+Scored 3100/4239
+Scored 3200/4239
+Scored 3300/4239
+Scored 3400/4239
+Scored 3500/4239
+Scored 3600/4239
+Scored 3700/4239
+Scored 3800/4239
+Scored 3900/4239
+Scored 4000/4239
+Scored 4100/4239
+Scored 4200/4239
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-email-llmail-mixed/llada22-flash-4bit-w128s128","scored":4224,"expected":4239,"abstentions":15,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-email-llmail-mixed/llada22-flash-4bit-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-extension-v1.json" "--test=longpi-subtle-paper-mixed" "--condition=llada22-flash-4bit-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/7510
+Scored 200/7510
+Scored 300/7510
+Scored 400/7510
+Scored 500/7510
+Scored 600/7510
+Scored 700/7510
+Scored 800/7510
+Scored 900/7510
+Scored 1000/7510
+Scored 1100/7510
+Scored 1200/7510
+Scored 1300/7510
+Scored 1400/7510
+Scored 1500/7510
+Scored 1600/7510
+Scored 1700/7510
+Scored 1800/7510
+Scored 1900/7510
+Scored 2000/7510
+Scored 2100/7510
+Scored 2200/7510
+Scored 2300/7510
+Scored 2400/7510
+Scored 2500/7510
+Scored 2600/7510
+Scored 2700/7510
+Scored 2800/7510
+Scored 2900/7510
+Scored 3000/7510
+Scored 3100/7510
+Scored 3200/7510
+Scored 3300/7510
+Scored 3400/7510
+Scored 3500/7510
+Scored 3600/7510
+Scored 3700/7510
+Scored 3800/7510
+Scored 3900/7510
+Scored 4000/7510
+Scored 4100/7510
+Scored 4200/7510
+Scored 4300/7510
+Scored 4400/7510
+Scored 4500/7510
+Scored 4600/7510
+Scored 4700/7510
+Scored 4800/7510
+Scored 4900/7510
+Scored 5000/7510
+Scored 5100/7510
+Scored 5200/7510
+Scored 5300/7510
+Scored 5400/7510
+Scored 5500/7510
+Scored 5600/7510
+Scored 5700/7510
+Scored 5800/7510
+Scored 5900/7510
+Scored 6000/7510
+Scored 6100/7510
+Scored 6200/7510
+Scored 6300/7510
+Scored 6400/7510
+Scored 6500/7510
+Scored 6600/7510
+Scored 6700/7510
+Scored 6800/7510
+Scored 6900/7510
+Scored 7000/7510
+Scored 7100/7510
+Scored 7200/7510
+Scored 7300/7510
+Scored 7400/7510
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-paper-mixed/llada22-flash-4bit-w128s128","scored":7494,"expected":7510,"abstentions":16,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-extension-v1/longpi-subtle-paper-mixed/llada22-flash-4bit-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper-abstract" "--condition=llada22-flash-4bit-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/10351
+Scored 200/10351
+Scored 300/10351
+Scored 400/10351
+Scored 500/10351
+Scored 600/10351
+Scored 700/10351
+Scored 800/10351
+Scored 900/10351
+Scored 1000/10351
+Scored 1100/10351
+Scored 1200/10351
+Scored 1300/10351
+Scored 1400/10351
+Scored 1500/10351
+Scored 1600/10351
+Scored 1700/10351
+Scored 1800/10351
+Scored 1900/10351
+Scored 2000/10351
+Scored 2100/10351
+Scored 2200/10351
+Scored 2300/10351
+Scored 2400/10351
+Scored 2500/10351
+Scored 2600/10351
+Scored 2700/10351
+Scored 2800/10351
+Scored 2900/10351
+Scored 3000/10351
+Scored 3100/10351
+Scored 3200/10351
+Scored 3300/10351
+Scored 3400/10351
+Scored 3500/10351
+Scored 3600/10351
+Scored 3700/10351
+Scored 3800/10351
+Scored 3900/10351
+Scored 4000/10351
+Scored 4100/10351
+Scored 4200/10351
+Scored 4300/10351
+Scored 4400/10351
+Scored 4500/10351
+Scored 4600/10351
+Scored 4700/10351
+Scored 4800/10351
+Scored 4900/10351
+Scored 5000/10351
+Scored 5100/10351
+Scored 5200/10351
+Scored 5300/10351
+Scored 5400/10351
+Scored 5500/10351
+Scored 5600/10351
+Scored 5700/10351
+Scored 5800/10351
+Scored 5900/10351
+Scored 6000/10351
+Scored 6100/10351
+Scored 6200/10351
+Scored 6300/10351
+Scored 6400/10351
+Scored 6500/10351
+Scored 6600/10351
+Scored 6700/10351
+Scored 6800/10351
+Scored 6900/10351
+Scored 7000/10351
+Scored 7100/10351
+Scored 7200/10351
+Scored 7300/10351
+Scored 7400/10351
+Scored 7500/10351
+Scored 7600/10351
+Scored 7700/10351
+Scored 7800/10351
+Scored 7900/10351
+Scored 8000/10351
+Scored 8100/10351
+Scored 8200/10351
+Scored 8300/10351
+Scored 8400/10351
+Scored 8500/10351
+Scored 8600/10351
+Scored 8700/10351
+Scored 8800/10351
+Scored 8900/10351
+Scored 9000/10351
+Scored 9100/10351
+Scored 9200/10351
+Scored 9300/10351
+Scored 9400/10351
+Scored 9500/10351
+Scored 9600/10351
+Scored 9700/10351
+Scored 9800/10351
+Scored 9900/10351
+Scored 10000/10351
+Scored 10100/10351
+Scored 10200/10351
+Scored 10300/10351
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-abstract/llada22-flash-4bit-w128s128","scored":10327,"expected":10351,"abstentions":24,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-abstract/llada22-flash-4bit-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-flash-baseline-v1.json" "--test=longpi-paper-method" "--condition=llada22-flash-4bit-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/10351
+Scored 200/10351
+Scored 300/10351
+Scored 400/10351
+Scored 500/10351
+Scored 600/10351
+Scored 700/10351
+Scored 800/10351
+Scored 900/10351
+Scored 1000/10351
+Scored 1100/10351
+Scored 1200/10351
+Scored 1300/10351
+Scored 1400/10351
+Scored 1500/10351
+Scored 1600/10351
+Scored 1700/10351
+Scored 1800/10351
+Scored 1900/10351
+Scored 2000/10351
+Scored 2100/10351
+Scored 2200/10351
+Scored 2300/10351
+Scored 2400/10351
+Scored 2500/10351
+Scored 2600/10351
+Scored 2700/10351
+Scored 2800/10351
+Scored 2900/10351
+Scored 3000/10351
+Scored 3100/10351
+Scored 3200/10351
+Scored 3300/10351
+Scored 3400/10351
+Scored 3500/10351
+Scored 3600/10351
+Scored 3700/10351
+Scored 3800/10351
+Scored 3900/10351
+Scored 4000/10351
+Scored 4100/10351
+Scored 4200/10351
+Scored 4300/10351
+Scored 4400/10351
+Scored 4500/10351
+Scored 4600/10351
+Scored 4700/10351
+Scored 4800/10351
+Scored 4900/10351
+Scored 5000/10351
+Scored 5100/10351
+Scored 5200/10351
+Scored 5300/10351
+Scored 5400/10351
+Scored 5500/10351
+Scored 5600/10351
+Scored 5700/10351
+Scored 5800/10351
+Scored 5900/10351
+Scored 6000/10351
+Scored 6100/10351
+Scored 6200/10351
+Scored 6300/10351
+Scored 6400/10351
+Scored 6500/10351
+Scored 6600/10351
+Scored 6700/10351
+Scored 6800/10351
+Scored 6900/10351
+Scored 7000/10351
+Scored 7100/10351
+Scored 7200/10351
+Scored 7300/10351
+Scored 7400/10351
+Scored 7500/10351
+Scored 7600/10351
+Scored 7700/10351
+Scored 7800/10351
+Scored 7900/10351
+Scored 8000/10351
+Scored 8100/10351
+Scored 8200/10351
+Scored 8300/10351
+Scored 8400/10351
+Scored 8500/10351
+Scored 8600/10351
+Scored 8700/10351
+Scored 8800/10351
+Scored 8900/10351
+Scored 9000/10351
+Scored 9100/10351
+Scored 9200/10351
+Scored 9300/10351
+Scored 9400/10351
+Scored 9500/10351
+Scored 9600/10351
+Scored 9700/10351
+Scored 9800/10351
+Scored 9900/10351
+Scored 10000/10351
+Scored 10100/10351
+Scored 10200/10351
+Scored 10300/10351
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-method/llada22-flash-4bit-w128s128","scored":10327,"expected":10351,"abstentions":24,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-flash-baseline-v1/longpi-paper-method/llada22-flash-4bit-w128s128.jsonl"}

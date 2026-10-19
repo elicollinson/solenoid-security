@@ -1,0 +1,132 @@
+START|2026-10-18T22:30:21Z|evals/runs/llada-sweep-2026-10-18/queue-flash-short.txt
+BEGIN|2026-10-18T22:30:21Z|sweep-flash-w512s512|benign-false-positives
+CELL|2026-10-18T22:30:36Z|sweep-flash-w512s512|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:30:36Z|sweep-flash-w512s512|pids-obfuscated
+CELL|2026-10-18T22:30:50Z|sweep-flash-w512s512|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:30:50Z|sweep-flash-w512s512|web-mixed
+CELL|2026-10-18T22:31:09Z|sweep-flash-w512s512|web-mixed|exit 0
+BEGIN|2026-10-18T22:31:09Z|sweep-flash-w512s512|bipia-email-mixed
+CELL|2026-10-18T22:31:31Z|sweep-flash-w512s512|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:31:31Z|sweep-flash-w512s512|agentdyn-github
+CELL|2026-10-18T22:31:56Z|sweep-flash-w512s512|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:31:56Z|sweep-flash-w512s384|benign-false-positives
+CELL|2026-10-18T22:32:10Z|sweep-flash-w512s384|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:32:10Z|sweep-flash-w512s384|pids-obfuscated
+CELL|2026-10-18T22:32:24Z|sweep-flash-w512s384|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:32:24Z|sweep-flash-w512s384|web-mixed
+CELL|2026-10-18T22:32:43Z|sweep-flash-w512s384|web-mixed|exit 0
+BEGIN|2026-10-18T22:32:43Z|sweep-flash-w512s384|bipia-email-mixed
+CELL|2026-10-18T22:33:04Z|sweep-flash-w512s384|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:33:04Z|sweep-flash-w512s384|agentdyn-github
+CELL|2026-10-18T22:33:32Z|sweep-flash-w512s384|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:33:32Z|sweep-flash-w512s256|benign-false-positives
+CELL|2026-10-18T22:33:46Z|sweep-flash-w512s256|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:33:46Z|sweep-flash-w512s256|pids-obfuscated
+CELL|2026-10-18T22:34:01Z|sweep-flash-w512s256|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:34:01Z|sweep-flash-w512s256|web-mixed
+CELL|2026-10-18T22:34:20Z|sweep-flash-w512s256|web-mixed|exit 0
+BEGIN|2026-10-18T22:34:20Z|sweep-flash-w512s256|bipia-email-mixed
+CELL|2026-10-18T22:34:42Z|sweep-flash-w512s256|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:34:42Z|sweep-flash-w512s256|agentdyn-github
+CELL|2026-10-18T22:35:14Z|sweep-flash-w512s256|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:35:14Z|sweep-flash-w512s128|benign-false-positives
+CELL|2026-10-18T22:35:28Z|sweep-flash-w512s128|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:35:28Z|sweep-flash-w512s128|pids-obfuscated
+CELL|2026-10-18T22:35:47Z|sweep-flash-w512s128|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:35:47Z|sweep-flash-w512s128|web-mixed
+CELL|2026-10-18T22:36:07Z|sweep-flash-w512s128|web-mixed|exit 0
+BEGIN|2026-10-18T22:36:07Z|sweep-flash-w512s128|bipia-email-mixed
+CELL|2026-10-18T22:36:30Z|sweep-flash-w512s128|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:36:30Z|sweep-flash-w512s128|agentdyn-github
+CELL|2026-10-18T22:37:17Z|sweep-flash-w512s128|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:37:17Z|sweep-flash-w256s256|benign-false-positives
+CELL|2026-10-18T22:37:32Z|sweep-flash-w256s256|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:37:32Z|sweep-flash-w256s256|pids-obfuscated
+CELL|2026-10-18T22:37:47Z|sweep-flash-w256s256|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:37:47Z|sweep-flash-w256s256|web-mixed
+CELL|2026-10-18T22:38:06Z|sweep-flash-w256s256|web-mixed|exit 0
+BEGIN|2026-10-18T22:38:06Z|sweep-flash-w256s256|bipia-email-mixed
+CELL|2026-10-18T22:38:28Z|sweep-flash-w256s256|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:38:28Z|sweep-flash-w256s256|agentdyn-github
+CELL|2026-10-18T22:38:59Z|sweep-flash-w256s256|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:38:59Z|sweep-flash-w256s128|benign-false-positives
+CELL|2026-10-18T22:39:13Z|sweep-flash-w256s128|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:39:13Z|sweep-flash-w256s128|pids-obfuscated
+CELL|2026-10-18T22:39:32Z|sweep-flash-w256s128|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:39:32Z|sweep-flash-w256s128|web-mixed
+CELL|2026-10-18T22:39:51Z|sweep-flash-w256s128|web-mixed|exit 0
+BEGIN|2026-10-18T22:39:51Z|sweep-flash-w256s128|bipia-email-mixed
+CELL|2026-10-18T22:40:14Z|sweep-flash-w256s128|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:40:14Z|sweep-flash-w256s128|agentdyn-github
+CELL|2026-10-18T22:40:59Z|sweep-flash-w256s128|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:40:59Z|sweep-flash-w256s064|benign-false-positives
+CELL|2026-10-18T22:41:13Z|sweep-flash-w256s064|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:41:13Z|sweep-flash-w256s064|pids-obfuscated
+CELL|2026-10-18T22:41:41Z|sweep-flash-w256s064|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:41:41Z|sweep-flash-w256s064|web-mixed
+CELL|2026-10-18T22:42:07Z|sweep-flash-w256s064|web-mixed|exit 0
+BEGIN|2026-10-18T22:42:07Z|sweep-flash-w256s064|bipia-email-mixed
+CELL|2026-10-18T22:42:45Z|sweep-flash-w256s064|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:42:45Z|sweep-flash-w256s064|agentdyn-github
+CELL|2026-10-18T22:44:04Z|sweep-flash-w256s064|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:44:04Z|sweep-flash-w128s128|benign-false-positives
+CELL|2026-10-18T22:44:18Z|sweep-flash-w128s128|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:44:18Z|sweep-flash-w128s128|pids-obfuscated
+CELL|2026-10-18T22:44:37Z|sweep-flash-w128s128|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:44:37Z|sweep-flash-w128s128|web-mixed
+CELL|2026-10-18T22:44:56Z|sweep-flash-w128s128|web-mixed|exit 0
+BEGIN|2026-10-18T22:44:56Z|sweep-flash-w128s128|bipia-email-mixed
+CELL|2026-10-18T22:45:19Z|sweep-flash-w128s128|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:45:19Z|sweep-flash-w128s128|agentdyn-github
+CELL|2026-10-18T22:46:02Z|sweep-flash-w128s128|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:46:02Z|sweep-flash-w128s064|benign-false-positives
+CELL|2026-10-18T22:46:17Z|sweep-flash-w128s064|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:46:17Z|sweep-flash-w128s064|pids-obfuscated
+CELL|2026-10-18T22:46:44Z|sweep-flash-w128s064|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:46:44Z|sweep-flash-w128s064|web-mixed
+CELL|2026-10-18T22:47:10Z|sweep-flash-w128s064|web-mixed|exit 0
+BEGIN|2026-10-18T22:47:10Z|sweep-flash-w128s064|bipia-email-mixed
+CELL|2026-10-18T22:47:48Z|sweep-flash-w128s064|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:47:48Z|sweep-flash-w128s064|agentdyn-github
+CELL|2026-10-18T22:49:03Z|sweep-flash-w128s064|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:49:03Z|sweep-flash-w128s032|benign-false-positives
+CELL|2026-10-18T22:49:17Z|sweep-flash-w128s032|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:49:17Z|sweep-flash-w128s032|pids-obfuscated
+CELL|2026-10-18T22:50:01Z|sweep-flash-w128s032|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:50:01Z|sweep-flash-w128s032|web-mixed
+CELL|2026-10-18T22:50:44Z|sweep-flash-w128s032|web-mixed|exit 0
+BEGIN|2026-10-18T22:50:44Z|sweep-flash-w128s032|bipia-email-mixed
+CELL|2026-10-18T22:51:47Z|sweep-flash-w128s032|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:51:47Z|sweep-flash-w128s032|agentdyn-github
+CELL|2026-10-18T22:54:05Z|sweep-flash-w128s032|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:54:05Z|sweep-flash-w064s064|benign-false-positives
+CELL|2026-10-18T22:54:20Z|sweep-flash-w064s064|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:54:20Z|sweep-flash-w064s064|pids-obfuscated
+CELL|2026-10-18T22:54:46Z|sweep-flash-w064s064|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:54:46Z|sweep-flash-w064s064|web-mixed
+CELL|2026-10-18T22:55:13Z|sweep-flash-w064s064|web-mixed|exit 0
+BEGIN|2026-10-18T22:55:13Z|sweep-flash-w064s064|bipia-email-mixed
+CELL|2026-10-18T22:55:51Z|sweep-flash-w064s064|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:55:51Z|sweep-flash-w064s064|agentdyn-github
+CELL|2026-10-18T22:57:03Z|sweep-flash-w064s064|agentdyn-github|exit 0
+BEGIN|2026-10-18T22:57:03Z|sweep-flash-w064s032|benign-false-positives
+CELL|2026-10-18T22:57:18Z|sweep-flash-w064s032|benign-false-positives|exit 0
+BEGIN|2026-10-18T22:57:18Z|sweep-flash-w064s032|pids-obfuscated
+CELL|2026-10-18T22:58:00Z|sweep-flash-w064s032|pids-obfuscated|exit 0
+BEGIN|2026-10-18T22:58:00Z|sweep-flash-w064s032|web-mixed
+CELL|2026-10-18T22:58:44Z|sweep-flash-w064s032|web-mixed|exit 0
+BEGIN|2026-10-18T22:58:44Z|sweep-flash-w064s032|bipia-email-mixed
+CELL|2026-10-18T22:59:46Z|sweep-flash-w064s032|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T22:59:46Z|sweep-flash-w064s032|agentdyn-github
+CELL|2026-10-18T23:02:00Z|sweep-flash-w064s032|agentdyn-github|exit 0
+BEGIN|2026-10-18T23:02:00Z|sweep-flash-w064s016|benign-false-positives
+CELL|2026-10-18T23:02:17Z|sweep-flash-w064s016|benign-false-positives|exit 0
+BEGIN|2026-10-18T23:02:17Z|sweep-flash-w064s016|pids-obfuscated
+CELL|2026-10-18T23:03:33Z|sweep-flash-w064s016|pids-obfuscated|exit 0
+BEGIN|2026-10-18T23:03:33Z|sweep-flash-w064s016|web-mixed
+CELL|2026-10-18T23:04:52Z|sweep-flash-w064s016|web-mixed|exit 0
+BEGIN|2026-10-18T23:04:52Z|sweep-flash-w064s016|bipia-email-mixed
+CELL|2026-10-18T23:06:46Z|sweep-flash-w064s016|bipia-email-mixed|exit 0
+BEGIN|2026-10-18T23:06:46Z|sweep-flash-w064s016|agentdyn-github
+CELL|2026-10-18T23:11:01Z|sweep-flash-w064s016|agentdyn-github|exit 0
+DONE|2026-10-18T23:11:01Z|evals/runs/llada-sweep-2026-10-18/queue-flash-short.txt

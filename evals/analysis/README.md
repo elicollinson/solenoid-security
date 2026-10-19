@@ -21,7 +21,13 @@ those numbers without rerunning inference. Folder names mirror the original run 
   `third-party` chat templates. For a template, the original column holds the GGUF file URL it was read from and the
   copy column holds its license. Laguna's template is recorded by URL and hash only (`not-redistributed`, published
   path `-`). The `studio-extension-t4096-2026-10-13/` folder adds one `authored` script, `analyze-extension.ts`, and
-  its `generated` output `results/extension-results.json`.
+  its `generated` output `results/extension-results.json`. The LLaDA2.2 pilot adds one
+  `authored` script and its `generated` output, three `verbatim` progress logs, and three `host-redacted` files (two run
+  scripts and the console log). Those three passed the private tailnet endpoint to `--base-url`. The published copy
+  replaces that URL with the placeholder `$LLADA_BASE_URL`, and nothing else differs. The original SHA-256 is of the
+  unredacted file. The pre-registered Flash run (`llada-flash-full-2026-10/`) adds `authored` scripts, plan, queue and
+  dry run (they ran from byte-identical untracked copies in the main checkout), one `verbatim` progress log, one
+  `host-redacted` console log and two `generated` results files.
 
 ## Running them
 
@@ -90,6 +96,40 @@ Cited by [injection-following findings](../reports/injection-following-findings-
 | File | Computes |
 |---|---|
 | `compare.ts` | Outcome-selected comparison of the five translation-task attacks across saved protocols. Writes [the report](../reports/lmstudio-bipia-translation-diagnostic-2026-10-04.md). Its `comparison.json` is **not** published because it keeps model rationales that quote attack text. |
+
+### `llada-pilot-2026-10/`
+
+The LLaDA2.2 text-diffusion pilot ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), run on
+2026-10-18 ([report](../reports/llada-pilot-2026-10.md), `FINDINGS.md` O61, research log L153). Three MLX builds
+served by an OpenAI-compatible MLX port (the `openai_compatible` engine) were run on the abliteration pilot's 998
+cases. The run directory was `evals/runs/llada-pilot-2026-10-18/`. Checkpoints are under
+`evals/runs/prompt-injection-openai-compat-llada22-{mini,variants}-pilot-v1/`.
+
+| File | Computes |
+|---|---|
+| `analyze-llada-pilot.ts` | **Authored here, not copied from the run directory.** Audits all 108 cells (3 LLaDA builds + 9 comparators × 9 tests) through the abliteration pilot's `extractCheckpoint` and `auditPartialCheckpoint`, and checks identical labels and input hashes with `assertIdenticalCases`. It then writes `results/llada-pilot-results.json`: per model × test n, scored, abstentions, TPR, FPR/TNR, BA and AUROC; mean BA; pooled exact McNemar against Gemma26 and Qwen3.8 (Holm over 6) and per test; pre-screen recall, clearance and a simulated cascade into Gemma26; server timing statistics; the shapes of abstained outputs (counts only); and score-value distributions. Run with `DATA_ROOT` pointing at a checkout that holds `evals/runs` and the dataset sources. |
+| `run-pilot.sh`, `run-variant.sh` | Serial cell loops for the 6-bit mini suite and the variants suite (`$1` = condition). `host-redacted`: set `LLADA_BASE_URL` to the server's `/v1` URL. The header comment of `run-variant.sh` was copied from `run-pilot.sh` and still says 6-bit. |
+| `progress.log`, `progress-pilot-llada22-*-4bit-t128-full.log`, `console.log` | `START`/`CELL`/`PILOT_DONE` lines per condition and the runner's console output (`console.log` is `host-redacted`). The 6-bit feasibility-24 cell ran before `run-pilot.sh` and has no progress line. |
+| `results/` | `llada-pilot-results.json`: counts, rates, scores and timings only (`PROVENANCE.tsv` marks it `generated`). It has no case IDs, case text, model output or endpoint URLs. |
+
+### `llada-window-sweep-2026-10/`
+
+**Exploratory** LLaDA2.2 window sweep ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), run on
+2026-10-18 ([report](../reports/llada-window-sweep-2026-10.md), `FINDINGS.md` O62, research log L154). Window size
+{64, 128, 256, 512} × overlap {0, 50, 75%}, plus 512/384, was run on Flash 4-bit, and three configs on mini 6-bit.
+Eight content types were covered, with offline aggregation, abstention-policy, coverage-only and cascade replays.
+The folder also holds the first 512/384 window test's runner and logs. See the folder's own `README.md` for the file
+table. Scripts are `verbatim`, `path-adjusted` (default output path only) or `host-redacted` (console logs), as
+listed in `PROVENANCE.tsv`. `results/` is `generated`.
+
+### `llada-flash-full-2026-10/`
+
+**Pre-registered** LLaDA2.2-flash run ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), 2026-10-19
+([plan](../reports/llada-flash-full-plan-2026-10.md), [report](../reports/llada-flash-full-2026-10.md), `FINDINGS.md`
+O63, research log L155). It covers Flash full text on all 35 Studio baseline and extension tests, 256/256 windows on 14
+declared long-document cohorts, and 128/128 on the 6 H2 cohorts: 88,163 calls. `analyze-flash.ts` recomputes the 7 Q8
+rows, then runs H1–H3 as declared plus the exploratory position, firing-window, cascade, abstention, comparator,
+latency and determinism analyses. See the folder's own `README.md`.
 
 ### `lmstudio-available-panel-2026-10-04/`
 
@@ -241,6 +281,6 @@ same frozen protocol, run 2026-10-13 to 2026-10-17 ([extension report](../report
   payloads) and `lmstudio-thinking1024-2026-10-03/bipia-payload-inspection.json`.
 - **Scratch and logs:** `lmstudio-thinking1024-2026-10-03/inspect-e2b-paper-false-positive.ts` and
   `inspect-email-window-plan.ts` (one-off debugging that prints case segments), `lmstudio-studio-2026-10-05/brief.sh`
-  (console one-liner), and all `*.log`, `driver.ndjson` and LM Studio inventory snapshots.
+  (console one-liner), and all `*.log` except the `llada-pilot-2026-10/` and `llada-window-sweep-2026-10/` logs above, `driver.ndjson` and LM Studio inventory snapshots.
 - **Third-party code:** `research-literature-2026-10-03/` (vendored upstream benchmark code from the literature scan).
 - **Run checkpoints** (`*.jsonl` with native responses) and anything under `evals/private/`.

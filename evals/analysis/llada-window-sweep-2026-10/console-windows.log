@@ -1,0 +1,75 @@
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=longpi-paper" "--condition=window-llada22-mini-6bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1416
+Scored 200/1416
+Scored 300/1416
+Scored 400/1416
+Scored 500/1416
+Scored 600/1416
+Scored 700/1416
+Scored 800/1416
+Scored 900/1416
+Scored 1000/1416
+Scored 1100/1416
+Scored 1200/1416
+Scored 1300/1416
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-paper/window-llada22-mini-6bit-preserve512","scored":1391,"expected":1416,"abstentions":25,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-paper/window-llada22-mini-6bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=longpi-code" "--condition=window-llada22-mini-6bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/246
+Scored 200/246
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-code/window-llada22-mini-6bit-preserve512","scored":244,"expected":246,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-code/window-llada22-mini-6bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=longpi-email" "--condition=window-llada22-mini-6bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/451
+Scored 200/451
+Scored 300/451
+Scored 400/451
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-email/window-llada22-mini-6bit-preserve512","scored":430,"expected":451,"abstentions":21,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-email/window-llada22-mini-6bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=paper-score-counterfactual" "--condition=window-llada22-mini-6bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1029
+Scored 200/1029
+Scored 300/1029
+Scored 400/1029
+Scored 500/1029
+Scored 600/1029
+Scored 700/1029
+Scored 800/1029
+Scored 900/1029
+Scored 1000/1029
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/paper-score-counterfactual/window-llada22-mini-6bit-preserve512","scored":1006,"expected":1029,"abstentions":23,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/paper-score-counterfactual/window-llada22-mini-6bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=longpi-paper" "--condition=window-llada22-flash-4bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1416
+Scored 200/1416
+Scored 300/1416
+Scored 400/1416
+Scored 500/1416
+Scored 600/1416
+Scored 700/1416
+Scored 800/1416
+Scored 900/1416
+Scored 1000/1416
+Scored 1100/1416
+Scored 1200/1416
+Scored 1300/1416
+Scored 1400/1416
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-paper/window-llada22-flash-4bit-preserve512","scored":1411,"expected":1416,"abstentions":5,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-paper/window-llada22-flash-4bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=longpi-code" "--condition=window-llada22-flash-4bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/246
+Scored 200/246
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-code/window-llada22-flash-4bit-preserve512","cases":120,"observations":246,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-code/window-llada22-flash-4bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=longpi-email" "--condition=window-llada22-flash-4bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/451
+Scored 200/451
+Scored 300/451
+Scored 400/451
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-email/window-llada22-flash-4bit-preserve512","cases":120,"observations":451,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/longpi-email/window-llada22-flash-4bit-preserve512.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-windows-pilot-v1.json" "--test=paper-score-counterfactual" "--condition=window-llada22-flash-4bit-preserve512" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1029
+Scored 200/1029
+Scored 300/1029
+Scored 400/1029
+Scored 500/1029
+Scored 600/1029
+Scored 700/1029
+Scored 800/1029
+Scored 900/1029
+Scored 1000/1029
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-windows-pilot-v1/paper-score-counterfactual/window-llada22-flash-4bit-preserve512","cases":72,"observations":1029,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-windows-pilot-v1/paper-score-counterfactual/window-llada22-flash-4bit-preserve512.jsonl"}

@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-17. The Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-19. The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -893,6 +893,152 @@ below 0.5, so its BA there understates its ranking.**
 - Follow-up: choose a Muse threshold on the baseline and test it on the extension, as O55 did for Qwen3.8; include
   Muse in the effort work (#33).
 
+### 2.17 LLaDA2.2 text-diffusion pilot (2026-10-18)
+
+> **Caveat (pilot scale):** the same 998-case, 9-dataset subset as §2.14. One MLX runtime (the user's port), one
+> decoding setting, MLX 6-bit and 4-bit weights against Q8_0 GGUF comparators, and no reasoning pass against
+> reasoning comparators. Numbering follows O54–O60 (#35, #37).
+
+**O61: Text-diffusion LLaDA2.2 builds are weak prompt-injection detectors at 1.4B–6B active parameters, about 0.24
+below Gemma 4 26B-A4B and level with Laguna XS 2.1. They are an order of magnitude faster, but their near-binary
+scores (AUROC ≈ 0.74) rule them out as a fast pre-screen.**
+- Evidence ✔: 998 identical cases per model (labels and input hashes checked across 12 models). The LLaDA2.2 decoder
+  ran with Levenshtein editing on, prompt-only JSON, temperature 0, steps 32, threshold 0.5 and max_tokens 128. Mean
+  BA: flash 4-bit 0.714 (9 abstentions), mini 6-bit 0.695 (31), mini 4-bit 0.649 (77). Comparators: Gemma26 0.953,
+  Gemma31 0.938, Ornith 0.898, Qwen3.6 35B 0.896, Muse 0.893, Qwen3.8 0.888, huihui 0.858, heretic 0.854, Laguna
+  0.689. Pooled exact McNemar against Gemma26: 250 vs 6 (flash), 257 vs 11 (mini 6-bit) and 287 vs 12 (mini 4-bit)
+  discordant. Against Qwen3.8: 194 vs 17, 210 vs 28 and 248 vs 35. All six have Holm p < 10⁻³⁴. Flash vs mini 6-bit
+  is not significant (92 vs 72, p = 0.14). Mini 6-bit beats mini 4-bit (82 vs 43, p = 6.2×10⁻⁴). The losses are
+  mostly missed attacks: LongPI recall is 0.20–0.81 against 0.92–1.00 for the references. The builds also add false
+  alarms on web pages (FPR 0.63–0.78 vs 0.32–0.33) and AgentDyn benign outputs (0.45–0.64 vs 0.00–0.17). Median server time
+  per request: 143 ms, 135 ms and 421 ms (p95 674, 1,064 and 2,253 ms), against client medians of 2.96 s for Gemma26
+  and 4.93 s for Qwen3.8. Every abstention is an output abstention. Out-of-range scores (2, 2.5, 8, 8.5, 8.9, 9) make
+  up 32% of mini 6-bit's and 19% of mini 4-bit's abstentions, and flash has none. At most 14 scored outputs per build
+  fall strictly between 0.15 and 0.8. Pooled AUROC is 0.741 / 0.745 / 0.689, against 0.955 for Gemma26. The mildest
+  simulated pre-screen clears only score 0 and escalates abstentions to Gemma26. It still escalates 70–80% of cases
+  and loses 41–83 of Gemma26's detections, so cascade mean BA falls to 0.875–0.917. See the
+  [pilot report](reports/llada-pilot-2026-10.md) and
+  [`llada-pilot-results.json`](analysis/llada-pilot-2026-10/results/llada-pilot-results.json).
+- Strength: **Moderate** for "weak at this scale under this protocol" (paired, large discordance, consistent across
+  three builds and seven datasets). **Suggestive** for anything about diffusion as such: reasoning, precision,
+  runtime and output constraint all differ from the comparators.
+- Caveats: the comparators reason first and requested a strict JSON schema. LLaDA's server ignores `response_format`.
+  MLX 6-bit and 4-bit are compared with Q8_0 GGUF. The mini 4-bit weight source is unconfirmed. Only one decoder and
+  one decoding setting were tested. The frozen prompt was not adapted, and the out-of-range values suggest the model
+  sometimes reads it as a 0–10 scale.
+- Follow-up: F10 ([#38](https://github.com/elicollinson/solenoid-security/issues/38)). Flash at 6-bit or 8-bit, and a
+  non-reasoning autoregressive comparator (e.g. Gemma26 with thinking off) on the same cases.
+- **Note 2026-10-18 (window sweep, O62):** O61 measures full text only. In an exploratory follow-up, Flash with 256-
+  or 128-word windows drew level with Gemma26 and Qwen3.8 on subsampled LongPIBench code and email. Short content and
+  mini 6-bit did not improve, so the "weak general detector" conclusion stands.
+- **Note 2026-10-19 (full suites, O63):** O61's pilot ranking holds at full scale. Flash full text scores 0.718 on all
+  21 baseline datasets and 0.707 on the 14 extension datasets, 7th of 8, level with Laguna. The 971 pilot inputs that
+  overlap reproduced their scores exactly.
+
+**O62 (EXPLORATORY): Sliding windows lift LLaDA2.2-flash 4-bit on long synthetic documents without added false alarms
+at window sizes of 256 words or more. They are neutral on short content, add false alarms below 128 words, and the gain
+does not transfer to mini 6-bit.**
+> **Exploratory caveat:** not pre-registered. About 3,900 config × cohort × rule × policy cells were compared on seeded
+> subsamples of 40–60 cases per cohort (long documents 20 attacks / 20 clean), and the mini configs were chosen after
+> seeing Flash on the same cases. p-values are uncorrected. LongPIBench caveat as in O1: one fixed attack sentence per
+> template per domain, and every payload sits at the document end.
+- Evidence ✔ (full → windows, paired on jointly valid cases, max > 0.5, any invalid window abstains):
+  - **Flash, long documents, 256/256 (no overlap, tail-free by construction):** code 0.725→0.975 (+10/−0,
+    p = 0.002), email 0.763→0.974 (+8/−0) and paper 0.675→0.750 (+3/−0). No false alarms were added, at 2.6× the
+    full-text time.
+  - **Flash, more overlap:** raw gains grow (paper 256/64 +10/−0), but coverage-only replay removes them (paper +10 →
+    0; long-3 mean BA 0.974 → 0.869). This replicates O6.
+  - **First 512/384 test on the full pilot cohorts:** email 0.814→0.975 (+20/−1) and code 0.742→0.883 (+17/−0), both
+    p ≈ 2×10⁻⁵, with 0 new false alarms.
+  - **Short content (BIPIA, web, AgentDyn, NotInject):** unchanged at 128 words or more, because a single window is
+    byte-identical to the full text. 64-word windows and 128/32 add false alarms on web (+5 to +7, p = 0.016 at 64/16)
+    and AgentDyn (+4 to +6). Small recall gains on PIDS (+4 to +6 of 40) and BIPIA (+3 to +5 of 30) are not
+    significant.
+  - **Aggregation:** max > 0.7 equals max > 0.5, because the scores are near-binary. max > 0.9, top-2 mean, ≥ 2
+    windows and fraction-of-windows rules all lose long-document recall.
+  - **Abstention:** Flash's window-level abstention rate is 0.1–0.3%, but the any-invalid-window rule abstains up to
+    7/40 papers at 69 windows per case. Ignoring invalid windows recovers them without loss.
+  - **Mini 6-bit:** windows of 128 and 256 words add 10–15 long-document false alarms (paper FPR up to 0.50), with
+    13–19% case abstentions. Only 512/384 helps (+4/−0, 0 FA).
+  - **Determinism:** the server reproduced 3,810/3,810 scores on byte-identical inputs.
+  - **Cost:** 35,993 calls, 3 h 10 min.
+  - See the [window-sweep report](reports/llada-window-sweep-2026-10.md) and
+    [`sweep-results.json`](analysis/llada-window-sweep-2026-10/results/sweep-results.json).
+- Strength: **Suggestive.** The direction is consistent across code and email for Flash, and it agrees with O1, O5
+  and O6. But n is small, there are many comparisons, and the payload sits at a single position. Mini's non-transfer
+  is also suggestive.
+- Caveats:
+  - Payloads at the end make tails and the short remainder window position-confounded.
+  - There are only 20 long clean documents per domain.
+  - Paper remains below the references: 256/128 scores 0.842 against 1.000, p = 0.031.
+  - Short-content BA stays far below Gemma26 (BIPIA 0.567 against 0.917).
+- Follow-up: the pre-registered confirmatory run under F10 (report §8): Flash 256/256 and 128/128 plus the cascade,
+  on fresh long documents with varied payload positions and ≥ 100 clean controls per domain.
+- **Note 2026-10-19 (confirmatory run, O63):** the pre-registered test on the full suites confirms the long-document gain
+  (9 of 13 cohorts at 256/256) and shows it is not only an end-of-document artifact: payloads in abstracts, method
+  sections and mid-attachment are caught by the window that holds them. Two claims here do **not** replicate:
+  - "no added false alarms": pooled FPR rose 0.064→0.079 at 256/256, mostly on BrowseSafe, and 0→0.030 at 128/128;
+  - parity with Gemma26 and Qwen3.8 on code and email: 0.888 and 0.975 against 0.96–1.00.
+
+**O63 (PRE-REGISTERED): On the full Studio suites, LLaDA2.2-flash 4-bit ranks 7th of 8 at full text (mean BA 0.718
+baseline, 0.707 extension). Sliding windows raise its long-document recall, including where the payload is not at the
+end, but they add false alarms on web pages and at 128 words, and they never close the gap to the Q8 references.**
+> **Design:** pre-registered in `f122c8d` (pushed 2026-10-19 02:10 UTC, before any call). The run covered 35 tests
+> (14,085 cases) at full text, 256/256 windows on 14 long-document cohorts selected by a declared rule, and 128/128 on
+> the 6 H2 cohorts (a declared budget fallback). That is 88,163 calls in 10 h 02 min, strictly serial, with 0
+> transport errors. The primary policy is ignore-invalid with max > 0.5. Tests are exact McNemar with Holm per family;
+> H3 uses a Newcombe paired interval with a 2-point margin.
+- Evidence ✔:
+  - **Full text.** Flash's mean BA is 0.718 on the baseline (Gemma26 0.923 … Qwen3.8 0.895; Laguna 0.712) and 0.707
+    on the extension (Gemma31 0.923 … Qwen3.8 0.865; Laguna 0.702). The 7 Q8 rows were recomputed from checkpoints
+    and match the published aggregates.
+    - Losses are missed attacks: LongPI recall is 0.18–0.38 for papers, QA passages 0.11–0.14 and subtle templates
+      0.03–0.17.
+    - Flash raises almost no false alarms on clean long documents (authorized-benign FPR 0.003), but many on web
+      content (FPR 0.54–0.56).
+    - Paired over all 35 tests: 4,192 vs 525 discordant against Gemma26.
+  - **H1, supported on 9 of 13 cohorts** (mean ΔBA +0.082 at 256/256). Examples:
+    - code 0.750→0.888 (+91/−5);
+    - email 0.832→0.975 (+90/−6);
+    - LLMail-in-email 0.652→0.739.
+
+    Not supported: longpi-resume, BrowseSafe and subtle résumés. TriviaQA is significantly worse (−0.023, +42/−81).
+    At 128/128, 6 of 6 H2 cohorts are supported (mean +0.159).
+  - **H2, SUPPORTED.**
+    - Abstract-position payloads: TPR 0.223→0.385 at 256/256 and 0.474 at 128/128.
+    - Method position: 0.175→0.377 and 0.469.
+    - LLMail payloads mid-attachment: 0.253→0.444 and 0.596.
+    - Subtle paper and subtle code: also supported.
+
+    On LongPI paper, code and email (end position), 211 of 221 window-only detections came from the last window
+    alone. On the abstract and method cohorts, 0 of 111 did: the first firing window sits at a median relative
+    index of 0.06 (abstract) and 0.53 (method).
+  - **H3, NOT non-inferior.**
+    - Pooled benign FPR 0.064→0.079 (Δ +0.015, 95% CI 0.006–0.025). BrowseSafe adds 34 false alarms and removes 16.
+      Without it (exploratory) the change is 0.001→0.006.
+    - At 128/128: 0→0.030 (+12, 9 of them on subtle code).
+  - **Exploratory.**
+    - The cascade adds 0–0.02 over windows and recovers TriviaQA's end-position losses.
+    - Window cost per case is 1.3–3.5× full text at 256/256 and 2.2–6.2× at 128/128 (381 and 339 ms per call
+      against 654 ms).
+    - Gemma26 and Qwen3.8 full text stay ahead on every window cohort: pooled 1,893 vs 86 and 1,493 vs 129
+      discordant at 256/256.
+    - Determinism: 971/971 pilot and 907/907 sweep scores reproduced.
+  - See the [report](reports/llada-flash-full-2026-10.md) and
+    [`flash-full-results.json`](analysis/llada-flash-full-2026-10/results/flash-full-results.json).
+- Strength: **Strong** for "windows raise Flash's long-document recall on these synthetic cohorts, at any payload
+  position" (pre-registered, large paired discordance, Holm-corrected, replicated at two sizes). **Moderate** for "7th
+  of 8 at full text" (one quant and a different protocol from the Q8 rows). The false-alarm result is a **Strong
+  negative** against O62's claim.
+- Caveats:
+  - 11 of 14 window cohorts are LongPIBench-derived, and the two independent long cohorts (BrowseSafe, TriviaQA)
+    go the other way.
+  - Cases overlap the pilot, although a declared not-pilot sensitivity analysis agrees.
+  - The comparison is a protocol comparison: no reasoning, prompt-only JSON, MLX 4-bit against reasoning Q8 GGUF.
+  - 128/128 was not run on the end-position cohorts.
+- Follow-up: none planned for windows on Flash as a detector. Under F10, the open question is whether a larger Flash
+  quant or a reasoning-capable dLLM narrows the full-text gap.
+
 ---
 
 ## 3. Numbers that did not reconcile, or could not be checked
@@ -1061,6 +1207,21 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   only Studio model whose reasoning text matched 0/24 across devices while flags matched 23/24 (O38, O47). Compare
   no-draft vs draft-model vs MTP builds on long documents, the score probe and the subtle templates.
   _Tracked in [#7](https://github.com/elicollinson/solenoid-security/issues/7)._
+- **F10 — Text-diffusion LLMs (dLLMs) as injection detectors.** dLLMs decode a block in parallel and can revise tokens.
+  As of 2026-10, no published work tests them as detectors. **Update 2026-10-18 (pilot done, O61):** LLaDA2.2-mini
+  (6-bit and 4-bit MLX) and LLaDA2.2-flash (4-bit MLX) ran on the 998-case pilot subset through the user's MLX port,
+  with editing on. Mean BA was 0.649–0.714, against 0.953 for Gemma26 (Laguna level). Requests were 7–18× faster,
+  but the near-binary scores give AUROC ≈ 0.74, too low for a cascade pre-screen. Open arms: flash at 6-bit or 8-bit
+  (the Studio has 96 GB), a non-reasoning autoregressive comparator, and a full run only if either changes the
+  picture. See the [pilot report](reports/llada-pilot-2026-10.md).
+  **Update 2026-10-18 (exploratory window sweep, O62):** windows of 256 words or more lifted Flash on long code and
+  email to Gemma26 or Qwen3.8 level, with no added false alarms. Short content and mini 6-bit were not helped.
+  **Confirmatory design** (not yet run): see [window-sweep report §8](reports/llada-window-sweep-2026-10.md).
+  **Update 2026-10-19 (pre-registered full run, O63):** Flash full text ran on both Studio suites (0.718 and 0.707,
+  7th of 8). Windows raised long-document recall at every payload position (H1 9/13, H2 supported). They did not keep
+  false alarms within 2 points (H3 failed, mostly on BrowseSafe) and did not reach the Q8 references. See the
+  [plan](reports/llada-flash-full-plan-2026-10.md) and the [report](reports/llada-flash-full-2026-10.md).
+  _Tracked in [#38](https://github.com/elicollinson/solenoid-security/issues/38)._
 
 ---
 

@@ -4716,3 +4716,54 @@ after O54–O60 in #35/#37) and backlog item F10 were added, linked to #38.
 Next (not started): flash at 6-bit or 8-bit if memory allows (96 GB Studio), and a non-reasoning autoregressive
 comparator (e.g. Gemma26 with thinking off) on the same 998 cases. A dLLM cascade pre-screen is shelved unless a
 build's AUROC improves substantially.
+
+### L154 — 2026-10-18/19: LLaDA2.2 window sweep (#38, EXPLORATORY); windows help Flash on long documents, not short content or mini
+
+This entry follows L153. It has two parts: a first window test, then a sweep. Both used the same engines, decoding and
+`openai_compatible` transport as L153 (base URL overridden at run time via `$LLADA_BASE_URL`), strictly serial, with
+no dedup and `--continue-after-output-errors`. The main checkout was detached at #39's head.
+
+**First window test (UTC 2026-10-18, before the sweep).** Suite `prompt-injection-openai-compat-llada22-windows-pilot-v1`:
+`sliding_word_window_preserve_v1` at 512/384 on longpi-paper, code and email (120 each) and paper-score-counterfactual
+(72). `run-windows.sh` ran mini 6-bit first, then flash 4-bit, finishing at 21:29:02. Every cell exited 0.
+Recomputed by `analyze-first-window.ts` (full → windows, jointly valid):
+
+- **Flash:** email 0.814→0.975 (+20/−1), code 0.742→0.883 (+17/−0), paper 0.690→0.741 (+7/−1) and probe
+  0.648→0.685, with 0 new false alarms.
+- **Mini 6-bit:** paper 0.618→0.688 with +5 false alarms, and abstentions rising from 7 to 24.
+
+**Sweep.**
+
+- **Suite.** `prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1`, built by `make-suite.ts`. It holds
+  seeded `selectSubset` draws from the pilot caseIds: 30/30 for bipia-email-mixed, web-mixed and agentdyn-github;
+  40 attacks for pids-obfuscated; 40 benign for NotInject; 20/20 for longpi-paper, code and email, stratified by
+  template.
+- **Dry runs.** These planned about 60k Flash calls for the full grid, so it was trimmed. Dropped: 64/16 and 128/32
+  on long documents, 64/32 on papers, the counterfactual probe, and long cohorts at 30/30. 512/384 on the long
+  cohorts reused the first test's checkpoints.
+- **Runs.** Flash short cohorts (13 configs × 5) ran 22:30–23:11. Flash long cohorts (29 cells) ran 23:11–01:26.
+  Mini 6-bit (256/256, 128/128 and 256/128 on all 8 cohorts, plus 512/384 on the short ones) ran 01:27–01:40, with
+  configs chosen after the Flash results.
+- **Volume and errors.** 35,993 calls (Flash 29,737, mini 6,256). There were no transport or provenance errors; the
+  only failures were 172 output abstentions. Determinism: 3,810/3,810 byte-identical inputs reproduced the full-text
+  score.
+
+**Analysis.** `analyze-sweep.ts` is offline. It audits 161 checkpoints and checks every window input hash. It replays
+7 rules × {strict, two-reading, ignore-invalid} × {raw, coverage-only}, plus the cascade, and runs paired McNemar
+against LLaDA full text, Gemma26 and Qwen3.8.
+
+- **Flash on long documents:** 256/256 gives code 0.725→0.975 (+10/−0, p = 0.002) and email →0.974, with 0 false
+  alarms at 2.6×.
+- **Overlap gains are tail effects:** paper 256/64 goes from +10 raw to 0 under coverage-only.
+- **Short content:** neutral at 128 words or more. 64-word windows add false alarms on web and AgentDyn.
+- **Aggregation:** max > 0.7 equals max > 0.5, and the other rules are worse on long documents.
+- **Mini:** windows add 10–15 long-document false alarms. Only 512/384 helps.
+
+Published (stacked on #40): both suites byte-identical, `evals/analysis/llada-window-sweep-2026-10/` (scripts, queues,
+progress logs, host-redacted console logs, aggregate results, README), PROVENANCE rows and an index entry. Report:
+[`llada-window-sweep-2026-10.md`](llada-window-sweep-2026-10.md), labelled EXPLORATORY. FINDINGS O62 was added, with a
+dated note on O61 and an F10 pointer.
+
+Next (not started): the pre-registered confirmatory run in report §8. It uses Flash 256/256 and 128/128 plus the
+cascade, on fresh long documents with varied payload positions and ≥ 100 clean controls per domain, with Holm over 3
+domains and an FPR non-inferiority endpoint.

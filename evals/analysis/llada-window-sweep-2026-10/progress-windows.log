@@ -1,0 +1,10 @@
+START|2026-10-18T20:57:05Z
+CELL|2026-10-18T21:00:51Z|window-llada22-mini-6bit-preserve512|longpi-paper|exit 0
+CELL|2026-10-18T21:01:32Z|window-llada22-mini-6bit-preserve512|longpi-code|exit 0
+CELL|2026-10-18T21:02:45Z|window-llada22-mini-6bit-preserve512|longpi-email|exit 0
+CELL|2026-10-18T21:05:29Z|window-llada22-mini-6bit-preserve512|paper-score-counterfactual|exit 0
+CELL|2026-10-18T21:16:21Z|window-llada22-flash-4bit-preserve512|longpi-paper|exit 0
+CELL|2026-10-18T21:18:13Z|window-llada22-flash-4bit-preserve512|longpi-code|exit 0
+CELL|2026-10-18T21:21:24Z|window-llada22-flash-4bit-preserve512|longpi-email|exit 0
+CELL|2026-10-18T21:29:02Z|window-llada22-flash-4bit-preserve512|paper-score-counterfactual|exit 0
+WINDOWS_DONE|2026-10-18T21:29:02Z

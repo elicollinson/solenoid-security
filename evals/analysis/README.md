@@ -105,6 +105,16 @@ cases. The run directory was `evals/runs/llada-pilot-2026-10-18/`. Checkpoints a
 | `progress.log`, `progress-pilot-llada22-*-4bit-t128-full.log`, `console.log` | `START`/`CELL`/`PILOT_DONE` lines per condition and the runner's console output (`console.log` is `host-redacted`). The 6-bit feasibility-24 cell ran before `run-pilot.sh` and has no progress line. |
 | `results/` | `llada-pilot-results.json`: counts, rates, scores and timings only (`PROVENANCE.tsv` marks it `generated`). It has no case IDs, case text, model output or endpoint URLs. |
 
+### `llada-window-sweep-2026-10/`
+
+**Exploratory** LLaDA2.2 window sweep ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), run on
+2026-10-18 ([report](../reports/llada-window-sweep-2026-10.md), `FINDINGS.md` O62, research log L154). Window size
+{64, 128, 256, 512} × overlap {0, 50, 75%}, plus 512/384, was run on Flash 4-bit, and three configs on mini 6-bit.
+Eight content types were covered, with offline aggregation, abstention-policy, coverage-only and cascade replays.
+The folder also holds the first 512/384 window test's runner and logs. See the folder's own `README.md` for the file
+table. Scripts are `verbatim`, `path-adjusted` (default output path only) or `host-redacted` (console logs), as
+listed in `PROVENANCE.tsv`. `results/` is `generated`.
+
 ### `lmstudio-available-panel-2026-10-04/`
 
 | File | Computes |
@@ -226,6 +236,6 @@ The Studio Q8 full-text baseline: the superseded 1,024-token attempt and the com
   payloads) and `lmstudio-thinking1024-2026-10-03/bipia-payload-inspection.json`.
 - **Scratch and logs:** `lmstudio-thinking1024-2026-10-03/inspect-e2b-paper-false-positive.ts` and
   `inspect-email-window-plan.ts` (one-off debugging that prints case segments), `lmstudio-studio-2026-10-05/brief.sh`
-  (console one-liner), and all `*.log` except the `llada-pilot-2026-10/` logs above, `driver.ndjson` and LM Studio inventory snapshots.
+  (console one-liner), and all `*.log` except the `llada-pilot-2026-10/` and `llada-window-sweep-2026-10/` logs above, `driver.ndjson` and LM Studio inventory snapshots.
 - **Third-party code:** `research-literature-2026-10-03/` (vendored upstream benchmark code from the literature scan).
 - **Run checkpoints** (`*.jsonl` with native responses) and anything under `evals/private/`.

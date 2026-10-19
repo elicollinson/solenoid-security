@@ -784,6 +784,49 @@ scores (AUROC ≈ 0.74) rule them out as a fast pre-screen.**
   sometimes reads it as a 0–10 scale.
 - Follow-up: F10 ([#38](https://github.com/elicollinson/solenoid-security/issues/38)). Flash at 6-bit or 8-bit, and a
   non-reasoning autoregressive comparator (e.g. Gemma26 with thinking off) on the same cases.
+- **Note 2026-10-18 (window sweep, O62):** O61 measures full text only. In an exploratory follow-up, Flash with 256-
+  or 128-word windows drew level with Gemma26 and Qwen3.8 on subsampled LongPIBench code and email. Short content and
+  mini 6-bit did not improve, so the "weak general detector" conclusion stands.
+
+**O62 (EXPLORATORY): Sliding windows lift LLaDA2.2-flash 4-bit on long synthetic documents without added false alarms
+at window sizes of 256 words or more. They are neutral on short content, add false alarms below 128 words, and the gain
+does not transfer to mini 6-bit.**
+> **Exploratory caveat:** not pre-registered. About 3,900 config × cohort × rule × policy cells were compared on seeded
+> subsamples of 40–60 cases per cohort (long documents 20 attacks / 20 clean), and the mini configs were chosen after
+> seeing Flash on the same cases. p-values are uncorrected. LongPIBench caveat as in O1: one fixed attack sentence per
+> template per domain, and every payload sits at the document end.
+- Evidence ✔ (full → windows, paired on jointly valid cases, max > 0.5, any invalid window abstains):
+  - **Flash, long documents, 256/256 (no overlap, tail-free by construction):** code 0.725→0.975 (+10/−0,
+    p = 0.002), email 0.763→0.974 (+8/−0) and paper 0.675→0.750 (+3/−0). No false alarms were added, at 2.6× the
+    full-text time.
+  - **Flash, more overlap:** raw gains grow (paper 256/64 +10/−0), but coverage-only replay removes them (paper +10 →
+    0; long-3 mean BA 0.974 → 0.869). This replicates O6.
+  - **First 512/384 test on the full pilot cohorts:** email 0.814→0.975 (+20/−1) and code 0.742→0.883 (+17/−0), both
+    p ≈ 2×10⁻⁵, with 0 new false alarms.
+  - **Short content (BIPIA, web, AgentDyn, NotInject):** unchanged at 128 words or more, because a single window is
+    byte-identical to the full text. 64-word windows and 128/32 add false alarms on web (+5 to +7, p = 0.016 at 64/16)
+    and AgentDyn (+4 to +6). Small recall gains on PIDS (+4 to +6 of 40) and BIPIA (+3 to +5 of 30) are not
+    significant.
+  - **Aggregation:** max > 0.7 equals max > 0.5, because the scores are near-binary. max > 0.9, top-2 mean, ≥ 2
+    windows and fraction-of-windows rules all lose long-document recall.
+  - **Abstention:** Flash's window-level abstention rate is 0.1–0.3%, but the any-invalid-window rule abstains up to
+    7/40 papers at 69 windows per case. Ignoring invalid windows recovers them without loss.
+  - **Mini 6-bit:** windows of 128 and 256 words add 10–15 long-document false alarms (paper FPR up to 0.50), with
+    13–19% case abstentions. Only 512/384 helps (+4/−0, 0 FA).
+  - **Determinism:** the server reproduced 3,810/3,810 scores on byte-identical inputs.
+  - **Cost:** 35,993 calls, 3 h 10 min.
+  - See the [window-sweep report](reports/llada-window-sweep-2026-10.md) and
+    [`sweep-results.json`](analysis/llada-window-sweep-2026-10/results/sweep-results.json).
+- Strength: **Suggestive.** The direction is consistent across code and email for Flash, and it agrees with O1, O5
+  and O6. But n is small, there are many comparisons, and the payload sits at a single position. Mini's non-transfer
+  is also suggestive.
+- Caveats:
+  - Payloads at the end make tails and the short remainder window position-confounded.
+  - There are only 20 long clean documents per domain.
+  - Paper remains below the references: 256/128 scores 0.842 against 1.000, p = 0.031.
+  - Short-content BA stays far below Gemma26 (BIPIA 0.567 against 0.917).
+- Follow-up: the pre-registered confirmatory run under F10 (report §8): Flash 256/256 and 128/128 plus the cascade,
+  on fresh long documents with varied payload positions and ≥ 100 clean controls per domain.
 
 ---
 
@@ -958,6 +1001,9 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   but the near-binary scores give AUROC ≈ 0.74, too low for a cascade pre-screen. Open arms: flash at 6-bit or 8-bit
   (the Studio has 96 GB), a non-reasoning autoregressive comparator, and a full run only if either changes the
   picture. See the [pilot report](reports/llada-pilot-2026-10.md).
+  **Update 2026-10-18 (exploratory window sweep, O62):** windows of 256 words or more lifted Flash on long code and
+  email to Gemma26 or Qwen3.8 level, with no added false alarms. Short content and mini 6-bit were not helped.
+  **Confirmatory design** (not yet run): see [window-sweep report §8](reports/llada-window-sweep-2026-10.md).
   _Tracked in [#38](https://github.com/elicollinson/solenoid-security/issues/38)._
 
 ---

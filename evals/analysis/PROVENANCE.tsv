@@ -177,3 +177,10 @@ evals/analysis/studio-baseline-t4096-2026-10-07/run-queue-rerun1.sh	evals/runs/s
 evals/analysis/studio-baseline-t4096-2026-10-07/run-queue.sh	evals/runs/studio-baseline-t4096-2026-10-07/run-queue.sh	47249aeccf14d7a286da19cd4b9100abd78b527cd159fe37515502fa6a208ff6	verbatim
 evals/analysis/studio-baseline-t4096-2026-10-07/summarize-model-rerun1.ts	evals/runs/studio-baseline-t4096-2026-10-07/summarize-model-rerun1.ts	55e83f9e850533a9ad4f8e1bb6d9a556e809ae5959a9b52749b8c80edeeac9a3	path-adjusted
 evals/analysis/studio-baseline-t4096-2026-10-07/summarize-model.ts	evals/runs/studio-baseline-t4096-2026-10-07/summarize-model.ts	1c44d429d8d64fe261fb19ec363743f0deb2380ff72ea3016c3024ab19022752	path-adjusted
+evals/analysis/studio-extension-t4096-2026-10-13/analyze-extension.ts	-	-	authored
+evals/analysis/studio-extension-t4096-2026-10-13/queue-extension.txt	evals/runs/studio-extension-t4096-2026-10-13/queue-extension.txt	dd00345510f7587d2dce020261ad3296d8bdd35a5b7698b72acee2f0c9a39498	verbatim
+evals/analysis/studio-extension-t4096-2026-10-13/results/extension-plan.json	evals/runs/studio-extension-t4096-2026-10-13/extension-plan.json	62151812f47db93c5dcabcefdb3344e5558906e76b4aa567f9bd41f417fccfd8	verbatim
+evals/analysis/studio-extension-t4096-2026-10-13/results/extension-results.json	-	-	generated
+evals/analysis/studio-extension-t4096-2026-10-13/run-chain.sh	evals/runs/studio-extension-t4096-2026-10-13/run-chain.sh	6d2bb43aeebb35f9069372c7edfafd115dda42736bf43751fc6efc5321eef699	verbatim
+evals/analysis/studio-extension-t4096-2026-10-13/run-queue.sh	evals/runs/studio-extension-t4096-2026-10-13/run-queue.sh	828e4c0e76e116977bf832b429a3651164d0e95c5c262b33161bc0c41bc1e3b1	verbatim
+evals/analysis/studio-extension-t4096-2026-10-13/summarize-model.ts	evals/runs/studio-extension-t4096-2026-10-13/summarize-model.ts	250f28aaf4cbfe313ee43bf86177449cef52c1a0c35076425f4409d72767dee7	path-adjusted

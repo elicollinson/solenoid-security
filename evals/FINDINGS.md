@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-16. Every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-17. The Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -305,6 +305,7 @@ code, yet easy in email and résumé.**
 - Strength: **Strong** for the cross-model pattern.
 - Caveats: one benchmark's template definition. Qwen27B's 89 vs 2 shows the failure is domain-specific.
 - Follow-up: new subtle attacks per domain, paired with genuinely authorized instructions.
+- **Update 2026-10-17 (extension suite):** the follow-up ran. On 24 varied subtle templates per domain (120 attacks each), the six non-Laguna Studio reasoning models recall 70–93% of paper, 45–84% of code and 55–85% of résumé attacks at full text, and flag 2.9–9.4% of 384 documents carrying legitimate instructions. Subtle attacks remain the hardest long-document sets but are far from near-zero for these models. Laguna recalls 13–18% ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
 
 **O16: Many BIPIA misses are exact-zero scores identical to clean emails, so a threshold change cannot recover them.**
 - Evidence: zero-scored attacks: E2B 48/78, E4B 38, Qwen3.8 26/75, Ornith 15, Gemma26 9, while nearly all clean emails
@@ -448,6 +449,7 @@ its size.**
 - **Update 2026-10-12 (Studio baseline):** repeats on full cohorts at 4,096 tokens: Qwen3.8 291/300 paper attacks vs
   19/78 BIPIA ([Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)).
 - **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** every Qwen3.8 number here is Qwen3.8 at `xhigh` effort with a template-injected system instruction. Its BIPIA count at > 0.5 is partly a calibration effect (O55).
+- **Update 2026-10-17 (extension suite):** the reversal repeats at full cohort size. Qwen3.8 scores 1.000 on RepoGuard and 0.999 on agent output but 0.611 on BIPIA tables and 0.698 on SQuAD. Gemma 4 26B-A4B leads QA but is fifth on RepoGuard ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
 
 **O31: Different models make complementary errors, which motivates ensembles or cascades.**
 - Evidence: BIPIA: E4B catches 4 attacks Gemma26 misses (alphanumeric, space-removal, Base64). Gemma26∪Ornith = 65/78 vs
@@ -681,6 +683,7 @@ balanced accuracy. The differences between them sit in specific data types.**
   Leaders separated by less than about 0.01 are ties.
 - Follow-up: the extension suite (varied templates) under the same protocol; per-content recommendation profiles.
 - **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B, O55):** Qwen3.8's 0.895 is Qwen3.8 at `xhigh` effort with a template-injected system instruction, not `high`. At 0.5 its scores are under-calibrated: a 0.15 threshold chosen on this baseline gives 0.906 here and lifts its extension BA from 0.865 to 0.891 out of sample. Ranks involving Qwen3.8 (including "benign leader") carry this caveat.
+- **Update 2026-10-17 (extension suite, O56):** the saturation did not hold on harder data. On 14 new datasets the six non-Laguna models span 0.865–0.923 (range 0.059 vs 0.028 here; +0.031 [+0.023, +0.042]), and 4/15 model pairs are more than 0.05 apart (0/15 here). QA, BIPIA, BrowseSafe, LLMail and RepoGuard separate the models. Agent output stays saturated (0.982–1.000; O57). The two Gemma models tie at the top again (0.923 and 0.922); Qwen3.6 35B-A3B and Qwen3.8 fall to 0.866 and 0.865 ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
 
 **O49: Skill-Inject policy pairs cannot rank full-text detectors. Every model scores exactly 0.500 (Gemma26 0.513)
 because both members of each pair send a byte-identical input.**
@@ -712,6 +715,7 @@ encoded benign controls decide the obfuscated-text ranking.**
 - Caveats: the flagged benign pages were not inspected, so whether they contain instruction-like text is unknown;
   label quality of the in-page wild sample is unaudited.
 - Follow-up: aggregate audit of the benign pages most often flagged; a web-specific prompt or a two-axis score (O18).
+- **Update 2026-10-17 (extension suite, O58):** on BrowseSafe (200/200) web again caps every model (BA 0.608–0.825, AUROC ≤ 0.856), which confirms the cap. The mechanism differs by model, though. The two Gemma models flag only 3.0–4.5% of benign pages and miss 31–32% of attacks, while Ornith and Laguna flag 52–68% of benign pages. "Through benign false alarms rather than misses" does not hold for the Gemmas on BrowseSafe ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
 
 **O52: The MoE builds decode about 3× faster than the dense builds on the same Studio, but reasoning length varies as
 much within groups, and more reasoning did not buy accuracy.**
@@ -809,6 +813,85 @@ in QA, where it is a recognition gap. A threshold chosen on the baseline lifts i
   above 0. Equal dataset weights. The lower threshold costs Qwen3.8 on web, where benign pages move up. The hypothesis
   that the `xhigh` instruction ("consider plausible alternatives") drives the hedging is untested (O54).
 - Follow-up: the effort ablation (#33); per-model thresholds in the recommended-defaults config.
+- **Update 2026-10-17 (extension complete):** Muse, excluded above because its run was incomplete, shows a similar pattern: AUROC 0.994–0.997 on QA and BIPIA tables, but 26–63% of attacks scored in (0, 0.5] (O60). Qwen3.8's extension row is unchanged (0.865 at 0.5) ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
+
+### 2.16 Mac Studio Q8 extension suite (2026-10-17)
+
+> **Caveat (protocol):** the same seven models and frozen protocol as §2.13, on 14 new datasets (6,759 cases per
+> model). No model received the requested effort (O54): Qwen3.8 ran at `xhigh` with a 38-token instruction, Muse with
+> "Reasoning strength: high." plus a recipients line, and the Gemmas with thinking on via the template. Qwen3.8 is
+> under-calibrated at 0.5 (O55). One quant (GGUF Q8_0), one runtime (LM Studio 0.4.25), one device.
+
+**O56: The extension suite breaks the baseline's saturation. The overall spread among the six recommended models
+doubles, and five of seven content types separate the models.**
+- Evidence ✔: seven Studio GGUF Q8_0 models × 14 datasets (6,759 cases each; 98 checkpoints re-audited, matching all
+  seven `MODEL_DONE` lines). Overall: Gemma 4 31B-it 0.923, Gemma 4 26B-A4B 0.922, Muse 0.904, Ornith 0.895, Qwen3.6
+  35B-A3B 0.866, Qwen3.8 0.865, Laguna 0.702. Among the six models other than Laguna, the overall range goes from 0.028
+  (baseline, 21 datasets) to 0.059: +0.031, 95% CI [+0.023, +0.042] (2,000 paired, class-stratified case bootstrap
+  resamples per run). The SD goes from 0.010 to 0.026, and model pairs more than 0.05 apart go from 0/15 to 4/15
+  [3, 4]. Extension groups, range among the six and pairs > 0.05 apart: QA 0.219 (11/15), BIPIA 0.170 (10/15), web
+  0.163 (10/15), LLMail attacks 0.133 (10/15), RepoGuard 0.112 (9/15), long docs 0.075 (5/15), agent 0.018 (0/15).
+  Web is the clearest change on a same-named group: 0.025 → 0.163 (+0.138 [+0.091, +0.181]). The six recommended
+  models' AUROC ranges stay wide where BA does (QA 0.800–0.997, BIPIA tables 0.746–0.994, subtle code 0.729–0.985), so
+  the separation is not only a threshold effect. See the [extension report](reports/studio-extension-q8-t4096-2026-10.md) and [`extension-results.json`](analysis/studio-extension-t4096-2026-10-13/results/extension-results.json).
+- Strength: **Moderate** (complete, audited cohorts under one frozen protocol, with case-level intervals; but one
+  quant, runtime and device, different effective effort settings per model, and equal dataset weights).
+- Caveats: same-named groups hold different datasets in the two suites. Range and pair share are max-type statistics,
+  so their bootstrap intervals lean upward. The intervals cover case sampling only. Two of the separating groups
+  (email, web) are single datasets, and email is attack-only.
+- Follow-up: per-content profiles (PR #34); the effort ablation (#33), since two of the separating models are
+  threshold-sensitive (O55, O60).
+
+**O57: Agent tool output stays saturated on the extension suite, and RepoGuard repository content is saturated for
+the top three models.**
+- Evidence ✔: agent group (all four AgentDojo suites, 236 attacks / 44 benign ground-truth tool outputs, plus 360
+  attack-only Nemotron environment payloads) 0.955–1.000 for all seven and 0.982–1.000 for the six (range 0.018
+  [0.011, 0.027], 0/15 pairs separated). The baseline agent range was 0.024. Nemotron recall is 96.9–100%, and the
+  only AgentDojo false alarm is one of Laguna's 44. RepoGuard (480/95): Qwen3.8 and Muse 1.000, Ornith 0.999, then
+  Gemma31 0.923, Gemma26 0.907, Qwen3.6 35B-A3B 0.889 (these miss 15–22% of attacks, mostly scored exactly 0), with no
+  benign false alarms for any model. See the [extension report](reports/studio-extension-q8-t4096-2026-10.md).
+- Strength: **Moderate** (two agent datasets, one attack-only; RepoGuard has 5 payload texts).
+- Caveats: AgentDojo injections use 5 published templates, and Nemotron has no negatives.
+- Follow-up: the enhanced agent set with subtle injections and hard negatives ([#31](https://github.com/elicollinson/solenoid-security/issues/31)).
+
+**O58: On BrowseSafe web pages, models separate by how they trade benign false alarms against misses. The two Gemma
+models flag the fewest benign pages but miss about a third of attacks.**
+- Evidence ✔: `browsesafe-mixed` (200 attacks / 200 benign, long HTML). Benign pages flagged: Gemma31 6 (3.0%),
+  Gemma26 9 (4.5%), Qwen3.8 30, Muse 44, Qwen3.6 35B-A3B 69, Ornith 104 (52%), Laguna 135 (67.5%). Attack recall:
+  Laguna 0.890, Ornith 0.845, Qwen3.8 0.755, Muse and Qwen3.6 0.750, Gemma26 0.685, Gemma31 0.680. BA 0.608–0.825;
+  AUROC 0.783–0.856 for the six (Qwen3.8 highest), the lowest threshold-free separation of any mixed extension
+  dataset. See the [extension report](reports/studio-extension-q8-t4096-2026-10.md) (false-positive section).
+- Strength: **Moderate** (one 400-case dataset; complete for seven models).
+- Caveats: the release has no attack-type or placement columns, so misses cannot be broken down. Pages over 60,000
+  bytes were excluded from the sample.
+- Follow-up: the web-specific prompt or two-axis score (O18, O51).
+
+**O59: Per content type, Gemma 4 31B-it and Gemma 4 26B-A4B tie overall and split the content leads. Gemma 4 26B-A4B
+remains a reasonable default.**
+- Evidence ✔: paired bootstrap over the same resamples. Gemma31 − Gemma26: overall +0.002 [−0.004, +0.007], BIPIA
+  +0.014 [+0.002, +0.025], RepoGuard +0.016 [+0.006, +0.026], QA −0.028 [−0.035, −0.021], LLMail −0.023 [−0.053,
+  +0.004], long docs +0.011 [−0.001, +0.023], web +0.005 [−0.018, +0.028]. Other leaders: long docs Muse 0.929 (vs
+  Gemma31 0.917, margin CI [−0.002, +0.025]), LLMail Muse 0.943 tied with Gemma26, RepoGuard Qwen3.8 and Muse 1.000.
+  Pooled false-positive rate over 1,973 benign cases: Gemma31 0.9% [0.5, 1.4], Gemma26 1.4% [0.9, 2.0], Qwen3.8 2.2%,
+  Muse 3.0%, Qwen3.6 35B-A3B 4.5%, Ornith 7.1%, Laguna 7.5%. On 384 documents with legitimate instructions, every
+  model flags 2.6–9.4%. Mean request time: Gemma26 3.8 s, Gemma31 12.3 s, Muse 14.3 s. See the [extension report](reports/studio-extension-q8-t4096-2026-10.md) (per-content
+  leaders) and [`extension-results.json`](analysis/studio-extension-t4096-2026-10-13/results/extension-results.json).
+- Strength: **Moderate** (complete cohorts and paired intervals; the Gemma margins are 0.014–0.028).
+- Caveats: Gemma runs had thinking on through the template and no effort level (O54). Equal dataset weights.
+- Follow-up: feed the per-content rows into the recommendation profiles (PR #34).
+
+**O60: Muse Glimmer ranks attacks above benign cases almost perfectly on QA and BIPIA tables, but scores many attacks
+below 0.5, so its BA there understates its ranking.**
+- Evidence ✔: Muse AUROC: SQuAD 0.997, TriviaQA 0.996, BIPIA tables 0.994, BIPIA code 0.999. It is highest or tied
+  highest on 9 of 11 mixed extension datasets. Yet its BA is 0.759, 0.871 and 0.683 on the first three, because 434/900,
+  232/900 and 282/450 of its attack scores fall in (0, 0.5]. Muse almost never scores an attack exactly 0 (4 of 2,250
+  across these three sets), while it gives 10–22% of benign contexts a nonzero score up to 0.5. The pattern resembles
+  Qwen3.8's (O55). See the [extension report](reports/studio-extension-q8-t4096-2026-10.md) and the `scoreBands` fields in [`extension-results.json`](analysis/studio-extension-t4096-2026-10-13/results/extension-results.json).
+- Strength: **Suggestive** (post hoc and descriptive; no threshold was chosen or tested out of sample for Muse).
+- Caveats: in QA and BIPIA most models score every benign case 0, so their AUROC there is close to the share of
+  attacks scored above 0. Muse's template adds "Reasoning strength: high." (O54).
+- Follow-up: choose a Muse threshold on the baseline and test it on the extension, as O55 did for Qwen3.8; include
+  Muse in the effort work (#33).
 
 ---
 
@@ -843,14 +926,16 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
    (O32, O33, O42, O45; `study-b-plan-amendment-1.json`), ready as `queue-study-b2.txt` via `run-study-b.unpaused.sh`.
    _Tracked in [#25](https://github.com/elicollinson/solenoid-security/issues/25) (MLX diagnostic) and [#26](https://github.com/elicollinson/solenoid-security/issues/26) (Study B)._
 3. **Fresh long-document cohort** (O1, O2, O4, O15): real documents, new subtle attacks, authorized-instruction controls,
-   plus 100+ long benign documents per genre (O9). **Datasets added 2026-10-08 (not yet run):** 24 frozen subtle
+   plus 100+ long benign documents per genre (O9). **Datasets added 2026-10-08:** 24 frozen subtle
    templates per domain on LongPIBench papers, code and résumés (`longpi-subtle-{paper,code,resume}-v1`), benign
    authorized-instruction controls in four domains (`longpi-authorized-instructions-v1`), LLMail payloads in long emails
    (`longpi-email-llmail-v1`), plus BrowseSafe long HTML, BIPIA TableQA/CodeQA, Nemotron IPI, all four AgentDojo suites,
    RepoGuardBench, Inj-SQuAD/TriviaQA and an LLMail payload pool. All are in suite
    `prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1` (same engines and conditions as the completed
    baseline); see [PUBLIC_SOURCES](datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08). Real
-   (non-synthetic) long papers, code and résumés remain open.
+   (non-synthetic) long papers, code and résumés remain open. **Update 2026-10-17:** the suite ran at full text on the
+   seven Studio models (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)); the windows and
+   cascade arms on these cohorts have not run.
    _Tracked in [#9](https://github.com/elicollinson/solenoid-security/issues/9)._
 4. **Two-axis scoring prompt** (O16–O18) with a frozen threshold.
    _Tracked in [#10](https://github.com/elicollinson/solenoid-security/issues/10)._

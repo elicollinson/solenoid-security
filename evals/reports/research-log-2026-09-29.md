@@ -4734,3 +4734,48 @@ or prompt-template override). Measure BA@0.5, AUROC, scores near 0.5, reasoning 
 the "consider plausible alternatives" instruction plus long reasoning drives the hedged scores. (2) The judge sends
 only effort values each template accepts, and the recommended-defaults config carries per-model effort and
 thresholds. (3) Future audits compare `prompt_tokens` with a hand-rendered prompt for each new model.
+
+### L152 — 2026-10-17: Studio Q8 extension suite complete (7 models × 14 datasets); saturation broken except on agent output
+
+The extension chain (`studio-extension-t4096-2026-10-13`, suite
+`prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1`, sha256 `64863c9e…`, checked against the frozen
+`extension-plan.json`) ran from 2026-10-13 22:11:21Z (`CHAIN_START`) to 2026-10-17 21:42:55Z (`EXTENSION_DONE`),
+about 95.5 h against a 94 h estimate. Order: Ornith, Gemma26, Laguna, Qwen3.8, Qwen3.6 35B-A3B, Gemma31, Muse. All
+seven steps exited 0, with no halts, reruns or substitutions. Nothing remained
+loaded, and no inference was started afterwards. LM Studio was 0.4.25 throughout. Abstentions: 2, 2, 8, 2, 2, 0, 0
+(Ornith's two are output abstentions, the rest length cut-offs).
+
+**Final analysis.** `evals/analysis/studio-extension-t4096-2026-10-13/analyze-extension.ts` (new, offline) revalidates
+all 98 checkpoints with `auditPartialCheckpoint` and checks that the per-case maximum score agrees with every
+decision. Its overall and group means and its abstention counts match all seven `MODEL_DONE` lines. It also recomputes
+the 147 baseline checkpoints, which match the published `baseline-results.json`, and writes
+`results/extension-results.json` (aggregates only). Overall: Gemma31 0.923, Gemma26 0.922, Muse 0.904, Ornith 0.895,
+Qwen3.6 35B-A3B 0.866, Qwen3.8 0.865, Laguna 0.702. Groups: QA leader Gemma26 0.948, BIPIA Gemma31 0.917, web Gemma31
+0.825, long docs Muse 0.929, LLMail Muse 0.943 (tied with Gemma26), RepoGuard Qwen3.8 and Muse 1.000, agent 0.955–1.000
+for everyone. Pooled false-positive rate over 1,973 benign cases: Gemma31 0.9%, Gemma26 1.4%, Qwen3.8 2.2%, Muse 3.0%,
+Qwen3.6 4.5%, Ornith 7.1%, Laguna 7.5%. Nearly every false alarm is on BrowseSafe benign pages (3–68%) or the
+authorized-instruction documents (2.6–9.4%); the other ten benign sets have 0–1 per model.
+
+**Saturation verdict.** Among the six models other than Laguna, the overall range rises from 0.028 (baseline) to 0.059:
++0.031, 95% CI [+0.023, +0.042] from 2,000 paired, class-stratified case bootstrap resamples. Pairs more than 0.05
+apart go from 0/15 to 4/15. QA (11/15 pairs separated), BIPIA, BrowseSafe and LLMail (10/15 each) and RepoGuard
+(9/15) separate the models, and long documents moderately (5/15). Agent output stays saturated (range 0.018, 0/15),
+and RepoGuard is at ceiling for its top three. AUROC ranges stay wide where BA does, so the separation is not only a
+threshold effect. Muse has the highest or tied-highest AUROC on 9 of 11 mixed datasets but scores many attacks in
+(0, 0.5] (post hoc; O60).
+
+Report: [`studio-extension-q8-t4096-2026-10.md`](studio-extension-q8-t4096-2026-10.md). FINDINGS O56–O60 were added,
+with dated notes on O15, O30, O48, O51 and O55 and on backlog item 3. Published: the chain and queue scripts, the
+queue file, `summarize-model.ts` (path-adjusted), `results/extension-plan.json` and the analysis script with its
+results, plus PROVENANCE rows.
+
+**Supabase and backup.** The importer on main was run from the main checkout (dry run first; datasets and suites were
+already loaded, so nothing was written there): 98 runs, 47,313 requests and responses (all bodies stored in Storage),
+47,297 observations, 16 abstention errors, 98 checkpoints, 6,759 segments and 108 artifacts, with 0 Storage errors.
+`v_condition_rates` sums to 47,313 cases for the suite, and Gemma26 BrowseSafe reads 137/200 detected and 9/200 clean
+flags, as in the report. The documents step then ran from the branch worktree to load this entry, the report and
+O56–O60. `evals/runs` was rsynced additively to the raw backup (108 new files, none modified).
+
+Next candidates (not chosen yet): the #33 effort ablation, the #31 enhanced agent set
+(pending a design decision) and the full abliteration run. #32 (multi-part injections) and the deferred Qwen3.6 27B
+remain open.

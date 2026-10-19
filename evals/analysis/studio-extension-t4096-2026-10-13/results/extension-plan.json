@@ -1,0 +1,29 @@
+{
+  "createdAt": "2026-10-13T22:10:38.348797Z",
+  "suite": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json",
+  "suiteSha256": "64863c9e5ad0449dbb5e7d36eb91ba67d5913b9f8b29d70449b9d4480e8e1dcd",
+  "roster": [
+    "ornith-q8",
+    "gemma26-q8",
+    "laguna-xs21-q8",
+    "qwen38-q8gguf",
+    "qwen36-35b-a3b-q8",
+    "gemma31-q8",
+    "muse-q8"
+  ],
+  "casesPerModel": 6759,
+  "estimateHours": {
+    "ornith-q8": 4.5,
+    "gemma26-q8": 7.5,
+    "laguna-xs21-q8": 5.6,
+    "qwen38-q8gguf": 11.9,
+    "qwen36-35b-a3b-q8": 13.9,
+    "gemma31-q8": 22.5,
+    "muse-q8": 27.7,
+    "total": 94,
+    "range": [
+      85,
+      115
+    ]
+  }
+}

@@ -1,5 +1,6 @@
 import { AuthoredTextRegistry } from "./authoredText.js";
-import { type ScreeningAggregator, type ScreeningTechnique, type SegmentAssessment, type SingleStageTechnique } from "./techniques.js";
+import { type ContentType, type ScreeningLayer } from "./recommendations.js";
+import { type Preprocessor, type ScreeningAggregator, type ScreeningTechnique, type SegmentAssessment, type SingleStageTechnique } from "./techniques.js";
 import { type TextOrigin } from "./trust.js";
 export type ScreeningBoundary = "input" | "tool_output" | "model_output" | "reviewer_output";
 export type ScreeningDecision = "allow" | "observe" | "quarantine" | "block";
@@ -28,15 +29,27 @@ export interface TextInput {
     /** Defaults to external, including when external content appears in an initial prompt. */
     origin?: TextOrigin;
     boundary?: ScreeningBoundary;
+    /**
+     * What kind of text this is. Names a built-in recommendation (see
+     * `CONTENT_RECOMMENDATIONS`) that fills any setting no other layer set, and
+     * selects the app's and local overrides' `contentTypes` entry. Omitted: no
+     * recommendation applies, exactly as before.
+     */
+    contentType?: ContentType;
 }
 /** A provider can be backed by Model Armor, a self-hosted LLM judge, or another text detector. */
 export interface TextScreeningProvider {
     assess(parts: readonly [string, ...string[]]): Promise<ScreeningAssessment>;
+    /** The score above which this provider flags, read by a score aggregator that sets no threshold. */
+    readonly threshold?: number;
+    readonly comparator?: ">" | ">=";
 }
 /** How text is screened. Set app-wide in `createSecurity`, override per `screen` call. */
 export interface ScreeningConfig {
     /** Defaults to `full_text`. */
     technique?: ScreeningTechnique;
+    /** Steps applied to the whole text before the technique segments it, in order. Defaults to none. */
+    preprocess?: readonly Preprocessor[];
     /** Names from `providers`. Defaults to every configured provider. */
     models?: readonly string[];
     /** Defaults to `"any"`: one flagged segment from one model flags the text. */
@@ -68,7 +81,19 @@ export interface ScreeningResult {
     };
     boundary: ScreeningBoundary;
     origin: TextOrigin;
+    /** Echoed from the input when it named one. */
+    contentType?: ContentType;
     authoredCharsRedacted: number;
+}
+/** Where a resolved setting came from, lowest precedence first. */
+export type ScreeningConfigSource = "default" | "recommendation" | "app" | "app_content_type" | "local" | "local_content_type" | "call";
+/** The settings a screen will run with, and the layer each came from. */
+export interface ResolvedScreeningConfig {
+    technique: ScreeningTechnique;
+    preprocess: readonly Preprocessor[];
+    models: string[];
+    aggregator: ScreeningAggregator;
+    sources: Record<"technique" | "preprocess" | "models" | "aggregator", ScreeningConfigSource>;
 }
 export interface SecurityOptions {
     /** A single provider, registered under the model name `"default"`. */
@@ -77,6 +102,14 @@ export interface SecurityOptions {
     providers?: Readonly<Record<string, TextScreeningProvider>>;
     /** App-wide screening defaults. */
     screening?: ScreeningConfig;
+    /** Per content type, above `screening`, for inputs that name that `contentType`. */
+    contentTypes?: Partial<Record<ContentType, ScreeningConfig>>;
+    /**
+     * A plain-data layer above the app's settings, typically loaded by the host
+     * from a git-ignored local JSON file (see `parseScreeningOverrides`, which
+     * this is passed through). Per-call overrides still win.
+     */
+    localOverrides?: ScreeningLayer;
     authoredText?: AuthoredTextRegistry;
     /** A flagged read-tool result is quarantined by default. */
     onToolOutputInjection?: "quarantine" | "block";
@@ -110,5 +143,7 @@ export declare class ScreeningError extends Error {
 /** Creates a provider-configured, text-first security client. */
 export declare function createSecurity(options: SecurityOptions): {
     authoredText: AuthoredTextRegistry;
+    /** The settings a screen of this content type, with these overrides, would run with, and where each came from. */
+    resolveScreening(contentType?: ContentType, overrides?: ScreeningConfig): ResolvedScreeningConfig;
     screen(input: TextInput, overrides?: ScreeningConfig): Promise<ScreeningResult>;
 };

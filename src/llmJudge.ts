@@ -36,6 +36,7 @@
 // ---------------------------------------------------------------------------
 import type { ScreeningAssessment } from "./screen.js";
 import type { FetchLike, PromptTextParts } from "./modelArmor.js";
+import { JUDGE_PROFILES, type JudgeProfile, type JudgeProfileId } from "./recommendations.js";
 
 /** The eval prompt id this judge reproduces (evals/src/engines.ts `SCORE_ONLY_PROMPT_ID`). */
 export const SCORE_ONLY_PROMPT_ID = "security-eval-score-only-json-v1";
@@ -66,6 +67,9 @@ export type JudgeAbstentionReason =
   | "invalid_json"
   /** The object lacked a finite `concernScore` from 0 to 1, or carried other fields. */
   | "invalid_score";
+
+/** Values accepted for `reasoning_effort`. Which ones a model honors depends on its chat template. */
+export type JudgeReasoningEffort = "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
 
 export interface JudgeUsage {
   promptTokens?: number;
@@ -98,6 +102,15 @@ export interface OpenAICompatibleJudgeOptions {
   fetchFn?: FetchLike;
   /** Per-request timeout. Defaults to 120,000 ms. */
   timeoutMs?: number;
+  /**
+   * The measured settings for a model, by id from `JUDGE_PROFILES` or as a
+   * profile object. Each setting resolves in this order: the option set here,
+   * then the profile's value, then the library default below. The profile's
+   * threshold also becomes this judge's `threshold` property, which a score
+   * aggregator without a threshold reads. `model` is still required: the profile's
+   * `modelHint` is the key the measurements used, and your server's alias may differ.
+   */
+  profile?: JudgeProfileId | JudgeProfile;
   /** Defaults to 0, as measured. */
   temperature?: number;
   /**
@@ -108,9 +121,14 @@ export interface OpenAICompatibleJudgeOptions {
    * (FINDINGS Appendix A). A budget that low turns detections into abstentions.
    */
   maxTokens?: number;
-  /** Sent as `reasoning_effort` when set (LM Studio, vLLM and OpenRouter accept it). */
-  reasoningEffort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh";
-  /** A score above this flags. Defaults to 0.5. */
+  /**
+   * Sent as `reasoning_effort` when set (LM Studio, vLLM and OpenRouter accept
+   * it). A value outside the profile's `acceptedReasoningEfforts` is rejected:
+   * Qwen3.8's template, for one, silently ignores anything but xhigh, medium
+   * or low and falls back to xhigh (issue #33).
+   */
+  reasoningEffort?: JudgeReasoningEffort;
+  /** A score above this flags. Defaults to the profile's threshold, else 0.5. */
   threshold?: number;
   /** Defaults to `">"`, the comparator the eval decision rules used. */
   comparator?: ">" | ">=";
@@ -165,21 +183,25 @@ export function parseScoreOnly(content: string): { score: number } | { reason: "
 
 /** Implements `TextScreeningProvider`, like `ModelArmorScanner`. */
 export class OpenAICompatibleJudge {
-  private readonly options: Required<Omit<OpenAICompatibleJudgeOptions, "apiKey" | "reasoningEffort">> &
+  private readonly options: Required<Omit<OpenAICompatibleJudgeOptions, "apiKey" | "reasoningEffort" | "profile">> &
     Pick<OpenAICompatibleJudgeOptions, "apiKey" | "reasoningEffort">;
+  /** The resolved profile, when one was given. */
+  readonly profile?: JudgeProfile;
 
   constructor(options: OpenAICompatibleJudgeOptions) {
+    const profile: JudgeProfile | undefined = typeof options.profile === "string" ? JUDGE_PROFILES[options.profile] : options.profile;
+    if (options.profile !== undefined && !profile) throw new TypeError(`Unknown judge profile: ${String(options.profile)}`);
     const resolved = {
       baseUrl: options.baseUrl,
       model: options.model,
       apiKey: options.apiKey,
       fetchFn: options.fetchFn ?? fetch,
       timeoutMs: options.timeoutMs ?? 120_000,
-      temperature: options.temperature ?? 0,
-      maxTokens: options.maxTokens ?? 4096,
-      reasoningEffort: options.reasoningEffort,
-      threshold: options.threshold ?? 0.5,
-      comparator: options.comparator ?? ">",
+      temperature: options.temperature ?? profile?.temperature ?? 0,
+      maxTokens: options.maxTokens ?? profile?.maxTokens ?? 4096,
+      reasoningEffort: options.reasoningEffort ?? profile?.reasoningEffort,
+      threshold: options.threshold ?? profile?.threshold ?? 0.5,
+      comparator: options.comparator ?? profile?.comparator ?? ">",
       responseFormat: options.responseFormat ?? "json_schema",
     } as const;
     if (typeof resolved.baseUrl !== "string" || !/^https?:\/\//.test(resolved.baseUrl)) throw new TypeError("Judge baseUrl must be an http(s) URL");
@@ -190,8 +212,17 @@ export class OpenAICompatibleJudge {
     if (typeof resolved.threshold !== "number" || !(resolved.threshold >= 0 && resolved.threshold <= 1)) throw new TypeError("Judge threshold must be from 0 to 1");
     if (resolved.comparator !== ">" && resolved.comparator !== ">=") throw new TypeError("Judge comparator must be > or >=");
     if (resolved.responseFormat !== "json_schema" && resolved.responseFormat !== "prompt_json") throw new TypeError("Judge responseFormat must be json_schema or prompt_json");
+    const accepted = profile?.acceptedReasoningEfforts;
+    if (accepted && resolved.reasoningEffort !== undefined && !accepted.includes(resolved.reasoningEffort)) {
+      throw new TypeError(`Judge reasoningEffort ${resolved.reasoningEffort} is not accepted by ${profile!.name} (accepts ${accepted.join(", ")})`);
+    }
     this.options = resolved;
+    if (profile) this.profile = profile;
   }
+
+  /** The score above which this judge flags. `screen` reads it for a score aggregator that sets no threshold. */
+  get threshold(): number { return this.options.threshold; }
+  get comparator(): ">" | ">=" { return this.options.comparator; }
 
   async assess(parts: PromptTextParts): Promise<OpenAICompatibleJudgeAssessment> {
     if (!Array.isArray(parts) || parts.length === 0 || parts.some((part) => typeof part !== "string")) {

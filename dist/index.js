@@ -1,5 +1,6 @@
 export { createSecurity, ScreeningError } from "./screen.js";
-export { segmentText } from "./techniques.js";
+export { adjustThreshold, applyPreprocess, DEFAULT_SCORE_THRESHOLD, PREPROCESSORS, segmentText } from "./techniques.js";
+export { CONTENT_RECOMMENDATIONS, CONTENT_TYPES, DEFAULT_JUDGE_PROFILE_ID, JUDGE_PROFILES, mergeScreeningConfig, parseScreeningOverrides } from "./recommendations.js";
 export { ModelArmorScanner } from "./modelArmor.js";
 export { OpenAICompatibleJudge, SCORE_ONLY_PROMPT, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_SCHEMA, SCORE_ONLY_SCHEMA_ID } from "./llmJudge.js";
 export { AuthoredTextRegistry, MIN_AUTHORED_LENGTH, authoredText } from "./authoredText.js";

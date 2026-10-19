@@ -1,3 +1,4 @@
+import { JUDGE_PROFILES } from "./recommendations.js";
 /** The eval prompt id this judge reproduces (evals/src/engines.ts `SCORE_ONLY_PROMPT_ID`). */
 export const SCORE_ONLY_PROMPT_ID = "security-eval-score-only-json-v1";
 /** The system prompt, byte-identical to the measured eval prompt. */
@@ -58,18 +59,23 @@ export function parseScoreOnly(content) {
 /** Implements `TextScreeningProvider`, like `ModelArmorScanner`. */
 export class OpenAICompatibleJudge {
     options;
+    /** The resolved profile, when one was given. */
+    profile;
     constructor(options) {
+        const profile = typeof options.profile === "string" ? JUDGE_PROFILES[options.profile] : options.profile;
+        if (options.profile !== undefined && !profile)
+            throw new TypeError(`Unknown judge profile: ${String(options.profile)}`);
         const resolved = {
             baseUrl: options.baseUrl,
             model: options.model,
             apiKey: options.apiKey,
             fetchFn: options.fetchFn ?? fetch,
             timeoutMs: options.timeoutMs ?? 120_000,
-            temperature: options.temperature ?? 0,
-            maxTokens: options.maxTokens ?? 4096,
-            reasoningEffort: options.reasoningEffort,
-            threshold: options.threshold ?? 0.5,
-            comparator: options.comparator ?? ">",
+            temperature: options.temperature ?? profile?.temperature ?? 0,
+            maxTokens: options.maxTokens ?? profile?.maxTokens ?? 4096,
+            reasoningEffort: options.reasoningEffort ?? profile?.reasoningEffort,
+            threshold: options.threshold ?? profile?.threshold ?? 0.5,
+            comparator: options.comparator ?? profile?.comparator ?? ">",
             responseFormat: options.responseFormat ?? "json_schema",
         };
         if (typeof resolved.baseUrl !== "string" || !/^https?:\/\//.test(resolved.baseUrl))
@@ -88,8 +94,17 @@ export class OpenAICompatibleJudge {
             throw new TypeError("Judge comparator must be > or >=");
         if (resolved.responseFormat !== "json_schema" && resolved.responseFormat !== "prompt_json")
             throw new TypeError("Judge responseFormat must be json_schema or prompt_json");
+        const accepted = profile?.acceptedReasoningEfforts;
+        if (accepted && resolved.reasoningEffort !== undefined && !accepted.includes(resolved.reasoningEffort)) {
+            throw new TypeError(`Judge reasoningEffort ${resolved.reasoningEffort} is not accepted by ${profile.name} (accepts ${accepted.join(", ")})`);
+        }
         this.options = resolved;
+        if (profile)
+            this.profile = profile;
     }
+    /** The score above which this judge flags. `screen` reads it for a score aggregator that sets no threshold. */
+    get threshold() { return this.options.threshold; }
+    get comparator() { return this.options.comparator; }
     async assess(parts) {
         if (!Array.isArray(parts) || parts.length === 0 || parts.some((part) => typeof part !== "string")) {
             throw new TypeError("Judge input must contain at least one string");

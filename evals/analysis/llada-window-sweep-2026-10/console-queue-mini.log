@@ -1,0 +1,103 @@
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=benign-false-positives" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w256s256","cases":40,"observations":40,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=pids-obfuscated" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w256s256","cases":40,"observations":43,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=web-mixed" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w256s256","cases":60,"observations":60,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=bipia-email-mixed" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w256s256","scored":60,"expected":62,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=agentdyn-github" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w256s256","cases":60,"observations":85,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-code" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/106
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-code/sweep-mini6-w256s256","cases":40,"observations":106,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-code/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-email" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/212
+Scored 200/212
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-email/sweep-mini6-w256s256","scored":206,"expected":212,"abstentions":6,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-email/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-paper" "--condition=sweep-mini6-w256s256" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/708
+Scored 200/708
+Scored 300/708
+Scored 400/708
+Scored 500/708
+Scored 600/708
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-paper/sweep-mini6-w256s256","scored":697,"expected":708,"abstentions":11,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-paper/sweep-mini6-w256s256.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=benign-false-positives" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w128s128","cases":40,"observations":40,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=pids-obfuscated" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w128s128","cases":40,"observations":53,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=web-mixed" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w128s128","cases":60,"observations":60,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=bipia-email-mixed" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w128s128","scored":64,"expected":66,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=agentdyn-github" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/120
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w128s128","scored":115,"expected":120,"abstentions":5,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-code" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/195
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-code/sweep-mini6-w128s128","cases":40,"observations":195,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-code/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-email" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/402
+Scored 200/402
+Scored 300/402
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-email/sweep-mini6-w128s128","scored":395,"expected":402,"abstentions":7,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-email/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-paper" "--condition=sweep-mini6-w128s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1395
+Scored 200/1395
+Scored 300/1395
+Scored 400/1395
+Scored 500/1395
+Scored 600/1395
+Scored 700/1395
+Scored 800/1395
+Scored 900/1395
+Scored 1000/1395
+Scored 1100/1395
+Scored 1200/1395
+Scored 1300/1395
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-paper/sweep-mini6-w128s128","scored":1379,"expected":1395,"abstentions":16,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-paper/sweep-mini6-w128s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=benign-false-positives" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w256s128","cases":40,"observations":40,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=pids-obfuscated" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w256s128","cases":40,"observations":53,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=web-mixed" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w256s128","cases":60,"observations":60,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=bipia-email-mixed" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w256s128","scored":64,"expected":66,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=agentdyn-github" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/120
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w256s128","cases":60,"observations":120,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-code" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/195
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-code/sweep-mini6-w256s128","scored":194,"expected":195,"abstentions":1,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-code/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-email" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/402
+Scored 200/402
+Scored 300/402
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-email/sweep-mini6-w256s128","scored":389,"expected":402,"abstentions":13,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-email/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=longpi-paper" "--condition=sweep-mini6-w256s128" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+Scored 100/1395
+Scored 200/1395
+Scored 300/1395
+Scored 400/1395
+Scored 500/1395
+Scored 600/1395
+Scored 700/1395
+Scored 800/1395
+Scored 900/1395
+Scored 1000/1395
+Scored 1100/1395
+Scored 1200/1395
+Scored 1300/1395
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-paper/sweep-mini6-w256s128","scored":1377,"expected":1395,"abstentions":18,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/longpi-paper/sweep-mini6-w256s128.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=benign-false-positives" "--condition=sweep-mini6-w512s384" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w512s384","cases":40,"observations":40,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/benign-false-positives/sweep-mini6-w512s384.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=pids-obfuscated" "--condition=sweep-mini6-w512s384" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w512s384","cases":40,"observations":40,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/pids-obfuscated/sweep-mini6-w512s384.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=web-mixed" "--condition=sweep-mini6-w512s384" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w512s384","cases":60,"observations":60,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/web-mixed/sweep-mini6-w512s384.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=bipia-email-mixed" "--condition=sweep-mini6-w512s384" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"finished_with_abstentions","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w512s384","scored":59,"expected":61,"abstentions":2,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/bipia-email-mixed/sweep-mini6-w512s384.jsonl"}
+$ bun evals/scripts/run-suite.ts "--suite=evals/suites/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1.json" "--test=agentdyn-github" "--condition=sweep-mini6-w512s384" --execute --continue-after-output-errors "--base-url=$LLADA_BASE_URL"
+{"status":"complete","runId":"prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w512s384","cases":60,"observations":77,"output":"/Users/eli/Documents/Code/solenoid-security/evals/runs/prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1/agentdyn-github/sweep-mini6-w512s384.jsonl"}

@@ -49,7 +49,7 @@ The score threshold is recorded with the decision rule, even when it is tuned al
 - [`suites/prompt-injection-baselines.json`](suites/prompt-injection-baselines.json) describes the **historical** engine versions, both historical chunk plans, full text, and threshold 0.5. The two chunked datasets used different case-seed derivations; the distinction is explicit in the suite.
 - [`suites/prompt-injection-direct-chat-v1.json`](suites/prompt-injection-direct-chat-v1.json) is a **new** runnable protocol for Gemma. Its direct chat prompt and tool-call protocol are versioned separately from the assistant's historical Agent protocol. Do not merge their results as if the prompts were identical.
 - [`datasets/PUBLIC_SOURCES.md`](datasets/PUBLIC_SOURCES.md) documents the three public detection cohorts. Run `bun run eval:fetch-public` to retrieve pinned upstream sources and build their ignored JSONL inputs before running those suites.
-- The [varied prompt-injection cohorts](datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08) add 14 datasets: BIPIA TableQA/CodeQA, BrowseSafe, Nemotron IPI, all AgentDojo suites, RepoGuardBench, Inj-SQuAD/TriviaQA, an LLMail payload pool, and constructed subtle-template and authorized-instruction cohorts on LongPIBench documents. They are tested together in `suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json`, which uses the completed Studio baseline's engines and conditions.
+- The [varied prompt-injection cohorts](datasets/PUBLIC_SOURCES.md#varied-prompt-injection-cohorts-2026-10-08) add 14 datasets: BIPIA TableQA/CodeQA, BrowseSafe, Nemotron IPI, all AgentDojo suites, RepoGuardBench, Inj-SQuAD/TriviaQA, an LLMail payload pool, and constructed subtle-template and authorized-instruction cohorts on LongPIBench documents. They are tested together in `suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json`, which uses the completed Studio baseline's engines and conditions. Results for the seven Studio models: [extension report](reports/studio-extension-q8-t4096-2026-10.md).
 - [`WEB_SMALL_CHUNKS.md`](WEB_SMALL_CHUNKS.md) records the 7/14/21-word in-page web chunk plans, runnable suites, and the distinct Gemma score-only protocol used for complete chunked comparisons.
 - [`reports/public-detector-comparison-2026-09-28.md`](reports/public-detector-comparison-2026-09-28.md) contains aggregate findings from the completed runs; raw observations and generated inputs remain ignored.
 
@@ -322,3 +322,80 @@ resume with the identical source option. Changing the source bytes invalidates
 the captured source binding. Tranche limits count only new native requests;
 exact cached observations can be populated without consuming that limit.
 External cache chains are deliberately unsupported.
+
+## OpenAI-compatible backend (`openai_compatible`)
+
+A generic transport for `llm_score_json` engines served by any OpenAI-compatible
+`/v1/chat/completions` server, added for the LLaDA2.2 text-diffusion pilot
+(issue #38). An engine sets `provider: "openai_compatible"` and an
+`openaiCompatible` block:
+
+| Field | Meaning |
+| --- | --- |
+| `baseUrl` | API root ending in `/v1`. https anywhere; plain http only to loopback, private-LAN or Tailscale hosts. |
+| `runtime`, `origin`, `quantization`, `weights` | Declared provenance, recorded in the engine identity (not checked). |
+| `apiKeyEnv` | Optional *name* of an env var holding a bearer token. Keys never live in suites. |
+| `timeoutMs` | Per-request timeout. |
+| `responseFormat` | `json_schema` sends the strict score-only schema as `response_format`; `prompt_json` sends none and relies on the frozen prompt. |
+| `decoding` | Free-form scalar decoding settings, recorded verbatim in the engine identity. |
+| `sendDecodingParams` | Explicit boolean: `true` sends `decoding` as extra top-level body fields; `false` records it only. |
+
+`parameters` allows only `temperature` and `max_tokens`, both required. Runs are
+strictly serial (`--concurrency=1`) and fail closed: a refused connection,
+timeout, redirect, HTTP error, non-JSON body, model/id mismatch or unexpected
+`finish_reason` halts the run. A 200 completion whose content is empty, is not
+JSON, is truncated (`finish_reason: "length"`) or is off-schema is an *output
+abstention*, never a miss. By default it pauses the run;
+`--continue-after-output-errors` records it and carries on, and the run then
+ends without a complete marker. Each checkpoint response holds the exact request
+body, the native response body, the URL actually posted to, HTTP status and
+headers, client wall time, server `usage`, the server's `timings` object
+(llama.cpp style: `queue_ms`, `load_ms`, `prompt_ms`, `predicted_ms`,
+`total_ms`, ...) and a `modelLoad` flag (`load_ms > 0`). The runner prints a
+warning for each reported model (re)load.
+
+**Base URL override.** The suite URL is the default and stays in the engine
+identity. To reach the server another way for one run, pass
+`--base-url=<url>` or set `OPENAI_COMPATIBLE_BASE_URL` (the flag wins). The
+dry run prints the resolved `baseUrl`, and each response envelope records the
+endpoint actually used. Never commit a tailnet hostname; pass it at run time.
+
+### LLaDA2.2-mini pilot
+
+`suites/prompt-injection-openai-compat-llada22-mini-pilot-v1.json` scores
+`LLaDA2.2-mini` (MLX community 6-bit conversion of `inclusionAI/LLaDA2.2-mini`,
+served by a user-provided MLX port of the full LLaDA2.2 decoder on the Mac
+Studio) with the frozen score-only prompt. The default `baseUrl` is
+`http://127.0.0.1:8088/v1`, a local port forward. The server ignores
+`response_format`, so the engine is `prompt_json`. Decoding is sent and pinned
+per request: `block_length` 32 (fixed by the model), `steps` 32, `threshold`
+0.5, `editing_threshold` 0.0 (token editing on), `max_post_steps` 16, plus
+`temperature` 0 and `max_tokens` 128. The tests are the abliteration pilot's
+nine cohorts (998 cases) plus `bipia-email-feasibility-24`, the first 24
+`bipia-email-mixed` cases. 6-bit MLX weights and a 128-token cap differ from the
+Q8 GGUF, 4,096-token baselines, so compare with that caveat. Engines for
+`LLaDA2.2-mini-4bit` and `LLaDA2.2-flash` are registered but disabled: no
+condition references them yet.
+
+```sh
+S=evals/suites/prompt-injection-openai-compat-llada22-mini-pilot-v1.json
+C=pilot-llada22-mini-6bit-t128-full
+
+# Port forward (or use --base-url / OPENAI_COMPATIBLE_BASE_URL instead):
+ssh -N -L 8088:127.0.0.1:8088 <studio-host>
+
+# Feasibility, 24 cases. Dry run first, then execute:
+bun run eval:run --suite=$S --test=bipia-email-feasibility-24 --condition=$C
+bun run eval:run --suite=$S --test=bipia-email-feasibility-24 --condition=$C --execute --continue-after-output-errors
+
+# The same run against a different URL:
+bun run eval:run --suite=$S --test=bipia-email-feasibility-24 --condition=$C --execute --base-url=http://<studio-host>:8088/v1
+
+# Pilot, nine cohorts run serially (resumable; rerun the same command to continue):
+for T in longpi-paper longpi-code bipia-email-mixed longpi-email web-mixed agentdyn-github pids-obfuscated benign-false-positives paper-score-counterfactual; do
+  bun run eval:run --suite=$S --test=$T --condition=$C --execute --continue-after-output-errors || break
+done
+```
+
+The paid `eval:research` matrix and the `eval:local` LM Studio driver both
+refuse `openai_compatible` engines.

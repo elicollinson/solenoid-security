@@ -1,0 +1,12 @@
+START|2026-10-18T20:14:49Z
+CELL|2026-10-18T20:16:04Z|bipia-email-feasibility-24|exit 0
+CELL|2026-10-18T20:20:00Z|longpi-paper|exit 0
+CELL|2026-10-18T20:21:11Z|longpi-code|exit 0
+CELL|2026-10-18T20:21:54Z|bipia-email-mixed|exit 0
+CELL|2026-10-18T20:23:25Z|longpi-email|exit 0
+CELL|2026-10-18T20:24:04Z|web-mixed|exit 0
+CELL|2026-10-18T20:24:40Z|agentdyn-github|exit 0
+CELL|2026-10-18T20:25:20Z|pids-obfuscated|exit 0
+CELL|2026-10-18T20:26:00Z|benign-false-positives|exit 0
+CELL|2026-10-18T20:28:50Z|paper-score-counterfactual|exit 0
+PILOT_DONE|2026-10-18T20:28:50Z

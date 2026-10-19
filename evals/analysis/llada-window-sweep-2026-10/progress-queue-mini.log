@@ -1,0 +1,60 @@
+START|2026-10-19T01:26:58Z|evals/runs/llada-sweep-2026-10-18/queue-mini.txt
+BEGIN|2026-10-19T01:26:58Z|sweep-mini6-w256s256|benign-false-positives
+CELL|2026-10-19T01:27:10Z|sweep-mini6-w256s256|benign-false-positives|exit 0
+BEGIN|2026-10-19T01:27:11Z|sweep-mini6-w256s256|pids-obfuscated
+CELL|2026-10-19T01:27:16Z|sweep-mini6-w256s256|pids-obfuscated|exit 0
+BEGIN|2026-10-19T01:27:16Z|sweep-mini6-w256s256|web-mixed
+CELL|2026-10-19T01:27:23Z|sweep-mini6-w256s256|web-mixed|exit 0
+BEGIN|2026-10-19T01:27:23Z|sweep-mini6-w256s256|bipia-email-mixed
+CELL|2026-10-19T01:27:31Z|sweep-mini6-w256s256|bipia-email-mixed|exit 0
+BEGIN|2026-10-19T01:27:31Z|sweep-mini6-w256s256|agentdyn-github
+CELL|2026-10-19T01:27:43Z|sweep-mini6-w256s256|agentdyn-github|exit 0
+BEGIN|2026-10-19T01:27:43Z|sweep-mini6-w256s256|longpi-code
+CELL|2026-10-19T01:27:58Z|sweep-mini6-w256s256|longpi-code|exit 0
+BEGIN|2026-10-19T01:27:58Z|sweep-mini6-w256s256|longpi-email
+CELL|2026-10-19T01:28:27Z|sweep-mini6-w256s256|longpi-email|exit 0
+BEGIN|2026-10-19T01:28:27Z|sweep-mini6-w256s256|longpi-paper
+CELL|2026-10-19T01:30:02Z|sweep-mini6-w256s256|longpi-paper|exit 0
+BEGIN|2026-10-19T01:30:02Z|sweep-mini6-w128s128|benign-false-positives
+CELL|2026-10-19T01:30:06Z|sweep-mini6-w128s128|benign-false-positives|exit 0
+BEGIN|2026-10-19T01:30:06Z|sweep-mini6-w128s128|pids-obfuscated
+CELL|2026-10-19T01:30:13Z|sweep-mini6-w128s128|pids-obfuscated|exit 0
+BEGIN|2026-10-19T01:30:13Z|sweep-mini6-w128s128|web-mixed
+CELL|2026-10-19T01:30:20Z|sweep-mini6-w128s128|web-mixed|exit 0
+BEGIN|2026-10-19T01:30:20Z|sweep-mini6-w128s128|bipia-email-mixed
+CELL|2026-10-19T01:30:28Z|sweep-mini6-w128s128|bipia-email-mixed|exit 0
+BEGIN|2026-10-19T01:30:28Z|sweep-mini6-w128s128|agentdyn-github
+CELL|2026-10-19T01:30:45Z|sweep-mini6-w128s128|agentdyn-github|exit 0
+BEGIN|2026-10-19T01:30:45Z|sweep-mini6-w128s128|longpi-code
+CELL|2026-10-19T01:31:11Z|sweep-mini6-w128s128|longpi-code|exit 0
+BEGIN|2026-10-19T01:31:11Z|sweep-mini6-w128s128|longpi-email
+CELL|2026-10-19T01:32:00Z|sweep-mini6-w128s128|longpi-email|exit 0
+BEGIN|2026-10-19T01:32:00Z|sweep-mini6-w128s128|longpi-paper
+CELL|2026-10-19T01:34:49Z|sweep-mini6-w128s128|longpi-paper|exit 0
+BEGIN|2026-10-19T01:34:50Z|sweep-mini6-w256s128|benign-false-positives
+CELL|2026-10-19T01:34:54Z|sweep-mini6-w256s128|benign-false-positives|exit 0
+BEGIN|2026-10-19T01:34:54Z|sweep-mini6-w256s128|pids-obfuscated
+CELL|2026-10-19T01:35:01Z|sweep-mini6-w256s128|pids-obfuscated|exit 0
+BEGIN|2026-10-19T01:35:01Z|sweep-mini6-w256s128|web-mixed
+CELL|2026-10-19T01:35:08Z|sweep-mini6-w256s128|web-mixed|exit 0
+BEGIN|2026-10-19T01:35:08Z|sweep-mini6-w256s128|bipia-email-mixed
+CELL|2026-10-19T01:35:16Z|sweep-mini6-w256s128|bipia-email-mixed|exit 0
+BEGIN|2026-10-19T01:35:16Z|sweep-mini6-w256s128|agentdyn-github
+CELL|2026-10-19T01:35:33Z|sweep-mini6-w256s128|agentdyn-github|exit 0
+BEGIN|2026-10-19T01:35:33Z|sweep-mini6-w256s128|longpi-code
+CELL|2026-10-19T01:36:00Z|sweep-mini6-w256s128|longpi-code|exit 0
+BEGIN|2026-10-19T01:36:00Z|sweep-mini6-w256s128|longpi-email
+CELL|2026-10-19T01:36:55Z|sweep-mini6-w256s128|longpi-email|exit 0
+BEGIN|2026-10-19T01:36:55Z|sweep-mini6-w256s128|longpi-paper
+CELL|2026-10-19T01:40:03Z|sweep-mini6-w256s128|longpi-paper|exit 0
+BEGIN|2026-10-19T01:40:03Z|sweep-mini6-w512s384|benign-false-positives
+CELL|2026-10-19T01:40:07Z|sweep-mini6-w512s384|benign-false-positives|exit 0
+BEGIN|2026-10-19T01:40:07Z|sweep-mini6-w512s384|pids-obfuscated
+CELL|2026-10-19T01:40:13Z|sweep-mini6-w512s384|pids-obfuscated|exit 0
+BEGIN|2026-10-19T01:40:13Z|sweep-mini6-w512s384|web-mixed
+CELL|2026-10-19T01:40:20Z|sweep-mini6-w512s384|web-mixed|exit 0
+BEGIN|2026-10-19T01:40:20Z|sweep-mini6-w512s384|bipia-email-mixed
+CELL|2026-10-19T01:40:27Z|sweep-mini6-w512s384|bipia-email-mixed|exit 0
+BEGIN|2026-10-19T01:40:27Z|sweep-mini6-w512s384|agentdyn-github
+CELL|2026-10-19T01:40:38Z|sweep-mini6-w512s384|agentdyn-github|exit 0
+DONE|2026-10-19T01:40:38Z|evals/runs/llada-sweep-2026-10-18/queue-mini.txt

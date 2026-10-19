@@ -4734,3 +4734,200 @@ or prompt-template override). Measure BA@0.5, AUROC, scores near 0.5, reasoning 
 the "consider plausible alternatives" instruction plus long reasoning drives the hedged scores. (2) The judge sends
 only effort values each template accepts, and the recommended-defaults config carries per-model effort and
 thresholds. (3) Future audits compare `prompt_tokens` with a hand-rendered prompt for each new model.
+
+### L152 — 2026-10-17: Studio Q8 extension suite complete (7 models × 14 datasets); saturation broken except on agent output
+
+The extension chain (`studio-extension-t4096-2026-10-13`, suite
+`prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1`, sha256 `64863c9e…`, checked against the frozen
+`extension-plan.json`) ran from 2026-10-13 22:11:21Z (`CHAIN_START`) to 2026-10-17 21:42:55Z (`EXTENSION_DONE`),
+about 95.5 h against a 94 h estimate. Order: Ornith, Gemma26, Laguna, Qwen3.8, Qwen3.6 35B-A3B, Gemma31, Muse. All
+seven steps exited 0, with no halts, reruns or substitutions. Nothing remained
+loaded, and no inference was started afterwards. LM Studio was 0.4.25 throughout. Abstentions: 2, 2, 8, 2, 2, 0, 0
+(Ornith's two are output abstentions, the rest length cut-offs).
+
+**Final analysis.** `evals/analysis/studio-extension-t4096-2026-10-13/analyze-extension.ts` (new, offline) revalidates
+all 98 checkpoints with `auditPartialCheckpoint` and checks that the per-case maximum score agrees with every
+decision. Its overall and group means and its abstention counts match all seven `MODEL_DONE` lines. It also recomputes
+the 147 baseline checkpoints, which match the published `baseline-results.json`, and writes
+`results/extension-results.json` (aggregates only). Overall: Gemma31 0.923, Gemma26 0.922, Muse 0.904, Ornith 0.895,
+Qwen3.6 35B-A3B 0.866, Qwen3.8 0.865, Laguna 0.702. Groups: QA leader Gemma26 0.948, BIPIA Gemma31 0.917, web Gemma31
+0.825, long docs Muse 0.929, LLMail Muse 0.943 (tied with Gemma26), RepoGuard Qwen3.8 and Muse 1.000, agent 0.955–1.000
+for everyone. Pooled false-positive rate over 1,973 benign cases: Gemma31 0.9%, Gemma26 1.4%, Qwen3.8 2.2%, Muse 3.0%,
+Qwen3.6 4.5%, Ornith 7.1%, Laguna 7.5%. Nearly every false alarm is on BrowseSafe benign pages (3–68%) or the
+authorized-instruction documents (2.6–9.4%); the other ten benign sets have 0–1 per model.
+
+**Saturation verdict.** Among the six models other than Laguna, the overall range rises from 0.028 (baseline) to 0.059:
++0.031, 95% CI [+0.023, +0.042] from 2,000 paired, class-stratified case bootstrap resamples. Pairs more than 0.05
+apart go from 0/15 to 4/15. QA (11/15 pairs separated), BIPIA, BrowseSafe and LLMail (10/15 each) and RepoGuard
+(9/15) separate the models, and long documents moderately (5/15). Agent output stays saturated (range 0.018, 0/15),
+and RepoGuard is at ceiling for its top three. AUROC ranges stay wide where BA does, so the separation is not only a
+threshold effect. Muse has the highest or tied-highest AUROC on 9 of 11 mixed datasets but scores many attacks in
+(0, 0.5] (post hoc; O60).
+
+Report: [`studio-extension-q8-t4096-2026-10.md`](studio-extension-q8-t4096-2026-10.md). FINDINGS O56–O60 were added,
+with dated notes on O15, O30, O48, O51 and O55 and on backlog item 3. Published: the chain and queue scripts, the
+queue file, `summarize-model.ts` (path-adjusted), `results/extension-plan.json` and the analysis script with its
+results, plus PROVENANCE rows.
+
+**Supabase and backup.** The importer on main was run from the main checkout (dry run first; datasets and suites were
+already loaded, so nothing was written there): 98 runs, 47,313 requests and responses (all bodies stored in Storage),
+47,297 observations, 16 abstention errors, 98 checkpoints, 6,759 segments and 108 artifacts, with 0 Storage errors.
+`v_condition_rates` sums to 47,313 cases for the suite, and Gemma26 BrowseSafe reads 137/200 detected and 9/200 clean
+flags, as in the report. The documents step then ran from the branch worktree to load this entry, the report and
+O56–O60. `evals/runs` was rsynced additively to the raw backup (108 new files, none modified).
+
+Next candidates (not chosen yet): the #33 effort ablation, the #31 enhanced agent set
+(pending a design decision) and the full abliteration run. #32 (multi-part injections) and the deferred Qwen3.6 27B
+remain open.
+
+### L153 — 2026-10-18: LLaDA2.2 text-diffusion pilot (#38) run and analyzed; weak detectors, fast, not a viable pre-screen
+
+Numbered after L151 (#35) and L152 (#37), which were not on this branch when it was written; all five entries now sit together in order. The run used the `openai_compatible`
+engine from PR #39 against the user's MLX port of the full LLaDA2.2 decoder on the Mac Studio, with Levenshtein
+editing on. The user verified that edits (rewrites, DELETE, INSERT) are applied. Every request carried temperature 0,
+max_tokens 128, block_length 32, steps 32, threshold 0.5, editing_threshold 0.0 and max_post_steps 16. Output was
+prompt-only JSON (the server ignores `response_format` and has no logprobs), requests were serial, and the base URL was
+overridden at run time. The main checkout was detached at #39's head.
+
+**Runs (UTC, 2026-10-18).** Mini 6-bit (suite `prompt-injection-openai-compat-llada22-mini-pilot-v1`): feasibility-24
+at 17:15 (24/24 scored), then `run-pilot.sh` from 17:15:46 to 17:20:29 over the 9 pilot cohorts (998 cases). Mini
+4-bit and flash 4-bit used the new suite `prompt-injection-openai-compat-llada22-variants-pilot-v1`, a copy of the 6-bit
+suite with only `id` and `conditions` changed (checked with a `jq` diff; the default base URL is still loopback).
+`run-variant.sh` ran mini 4-bit from 17:22:11 to 17:27:59 and flash from 20:14:49 to 20:28:50, each including
+feasibility-24. Every cell exited 0, with no reruns, and `load_ms` was 0 on every response. Flash's first request took
+65 s of client time (10.4 s on the server) and was not flagged as a model load. Abstentions over the 998 cases were 31,
+77 and 9, all output abstentions.
+
+**Analysis.** `evals/analysis/llada-pilot-2026-10/analyze-llada-pilot.ts` (new, offline) audits 108 checkpoints
+(3 LLaDA builds and 9 comparators × 9 tests) via `extractCheckpoint` and `auditPartialCheckpoint`, then checks identical
+labels and input hashes with `assertIdenticalCases`. The comparators are the seven Studio baseline models and the two
+abliterated Qwen3.8 builds. Mean BA: flash 0.714, mini 6-bit 0.695, mini 4-bit 0.649, against Gemma26 0.953 and
+Qwen3.8 0.888 (Laguna 0.689). Pooled exact McNemar: Gemma26 vs LLaDA 250/6, 257/11 and 287/12, and Qwen3.8 vs LLaDA
+194/17, 210/28 and 248/35, all with Holm p < 10⁻³⁴. Flash vs mini 6-bit: 92 vs 72, p = 0.14. Median server time was
+143, 135 and 421 ms. Out-of-range scores make up 32% and 19% of the mini abstentions. The scores are near-binary, and
+pooled AUROC is 0.741 / 0.745 / 0.689 against 0.955 for Gemma26. A simulated pre-screen into Gemma26 that clears only
+score 0 still escalates 70–80% of cases and lowers mean BA to 0.875–0.917, so it is not viable. The script reproduces
+the user's scratch comparison: all twelve means match to three decimals (Ornith's is 0.89751). Latency medians agree within
+1.5 ms and p95 values within 11 ms, which fits a different quantile method.
+
+Published: the script, `results/llada-pilot-results.json` (aggregates only), the run scripts and progress and console
+logs. The run scripts and console log are `host-redacted`: the tailnet URL is replaced by `$LLADA_BASE_URL`. There are
+PROVENANCE rows and an index entry. Report: [`llada-pilot-2026-10.md`](llada-pilot-2026-10.md). FINDINGS O61 (numbered
+after O54–O60 in #35/#37) and backlog item F10 were added, linked to #38.
+
+Next (not started): flash at 6-bit or 8-bit if memory allows (96 GB Studio), and a non-reasoning autoregressive
+comparator (e.g. Gemma26 with thinking off) on the same 998 cases. A dLLM cascade pre-screen is shelved unless a
+build's AUROC improves substantially.
+
+### L154 — 2026-10-18/19: LLaDA2.2 window sweep (#38, EXPLORATORY); windows help Flash on long documents, not short content or mini
+
+This entry follows L153. It has two parts: a first window test, then a sweep. Both used the same engines, decoding and
+`openai_compatible` transport as L153 (base URL overridden at run time via `$LLADA_BASE_URL`), strictly serial, with
+no dedup and `--continue-after-output-errors`. The main checkout was detached at #39's head.
+
+**First window test (UTC 2026-10-18, before the sweep).** Suite `prompt-injection-openai-compat-llada22-windows-pilot-v1`:
+`sliding_word_window_preserve_v1` at 512/384 on longpi-paper, code and email (120 each) and paper-score-counterfactual
+(72). `run-windows.sh` ran mini 6-bit first, then flash 4-bit, finishing at 21:29:02. Every cell exited 0.
+Recomputed by `analyze-first-window.ts` (full → windows, jointly valid):
+
+- **Flash:** email 0.814→0.975 (+20/−1), code 0.742→0.883 (+17/−0), paper 0.690→0.741 (+7/−1) and probe
+  0.648→0.685, with 0 new false alarms.
+- **Mini 6-bit:** paper 0.618→0.688 with +5 false alarms, and abstentions rising from 7 to 24.
+
+**Sweep.**
+
+- **Suite.** `prompt-injection-openai-compat-llada22-window-sweep-exploratory-v1`, built by `make-suite.ts`. It holds
+  seeded `selectSubset` draws from the pilot caseIds: 30/30 for bipia-email-mixed, web-mixed and agentdyn-github;
+  40 attacks for pids-obfuscated; 40 benign for NotInject; 20/20 for longpi-paper, code and email, stratified by
+  template.
+- **Dry runs.** These planned about 60k Flash calls for the full grid, so it was trimmed. Dropped: 64/16 and 128/32
+  on long documents, 64/32 on papers, the counterfactual probe, and long cohorts at 30/30. 512/384 on the long
+  cohorts reused the first test's checkpoints.
+- **Runs.** Flash short cohorts (13 configs × 5) ran 22:30–23:11. Flash long cohorts (29 cells) ran 23:11–01:26.
+  Mini 6-bit (256/256, 128/128 and 256/128 on all 8 cohorts, plus 512/384 on the short ones) ran 01:27–01:40, with
+  configs chosen after the Flash results.
+- **Volume and errors.** 35,993 calls (Flash 29,737, mini 6,256). There were no transport or provenance errors; the
+  only failures were 172 output abstentions. Determinism: 3,810/3,810 byte-identical inputs reproduced the full-text
+  score.
+
+**Analysis.** `analyze-sweep.ts` is offline. It audits 161 checkpoints and checks every window input hash. It replays
+7 rules × {strict, two-reading, ignore-invalid} × {raw, coverage-only}, plus the cascade, and runs paired McNemar
+against LLaDA full text, Gemma26 and Qwen3.8.
+
+- **Flash on long documents:** 256/256 gives code 0.725→0.975 (+10/−0, p = 0.002) and email →0.974, with 0 false
+  alarms at 2.6×.
+- **Overlap gains are tail effects:** paper 256/64 goes from +10 raw to 0 under coverage-only.
+- **Short content:** neutral at 128 words or more. 64-word windows add false alarms on web and AgentDyn.
+- **Aggregation:** max > 0.7 equals max > 0.5, and the other rules are worse on long documents.
+- **Mini:** windows add 10–15 long-document false alarms. Only 512/384 helps.
+
+Published (stacked on #40): both suites byte-identical, `evals/analysis/llada-window-sweep-2026-10/` (scripts, queues,
+progress logs, host-redacted console logs, aggregate results, README), PROVENANCE rows and an index entry. Report:
+[`llada-window-sweep-2026-10.md`](llada-window-sweep-2026-10.md), labelled EXPLORATORY. FINDINGS O62 was added, with a
+dated note on O61 and an F10 pointer.
+
+Next (not started): the pre-registered confirmatory run in report §8. It uses Flash 256/256 and 128/128 plus the
+cascade, on fresh long documents with varied payload positions and ≥ 100 clean controls per domain, with Holm over 3
+domains and an FPR non-inferiority endpoint.
+
+### L155 — 2026-10-19: LLaDA2.2-flash full suites and pre-registered window test (#38); H1 9/13, H2 supported, H3 failed
+
+This entry follows L154. The user approved a full Flash run (not mini) plus a confirmatory window test on the
+long-document cohorts.
+
+**Pre-registration.** On a new branch `feature/llada-flash-full`, stacked on #41, the following were committed and
+pushed as `f122c8d` at 02:10:40 UTC, before any call:
+
+- the plan ([`llada-flash-full-plan-2026-10.md`](llada-flash-full-plan-2026-10.md), `plan.json`);
+- two suites built by `make-suites.ts`, with tests copied verbatim from the Studio Q8 t4096 baseline and extension
+  suites and the engine copied verbatim from the variants pilot;
+- the queue, the runner and the post-cell abstention check.
+
+It declared:
+
+- **Window cohorts:** a rule (prompt-injection label and either median > 512 words or LongPIBench-derived) that
+  selects 14 cohorts.
+- **Hypotheses:** H1 (256/256 beats full text, Holm over 13); H2 (non-end payloads: abstract, method, LLMail
+  attachment_middle, plus the three subtle cohorts, Holm over 6); H3 (pooled benign FPR non-inferior within 2 points,
+  Newcombe interval).
+- **Policy:** ignore-invalid as primary, with strict as secondary.
+- **Sensitivity:** a not-pilot repeat of H1 and H3.
+- **Stopping rules and fallback:** halt on provenance failure, retry transport failures up to 3 times, halt at > 10%
+  abstention on a window cohort. 128/128 would run on the H2 cohorts only, because the estimated total for 128/128 on
+  all cohorts was 14 h. Dry runs planned 88,163 calls.
+
+**Run.** The run used the main checkout's byte-identical copies, with the server URL passed only as `$LLADA_BASE_URL`.
+
+- **Timing:** 02:11:05–12:13:14 UTC, strictly serial. Full text took 2 h 34 min, 256/256 4 h 15 min and 128/128
+  3 h 13 min.
+- **Calls and failures:** 88,163 calls. There were 0 transport errors, retries, halts or model reloads.
+- **Abstentions:** 137 at full text. Nemotron's 9.7% was the highest, just under the flag. Ignore-invalid left 1
+  case abstention across all window cells.
+- **Determinism:** 971/971 pilot full-text scores and 907/907 sweep window scores reproduced.
+
+**Analysis.** `analyze-flash.ts` is offline and audits 312 checkpoints. It recomputes the 7 Q8 rows, which match the
+published baseline and extension aggregates.
+
+- **Full text:** Flash scores 0.718 (baseline) and 0.707 (extension), 7th of 8 just above Laguna.
+- **H1:** 9 of 13 supported at 256/256 (mean ΔBA +0.082). TriviaQA is significantly worse, with 76 end-position
+  detections lost. At 128/128, 6 of 6 are supported.
+- **H2 SUPPORTED at both sizes:** abstract TPR 0.223→0.385 (256) and 0.474 (128); method 0.175→0.377 and 0.469;
+  attachment_middle 0.253→0.444 and 0.596. The window that holds the payload fires (0 of 111 abstract/method
+  window-only detections from the last window).
+- **H3 NOT non-inferior:** pooled FPR 0.064→0.079 (CI upper 0.025), driven by BrowseSafe (+34/−16). At 128/128 it
+  was 0→0.030.
+- **Exploratory:**
+  - The cascade adds 0–0.02.
+  - Window cost per case is 1.3–6.2× full text.
+  - Gemma26 and Qwen3.8 stay ahead on every window cohort.
+
+**Published.**
+
+- `evals/analysis/llada-flash-full-2026-10/`: scripts, queue, plan, dry run, progress log, host-redacted console log,
+  results and README.
+- PROVENANCE rows and an index entry.
+- Report: [`llada-flash-full-2026-10.md`](llada-flash-full-2026-10.md).
+- FINDINGS O63, with dated notes on O61, O62 and F10.
+- README result tables gained a Flash row.
+
+The O62 claims "no added false alarms" and "parity on code and email" are withdrawn.

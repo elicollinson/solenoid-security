@@ -1,4 +1,5 @@
-import { lmsJson, lmStudioChatPath, lmStudioEnvelopeVersion, lmStudioSpeed, validateLMStudioConfig, validateLoadedModel, validateNativeModelInfo, type LMStudioSpeed } from "./lmStudio.js";
+import { isLMStudioOutputAbstention, lmsJson, lmStudioChatPath, lmStudioEnvelopeVersion, lmStudioSpeed, validateLMStudioConfig, validateLoadedModel, validateNativeModelInfo, type LMStudioSpeed } from "./lmStudio.js";
+import { classifyOpenAICompatibleResponse, isOpenAICompatibleOutputAbstention, OPENAI_COMPATIBLE_ENVELOPE, OPENAI_COMPATIBLE_PROVIDER, openAICompatibleEndpoint, openAICompatibleServerTimings, resolveOpenAICompatibleBaseUrl, validateOpenAICompatibleConfig, type OpenAICompatibleEnvelope } from "./openaiCompatible.js";
 import { ModelArmorScanner } from "../../src/modelArmor.js";
 import { sha256 } from "./strategies.js";
 import type { EngineSpec, EvalCase, InputSegment } from "./types.js";
@@ -22,13 +23,22 @@ export class EngineResponseError extends Error {
 
 /** An explicit token-limit outcome is an abstention, never a recoverable numeric score. */
 export function isLengthLimitedResponse(raw: unknown): boolean {
-  if (raw && typeof raw === "object" && "nativeResponse" in raw && "lmStudio" in raw) raw = raw.nativeResponse;
+  if (raw && typeof raw === "object" && "nativeResponse" in raw && ("lmStudio" in raw || "openaiCompatible" in raw)) raw = raw.nativeResponse;
   if (!raw || typeof raw !== "object" || !("choices" in raw) || !Array.isArray(raw.choices)) return false;
   return raw.choices.length === 1 && raw.choices[0]?.finish_reason === "length";
 }
 
+/** A verified 200 completion whose output is unusable (token limit, empty or malformed JSON, schema drift): an abstention, never a miss. */
+export function isOutputAbstention(engine: EngineSpec, raw: unknown): boolean {
+  return engine.openaiCompatible ? isOpenAICompatibleOutputAbstention(engine, raw) : isLMStudioOutputAbstention(engine, raw);
+}
+
 export interface EngineRuntime {
   openRouterApiKey?: string;
+  /** Overrides the env var named by openaiCompatible.apiKeyEnv (tests). */
+  openAICompatibleApiKey?: string;
+  /** Run-time base URL override (e.g. a different local port forward); recorded per request in the envelope. */
+  openAICompatibleBaseUrl?: string;
   lmStudioApiKey?: string;
   lmStudioSnapshot?: () => Promise<unknown>;
   fetchFn?: typeof fetch;
@@ -111,6 +121,8 @@ function usage(raw: Record<string, unknown>, promptField: string, completionFiel
 export async function inferText(engine: EngineSpec, text: string, runtime: EngineRuntime = {}): Promise<EngineOutput> {
   if (!text.trim()) throw new Error("Cannot infer on empty text");
   validateLMStudioConfig(engine);
+  validateOpenAICompatibleConfig(engine);
+  if (engine.openaiCompatible) return inferOpenAICompatible(engine, text, runtime);
   if (engine.kind === "model_armor") {
     let nativeResponse: unknown;
     const scanner = new ModelArmorScanner({
@@ -209,4 +221,57 @@ export async function inferText(engine: EngineSpec, text: string, runtime: Engin
   const speed = local ? lmStudioSpeed(engine, captured) : null;
   return { rawScore: numericScore(parsed.concernScore), rawVerdict: null, provider: local ? "LM Studio" : String(raw.provider), resolvedModel: String(raw.model), responseIds: [String(raw.id)], usage: usage(raw, "prompt_tokens", "completion_tokens"), rawResponse: captured, ...(speed ? { speed } : {}) };
   } catch (error) { throw new EngineResponseError(error instanceof Error ? error.message : "LLM output validation failed", captured); }
+}
+
+/** The exact request body for an openai_compatible score-only engine (frozen prompt, declared format and decoding). */
+export function openAICompatibleRequestBody(engine: EngineSpec, text: string): Record<string, unknown> {
+  validateOpenAICompatibleConfig(engine);
+  const c = engine.openaiCompatible!;
+  if (engine.kind !== "llm_score_json") throw new Error("Unsupported OpenAI-compatible protocol");
+  return {
+    model: engine.model,
+    messages: [{ role: "system", content: scoreOnlyPrompt(engine) }, { role: "user", content: text }],
+    temperature: engine.parameters!.temperature,
+    max_tokens: engine.parameters!.max_tokens,
+    stream: false,
+    ...(c.responseFormat === "json_schema" ? { response_format: { type: "json_schema", json_schema: { name: "score_only_v1", strict: true, schema: scoreOnlySchema } } } : {}),
+    ...(c.sendDecodingParams ? c.decoding : {}),
+  };
+}
+
+/** Serial, fail-closed inference against a generic OpenAI-compatible /v1 server. */
+async function inferOpenAICompatible(engine: EngineSpec, text: string, runtime: EngineRuntime): Promise<EngineOutput> {
+  const c = engine.openaiCompatible!;
+  const apiKey = runtime.openAICompatibleApiKey ?? (c.apiKeyEnv ? process.env[c.apiKeyEnv] : undefined);
+  if (c.apiKeyEnv && !apiKey) throw new Error(`${c.apiKeyEnv} required by the openai_compatible engine`);
+  const endpoint = openAICompatibleEndpoint(resolveOpenAICompatibleBaseUrl(c, runtime.openAICompatibleBaseUrl));
+  const request = openAICompatibleRequestBody(engine, text);
+  const started = performance.now();
+  // Transport errors (refused connection, timeout, redirect) propagate unchanged and halt the run.
+  const response = await (runtime.fetchFn ?? fetch)(endpoint, {
+    method: "POST", redirect: "error", signal: AbortSignal.timeout(c.timeoutMs),
+    headers: { ...(apiKey ? { Authorization: `Bearer ${apiKey}` } : {}), "Content-Type": "application/json" },
+    body: JSON.stringify(request),
+  });
+  const body = await response.text();
+  const httpWallMs = Math.round((performance.now() - started) * 1000) / 1000;
+  const meta = { version: OPENAI_COMPATIBLE_ENVELOPE, endpoint, request, httpStatus: response.status,
+    responseHeaders: Object.fromEntries(response.headers.entries()), clientTiming: { httpWallMs } } as const;
+  let raw: Record<string, unknown>;
+  try { raw = object(JSON.parse(body)); } catch {
+    throw new EngineResponseError(response.ok ? "OpenAI-compatible response body provenance mismatch (not a JSON object)" : `OpenAI-compatible HTTP ${response.status}`,
+      { nativeResponse: { body }, openaiCompatible: { ...meta, serverTimings: null, modelLoad: null } } satisfies OpenAICompatibleEnvelope);
+  }
+  let timings: ReturnType<typeof openAICompatibleServerTimings>, timingsValid = true;
+  try { timings = openAICompatibleServerTimings(raw); } catch { timings = { serverTimings: null, modelLoad: null }; timingsValid = false; }
+  const captured: OpenAICompatibleEnvelope = { nativeResponse: raw, openaiCompatible: { ...meta, ...timings } };
+  if (!timingsValid && response.ok) throw new EngineResponseError("OpenAI-compatible timings provenance mismatch", captured);
+  if (!response.ok) throw new EngineResponseError(`OpenAI-compatible HTTP ${response.status}`, captured);
+  const outcome = classifyOpenAICompatibleResponse(engine, raw);
+  if (outcome.kind === "provenance") throw new EngineResponseError(outcome.reason, captured);
+  if (outcome.kind === "length") throw new EngineResponseError("OpenAI-compatible token-limit abstention", captured);
+  if (outcome.kind === "output") throw new EngineResponseError(`OpenAI-compatible output abstention: ${outcome.reason}`, captured);
+  let reported: EngineOutput["usage"];
+  try { reported = usage(raw, "prompt_tokens", "completion_tokens"); } catch { throw new EngineResponseError("OpenAI-compatible usage provenance mismatch", captured); }
+  return { rawScore: outcome.score, rawVerdict: null, provider: OPENAI_COMPATIBLE_PROVIDER, resolvedModel: String(raw.model), responseIds: [String(raw.id)], usage: reported, rawResponse: captured };
 }

@@ -11,7 +11,7 @@ those numbers without rerunning inference. Folder names mirror the original run 
   case text, prompt text or model rationale. The only model output kept is the score-only final answer
   (`{"concernScore":0.2}`) in a few audit files.
 - **[`PROVENANCE.tsv`](PROVENANCE.tsv)** maps every published file to its original path and original SHA-256.
-  140 files are `verbatim`. 22 scripts are `path-adjusted`: they found their run directory from their own location or
+  144 files are `verbatim`. 23 scripts are `path-adjusted`: they found their run directory from their own location or
   a hard-coded absolute path. The only change is that line, which now reads `RUN_DIR` (default
   `evals/runs/<run-id>`), and it is marked `published copy`. Nothing else was edited. Four later files were never in a
   run directory and have `-` for the original path and hash: `studio-baseline-t4096-2026-10-07/analyze-baseline.ts`
@@ -20,7 +20,14 @@ those numbers without rerunning inference. Folder names mirror the original run 
   `qwen38-effort-calibration-2026-10/` folder adds four `authored` scripts, two `generated` results and five
   `third-party` chat templates. For a template, the original column holds the GGUF file URL it was read from and the
   copy column holds its license. Laguna's template is recorded by URL and hash only (`not-redistributed`, published
-  path `-`).
+  path `-`). The `studio-extension-t4096-2026-10-13/` folder adds one `authored` script, `analyze-extension.ts`, and
+  its `generated` output `results/extension-results.json`. The LLaDA2.2 pilot adds one
+  `authored` script and its `generated` output, three `verbatim` progress logs, and three `host-redacted` files (two run
+  scripts and the console log). Those three passed the private tailnet endpoint to `--base-url`. The published copy
+  replaces that URL with the placeholder `$LLADA_BASE_URL`, and nothing else differs. The original SHA-256 is of the
+  unredacted file. The pre-registered Flash run (`llada-flash-full-2026-10/`) adds `authored` scripts, plan, queue and
+  dry run (they ran from byte-identical untracked copies in the main checkout), one `verbatim` progress log, one
+  `host-redacted` console log and two `generated` results files.
 
 ## Running them
 
@@ -89,6 +96,40 @@ Cited by [injection-following findings](../reports/injection-following-findings-
 | File | Computes |
 |---|---|
 | `compare.ts` | Outcome-selected comparison of the five translation-task attacks across saved protocols. Writes [the report](../reports/lmstudio-bipia-translation-diagnostic-2026-10-04.md). Its `comparison.json` is **not** published because it keeps model rationales that quote attack text. |
+
+### `llada-pilot-2026-10/`
+
+The LLaDA2.2 text-diffusion pilot ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), run on
+2026-10-18 ([report](../reports/llada-pilot-2026-10.md), `FINDINGS.md` O61, research log L153). Three MLX builds
+served by an OpenAI-compatible MLX port (the `openai_compatible` engine) were run on the abliteration pilot's 998
+cases. The run directory was `evals/runs/llada-pilot-2026-10-18/`. Checkpoints are under
+`evals/runs/prompt-injection-openai-compat-llada22-{mini,variants}-pilot-v1/`.
+
+| File | Computes |
+|---|---|
+| `analyze-llada-pilot.ts` | **Authored here, not copied from the run directory.** Audits all 108 cells (3 LLaDA builds + 9 comparators × 9 tests) through the abliteration pilot's `extractCheckpoint` and `auditPartialCheckpoint`, and checks identical labels and input hashes with `assertIdenticalCases`. It then writes `results/llada-pilot-results.json`: per model × test n, scored, abstentions, TPR, FPR/TNR, BA and AUROC; mean BA; pooled exact McNemar against Gemma26 and Qwen3.8 (Holm over 6) and per test; pre-screen recall, clearance and a simulated cascade into Gemma26; server timing statistics; the shapes of abstained outputs (counts only); and score-value distributions. Run with `DATA_ROOT` pointing at a checkout that holds `evals/runs` and the dataset sources. |
+| `run-pilot.sh`, `run-variant.sh` | Serial cell loops for the 6-bit mini suite and the variants suite (`$1` = condition). `host-redacted`: set `LLADA_BASE_URL` to the server's `/v1` URL. The header comment of `run-variant.sh` was copied from `run-pilot.sh` and still says 6-bit. |
+| `progress.log`, `progress-pilot-llada22-*-4bit-t128-full.log`, `console.log` | `START`/`CELL`/`PILOT_DONE` lines per condition and the runner's console output (`console.log` is `host-redacted`). The 6-bit feasibility-24 cell ran before `run-pilot.sh` and has no progress line. |
+| `results/` | `llada-pilot-results.json`: counts, rates, scores and timings only (`PROVENANCE.tsv` marks it `generated`). It has no case IDs, case text, model output or endpoint URLs. |
+
+### `llada-window-sweep-2026-10/`
+
+**Exploratory** LLaDA2.2 window sweep ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), run on
+2026-10-18 ([report](../reports/llada-window-sweep-2026-10.md), `FINDINGS.md` O62, research log L154). Window size
+{64, 128, 256, 512} × overlap {0, 50, 75%}, plus 512/384, was run on Flash 4-bit, and three configs on mini 6-bit.
+Eight content types were covered, with offline aggregation, abstention-policy, coverage-only and cascade replays.
+The folder also holds the first 512/384 window test's runner and logs. See the folder's own `README.md` for the file
+table. Scripts are `verbatim`, `path-adjusted` (default output path only) or `host-redacted` (console logs), as
+listed in `PROVENANCE.tsv`. `results/` is `generated`.
+
+### `llada-flash-full-2026-10/`
+
+**Pre-registered** LLaDA2.2-flash run ([#38](https://github.com/elicollinson/solenoid-security/issues/38)), 2026-10-19
+([plan](../reports/llada-flash-full-plan-2026-10.md), [report](../reports/llada-flash-full-2026-10.md), `FINDINGS.md`
+O63, research log L155). It covers Flash full text on all 35 Studio baseline and extension tests, 256/256 windows on 14
+declared long-document cohorts, and 128/128 on the 6 H2 cohorts: 88,163 calls. `analyze-flash.ts` recomputes the 7 Q8
+rows, then runs H1–H3 as declared plus the exploratory position, firing-window, cascade, abstention, comparator,
+latency and determinism analyses. See the folder's own `README.md`.
 
 ### `lmstudio-available-panel-2026-10-04/`
 
@@ -219,6 +260,19 @@ The Studio Q8 full-text baseline: the superseded 1,024-token attempt and the com
 | `run-baseline-chain.sh`, `run-baseline-queue.sh` / `run-chain.sh`, `run-chain-resume.sh`, `run-chain-rerun1.sh`, `run-queue.sh`, `run-queue-rerun1.sh`, `queue-*.txt` | Chain and queue orchestration (resume after the Qwen3.6 27B deferral, L147; rerun1 after the Gemma31 LM Link failure, L148). The rerun1 cell uses suite `evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-rerun1-v1.json`. |
 | `results/` | `baseline-plan.json`, `qualification-summary.json` (plus `SUPERSEDED.json` for the 1,024-token attempt). For the 4,096-token run, these were re-checked after completion and are byte-identical to the final run files (the plan was frozen before inference). Also `QWEN36-27B-DEFERRED.json` and `baseline-results.json` (generated by `analyze-baseline.ts`; `PROVENANCE.tsv` marks it `generated`). |
 
+### `studio-extension-t4096-2026-10-13/`
+
+The Studio Q8 extension suite: the seven fully tested baseline models × 14 varied datasets (6,759 cases per model),
+same frozen protocol, run 2026-10-13 to 2026-10-17 ([extension report](../reports/studio-extension-q8-t4096-2026-10.md),
+`FINDINGS.md` O56–O60, research log L152).
+
+| File | Computes |
+|---|---|
+| `run-chain.sh`, `run-queue.sh`, `queue-extension.txt` | Chain and queue orchestration: LM Link wait, suite hash check against the frozen plan, then the seven models fastest first, with a `MODEL_DONE` summary after each. |
+| `summarize-model.ts` | Read-only per-model summary (mean balanced accuracy per extension group, abstentions) appended to `progress.log` after each model (the `MODEL_DONE` lines). |
+| `analyze-extension.ts` | **Authored here, not copied from the run directory.** Final offline analysis: re-audits all 7 × 14 extension checkpoints and the 7 × 21 baseline checkpoints with `auditPartialCheckpoint`, cross-checks every `MODEL_DONE` line and the published `baseline-results.json`, and writes `results/extension-results.json`: per cell n, scored, abstentions, TPR/FPR/TNR with Wilson intervals, balanced accuracy, AUROC and score bands; per-group means; false-positive rates per benign set and pooled; speed stats; between-model spread per group (range, SD, share of pairs > 0.05 apart) for the six recommended models and all seven, in both suites, with paired case-bootstrap intervals; per-group leaders and Gemma31 − Gemma26 differences. Run with `RUNS_ROOT` holding both run directories and `DATA_ROOT` at a checkout holding `evals/private`. |
+| `results/` | `extension-plan.json` (frozen before inference; byte-identical to the run copy) and `extension-results.json` (counts, rates, scores, timing statistics, checkpoint paths and SHA-256 hashes; no case IDs or text). |
+
 ## Not published
 
 - **Outputs that keep text:** `attack-following-evidence-2026-10-04/local-output-anomalies.json` (raw wire response
@@ -227,6 +281,6 @@ The Studio Q8 full-text baseline: the superseded 1,024-token attempt and the com
   payloads) and `lmstudio-thinking1024-2026-10-03/bipia-payload-inspection.json`.
 - **Scratch and logs:** `lmstudio-thinking1024-2026-10-03/inspect-e2b-paper-false-positive.ts` and
   `inspect-email-window-plan.ts` (one-off debugging that prints case segments), `lmstudio-studio-2026-10-05/brief.sh`
-  (console one-liner), and all `*.log`, `driver.ndjson` and LM Studio inventory snapshots.
+  (console one-liner), and all `*.log` except the `llada-pilot-2026-10/` and `llada-window-sweep-2026-10/` logs above, `driver.ndjson` and LM Studio inventory snapshots.
 - **Third-party code:** `research-literature-2026-10-03/` (vendored upstream benchmark code from the literature scan).
 - **Run checkpoints** (`*.jsonl` with native responses) and anything under `evals/private/`.

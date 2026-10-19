@@ -4677,3 +4677,60 @@ files, none modified).
 Next: the extension suite (`prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1`, 14 tests, 6,759 cases
 per model) on the seven fully tested models. Details follow separately. The full F7 run and the deferred Qwen3.6 27B
 come after.
+
+### L151 — 2026-10-16: Qwen3.8 ran at `xhigh` effort with a template-injected instruction; effort audit of every Studio model; Qwen3.8 calibration analysis
+
+Tracking issue [#33](https://github.com/elicollinson/solenoid-security/issues/33). Everything here is offline. No
+inference was run, and LM Studio's loaded models were not touched. The extension run (Muse) continued from the main
+checkout throughout. Its run directory was only read.
+
+**Discovery.** Compared on identical inputs, Qwen3.8 27B's server-reported `prompt_tokens` sat exactly 38 above
+Qwen3.6 35B-A3B's, and the two share a tokenizer vocabulary. The chat template embedded in the Qwen3.8 Q8_0 GGUF
+explains it. The template resolves `reasoning_effort|default('xhigh')`, accepts only `xhigh`/`medium`/`low`, raises on
+anything else, and at `xhigh` puts a 38-token instruction (with its `\n\n`) in front of the system prompt: "Reasoning
+effort is set to xhigh. Please think carefully … consider plausible alternatives …". Our `reasoning_effort: "high"`
+never raised, so LM Studio did not pass it into the template, and every Qwen3.8 request ran at `xhigh` with the
+instruction. Diffed against the Qwen3.6 template, nothing else changes on a system-plus-user request without tools.
+
+**Evidence.** +38 on 6,627/6,627 baseline and 6,755/6,755 extension inputs vs Qwen3.6 35B-A3B, and +38 on 6,623/6,623
+vs Ornith. Hand-rendering every saved prompt reproduces the server count on 98.3% of 7,309 baseline requests at the
+template default (+38 at `medium`). The remaining 1.7% show the same tokenizer residue for Qwen3.6 and Ornith. The
+first MacBook Qwen3.8 run (2026-10-04) matches the Studio counts on 976/976 shared inputs. The heretic and huihui pilot
+GGUFs embed the identical template (SHA-256 `c3cf9e34…1041`) and show +0 vs vanilla on 24/24.
+
+**Effort audit (all Studio models).** For each engine, the template was read from the header of its exact Q8_0 GGUF
+by HTTP range requests and hash-checked. For Gemma 4, the HF API's `gguf` block describes a different file. Saved
+prompts were then hand-rendered under each candidate setting. No template received `"high"`. Ornith, Qwen3.6
+35B-A3B/27B and Laguna have no effort variable and inject nothing. Gemma 4 26B/31B have no effort variable, and every
+prompt matches `enable_thinking=true` (0 offset on 100%; −2 at the template default), so LM Studio sets its own
+thinking switch. Muse reads `reasoning_strength`, whose template default is `high`, and always appends "Reasoning
+strength: high." Laguna's thinking state is unresolved: both settings give the same token count, and 76.6% of its
+responses report 0 reasoning tokens. LM Studio's docs list no `reasoning_effort` for `/api/v0`. The changelog has
+`reasoning.effort` only for `/v1/responses` with gpt-oss, and the newer `POST /api/v1/chat` takes `reasoning`.
+
+**Calibration (Qwen3.8 vs Qwen3.6 35B-A3B and Gemma26; Muse excluded, its extension run is incomplete).** Email and
+BIPIA code are calibration: AUROC is equal or higher, and the misses score 0.05–0.5. QA is recognition: AUROC 0.821 vs
+0.919, paired bootstrap difference −0.099 [−0.110, −0.087], and 60% of newly missed QA attacks (n = 696) score exactly
+0. Extension BIPIA AUROC is +0.028 [+0.011, +0.044] and baseline email +0.002 [−0.056, +0.057]. One threshold chosen on
+the baseline (0.15) lifts Qwen3.8's extension BA from 0.865 to 0.891 out of sample. Qwen3.6 and Gemma26 do not move.
+Caveat: in QA and BIPIA every model scores every benign case 0, so AUROC there is the share of attacks scored above 0.
+
+**Published.** `evals/analysis/qwen38-effort-calibration-2026-10/` contains `extract.ts` and `analyze.py` (path-adjusted
+to read `evals/runs`; the rerun reproduced `results.json` byte for byte), `effort-inputs.ts`, `effort-audit.py`, five
+embedded templates (Laguna's is stored only as URL and hash because of its license), and `results/`
+(`results.json`, `effort-audit.json`, aggregates only). `cases.json` (per-case IDs and scores) and `inputs.jsonl` (case
+text) stay in the git-ignored work directory. Report:
+[`qwen38-effort-calibration-2026-10.md`](qwen38-effort-calibration-2026-10.md). FINDINGS gains Appendix B, O54 and
+O55, plus dated caveat notes on O17, O30, O38, O43, O45, O46, O48, O50, O52 and O53. The README carries a short
+Qwen3.8 caveat.
+
+**Consequences.** Every local Qwen3.8 number is "Qwen3.8 at `xhigh` with the template instruction". The abliteration
+pilot stays internally valid because all three builds received the same instruction. Cross-model comparisons that
+involve Qwen3.8 carry the caveat. Nothing is rerun now.
+
+**Plan.** (1) After the extension run, the Qwen3.8 effort ablation on seeded QA, BIPIA and email subsets, under the
+same frozen protocol otherwise: `xhigh`, `medium`, `low`, and `xhigh` with the instruction removed (patched template
+or prompt-template override). Measure BA@0.5, AUROC, scores near 0.5, reasoning tokens and abstentions. Hypothesis:
+the "consider plausible alternatives" instruction plus long reasoning drives the hedged scores. (2) The judge sends
+only effort values each template accepts, and the recommended-defaults config carries per-model effort and
+thresholds. (3) Future audits compare `prompt_tokens` with a hand-rendered prompt for each new model.

@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-12. The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-16. Every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -319,6 +319,7 @@ code, yet easy in email and résumé.**
   0.895.
 - Strength: **Moderate:** one cohort, three Qwen abstentions excluded.
 - Follow-up: calibrate on disjoint families with a frozen threshold.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** Qwen3.8 ran at `xhigh` effort with a template-injected instruction, not the requested `high`. The full-cohort follow-up (O55) finds the same AUC-vs-threshold gap is mostly calibration for Qwen3.8.
 
 **O18: A detector can recognize a redirection and still give it low concern.**
 - Evidence: all 5 BIPIA Language-Translation attacks are missed by every local model. Hosted Gemma26 rationales
@@ -446,6 +447,7 @@ its size.**
 - Follow-up: qualify on a mixed mini-cohort, not one domain.
 - **Update 2026-10-12 (Studio baseline):** repeats on full cohorts at 4,096 tokens: Qwen3.8 291/300 paper attacks vs
   19/78 BIPIA ([Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)).
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** every Qwen3.8 number here is Qwen3.8 at `xhigh` effort with a template-injected system instruction. Its BIPIA count at > 0.5 is partly a calibration effect (O55).
 
 **O31: Different models make complementary errors, which motivates ensembles or cascades.**
 - Evidence: BIPIA: E4B catches 4 attacks Gemma26 misses (alphanumeric, space-removal, Base64). Gemma26∪Ornith = 65/78 vs
@@ -520,6 +522,7 @@ reported reasoning counts are not always trustworthy.**
 - Caveat: Gemma26 MLX8 "high/1024" rows are effectively non-reasoning. Laguna's counts on short prompts are unreliable.
 - Follow-up: record actual reasoning tokens and completion − reasoning − content as covariates. Add a matched
   reasoning-off arm.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), O54):** "the same requested reasoning setting" was not delivered to any model. LM Studio did not pass `reasoning_effort` to the templates. Qwen3.8 ran at its template default `xhigh` with an injected instruction, Muse at its template default `reasoning_strength` `high`, and the others with no effort variable.
 
 **O39: Chunking costs about 1.5–3× local service time and up to 12× hosted requests.**
 - Evidence: local, distinct inputs counted once: E2B paper 3.04×, E4B 2.58×, Gemma26 1.46×; email 1.61–1.83×. Input
@@ -581,6 +584,7 @@ in the code cohort. Every reasoning model recognizes it, and most judge it low c
   every miss rather than a selected sample). The templates are shared, so the 100 cases are not independent attack designs.
 - Follow-up: the two-axis scoring prompt (recognition vs concern; O18) and threshold sweeps on this subgroup. F4:
   replay the naive misses against an agent to see whether a "harmless" judgment predicts approval.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** Qwen3.8's naive-miss scores (0.2–0.5) were produced at `xhigh` effort with a template-injected instruction. Its hedged scoring is examined in O55.
 
 **O44: Laguna XS 2.1, an agentic coding MoE, recognizes injected instructions without concern. It mostly answers with
 no reasoning, and its short-prompt token accounting is unreliable.**
@@ -627,6 +631,7 @@ are model-specific, and the MoE models have little headroom.**
   abstentions (10 → 2). Routing is unobserved.
 - Follow-up: subtle templates or cohorts where the MoE models miss on full input; the Study B quantization ladder
   (lower bit widths may create headroom; paused, pending follow-up).
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** the dense group includes Qwen3.8, which ran at `xhigh` effort with a template-injected system instruction that the other models did not receive.
 
 **O46: Windowing can turn a detected subtle injection into "recognized but not concerning". In every Studio window
 loss, the full document flags the attack but every window holding the whole payload scores below threshold.**
@@ -641,6 +646,7 @@ loss, the full document flags the attack but every window holding the whole payl
 - Caveats: one subtle template per domain; payloads target a rating or approval, so lower window scores measure
   concern, not obedience (O11). MoE models show no such loss, but they are at ceiling.
 - Follow-up: include a document header or trusted task in each window; the two-axis prompt (O18) on these 9 items.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** six of the nine losses are Qwen3.8, run at `xhigh` effort with a template-injected instruction ("consider plausible alternatives"). Whether that instruction contributes to the downgrade is untested (O55).
 
 **O47: Studio reruns are nearly, but not always, byte-reproducible at the decision and score level.**
 - Evidence ✔: the Gemma31-it paper rerun after an LM Link failure (full unload and reload) reproduced all 752
@@ -674,6 +680,7 @@ balanced accuracy. The differences between them sit in specific data types.**
   969-case set. Seven datasets have only one class. The policy dataset adds a constant 0.5 for every model (O49).
   Leaders separated by less than about 0.01 are ties.
 - Follow-up: the extension suite (varied templates) under the same protocol; per-content recommendation profiles.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B, O55):** Qwen3.8's 0.895 is Qwen3.8 at `xhigh` effort with a template-injected system instruction, not `high`. At 0.5 its scores are under-calibrated: a 0.15 threshold chosen on this baseline gives 0.906 here and lifts its extension BA from 0.865 to 0.891 out of sample. Ranks involving Qwen3.8 (including "benign leader") carry this caveat.
 
 **O49: Skill-Inject policy pairs cannot rank full-text detectors. Every model scores exactly 0.500 (Gemma26 0.513)
 because both members of each pair send a byte-identical input.**
@@ -695,6 +702,7 @@ encoded benign controls decide the obfuscated-text ranking.**
 - Strength: **Moderate** (969 controls × 7 models, complete; the two over-flaggers share a family).
 - Caveats: synthetic encodings (O23); Gemma31's cell is the L148 rerun.
 - Follow-up: bounded decoded previews (O23) on the Studio panel.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** Qwen3.8's low encoded-benign flag rate (33/962) was measured at `xhigh` effort with a template-injected instruction. 14% of its encoded-benign scores sit in (0, 0.25) (O55).
 
 **O51: Web pages cap every detector near 0.87 balanced accuracy, through benign false alarms rather than misses.**
 - Evidence ✔: `web-mixed` (240 attacks / 240 benign): benign pages flagged 52–81/240 (21.7–33.9%) while attacks are
@@ -716,6 +724,7 @@ much within groups, and more reasoning did not buy accuracy.**
   different families; reasoning length is not manipulated).
 - Caveats: TTFT is cache-affected (shared LongPIBench prefixes); serial, parallel 1, over LM Link.
 - Follow-up: a within-model reasoning-budget arm (O29, issue #11).
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), O54):** reasoning length is not comparable on a common setting. Qwen3.8 ran at `xhigh` with an injected instruction, the Gemma models with LM Studio's thinking switch and no effort level, Muse at its template's `reasoning_strength: high`, and Laguna's thinking state is unresolved.
 
 ### 2.14 Abliteration pilot (2026-10-12)
 
@@ -748,6 +757,58 @@ original on identical cases. They missed more marginal attacks, and one added ag
   BIPIA and authority-spoof losses did not appear.
 - Follow-up: F7 escalates to the full 21-dataset Studio baseline protocol for both builds (#23). The reasoning screen
   needs human coding before it can be relied on.
+- **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** all three builds embed the same chat template and ran at `xhigh` effort with the same 38-token injected instruction (+0 `prompt_tokens` vs vanilla on shared cases). The comparison stays internally valid, but it describes abliteration at `xhigh`, not `high`.
+
+### 2.15 Reasoning-effort audit and Qwen3.8 calibration (2026-10-16)
+
+> **Caveat (offline):** no inference was run. O54 rests on embedded chat templates and saved token counts. O55 is a
+> post-hoc analysis of saved scores. Muse is excluded from O55 because its extension run is incomplete.
+
+**O54: The requested `reasoning_effort: "high"` reached no Studio model's chat template. Each template applied its own
+default, and only Qwen3.8's default injects an effort instruction that differs from the request: `xhigh`, 38 tokens
+added in front of our system prompt.**
+- Evidence ✔: the template embedded in each engine's exact Q8_0 GGUF was read from the file header and hash-checked.
+  Every saved prompt was hand-rendered and compared with the server's `prompt_tokens`. Qwen3.8's template accepts only
+  `xhigh`/`medium`/`low`, raises on anything else and defaults to `xhigh`. Our `"high"` never raised, so it was not
+  passed. Qwen3.8 − Qwen3.6 35B-A3B `prompt_tokens` on identical inputs: +38 on 6,627/6,627 baseline and 6,755/6,755
+  extension cases (+38 vs Ornith on 6,623/6,623), and the instruction plus `\n\n` is exactly 38 tokens. Rendering at the
+  template default matches the server count on 98.3% of 7,309 requests (the rest show the same tokenizer residue for
+  Qwen3.6 and Ornith), while `medium` is off by +38. The first MacBook Qwen3.8 run matches the Studio counts on 976/976
+  shared inputs, and the heretic and huihui builds embed the same template (+0 on 24/24). Other models: Ornith,
+  Qwen3.6 35B-A3B/27B and Laguna have no effort variable (no injection). Gemma 4 26B/31B have none either, but every
+  prompt matches `enable_thinking=true` (offset 0 on 100%, vs −2 at the template default), so LM Studio applies its
+  own thinking switch. Muse reads `reasoning_strength` (default `high`) and always appends "Reasoning strength: high."
+  (7 tokens) plus a fixed recipients line. See the [effort report](reports/qwen38-effort-calibration-2026-10.md) and
+  [`effort-audit.json`](analysis/qwen38-effort-calibration-2026-10/results/effort-audit.json).
+- Strength: **Strong** for Qwen3.8 (exact, complete token accounting over three runs plus the template source).
+  **Moderate** for the other models' effective settings (template reading plus token matching). Laguna's thinking
+  state is unresolved: both settings render the same token count, and 76.6% of its responses report 0 reasoning
+  tokens.
+- Caveats: LM Studio's handling of `reasoning_effort` on `/api/v0` is undocumented, and is inferred from behaviour on
+  0.4.25. The MLX Qwen3.8 build was not checked. Templates came from HF; the GGUF header reads confirm them byte for
+  byte.
+- Follow-up: the Qwen3.8 effort ablation (`xhigh`, `medium`, `low`, `xhigh` without the instruction; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). The
+  judge should send only effort values each template accepts, recorded per model.
+
+**O55: Qwen3.8's category gaps behind Qwen3.6 35B-A3B are mostly calibration (graded, hedged scores below 0.5), except
+in QA, where it is a recognition gap. A threshold chosen on the baseline lifts its extension BA from 0.865 to 0.891.**
+- Evidence ✔: audited per-case maximum scores, baseline (21 datasets) and extension (14), Qwen3.8 vs Qwen3.6 35B-A3B
+  and Gemma 4 26B-A4B. AUROC difference Qwen3.8 − Qwen3.6 (paired stratified bootstrap, 1,000 resamples): QA
+  −0.099 [−0.110, −0.087] (0.821 vs 0.919), extension BIPIA +0.028 [+0.011, +0.044], baseline BIPIA email +0.002
+  [−0.056, +0.057], extension long docs +0.148, web +0.073. Yet Qwen3.8's BA@0.5 trails in BIPIA (0.748 vs 0.828) and
+  email (0.712 vs 0.790). One threshold picked on the 21 baseline datasets (0.15) and applied unchanged to the extension:
+  Qwen3.8 0.865 → 0.891 (email 0.810 → 0.887, BIPIA 0.748 → 0.788, QA 0.730 → 0.758, long docs 0.908 → 0.946, web
+  0.802 → 0.760). Qwen3.6 (0.866 → 0.866) and Gemma26 (0.922 → 0.922, threshold 0.45) do not move. Among attacks
+  Qwen3.6 flags and Qwen3.8 misses, Qwen3.8 scores exactly 0 on 60% in QA (n = 696), 37% in BIPIA (n = 181) and
+  15–17% in email (n = 20 and 59). The rest sit in (0, 0.5]. Qwen3.8 also scores 14–19% of benign-only cases in
+  (0, 0.25), against 0.3–1.9% for the other two (Gemma26 8.4% on the encoding controls). See the [effort and calibration report](reports/qwen38-effort-calibration-2026-10.md) and
+  [`results.json`](analysis/qwen38-effort-calibration-2026-10/results/results.json).
+- Strength: **Moderate** (complete cohorts, out-of-sample threshold, paired intervals; but one comparison model pair,
+  post hoc, and one effort setting for Qwen3.8).
+- Caveats: in QA and BIPIA every model scores every benign case 0, so AUROC there equals the share of attacks scored
+  above 0. Equal dataset weights. The lower threshold costs Qwen3.8 on web, where benign pages move up. The hypothesis
+  that the `xhigh` instruction ("consider plausible alternatives") drives the hedging is untested (O54).
+- Follow-up: the effort ablation (#33); per-model thresholds in the recommended-defaults config.
 
 ---
 
@@ -1011,3 +1072,40 @@ detection verdicts and abstentions per model.
 **Implications for earlier results.** All pre-2026-10-07 local results used the 1,024 cap. Their abstentions should
 be read as budget-limited. Detection rates on jointly valid cases are unaffected by definition, but which cases are
 valid differs.
+
+## Appendix B. Protocol note: Qwen3.8 ran at `xhigh` effort with an injected instruction (2026-10-16)
+
+**What happened.** Every local engine sends `reasoning_effort: "high"` to LM Studio's `/api/v0/chat/completions`. The
+Qwen3.8 27B chat template, embedded in the `lmstudio-community/Qwen3.8-27B-GGUF` Q8_0 file, accepts only `xhigh`,
+`medium` and `low`, raises an error on any other value and defaults to `xhigh`. No request raised, so LM Studio did not
+pass our value to the template, and every Qwen3.8 request ran at the default. At `xhigh` the template puts this text in
+front of our system prompt:
+
+> Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider
+> plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.
+
+It was found offline: Qwen3.8's `prompt_tokens` were exactly 38 above Qwen3.6 35B-A3B's (same tokenizer) on every
+identical input, and the instruction plus `\n\n` is exactly 38 tokens. The audit of every Studio model (O54) shows that
+no template received `"high"`. Qwen3.8 is the only model whose default adds an effort instruction that differs from the
+request.
+
+**Why it matters.**
+- The frozen protocol said "same prompt, reasoning `high`" for every model. Qwen3.8 had a different system prompt in
+  effect, with a different effort level.
+- The instruction asks the model to weigh alternatives. Qwen3.8 is the most hedging scorer on the panel (O55). Whether
+  the instruction causes that is untested.
+- Other models: no effort level reached them either. Gemma 4 thinking was switched on by LM Studio, and Muse ran at its
+  template default `reasoning_strength: high`. Laguna's thinking state is unresolved.
+
+**Decision.** Nothing is rerun now, and no reported number changes. Every local Qwen3.8 result is relabelled as
+"Qwen3.8 at `xhigh` with the template instruction". The abliteration pilot is unaffected internally: all three builds
+embed the same template and got the same instruction. Cross-model comparisons that involve Qwen3.8 carry the caveat
+(dated notes on O17, O30, O38, O43, O45, O46, O48, O50, O52 and O53). An effort ablation on the QA, BIPIA and email
+groups is queued after the extension run ([#33](https://github.com/elicollinson/solenoid-security/issues/33)). Future engines must send only effort values the model's
+template accepts, and audits should check `prompt_tokens` against a hand-rendered prompt.
+
+**Implications for earlier results.** Affected: the MacBook Qwen3.8 runs from 2026-10-04 (same rendering, verified on
+976 inputs), Studio Study A, the Studio baseline, the extension suite and the abliteration pilot. Not covered: hosted
+OpenRouter runs, which take a different request path and were not audited here. Not checked: the paused Qwen3.8
+MLX build. Details are in the
+[report](reports/qwen38-effort-calibration-2026-10.md).

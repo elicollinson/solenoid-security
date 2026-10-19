@@ -1,0 +1,5181 @@
+{
+ "datasets": [
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.985,
+   "auc": 0.9967,
+   "tie": 0.007,
+   "oracleBA": 0.9967,
+   "oracleT": 0.25,
+   "histPos": [
+    0.007,
+    0.0,
+    0.023,
+    0.08,
+    0.89
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-abstract",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.023,
+    0.977
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-method",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.87,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.13,
+    0.0,
+    0.0,
+    0.013,
+    0.857
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-resume",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.965,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.05,
+   "histPos": [
+    0.0,
+    0.017,
+    0.053,
+    0.12,
+    0.81
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-code",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.955,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.15,
+   "histPos": [
+    0.0,
+    0.02,
+    0.07,
+    0.107,
+    0.803
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-email",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "paper-score-counterfactual",
+   "model": "Q3.8-27B",
+   "npos": 54,
+   "nneg": 18,
+   "abst": 0,
+   "ba05": 0.9722,
+   "auc": 0.999,
+   "tie": 0.002,
+   "oracleBA": 0.9815,
+   "oracleT": 0.25,
+   "histPos": [
+    0.0,
+    0.037,
+    0.019,
+    0.13,
+    0.815
+   ],
+   "histNeg": [
+    0.833,
+    0.167,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9267,
+   "auc": 0.9267,
+   "tie": 0.147,
+   "oracleBA": 0.9267,
+   "oracleT": 0.5,
+   "histPos": [
+    0.147,
+    0.0,
+    0.0,
+    0.0,
+    0.853
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-abstract",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.98,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.02,
+    0.0,
+    0.0,
+    0.0,
+    0.98
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-method",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.9633,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.033,
+    0.003,
+    0.0,
+    0.0,
+    0.963
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-resume",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9767,
+   "auc": 0.9833,
+   "tie": 0.033,
+   "oracleBA": 0.9833,
+   "oracleT": 0.05,
+   "histPos": [
+    0.033,
+    0.013,
+    0.0,
+    0.003,
+    0.95
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-code",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.8617,
+   "auc": 0.8683,
+   "tie": 0.263,
+   "oracleBA": 0.8683,
+   "oracleT": 0.05,
+   "histPos": [
+    0.263,
+    0.007,
+    0.007,
+    0.0,
+    0.723
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-email",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "paper-score-counterfactual",
+   "model": "Q3.6-35B",
+   "npos": 54,
+   "nneg": 18,
+   "abst": 0,
+   "ba05": 0.8704,
+   "auc": 0.8704,
+   "tie": 0.259,
+   "oracleBA": 0.8704,
+   "oracleT": 0.5,
+   "histPos": [
+    0.259,
+    0.0,
+    0.0,
+    0.0,
+    0.741
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-abstract",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-method",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.9867,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.01,
+    0.0,
+    0.003,
+    0.0,
+    0.987
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-resume",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-code",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9617,
+   "auc": 0.9783,
+   "tie": 0.043,
+   "oracleBA": 0.9783,
+   "oracleT": 0.05,
+   "histPos": [
+    0.043,
+    0.017,
+    0.017,
+    0.023,
+    0.9
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-email",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "paper-score-counterfactual",
+   "model": "G26",
+   "npos": 54,
+   "nneg": 18,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "bipia-email-mixed",
+   "model": "Q3.8-27B",
+   "npos": 78,
+   "nneg": 78,
+   "abst": 0,
+   "ba05": 0.6218,
+   "auc": 0.8255,
+   "tie": 0.329,
+   "oracleBA": 0.8205,
+   "oracleT": 0.02,
+   "histPos": [
+    0.333,
+    0.372,
+    0.051,
+    0.038,
+    0.205
+   ],
+   "histNeg": [
+    0.974,
+    0.026,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "attempt-detection",
+   "model": "Q3.8-27B",
+   "npos": 399,
+   "nneg": 0,
+   "abst": 1,
+   "ba05": 0.802,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.03,
+    0.113,
+    0.055,
+    0.103,
+    0.699
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "bipia-email-mixed",
+   "model": "Q3.6-35B",
+   "npos": 78,
+   "nneg": 78,
+   "abst": 0,
+   "ba05": 0.8205,
+   "auc": 0.824,
+   "tie": 0.342,
+   "oracleBA": 0.8205,
+   "oracleT": 0.5,
+   "histPos": [
+    0.346,
+    0.0,
+    0.0,
+    0.0,
+    0.654
+   ],
+   "histNeg": [
+    0.987,
+    0.0,
+    0.0,
+    0.0,
+    0.013
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "attempt-detection",
+   "model": "Q3.6-35B",
+   "npos": 400,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.76,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.235,
+    0.005,
+    0.0,
+    0.002,
+    0.758
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "bipia-email-mixed",
+   "model": "G26",
+   "npos": 78,
+   "nneg": 78,
+   "abst": 0,
+   "ba05": 0.9167,
+   "auc": 0.9167,
+   "tie": 0.167,
+   "oracleBA": 0.9167,
+   "oracleT": 0.5,
+   "histPos": [
+    0.167,
+    0.0,
+    0.0,
+    0.0,
+    0.833
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "attempt-detection",
+   "model": "G26",
+   "npos": 400,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.885,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.112,
+    0.002,
+    0.0,
+    0.0,
+    0.885
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "test": "web-mixed",
+   "model": "Q3.8-27B",
+   "npos": 240,
+   "nneg": 240,
+   "abst": 0,
+   "ba05": 0.8562,
+   "auc": 0.8989,
+   "tie": 0.073,
+   "oracleBA": 0.8625,
+   "oracleT": 0.25,
+   "histPos": [
+    0.008,
+    0.025,
+    0.012,
+    0.0,
+    0.954
+   ],
+   "histNeg": [
+    0.338,
+    0.421,
+    0.0,
+    0.0,
+    0.242
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "test": "web-mixed",
+   "model": "Q3.6-35B",
+   "npos": 240,
+   "nneg": 240,
+   "abst": 0,
+   "ba05": 0.8417,
+   "auc": 0.8605,
+   "tie": 0.23,
+   "oracleBA": 0.8438,
+   "oracleT": 0.7,
+   "histPos": [
+    0.046,
+    0.008,
+    0.0,
+    0.0,
+    0.946
+   ],
+   "histNeg": [
+    0.729,
+    0.008,
+    0.0,
+    0.004,
+    0.258
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "test": "web-mixed",
+   "model": "G26",
+   "npos": 240,
+   "nneg": 240,
+   "abst": 0,
+   "ba05": 0.8583,
+   "auc": 0.8621,
+   "tie": 0.224,
+   "oracleBA": 0.8604,
+   "oracleT": 0.9,
+   "histPos": [
+    0.025,
+    0.004,
+    0.0,
+    0.0,
+    0.971
+   ],
+   "histNeg": [
+    0.742,
+    0.004,
+    0.0,
+    0.0,
+    0.254
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-shopping",
+   "model": "Q3.8-27B",
+   "npos": 117,
+   "nneg": 66,
+   "abst": 0,
+   "ba05": 0.9773,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.75,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.818,
+    0.106,
+    0.03,
+    0.03,
+    0.015
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-github",
+   "model": "Q3.8-27B",
+   "npos": 190,
+   "nneg": 47,
+   "abst": 0,
+   "ba05": 0.9149,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.85,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.681,
+    0.149,
+    0.0,
+    0.128,
+    0.043
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-dailylife",
+   "model": "Q3.8-27B",
+   "npos": 342,
+   "nneg": 69,
+   "abst": 0,
+   "ba05": 0.9855,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.8,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.884,
+    0.072,
+    0.014,
+    0.0,
+    0.029
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdojo-travel-mixed",
+   "model": "Q3.8-27B",
+   "npos": 18,
+   "nneg": 3,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agent-injection-bench-mixed",
+   "model": "Q3.8-27B",
+   "npos": 142,
+   "nneg": 40,
+   "abst": 0,
+   "ba05": 0.9754,
+   "auc": 0.9948,
+   "tie": 0.006,
+   "oracleBA": 0.9824,
+   "oracleT": 0.35,
+   "histPos": [
+    0.007,
+    0.021,
+    0.021,
+    0.028,
+    0.923
+   ],
+   "histNeg": [
+    0.8,
+    0.175,
+    0.025,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-shopping",
+   "model": "Q3.6-35B",
+   "npos": 117,
+   "nneg": 66,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-github",
+   "model": "Q3.6-35B",
+   "npos": 190,
+   "nneg": 47,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-dailylife",
+   "model": "Q3.6-35B",
+   "npos": 342,
+   "nneg": 69,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.986,
+    0.014,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdojo-travel-mixed",
+   "model": "Q3.6-35B",
+   "npos": 18,
+   "nneg": 3,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agent-injection-bench-mixed",
+   "model": "Q3.6-35B",
+   "npos": 142,
+   "nneg": 40,
+   "abst": 0,
+   "ba05": 0.9225,
+   "auc": 0.9225,
+   "tie": 0.155,
+   "oracleBA": 0.9225,
+   "oracleT": 0.5,
+   "histPos": [
+    0.155,
+    0.0,
+    0.0,
+    0.0,
+    0.845
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-shopping",
+   "model": "G26",
+   "npos": 117,
+   "nneg": 66,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-github",
+   "model": "G26",
+   "npos": 190,
+   "nneg": 47,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdyn-dailylife",
+   "model": "G26",
+   "npos": 342,
+   "nneg": 69,
+   "abst": 0,
+   "ba05": 0.9783,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.85,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.928,
+    0.029,
+    0.0,
+    0.0,
+    0.043
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agentdojo-travel-mixed",
+   "model": "G26",
+   "npos": 18,
+   "nneg": 3,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "test": "agent-injection-bench-mixed",
+   "model": "G26",
+   "npos": 142,
+   "nneg": 40,
+   "abst": 0,
+   "ba05": 0.9382,
+   "auc": 0.9457,
+   "tie": 0.102,
+   "oracleBA": 0.9382,
+   "oracleT": 0.5,
+   "histPos": [
+    0.099,
+    0.0,
+    0.0,
+    0.0,
+    0.901
+   ],
+   "histNeg": [
+    0.975,
+    0.0,
+    0.0,
+    0.0,
+    0.025
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "pids-obfuscated",
+   "model": "Q3.8-27B",
+   "npos": 402,
+   "nneg": 0,
+   "abst": 3,
+   "ba05": 0.6393,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.117,
+    0.184,
+    0.06,
+    0.077,
+    0.562
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-eligible-existing-v1",
+   "model": "Q3.8-27B",
+   "npos": 190,
+   "nneg": 38,
+   "abst": 1,
+   "ba05": 0.8237,
+   "auc": 0.9213,
+   "tie": 0.121,
+   "oracleBA": 0.8842,
+   "oracleT": 0.02,
+   "histPos": [
+    0.126,
+    0.158,
+    0.068,
+    0.053,
+    0.595
+   ],
+   "histNeg": [
+    0.895,
+    0.105,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-benign-controls-v1",
+   "model": "Q3.8-27B",
+   "npos": 0,
+   "nneg": 962,
+   "abst": 7,
+   "ba05": 0.9657,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.98,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.797,
+    0.14,
+    0.028,
+    0.015,
+    0.02
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "pids-obfuscated",
+   "model": "Q3.6-35B",
+   "npos": 404,
+   "nneg": 0,
+   "abst": 1,
+   "ba05": 0.7574,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.24,
+    0.002,
+    0.0,
+    0.002,
+    0.755
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-eligible-existing-v1",
+   "model": "Q3.6-35B",
+   "npos": 190,
+   "nneg": 38,
+   "abst": 1,
+   "ba05": 0.8842,
+   "auc": 0.8868,
+   "tie": 0.226,
+   "oracleBA": 0.8868,
+   "oracleT": 0.15,
+   "histPos": [
+    0.226,
+    0.005,
+    0.0,
+    0.0,
+    0.768
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-benign-controls-v1",
+   "model": "Q3.6-35B",
+   "npos": 0,
+   "nneg": 968,
+   "abst": 1,
+   "ba05": 0.9236,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.919,
+    0.004,
+    0.0,
+    0.002,
+    0.074
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "pids-obfuscated",
+   "model": "G26",
+   "npos": 405,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.8963,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.089,
+    0.01,
+    0.005,
+    0.002,
+    0.894
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-eligible-existing-v1",
+   "model": "G26",
+   "npos": 191,
+   "nneg": 38,
+   "abst": 0,
+   "ba05": 0.9423,
+   "auc": 0.9558,
+   "tie": 0.071,
+   "oracleBA": 0.9529,
+   "oracleT": 0.75,
+   "histPos": [
+    0.079,
+    0.01,
+    0.0,
+    0.0,
+    0.911
+   ],
+   "histNeg": [
+    0.895,
+    0.079,
+    0.0,
+    0.0,
+    0.026
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-benign-controls-v1",
+   "model": "G26",
+   "npos": 0,
+   "nneg": 960,
+   "abst": 9,
+   "ba05": 0.5948,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.509,
+    0.084,
+    0.001,
+    0.001,
+    0.404
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "benign-false-positives",
+   "model": "Q3.8-27B",
+   "npos": 0,
+   "nneg": 336,
+   "abst": 3,
+   "ba05": 0.9911,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.95,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.842,
+    0.137,
+    0.012,
+    0.006,
+    0.003
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "pids-hard-benign-public",
+   "model": "Q3.8-27B",
+   "npos": 0,
+   "nneg": 806,
+   "abst": 2,
+   "ba05": 0.9963,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.75,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.803,
+    0.191,
+    0.002,
+    0.002,
+    0.001
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "benign-false-positives",
+   "model": "Q3.6-35B",
+   "npos": 0,
+   "nneg": 339,
+   "abst": 0,
+   "ba05": 0.9617,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.956,
+    0.006,
+    0.0,
+    0.003,
+    0.035
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "pids-hard-benign-public",
+   "model": "Q3.6-35B",
+   "npos": 0,
+   "nneg": 808,
+   "abst": 0,
+   "ba05": 0.9629,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.958,
+    0.005,
+    0.0,
+    0.007,
+    0.03
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "benign-false-positives",
+   "model": "G26",
+   "npos": 0,
+   "nneg": 339,
+   "abst": 0,
+   "ba05": 0.9351,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.914,
+    0.015,
+    0.006,
+    0.009,
+    0.056
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "pids-hard-benign-public",
+   "model": "G26",
+   "npos": 0,
+   "nneg": 808,
+   "abst": 0,
+   "ba05": 0.9777,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.957,
+    0.019,
+    0.002,
+    0.001,
+    0.021
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "test": "skill-policy-pairs",
+   "model": "Q3.8-27B",
+   "npos": 117,
+   "nneg": 117,
+   "abst": 0,
+   "ba05": 0.5,
+   "auc": 0.5,
+   "tie": 0.136,
+   "oracleBA": 0.5,
+   "oracleT": 0.5,
+   "histPos": [
+    0.051,
+    0.094,
+    0.034,
+    0.034,
+    0.786
+   ],
+   "histNeg": [
+    0.051,
+    0.094,
+    0.034,
+    0.034,
+    0.786
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "test": "skill-policy-pairs",
+   "model": "Q3.6-35B",
+   "npos": 117,
+   "nneg": 117,
+   "abst": 0,
+   "ba05": 0.5,
+   "auc": 0.5,
+   "tie": 0.445,
+   "oracleBA": 0.5,
+   "oracleT": 0.5,
+   "histPos": [
+    0.487,
+    0.0,
+    0.0,
+    0.0,
+    0.513
+   ],
+   "histNeg": [
+    0.487,
+    0.0,
+    0.0,
+    0.0,
+    0.513
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "test": "skill-policy-pairs",
+   "model": "G26",
+   "npos": 117,
+   "nneg": 117,
+   "abst": 0,
+   "ba05": 0.5128,
+   "auc": 0.5093,
+   "tie": 0.327,
+   "oracleBA": 0.5128,
+   "oracleT": 0.5,
+   "histPos": [
+    0.41,
+    0.0,
+    0.0,
+    0.0,
+    0.59
+   ],
+   "histNeg": [
+    0.427,
+    0.009,
+    0.0,
+    0.0,
+    0.564
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-paper-mixed",
+   "model": "Q3.8-27B",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9083,
+   "auc": 0.9917,
+   "tie": 0.017,
+   "oracleBA": 0.9917,
+   "oracleT": 0.05,
+   "histPos": [
+    0.017,
+    0.067,
+    0.1,
+    0.1,
+    0.717
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-code-mixed",
+   "model": "Q3.8-27B",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.8458,
+   "auc": 0.9833,
+   "tie": 0.033,
+   "oracleBA": 0.9833,
+   "oracleT": 0.02,
+   "histPos": [
+    0.033,
+    0.192,
+    0.083,
+    0.125,
+    0.567
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-resume-mixed",
+   "model": "Q3.8-27B",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.8417,
+   "auc": 0.9542,
+   "tie": 0.092,
+   "oracleBA": 0.9542,
+   "oracleT": 0.02,
+   "histPos": [
+    0.092,
+    0.125,
+    0.1,
+    0.2,
+    0.483
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-email-llmail-mixed",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9767,
+   "auc": 0.9983,
+   "tie": 0.003,
+   "oracleBA": 0.9983,
+   "oracleT": 0.02,
+   "histPos": [
+    0.003,
+    0.033,
+    0.01,
+    0.017,
+    0.937
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-authorized-benign",
+   "model": "Q3.8-27B",
+   "npos": 0,
+   "nneg": 384,
+   "abst": 0,
+   "ba05": 0.9661,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.95,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.768,
+    0.182,
+    0.016,
+    0.023,
+    0.01
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-paper-mixed",
+   "model": "Q3.6-35B",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.85,
+   "auc": 0.85,
+   "tie": 0.3,
+   "oracleBA": 0.85,
+   "oracleT": 0.5,
+   "histPos": [
+    0.3,
+    0.0,
+    0.0,
+    0.0,
+    0.7
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-code-mixed",
+   "model": "Q3.6-35B",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.725,
+   "auc": 0.7292,
+   "tie": 0.542,
+   "oracleBA": 0.7292,
+   "oracleT": 0.05,
+   "histPos": [
+    0.542,
+    0.008,
+    0.0,
+    0.0,
+    0.45
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-resume-mixed",
+   "model": "Q3.6-35B",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.775,
+   "auc": 0.7833,
+   "tie": 0.433,
+   "oracleBA": 0.7833,
+   "oracleT": 0.25,
+   "histPos": [
+    0.433,
+    0.0,
+    0.017,
+    0.025,
+    0.525
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-email-llmail-mixed",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9683,
+   "auc": 0.9717,
+   "tie": 0.057,
+   "oracleBA": 0.9717,
+   "oracleT": 0.05,
+   "histPos": [
+    0.057,
+    0.007,
+    0.0,
+    0.0,
+    0.937
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-authorized-benign",
+   "model": "Q3.6-35B",
+   "npos": 0,
+   "nneg": 384,
+   "abst": 0,
+   "ba05": 0.9505,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.948,
+    0.003,
+    0.0,
+    0.0,
+    0.049
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-paper-mixed",
+   "model": "G26",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.85,
+   "auc": 0.8583,
+   "tie": 0.283,
+   "oracleBA": 0.8583,
+   "oracleT": 0.05,
+   "histPos": [
+    0.283,
+    0.017,
+    0.0,
+    0.0,
+    0.7
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-code-mixed",
+   "model": "G26",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.825,
+   "auc": 0.8542,
+   "tie": 0.292,
+   "oracleBA": 0.8542,
+   "oracleT": 0.05,
+   "histPos": [
+    0.292,
+    0.05,
+    0.008,
+    0.033,
+    0.617
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-subtle-resume-mixed",
+   "model": "G26",
+   "npos": 120,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9167,
+   "auc": 0.9292,
+   "tie": 0.142,
+   "oracleBA": 0.9292,
+   "oracleT": 0.05,
+   "histPos": [
+    0.142,
+    0.008,
+    0.017,
+    0.033,
+    0.8
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-email-llmail-mixed",
+   "model": "G26",
+   "npos": 299,
+   "nneg": 100,
+   "abst": 1,
+   "ba05": 0.9866,
+   "auc": 0.9866,
+   "tie": 0.027,
+   "oracleBA": 0.9866,
+   "oracleT": 0.5,
+   "histPos": [
+    0.027,
+    0.0,
+    0.0,
+    0.0,
+    0.973
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-authorized-benign",
+   "model": "G26",
+   "npos": 0,
+   "nneg": 384,
+   "abst": 0,
+   "ba05": 0.9531,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.948,
+    0.005,
+    0.0,
+    0.0,
+    0.047
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "test": "bipia-table-mixed",
+   "model": "Q3.8-27B",
+   "npos": 450,
+   "nneg": 150,
+   "abst": 0,
+   "ba05": 0.6111,
+   "auc": 0.7456,
+   "tie": 0.509,
+   "oracleBA": 0.7456,
+   "oracleT": 0.02,
+   "histPos": [
+    0.509,
+    0.231,
+    0.038,
+    0.044,
+    0.178
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "test": "bipia-code-mixed",
+   "model": "Q3.8-27B",
+   "npos": 299,
+   "nneg": 100,
+   "abst": 1,
+   "ba05": 0.8846,
+   "auc": 0.9783,
+   "tie": 0.043,
+   "oracleBA": 0.9783,
+   "oracleT": 0.02,
+   "histPos": [
+    0.043,
+    0.144,
+    0.043,
+    0.074,
+    0.696
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "test": "bipia-table-mixed",
+   "model": "Q3.6-35B",
+   "npos": 450,
+   "nneg": 150,
+   "abst": 0,
+   "ba05": 0.7589,
+   "auc": 0.7667,
+   "tie": 0.467,
+   "oracleBA": 0.7667,
+   "oracleT": 0.05,
+   "histPos": [
+    0.467,
+    0.013,
+    0.002,
+    0.004,
+    0.513
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "test": "bipia-code-mixed",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.8967,
+   "auc": 0.9017,
+   "tie": 0.197,
+   "oracleBA": 0.9017,
+   "oracleT": 0.05,
+   "histPos": [
+    0.197,
+    0.01,
+    0.0,
+    0.007,
+    0.787
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "test": "bipia-table-mixed",
+   "model": "G26",
+   "npos": 450,
+   "nneg": 150,
+   "abst": 0,
+   "ba05": 0.8456,
+   "auc": 0.8667,
+   "tie": 0.267,
+   "oracleBA": 0.8667,
+   "oracleT": 0.05,
+   "histPos": [
+    0.267,
+    0.031,
+    0.011,
+    0.011,
+    0.68
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "test": "bipia-code-mixed",
+   "model": "G26",
+   "npos": 300,
+   "nneg": 100,
+   "abst": 0,
+   "ba05": 0.9617,
+   "auc": 0.9717,
+   "tie": 0.057,
+   "oracleBA": 0.9717,
+   "oracleT": 0.05,
+   "histPos": [
+    0.057,
+    0.02,
+    0.0,
+    0.007,
+    0.917
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "test": "inj-squad-mixed",
+   "model": "Q3.8-27B",
+   "npos": 900,
+   "nneg": 300,
+   "abst": 0,
+   "ba05": 0.6978,
+   "auc": 0.8,
+   "tie": 0.4,
+   "oracleBA": 0.8,
+   "oracleT": 0.02,
+   "histPos": [
+    0.4,
+    0.177,
+    0.028,
+    0.04,
+    0.356
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "test": "inj-triviaqa-mixed",
+   "model": "Q3.8-27B",
+   "npos": 899,
+   "nneg": 300,
+   "abst": 1,
+   "ba05": 0.7614,
+   "auc": 0.8415,
+   "tie": 0.317,
+   "oracleBA": 0.8415,
+   "oracleT": 0,
+   "histPos": [
+    0.317,
+    0.121,
+    0.039,
+    0.043,
+    0.479
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "test": "inj-squad-mixed",
+   "model": "Q3.6-35B",
+   "npos": 900,
+   "nneg": 300,
+   "abst": 0,
+   "ba05": 0.9222,
+   "auc": 0.93,
+   "tie": 0.14,
+   "oracleBA": 0.93,
+   "oracleT": 0.05,
+   "histPos": [
+    0.14,
+    0.012,
+    0.003,
+    0.002,
+    0.842
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "test": "inj-triviaqa-mixed",
+   "model": "Q3.6-35B",
+   "npos": 898,
+   "nneg": 300,
+   "abst": 2,
+   "ba05": 0.9059,
+   "auc": 0.9087,
+   "tie": 0.183,
+   "oracleBA": 0.9087,
+   "oracleT": 0.05,
+   "histPos": [
+    0.183,
+    0.006,
+    0.0,
+    0.001,
+    0.811
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "test": "inj-squad-mixed",
+   "model": "G26",
+   "npos": 900,
+   "nneg": 300,
+   "abst": 0,
+   "ba05": 0.9322,
+   "auc": 0.9411,
+   "tie": 0.118,
+   "oracleBA": 0.9411,
+   "oracleT": 0.02,
+   "histPos": [
+    0.118,
+    0.017,
+    0.001,
+    0.0,
+    0.864
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "test": "inj-triviaqa-mixed",
+   "model": "G26",
+   "npos": 900,
+   "nneg": 300,
+   "abst": 0,
+   "ba05": 0.9644,
+   "auc": 0.9678,
+   "tie": 0.064,
+   "oracleBA": 0.9678,
+   "oracleT": 0.05,
+   "histPos": [
+    0.064,
+    0.007,
+    0.0,
+    0.001,
+    0.928
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "test": "browsesafe-mixed",
+   "model": "Q3.8-27B",
+   "npos": 200,
+   "nneg": 200,
+   "abst": 0,
+   "ba05": 0.8025,
+   "auc": 0.856,
+   "tie": 0.058,
+   "oracleBA": 0.8175,
+   "oracleT": 0.8,
+   "histPos": [
+    0.07,
+    0.16,
+    0.015,
+    0.015,
+    0.74
+   ],
+   "histNeg": [
+    0.29,
+    0.515,
+    0.045,
+    0.02,
+    0.13
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "test": "browsesafe-mixed",
+   "model": "Q3.6-35B",
+   "npos": 200,
+   "nneg": 200,
+   "abst": 0,
+   "ba05": 0.7025,
+   "auc": 0.7833,
+   "tie": 0.225,
+   "oracleBA": 0.775,
+   "oracleT": 0.95,
+   "histPos": [
+    0.245,
+    0.005,
+    0.0,
+    0.0,
+    0.75
+   ],
+   "histNeg": [
+    0.645,
+    0.01,
+    0.0,
+    0.0,
+    0.345
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "test": "browsesafe-mixed",
+   "model": "G26",
+   "npos": 200,
+   "nneg": 200,
+   "abst": 0,
+   "ba05": 0.82,
+   "auc": 0.8342,
+   "tie": 0.302,
+   "oracleBA": 0.8275,
+   "oracleT": 0.9,
+   "histPos": [
+    0.315,
+    0.0,
+    0.0,
+    0.0,
+    0.685
+   ],
+   "histNeg": [
+    0.955,
+    0.0,
+    0.0,
+    0.0,
+    0.045
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "agentdojo-suites-mixed",
+   "model": "Q3.8-27B",
+   "npos": 236,
+   "nneg": 44,
+   "abst": 0,
+   "ba05": 0.9979,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 0.9979,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.004,
+    0.0,
+    0.004,
+    0.992
+   ],
+   "histNeg": [
+    0.955,
+    0.045,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "nemotron-ipi-attacks",
+   "model": "Q3.8-27B",
+   "npos": 360,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.003,
+    0.997
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "agentdojo-suites-mixed",
+   "model": "Q3.6-35B",
+   "npos": 236,
+   "nneg": 44,
+   "abst": 0,
+   "ba05": 0.9746,
+   "auc": 0.9767,
+   "tie": 0.047,
+   "oracleBA": 0.9767,
+   "oracleT": 0.05,
+   "histPos": [
+    0.047,
+    0.004,
+    0.0,
+    0.0,
+    0.949
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "nemotron-ipi-attacks",
+   "model": "Q3.6-35B",
+   "npos": 360,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.9889,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.011,
+    0.0,
+    0.0,
+    0.0,
+    0.989
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "agentdojo-suites-mixed",
+   "model": "G26",
+   "npos": 236,
+   "nneg": 44,
+   "abst": 0,
+   "ba05": 0.9979,
+   "auc": 0.9979,
+   "tie": 0.004,
+   "oracleBA": 0.9979,
+   "oracleT": 0.5,
+   "histPos": [
+    0.004,
+    0.0,
+    0.0,
+    0.008,
+    0.987
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "nemotron-ipi-attacks",
+   "model": "G26",
+   "npos": 360,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "test": "llmail-pool-attacks",
+   "model": "Q3.8-27B",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.81,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.043,
+    0.097,
+    0.05,
+    0.08,
+    0.73
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "test": "llmail-pool-attacks",
+   "model": "Q3.6-35B",
+   "npos": 300,
+   "nneg": 0,
+   "abst": 0,
+   "ba05": 0.81,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.173,
+    0.017,
+    0.0,
+    0.007,
+    0.803
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "test": "llmail-pool-attacks",
+   "model": "G26",
+   "npos": 299,
+   "nneg": 0,
+   "abst": 1,
+   "ba05": 0.9431,
+   "auc": null,
+   "tie": null,
+   "oracleBA": 1.0,
+   "oracleT": -1.0,
+   "histPos": [
+    0.057,
+    0.0,
+    0.0,
+    0.013,
+    0.93
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "test": "repoguard-mixed",
+   "model": "Q3.8-27B",
+   "npos": 480,
+   "nneg": 95,
+   "abst": 0,
+   "ba05": 1.0,
+   "auc": 1.0,
+   "tie": 0.0,
+   "oracleBA": 1.0,
+   "oracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "test": "repoguard-mixed",
+   "model": "Q3.6-35B",
+   "npos": 480,
+   "nneg": 95,
+   "abst": 0,
+   "ba05": 0.8885,
+   "auc": 0.8885,
+   "tie": 0.223,
+   "oracleBA": 0.8885,
+   "oracleT": 0.5,
+   "histPos": [
+    0.223,
+    0.0,
+    0.0,
+    0.0,
+    0.777
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "test": "repoguard-mixed",
+   "model": "G26",
+   "npos": 480,
+   "nneg": 95,
+   "abst": 0,
+   "ba05": 0.9073,
+   "auc": 0.9094,
+   "tie": 0.181,
+   "oracleBA": 0.9094,
+   "oracleT": 0.05,
+   "histPos": [
+    0.181,
+    0.004,
+    0.0,
+    0.0,
+    0.815
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ]
+  }
+ ],
+ "groups": [
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "model": "Q3.8-27B",
+   "ba05": 0.9639,
+   "meanAUC": 0.9991,
+   "nAUCdatasets": 5,
+   "groupOracleBA": 0.9781,
+   "groupOracleT": 0.15,
+   "histPos": [
+    0.022,
+    0.007,
+    0.024,
+    0.059,
+    0.887
+   ],
+   "histNeg": [
+    0.993,
+    0.007,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 1854,
+   "nneg": 418
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "model": "Q3.6-35B",
+   "ba05": 0.9398,
+   "meanAUC": 0.9297,
+   "nAUCdatasets": 5,
+   "groupOracleBA": 0.9422,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.088,
+    0.004,
+    0.001,
+    0.001,
+    0.907
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 1854,
+   "nneg": 418
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "model": "G26",
+   "ba05": 0.9926,
+   "meanAUC": 0.9957,
+   "nAUCdatasets": 5,
+   "groupOracleBA": 0.9955,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.009,
+    0.003,
+    0.003,
+    0.004,
+    0.982
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 1854,
+   "nneg": 418
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "model": "Q3.8-27B",
+   "ba05": 0.7119,
+   "meanAUC": 0.8255,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8952,
+   "groupOracleT": 0.02,
+   "histPos": [
+    0.08,
+    0.155,
+    0.055,
+    0.092,
+    0.618
+   ],
+   "histNeg": [
+    0.974,
+    0.026,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 477,
+   "nneg": 78
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "model": "Q3.6-35B",
+   "ba05": 0.7903,
+   "meanAUC": 0.824,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.7928,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.253,
+    0.004,
+    0.0,
+    0.002,
+    0.741
+   ],
+   "histNeg": [
+    0.987,
+    0.0,
+    0.0,
+    0.0,
+    0.013
+   ],
+   "npos": 478,
+   "nneg": 78
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "model": "G26",
+   "ba05": 0.9008,
+   "meanAUC": 0.9167,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.9021,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.121,
+    0.002,
+    0.0,
+    0.0,
+    0.877
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 478,
+   "nneg": 78
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "model": "Q3.8-27B",
+   "ba05": 0.8562,
+   "meanAUC": 0.8989,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8625,
+   "groupOracleT": 0.25,
+   "histPos": [
+    0.008,
+    0.025,
+    0.012,
+    0.0,
+    0.954
+   ],
+   "histNeg": [
+    0.338,
+    0.421,
+    0.0,
+    0.0,
+    0.242
+   ],
+   "npos": 240,
+   "nneg": 240
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "model": "Q3.6-35B",
+   "ba05": 0.8417,
+   "meanAUC": 0.8605,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8438,
+   "groupOracleT": 0.7,
+   "histPos": [
+    0.046,
+    0.008,
+    0.0,
+    0.0,
+    0.946
+   ],
+   "histNeg": [
+    0.729,
+    0.008,
+    0.0,
+    0.004,
+    0.258
+   ],
+   "npos": 240,
+   "nneg": 240
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "model": "G26",
+   "ba05": 0.8583,
+   "meanAUC": 0.8621,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8604,
+   "groupOracleT": 0.9,
+   "histPos": [
+    0.025,
+    0.004,
+    0.0,
+    0.0,
+    0.971
+   ],
+   "histNeg": [
+    0.742,
+    0.004,
+    0.0,
+    0.0,
+    0.254
+   ],
+   "npos": 240,
+   "nneg": 240
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "model": "Q3.8-27B",
+   "ba05": 0.9706,
+   "meanAUC": 0.999,
+   "nAUCdatasets": 5,
+   "groupOracleBA": 0.9887,
+   "groupOracleT": 0.85,
+   "histPos": [
+    0.001,
+    0.004,
+    0.004,
+    0.005,
+    0.986
+   ],
+   "histNeg": [
+    0.809,
+    0.116,
+    0.018,
+    0.036,
+    0.022
+   ],
+   "npos": 809,
+   "nneg": 225
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "model": "Q3.6-35B",
+   "ba05": 0.9845,
+   "meanAUC": 0.9845,
+   "nAUCdatasets": 5,
+   "groupOracleBA": 0.9845,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.027,
+    0.0,
+    0.0,
+    0.0,
+    0.973
+   ],
+   "histNeg": [
+    0.996,
+    0.004,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 809,
+   "nneg": 225
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "model": "G26",
+   "ba05": 0.9833,
+   "meanAUC": 0.9891,
+   "nAUCdatasets": 5,
+   "groupOracleBA": 0.9848,
+   "groupOracleT": 0.85,
+   "histPos": [
+    0.017,
+    0.0,
+    0.0,
+    0.0,
+    0.983
+   ],
+   "histNeg": [
+    0.973,
+    0.009,
+    0.0,
+    0.0,
+    0.018
+   ],
+   "npos": 809,
+   "nneg": 225
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "model": "Q3.8-27B",
+   "ba05": 0.8096,
+   "meanAUC": 0.9213,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8549,
+   "groupOracleT": 0.02,
+   "histPos": [
+    0.12,
+    0.176,
+    0.062,
+    0.069,
+    0.573
+   ],
+   "histNeg": [
+    0.801,
+    0.139,
+    0.027,
+    0.014,
+    0.019
+   ],
+   "npos": 592,
+   "nneg": 1000
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "model": "Q3.6-35B",
+   "ba05": 0.8551,
+   "meanAUC": 0.8868,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8568,
+   "groupOracleT": 0.15,
+   "histPos": [
+    0.236,
+    0.003,
+    0.0,
+    0.002,
+    0.759
+   ],
+   "histNeg": [
+    0.922,
+    0.004,
+    0.0,
+    0.002,
+    0.072
+   ],
+   "npos": 594,
+   "nneg": 1006
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "model": "G26",
+   "ba05": 0.8111,
+   "meanAUC": 0.9558,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8138,
+   "groupOracleT": 0.8,
+   "histPos": [
+    0.086,
+    0.01,
+    0.003,
+    0.002,
+    0.899
+   ],
+   "histNeg": [
+    0.524,
+    0.084,
+    0.001,
+    0.001,
+    0.39
+   ],
+   "npos": 596,
+   "nneg": 998
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "model": "Q3.8-27B",
+   "ba05": 0.9937,
+   "meanAUC": null,
+   "nAUCdatasets": 0,
+   "groupOracleBA": 1.0,
+   "groupOracleT": 0.95,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.814,
+    0.175,
+    0.005,
+    0.004,
+    0.002
+   ],
+   "npos": 0,
+   "nneg": 1142
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "model": "Q3.6-35B",
+   "ba05": 0.9623,
+   "meanAUC": null,
+   "nAUCdatasets": 0,
+   "groupOracleBA": 1.0,
+   "groupOracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.957,
+    0.005,
+    0.0,
+    0.006,
+    0.031
+   ],
+   "npos": 0,
+   "nneg": 1147
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "model": "G26",
+   "ba05": 0.9564,
+   "meanAUC": null,
+   "nAUCdatasets": 0,
+   "groupOracleBA": 1.0,
+   "groupOracleT": 1,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "histNeg": [
+    0.944,
+    0.017,
+    0.003,
+    0.003,
+    0.031
+   ],
+   "npos": 0,
+   "nneg": 1147
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "model": "Q3.8-27B",
+   "ba05": 0.5,
+   "meanAUC": 0.5,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.5,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.051,
+    0.094,
+    0.034,
+    0.034,
+    0.786
+   ],
+   "histNeg": [
+    0.051,
+    0.094,
+    0.034,
+    0.034,
+    0.786
+   ],
+   "npos": 117,
+   "nneg": 117
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "model": "Q3.6-35B",
+   "ba05": 0.5,
+   "meanAUC": 0.5,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.5,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.487,
+    0.0,
+    0.0,
+    0.0,
+    0.513
+   ],
+   "histNeg": [
+    0.487,
+    0.0,
+    0.0,
+    0.0,
+    0.513
+   ],
+   "npos": 117,
+   "nneg": 117
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "model": "G26",
+   "ba05": 0.5128,
+   "meanAUC": 0.5093,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.5128,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.41,
+    0.0,
+    0.0,
+    0.0,
+    0.59
+   ],
+   "histNeg": [
+    0.427,
+    0.009,
+    0.0,
+    0.0,
+    0.564
+   ],
+   "npos": 117,
+   "nneg": 117
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "model": "Q3.8-27B",
+   "ba05": 0.9077,
+   "meanAUC": 0.9819,
+   "nAUCdatasets": 4,
+   "groupOracleBA": 0.9524,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.027,
+    0.085,
+    0.056,
+    0.085,
+    0.747
+   ],
+   "histNeg": [
+    0.886,
+    0.089,
+    0.008,
+    0.011,
+    0.005
+   ],
+   "npos": 660,
+   "nneg": 784
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "model": "Q3.6-35B",
+   "ba05": 0.8538,
+   "meanAUC": 0.8335,
+   "nAUCdatasets": 4,
+   "groupOracleBA": 0.8564,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.258,
+    0.005,
+    0.003,
+    0.005,
+    0.73
+   ],
+   "histNeg": [
+    0.974,
+    0.001,
+    0.0,
+    0.0,
+    0.024
+   ],
+   "npos": 660,
+   "nneg": 784
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "model": "G26",
+   "ba05": 0.9063,
+   "meanAUC": 0.9071,
+   "nAUCdatasets": 4,
+   "groupOracleBA": 0.9152,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.143,
+    0.014,
+    0.005,
+    0.012,
+    0.827
+   ],
+   "histNeg": [
+    0.974,
+    0.003,
+    0.0,
+    0.0,
+    0.023
+   ],
+   "npos": 659,
+   "nneg": 784
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "model": "Q3.8-27B",
+   "ba05": 0.7479,
+   "meanAUC": 0.8619,
+   "nAUCdatasets": 2,
+   "groupOracleBA": 0.8619,
+   "groupOracleT": 0.02,
+   "histPos": [
+    0.323,
+    0.196,
+    0.04,
+    0.056,
+    0.385
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 749,
+   "nneg": 250
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "model": "Q3.6-35B",
+   "ba05": 0.8278,
+   "meanAUC": 0.8342,
+   "nAUCdatasets": 2,
+   "groupOracleBA": 0.8342,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.359,
+    0.012,
+    0.001,
+    0.005,
+    0.623
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 750,
+   "nneg": 250
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "model": "G26",
+   "ba05": 0.9036,
+   "meanAUC": 0.9192,
+   "nAUCdatasets": 2,
+   "groupOracleBA": 0.9192,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.183,
+    0.027,
+    0.007,
+    0.009,
+    0.775
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 750,
+   "nneg": 250
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "model": "Q3.8-27B",
+   "ba05": 0.7296,
+   "meanAUC": 0.8207,
+   "nAUCdatasets": 2,
+   "groupOracleBA": 0.8207,
+   "groupOracleT": 0,
+   "histPos": [
+    0.359,
+    0.149,
+    0.033,
+    0.042,
+    0.417
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 1799,
+   "nneg": 600
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "model": "Q3.6-35B",
+   "ba05": 0.9141,
+   "meanAUC": 0.9193,
+   "nAUCdatasets": 2,
+   "groupOracleBA": 0.9193,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.161,
+    0.009,
+    0.002,
+    0.002,
+    0.826
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 1798,
+   "nneg": 600
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "model": "G26",
+   "ba05": 0.9483,
+   "meanAUC": 0.9544,
+   "nAUCdatasets": 2,
+   "groupOracleBA": 0.9544,
+   "groupOracleT": 0.02,
+   "histPos": [
+    0.091,
+    0.012,
+    0.001,
+    0.001,
+    0.896
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 1800,
+   "nneg": 600
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "model": "Q3.8-27B",
+   "ba05": 0.8025,
+   "meanAUC": 0.856,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8175,
+   "groupOracleT": 0.8,
+   "histPos": [
+    0.07,
+    0.16,
+    0.015,
+    0.015,
+    0.74
+   ],
+   "histNeg": [
+    0.29,
+    0.515,
+    0.045,
+    0.02,
+    0.13
+   ],
+   "npos": 200,
+   "nneg": 200
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "model": "Q3.6-35B",
+   "ba05": 0.7025,
+   "meanAUC": 0.7833,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.775,
+   "groupOracleT": 0.95,
+   "histPos": [
+    0.245,
+    0.005,
+    0.0,
+    0.0,
+    0.75
+   ],
+   "histNeg": [
+    0.645,
+    0.01,
+    0.0,
+    0.0,
+    0.345
+   ],
+   "npos": 200,
+   "nneg": 200
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "model": "G26",
+   "ba05": 0.82,
+   "meanAUC": 0.8342,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8275,
+   "groupOracleT": 0.9,
+   "histPos": [
+    0.315,
+    0.0,
+    0.0,
+    0.0,
+    0.685
+   ],
+   "histNeg": [
+    0.955,
+    0.0,
+    0.0,
+    0.0,
+    0.045
+   ],
+   "npos": 200,
+   "nneg": 200
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "model": "Q3.8-27B",
+   "ba05": 0.9989,
+   "meanAUC": 1.0,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.9989,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.002,
+    0.0,
+    0.003,
+    0.995
+   ],
+   "histNeg": [
+    0.955,
+    0.045,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 596,
+   "nneg": 44
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "model": "Q3.6-35B",
+   "ba05": 0.9817,
+   "meanAUC": 0.9767,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.9828,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.025,
+    0.002,
+    0.0,
+    0.0,
+    0.973
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 596,
+   "nneg": 44
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "model": "G26",
+   "ba05": 0.9989,
+   "meanAUC": 0.9979,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.9989,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.002,
+    0.0,
+    0.0,
+    0.003,
+    0.995
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 596,
+   "nneg": 44
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "model": "Q3.8-27B",
+   "ba05": 0.81,
+   "meanAUC": null,
+   "nAUCdatasets": 0,
+   "groupOracleBA": 1.0,
+   "groupOracleT": -1.0,
+   "histPos": [
+    0.043,
+    0.097,
+    0.05,
+    0.08,
+    0.73
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 300,
+   "nneg": 0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "model": "Q3.6-35B",
+   "ba05": 0.81,
+   "meanAUC": null,
+   "nAUCdatasets": 0,
+   "groupOracleBA": 1.0,
+   "groupOracleT": -1.0,
+   "histPos": [
+    0.173,
+    0.017,
+    0.0,
+    0.007,
+    0.803
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 300,
+   "nneg": 0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "model": "G26",
+   "ba05": 0.9431,
+   "meanAUC": null,
+   "nAUCdatasets": 0,
+   "groupOracleBA": 1.0,
+   "groupOracleT": -1.0,
+   "histPos": [
+    0.057,
+    0.0,
+    0.0,
+    0.013,
+    0.93
+   ],
+   "histNeg": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 299,
+   "nneg": 0
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "model": "Q3.8-27B",
+   "ba05": 1.0,
+   "meanAUC": 1.0,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 1.0,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 480,
+   "nneg": 95
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "model": "Q3.6-35B",
+   "ba05": 0.8885,
+   "meanAUC": 0.8885,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.8885,
+   "groupOracleT": 0.5,
+   "histPos": [
+    0.223,
+    0.0,
+    0.0,
+    0.0,
+    0.777
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 480,
+   "nneg": 95
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "model": "G26",
+   "ba05": 0.9073,
+   "meanAUC": 0.9094,
+   "nAUCdatasets": 1,
+   "groupOracleBA": 0.9094,
+   "groupOracleT": 0.05,
+   "histPos": [
+    0.181,
+    0.004,
+    0.0,
+    0.0,
+    0.815
+   ],
+   "histNeg": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "npos": 480,
+   "nneg": 95
+  }
+ ],
+ "singleclass": [
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-abstract",
+   "model": "Q3.8-27B",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 1.0,
+   "zero": 0.0,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-method",
+   "model": "Q3.8-27B",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 0.87,
+   "zero": 0.13,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-abstract",
+   "model": "Q3.6-35B",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 0.98,
+   "zero": 0.02,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-method",
+   "model": "Q3.6-35B",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 0.9633,
+   "zero": 0.033,
+   "band25_50": 0.0,
+   "low_0_25": 0.003,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-abstract",
+   "model": "G26",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 1.0,
+   "zero": 0.0,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "test": "longpi-paper-method",
+   "model": "G26",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 0.9867,
+   "zero": 0.01,
+   "band25_50": 0.003,
+   "low_0_25": 0.0,
+   "share_eq05": 0.003
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "attempt-detection",
+   "model": "Q3.8-27B",
+   "cls": "attack",
+   "n": 399,
+   "rate05": 0.802,
+   "zero": 0.03,
+   "band25_50": 0.055,
+   "low_0_25": 0.113,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "attempt-detection",
+   "model": "Q3.6-35B",
+   "cls": "attack",
+   "n": 400,
+   "rate05": 0.76,
+   "zero": 0.235,
+   "band25_50": 0.0,
+   "low_0_25": 0.005,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "test": "attempt-detection",
+   "model": "G26",
+   "cls": "attack",
+   "n": 400,
+   "rate05": 0.885,
+   "zero": 0.112,
+   "band25_50": 0.0,
+   "low_0_25": 0.002,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "pids-obfuscated",
+   "model": "Q3.8-27B",
+   "cls": "attack",
+   "n": 402,
+   "rate05": 0.6393,
+   "zero": 0.117,
+   "band25_50": 0.06,
+   "low_0_25": 0.184,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-benign-controls-v1",
+   "model": "Q3.8-27B",
+   "cls": "benign",
+   "n": 962,
+   "rate05": 0.9657,
+   "zero": 0.797,
+   "band25_50": 0.028,
+   "low_0_25": 0.14,
+   "share_eq05": 0.002
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "pids-obfuscated",
+   "model": "Q3.6-35B",
+   "cls": "attack",
+   "n": 404,
+   "rate05": 0.7574,
+   "zero": 0.24,
+   "band25_50": 0.0,
+   "low_0_25": 0.002,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-benign-controls-v1",
+   "model": "Q3.6-35B",
+   "cls": "benign",
+   "n": 968,
+   "rate05": 0.9236,
+   "zero": 0.919,
+   "band25_50": 0.0,
+   "low_0_25": 0.004,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "pids-obfuscated",
+   "model": "G26",
+   "cls": "attack",
+   "n": 405,
+   "rate05": 0.8963,
+   "zero": 0.089,
+   "band25_50": 0.005,
+   "low_0_25": 0.01,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "test": "encoding-benign-controls-v1",
+   "model": "G26",
+   "cls": "benign",
+   "n": 960,
+   "rate05": 0.5948,
+   "zero": 0.509,
+   "band25_50": 0.001,
+   "low_0_25": 0.084,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "benign-false-positives",
+   "model": "Q3.8-27B",
+   "cls": "benign",
+   "n": 336,
+   "rate05": 0.9911,
+   "zero": 0.842,
+   "band25_50": 0.012,
+   "low_0_25": 0.137,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "pids-hard-benign-public",
+   "model": "Q3.8-27B",
+   "cls": "benign",
+   "n": 806,
+   "rate05": 0.9963,
+   "zero": 0.803,
+   "band25_50": 0.002,
+   "low_0_25": 0.191,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "benign-false-positives",
+   "model": "Q3.6-35B",
+   "cls": "benign",
+   "n": 339,
+   "rate05": 0.9617,
+   "zero": 0.956,
+   "band25_50": 0.0,
+   "low_0_25": 0.006,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "pids-hard-benign-public",
+   "model": "Q3.6-35B",
+   "cls": "benign",
+   "n": 808,
+   "rate05": 0.9629,
+   "zero": 0.958,
+   "band25_50": 0.0,
+   "low_0_25": 0.005,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "benign-false-positives",
+   "model": "G26",
+   "cls": "benign",
+   "n": 339,
+   "rate05": 0.9351,
+   "zero": 0.914,
+   "band25_50": 0.006,
+   "low_0_25": 0.015,
+   "share_eq05": 0.003
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "test": "pids-hard-benign-public",
+   "model": "G26",
+   "cls": "benign",
+   "n": 808,
+   "rate05": 0.9777,
+   "zero": 0.957,
+   "band25_50": 0.002,
+   "low_0_25": 0.019,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-authorized-benign",
+   "model": "Q3.8-27B",
+   "cls": "benign",
+   "n": 384,
+   "rate05": 0.9661,
+   "zero": 0.768,
+   "band25_50": 0.016,
+   "low_0_25": 0.182,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-authorized-benign",
+   "model": "Q3.6-35B",
+   "cls": "benign",
+   "n": 384,
+   "rate05": 0.9505,
+   "zero": 0.948,
+   "band25_50": 0.0,
+   "low_0_25": 0.003,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "test": "longpi-authorized-benign",
+   "model": "G26",
+   "cls": "benign",
+   "n": 384,
+   "rate05": 0.9531,
+   "zero": 0.948,
+   "band25_50": 0.0,
+   "low_0_25": 0.005,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "nemotron-ipi-attacks",
+   "model": "Q3.8-27B",
+   "cls": "attack",
+   "n": 360,
+   "rate05": 1.0,
+   "zero": 0.0,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "nemotron-ipi-attacks",
+   "model": "Q3.6-35B",
+   "cls": "attack",
+   "n": 360,
+   "rate05": 0.9889,
+   "zero": 0.011,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "test": "nemotron-ipi-attacks",
+   "model": "G26",
+   "cls": "attack",
+   "n": 360,
+   "rate05": 1.0,
+   "zero": 0.0,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "test": "llmail-pool-attacks",
+   "model": "Q3.8-27B",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 0.81,
+   "zero": 0.043,
+   "band25_50": 0.05,
+   "low_0_25": 0.097,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "test": "llmail-pool-attacks",
+   "model": "Q3.6-35B",
+   "cls": "attack",
+   "n": 300,
+   "rate05": 0.81,
+   "zero": 0.173,
+   "band25_50": 0.0,
+   "low_0_25": 0.017,
+   "share_eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "test": "llmail-pool-attacks",
+   "model": "G26",
+   "cls": "attack",
+   "n": 299,
+   "rate05": 0.9431,
+   "zero": 0.057,
+   "band25_50": 0.0,
+   "low_0_25": 0.0,
+   "share_eq05": 0.0
+  }
+ ],
+ "paired": [
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 1854,
+   "n": 58,
+   "hist": [
+    0.638,
+    0.086,
+    0.276,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.052
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 1854,
+   "n": 131,
+   "hist": [
+    0.947,
+    0.038,
+    0.015,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 477,
+   "n": 59,
+   "hist": [
+    0.169,
+    0.576,
+    0.254,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 477,
+   "n": 44,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 240,
+   "n": 4,
+   "hist": [
+    0.25,
+    0.75,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 240,
+   "n": 6,
+   "hist": [
+    0.833,
+    0.167,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 809,
+   "n": 1,
+   "hist": [
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 809,
+   "n": 16,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 590,
+   "n": 82,
+   "hist": [
+    0.146,
+    0.524,
+    0.329,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 590,
+   "n": 11,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 0,
+   "n": 0,
+   "hist": null,
+   "eq05": null
+  },
+  {
+   "run": "baseline",
+   "group": "benign",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 0,
+   "n": 0,
+   "hist": null,
+   "eq05": null
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 117,
+   "n": 2,
+   "hist": [
+    0.0,
+    1.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 117,
+   "n": 38,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 660,
+   "n": 24,
+   "hist": [
+    0.042,
+    0.458,
+    0.5,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 660,
+   "n": 88,
+   "hist": [
+    0.966,
+    0.023,
+    0.011,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 749,
+   "n": 181,
+   "hist": [
+    0.37,
+    0.492,
+    0.138,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.006
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 749,
+   "n": 41,
+   "hist": [
+    0.902,
+    0.098,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 1797,
+   "n": 696,
+   "hist": [
+    0.601,
+    0.32,
+    0.079,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.001
+  },
+  {
+   "run": "extension",
+   "group": "qa",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 1797,
+   "n": 32,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 200,
+   "n": 10,
+   "hist": [
+    0.0,
+    0.9,
+    0.1,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 200,
+   "n": 11,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 596,
+   "n": 0,
+   "hist": null,
+   "eq05": null
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 596,
+   "n": 15,
+   "hist": [
+    0.933,
+    0.067,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 300,
+   "n": 20,
+   "hist": [
+    0.15,
+    0.55,
+    0.3,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "email",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 300,
+   "n": 20,
+   "hist": [
+    0.8,
+    0.2,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "flaggedBy": "Q3.6-35B",
+   "missedBy": "Q3.8-27B",
+   "pairedAttacks": 480,
+   "n": 0,
+   "hist": null,
+   "eq05": null
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "flaggedBy": "Q3.8-27B",
+   "missedBy": "Q3.6-35B",
+   "pairedAttacks": 480,
+   "n": 107,
+   "hist": [
+    1.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "eq05": 0.0
+  }
+ ],
+ "global": {
+  "Q3.8-27B": {
+   "threshold": 0.15,
+   "baselineBA_at_t": 0.9063,
+   "baselineBA05": 0.8951,
+   "extBA05": 0.8646,
+   "extBA_at_t": 0.8905,
+   "extInSampleOracle": 0.9044,
+   "extInSampleT": 0.05,
+   "perGroup": {
+    "longdoc": [
+     0.908,
+     0.946
+    ],
+    "bipia": [
+     0.748,
+     0.788
+    ],
+    "qa": [
+     0.73,
+     0.758
+    ],
+    "web": [
+     0.802,
+     0.76
+    ],
+    "agent": [
+     0.999,
+     0.999
+    ],
+    "email": [
+     0.81,
+     0.887
+    ],
+    "code": [
+     1.0,
+     1.0
+    ]
+   }
+  },
+  "Q3.6-35B": {
+   "threshold": 0.15,
+   "baselineBA_at_t": 0.9012,
+   "baselineBA05": 0.9006,
+   "extBA05": 0.8655,
+   "extBA_at_t": 0.8664,
+   "extInSampleOracle": 0.8693,
+   "extInSampleT": 0.05,
+   "perGroup": {
+    "longdoc": [
+     0.854,
+     0.855
+    ],
+    "bipia": [
+     0.828,
+     0.829
+    ],
+    "qa": [
+     0.914,
+     0.915
+    ],
+    "web": [
+     0.702,
+     0.702
+    ],
+    "agent": [
+     0.982,
+     0.982
+    ],
+    "email": [
+     0.81,
+     0.81
+    ],
+    "code": [
+     0.889,
+     0.889
+    ]
+   }
+  },
+  "G26": {
+   "threshold": 0.45,
+   "baselineBA_at_t": 0.9235,
+   "baselineBA05": 0.923,
+   "extBA05": 0.9217,
+   "extBA_at_t": 0.9222,
+   "extInSampleOracle": 0.9281,
+   "extInSampleT": 0.02,
+   "perGroup": {
+    "longdoc": [
+     0.906,
+     0.907
+    ],
+    "bipia": [
+     0.904,
+     0.905
+    ],
+    "qa": [
+     0.948,
+     0.948
+    ],
+    "web": [
+     0.82,
+     0.82
+    ],
+    "agent": [
+     0.999,
+     0.999
+    ],
+    "email": [
+     0.943,
+     0.943
+    ],
+    "code": [
+     0.907,
+     0.907
+    ]
+   }
+  }
+ },
+ "bootstrap": [
+  {
+   "run": "extension",
+   "group": "qa",
+   "nDatasets": 2,
+   "auc38": 0.8206,
+   "auc36": 0.9193,
+   "diff38m36": -0.0987,
+   "ci": [
+    -0.1099,
+    -0.0865
+   ],
+   "diffG26m36": 0.0351,
+   "ciG": [
+    0.027,
+    0.0435
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "bipia",
+   "nDatasets": 2,
+   "auc38": 0.8619,
+   "auc36": 0.834,
+   "diff38m36": 0.0279,
+   "ci": [
+    0.0112,
+    0.0435
+   ],
+   "diffG26m36": 0.0851,
+   "ciG": [
+    0.0698,
+    0.0999
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "web",
+   "nDatasets": 1,
+   "auc38": 0.856,
+   "auc36": 0.7833,
+   "diff38m36": 0.0727,
+   "ci": [
+    0.0387,
+    0.1046
+   ],
+   "diffG26m36": 0.0509,
+   "ciG": [
+    0.0178,
+    0.0864
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "longdoc",
+   "nDatasets": 4,
+   "auc38": 0.9819,
+   "auc36": 0.8335,
+   "diff38m36": 0.1484,
+   "ci": [
+    0.129,
+    0.1684
+   ],
+   "diffG26m36": 0.0736,
+   "ciG": [
+    0.0561,
+    0.0919
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "code",
+   "nDatasets": 1,
+   "auc38": 1.0,
+   "auc36": 0.8885,
+   "diff38m36": 0.1115,
+   "ci": [
+    0.0938,
+    0.1292
+   ],
+   "diffG26m36": 0.0208,
+   "ciG": [
+    0.0052,
+    0.0365
+   ]
+  },
+  {
+   "run": "extension",
+   "group": "agent",
+   "nDatasets": 1,
+   "auc38": 1.0,
+   "auc36": 0.9767,
+   "diff38m36": 0.0233,
+   "ci": [
+    0.0106,
+    0.038
+   ],
+   "diffG26m36": 0.0212,
+   "ciG": [
+    0.0085,
+    0.036
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "email",
+   "nDatasets": 1,
+   "auc38": 0.8255,
+   "auc36": 0.824,
+   "diff38m36": 0.0015,
+   "ci": [
+    -0.0559,
+    0.057
+   ],
+   "diffG26m36": 0.0926,
+   "ciG": [
+    0.0513,
+    0.1391
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "web",
+   "nDatasets": 1,
+   "auc38": 0.8989,
+   "auc36": 0.8605,
+   "diff38m36": 0.0383,
+   "ci": [
+    0.0132,
+    0.0625
+   ],
+   "diffG26m36": 0.0016,
+   "ciG": [
+    -0.0178,
+    0.0194
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "longdoc",
+   "nDatasets": 5,
+   "auc38": 0.9991,
+   "auc36": 0.9297,
+   "diff38m36": 0.0694,
+   "ci": [
+    0.057,
+    0.0833
+   ],
+   "diffG26m36": 0.0659,
+   "ciG": [
+    0.0538,
+    0.08
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "agent",
+   "nDatasets": 5,
+   "auc38": 0.999,
+   "auc36": 0.9845,
+   "diff38m36": 0.0145,
+   "ci": [
+    0.0089,
+    0.0209
+   ],
+   "diffG26m36": 0.0046,
+   "ciG": [
+    -0.0015,
+    0.0106
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "obfusc",
+   "nDatasets": 1,
+   "auc38": 0.9209,
+   "auc36": 0.8862,
+   "diff38m36": 0.0347,
+   "ci": [
+    0.0067,
+    0.0645
+   ],
+   "diffG26m36": 0.0691,
+   "ciG": [
+    0.0432,
+    0.0958
+   ]
+  },
+  {
+   "run": "baseline",
+   "group": "policy",
+   "nDatasets": 1,
+   "auc38": 0.5,
+   "auc36": 0.5,
+   "diff38m36": 0.0,
+   "ci": [
+    -0.0657,
+    0.0663
+   ],
+   "diffG26m36": 0.0093,
+   "ciG": [
+    -0.0511,
+    0.0665
+   ]
+  }
+ ]
+}

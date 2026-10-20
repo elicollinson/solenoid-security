@@ -67,3 +67,25 @@ Suite: `evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extensio
 ```sh
 bun evals/scripts/run-lmstudio-matrix.ts --suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json --conditions=baseline-ornith-q8-t4096-full
 ```
+
+## Enhanced agent tool-output set (2026-10-20)
+
+This set addresses the agent-group saturation (O57, [#31](https://github.com/elicollinson/solenoid-security/issues/31)). Positives are **published attack texts, verbatim**, placed in tool-output fields that were not their original injection slot. Negatives are repository-authored benign instructions in the same carriers and fields, plus untouched carriers. No attack text is written by this repository. Generated cases and the payload sidecar stay under ignored `evals/private/sources/`. The manifest pins every upstream source file, the frozen template list and the sidecar by SHA-256. [Design](AGENT_ENHANCED_TOOL_OUTPUT.md).
+
+| Dataset / test | Injection / benign | Source and license | Variety and scope |
+| --- | ---: | --- | --- |
+| `agent-enhanced-tool-output-v1` / `agent-enhanced-mixed` | 250 / 250 (150 hard negatives, 100 clean) | Carriers: [AgentDojo](https://github.com/ethz-spylab/agentdojo) v1 ground-truth tool outputs (**MIT**) and [Nemotron IPI](https://huggingface.co/datasets/nvidia/Nemotron-RL-Agentic-Indirect-Prompt-Injection-v1) environments with the original injection removed (**CC BY 4.0**, NVIDIA). Payloads: Nemotron injection texts (CC BY 4.0), the LLMail-Inject pool (MIT), BIPIA text attacks (MIT) and AgentDojo templates × goals (MIT). Benign phrasings: repository-authored (MIT). | 70 Nemotron, 70 LLMail, 70 BIPIA and 40 AgentDojo control payloads, each used once, at the start, middle or end of email/chat bodies, calendar descriptions, file contents, reviews and record notes. 50 frozen benign phrasings × 3 placements. Every carrier is in one class only, and the carrier suite/domain mix is identical across classes. |
+
+Rebuild (no model calls; needs the AgentDojo checkout and the BIPIA, Nemotron and LLMail upstream files listed above):
+
+```sh
+uv run --no-project --python 3.12 --with-editable .local/eval-sources/dojo --with pyyaml==6.0.3 --with pydantic==2.14.0 \
+  python -B evals/scripts/build-agent-enhanced-tool-output.py
+bun test ./evals/tests/agent-enhanced-tool-output.test.ts
+```
+
+Suite: `evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-agent-enhanced-v1.json`. It uses the same engines, strategy, rule and conditions as the extension suite, without Qwen3.6 27B. Dry run:
+
+```sh
+bun evals/scripts/run-lmstudio-matrix.ts --suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-agent-enhanced-v1.json --output-dir=evals/runs/studio-agent-enhanced-t4096
+```

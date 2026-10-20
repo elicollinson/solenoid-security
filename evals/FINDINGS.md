@@ -852,7 +852,7 @@ the top three models.**
   benign false alarms for any model. See the [extension report](reports/studio-extension-q8-t4096-2026-10.md).
 - Strength: **Moderate** (two agent datasets, one attack-only; RepoGuard has 5 payload texts).
 - Caveats: AgentDojo injections use 5 published templates, and Nemotron has no negatives.
-- Follow-up: the enhanced agent set with subtle injections and hard negatives ([#31](https://github.com/elicollinson/solenoid-security/issues/31)).
+- Follow-up: the enhanced agent set with subtle injections and hard negatives ([#31](https://github.com/elicollinson/solenoid-security/issues/31)). Dataset built, not yet run: `agent-enhanced-tool-output-v1` (backlog item 12).
 
 **O58: On BrowseSafe web pages, models separate by how they trade benign false alarms against misses. The two Gemma
 models flag the fewest benign pages but miss about a third of attacks.**
@@ -1097,6 +1097,12 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
    _Tracked in [#15](https://github.com/elicollinson/solenoid-security/issues/15)._
 10. **Energy and uncached latency** (O39).
    _Tracked in [#16](https://github.com/elicollinson/solenoid-security/issues/16)._
+12. **Enhanced agent tool-output set** (O57, O48): published attack texts (Nemotron IPI, LLMail-Inject, BIPIA, an
+   AgentDojo control) placed in new tool-output fields, plus 150 benign-instruction hard negatives and 100 clean
+   carriers (250 / 250). **Dataset and suite added 2026-10-20, not yet run:** `agent-enhanced-tool-output-v1` in
+   `prompt-injection-lmstudio-studio-baseline-q8-t4096-agent-enhanced-v1` (7 conditions, about 5 h of Studio time);
+   see the [design](datasets/AGENT_ENHANCED_TOOL_OUTPUT.md). No observation yet.
+   _Tracked in [#31](https://github.com/elicollinson/solenoid-security/issues/31)._
 
 ### Future research avenues (noted 2026-10-04; not scheduled)
 

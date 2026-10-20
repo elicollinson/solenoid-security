@@ -1,0 +1,289 @@
+{
+  "schemaVersion": "qwen38-effort-ablation-plan/v1",
+  "frozenBy": "make-plan.ts",
+  "seed": "qwen38-effort-ablation-2026-10-v1",
+  "suiteId": "prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1",
+  "suitePath": "evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json",
+  "suiteSha256": "37c5a736f302c823dc54e0935321ed2c115e7e6ff1298d90ab2acd4f9f95d7a8",
+  "sourceSuites": {
+    "baseline": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-v1.json",
+      "sha256": "60024e05e323d97cf8227f37b250c251afb7c0b2773f53fd7ae826ad9d306051",
+      "frozenRunDir": "evals/runs/studio-baseline-t4096-2026-10-07"
+    },
+    "extension": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json",
+      "sha256": "64863c9e5ad0449dbb5e7d36eb91ba67d5913b9f8b29d70449b9d4480e8e1dcd",
+      "frozenRunDir": "evals/runs/studio-extension-t4096-2026-10-13"
+    }
+  },
+  "frozenCondition": "baseline-qwen38-q8gguf-t4096-full",
+  "frozenEngineId": "studio-qwen38-q8gguf-lmstudio-score-v1-thinking4096-native-v0-v1",
+  "conditions": [
+    {
+      "id": "effort-xhigh-qwen38-q8gguf-t4096-full",
+      "engine": "qwen38-effort-xhigh",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1,
+      "reasoningEffort": "xhigh",
+      "engineId": "studio-qwen38-q8gguf-lmstudio-score-v1-thinking4096-native-v0-effort-xhigh-v1",
+      "role": "drift check only: first 10 caseIds per test (100 cases); the xhigh arm is the frozen checkpoint"
+    },
+    {
+      "id": "effort-medium-qwen38-q8gguf-t4096-full",
+      "engine": "qwen38-effort-medium",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1,
+      "reasoningEffort": "medium",
+      "engineId": "studio-qwen38-q8gguf-lmstudio-score-v1-thinking4096-native-v0-effort-medium-v1",
+      "role": "full subset"
+    },
+    {
+      "id": "effort-low-qwen38-q8gguf-t4096-full",
+      "engine": "qwen38-effort-low",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1,
+      "reasoningEffort": "low",
+      "engineId": "studio-qwen38-q8gguf-lmstudio-score-v1-thinking4096-native-v0-effort-low-v1",
+      "role": "full subset"
+    }
+  ],
+  "expectedPromptTokenDelta": {
+    "xhigh": 0,
+    "medium": -38,
+    "low": -12,
+    "note": "relative to the frozen xhigh prompt_tokens on the same case"
+  },
+  "driftPerTest": 10,
+  "selection": [
+    {
+      "testId": "inj-squad-mixed",
+      "source": "extension",
+      "group": "qa",
+      "datasetId": "inj-squad-v1",
+      "cohortCases": 1200,
+      "cases": 200,
+      "positives": 120,
+      "negatives": 80,
+      "spec": {
+        "testId": "inj-squad-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 120,
+        "negative": 80,
+        "stratumFacet": "insertion_position"
+      },
+      "caseIdsSha256": "3d65fb0d9370ed7688af89cd6e85e7350ddfab3a24c5cc3bd0d9a050f9b95a0b",
+      "frozenInputHashesVerified": 200,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.242,
+      "frozenXhighMeanWallSeconds": 4.35
+    },
+    {
+      "testId": "inj-triviaqa-mixed",
+      "source": "extension",
+      "group": "qa",
+      "datasetId": "inj-triviaqa-v1",
+      "cohortCases": 1200,
+      "cases": 200,
+      "positives": 120,
+      "negatives": 80,
+      "spec": {
+        "testId": "inj-triviaqa-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 120,
+        "negative": 80,
+        "stratumFacet": "insertion_position"
+      },
+      "caseIdsSha256": "a1438a174b68577510c1f2f1a8ea221081a1db3b79fe2a926c728654358cb466",
+      "frozenInputHashesVerified": 200,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.278,
+      "frozenXhighMeanWallSeconds": 5
+    },
+    {
+      "testId": "bipia-table-mixed",
+      "source": "extension",
+      "group": "bipia",
+      "datasetId": "bipia-table-paired-v1",
+      "cohortCases": 600,
+      "cases": 200,
+      "positives": 120,
+      "negatives": 80,
+      "spec": {
+        "testId": "bipia-table-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 120,
+        "negative": 80,
+        "stratumFacet": "insertion_position"
+      },
+      "caseIdsSha256": "ebb58e0c8264e59625d57b2ff29e0ddba7f2f3873ab99613baa5212d3d9f36f6",
+      "frozenInputHashesVerified": 200,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.252,
+      "frozenXhighMeanWallSeconds": 4.54
+    },
+    {
+      "testId": "bipia-code-mixed",
+      "source": "extension",
+      "group": "bipia",
+      "datasetId": "bipia-code-paired-v1",
+      "cohortCases": 400,
+      "cases": 200,
+      "positives": 120,
+      "negatives": 80,
+      "spec": {
+        "testId": "bipia-code-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 120,
+        "negative": 80,
+        "stratumFacet": "insertion_position"
+      },
+      "caseIdsSha256": "24c437bc1301614aff5706ac8ee3bd3ece08dea9111892eec8fe530ee5a26bbb",
+      "frozenInputHashesVerified": 200,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.388,
+      "frozenXhighMeanWallSeconds": 6.99
+    },
+    {
+      "testId": "bipia-email-mixed",
+      "source": "baseline",
+      "group": "bipia",
+      "datasetId": "bipia-email-paired-v1",
+      "cohortCases": 156,
+      "cases": 156,
+      "positives": 78,
+      "negatives": 78,
+      "spec": {
+        "testId": "bipia-email-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": "all",
+        "negative": "all"
+      },
+      "caseIdsSha256": "6ae7de1e299f5070880535a248333ca97975c3ed49a6b10327c0c88b5166501b",
+      "frozenInputHashesVerified": 156,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.209,
+      "frozenXhighMeanWallSeconds": 4.83
+    },
+    {
+      "testId": "llmail-pool-attacks",
+      "source": "extension",
+      "group": "email",
+      "datasetId": "llmail-inject-payload-pool-v1",
+      "cohortCases": 300,
+      "cases": 150,
+      "positives": 150,
+      "negatives": 0,
+      "spec": {
+        "testId": "llmail-pool-attacks",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 150,
+        "stratumFacet": "phase"
+      },
+      "caseIdsSha256": "52ca02feb3dfa700f222e6f51673ef73cd05ce9fe64dcf69ed0e02d226d0864e",
+      "frozenInputHashesVerified": 150,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.264,
+      "frozenXhighMeanWallSeconds": 6.33
+    },
+    {
+      "testId": "attempt-detection",
+      "source": "baseline",
+      "group": "email",
+      "datasetId": "llmail-phase2-positive-400",
+      "cohortCases": 400,
+      "cases": 150,
+      "positives": 150,
+      "negatives": 0,
+      "spec": {
+        "testId": "attempt-detection",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 150,
+        "stratumFacet": "technique"
+      },
+      "caseIdsSha256": "f01453ee0fb003c5289f73e5dcfd918f2e0623ebbf1a8f6857e80b10a16376ed",
+      "frozenInputHashesVerified": 150,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.312,
+      "frozenXhighMeanWallSeconds": 7.48
+    },
+    {
+      "testId": "longpi-email-llmail-mixed",
+      "source": "extension",
+      "group": "email",
+      "datasetId": "longpi-email-llmail-v1",
+      "cohortCases": 400,
+      "cases": 100,
+      "positives": 75,
+      "negatives": 25,
+      "spec": {
+        "testId": "longpi-email-llmail-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 75,
+        "negative": 25,
+        "stratumFacet": "insertion_position"
+      },
+      "caseIdsSha256": "0f44bfec6dd199c1ce348e561278b6c96f95bd292f07ced79f722baca14ea7bd",
+      "frozenInputHashesVerified": 100,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.215,
+      "frozenXhighMeanWallSeconds": 7.74
+    },
+    {
+      "testId": "longpi-subtle-paper-mixed",
+      "source": "extension",
+      "group": "longdoc",
+      "datasetId": "longpi-subtle-paper-v1",
+      "cohortCases": 220,
+      "cases": 100,
+      "positives": 60,
+      "negatives": 40,
+      "spec": {
+        "testId": "longpi-subtle-paper-mixed",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "positive": 60,
+        "negative": 40,
+        "stratumFacet": "explicitness"
+      },
+      "caseIdsSha256": "411b949de257915688abb42b5868d1eede411a7aee473939028a636c425dc804",
+      "frozenInputHashesVerified": 100,
+      "frozenAbstentions": 0,
+      "frozenXhighWallHours": 0.351,
+      "frozenXhighMeanWallSeconds": 12.63
+    },
+    {
+      "testId": "benign-false-positives",
+      "source": "baseline",
+      "group": "benign",
+      "datasetId": "notinject-benign-339",
+      "cohortCases": 339,
+      "cases": 150,
+      "positives": 0,
+      "negatives": 150,
+      "spec": {
+        "testId": "benign-false-positives",
+        "seed": "qwen38-effort-ablation-2026-10-v1",
+        "negative": 150,
+        "stratumFacet": "technique"
+      },
+      "caseIdsSha256": "4cd751537d5425a9823eddb313b5adbb87d69d20c89064b9c3dc278b2868d0f2",
+      "frozenInputHashesVerified": 149,
+      "frozenAbstentions": 1,
+      "frozenXhighWallHours": 0.168,
+      "frozenXhighMeanWallSeconds": 4.02
+    }
+  ],
+  "totalCases": 1606,
+  "estimate": {
+    "basis": "frozen Qwen3.8 GGUF Q8_0 xhigh per-case wall time on the identical cases (dispatch to next dispatch), Studio, serial",
+    "xhighReplayHoursPerArm": 2.68,
+    "driftHours": 0.25,
+    "perArmHoursAtXhighSpeed": 2.77,
+    "totalHoursIfMediumAndLowAtXhighSpeed": 5.79,
+    "totalHoursIfBothArms1_4x": 8,
+    "hardCapHours": 8
+  }
+}

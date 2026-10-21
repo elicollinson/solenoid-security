@@ -239,6 +239,14 @@ the git-ignored `evals/runs/qwen38-effort-calibration-2026-10/`.
 | `templates/` | Embedded chat templates of the Q8_0 files (Qwen3.8, Qwen3.6, Ornith 1.5, Gemma 4, Muse Glimmer), third-party, with source and license in `PROVENANCE.tsv`. |
 | `results/` | `results.json` and `effort-audit.json`: aggregates, template hashes and template-authored strings only. |
 
+### `qwen38-effort-ablation-2026-10/`
+
+The pre-registered Qwen3.8 reasoning-effort ablation (`xhigh` / `medium` / `low`) and the offline Muse threshold fit
+([#33](https://github.com/elicollinson/solenoid-security/issues/33); [plan](../reports/qwen38-effort-ablation-plan-2026-10.md),
+[report](../reports/qwen38-effort-ablation-2026-10.md), `FINDINGS.md` O65 and O66, research log L157). Studio: 3,312 run calls
+(100 drift, 1,606 medium, 1,606 low) in 5 h 08 min, plus 33 synthetic probe requests. The directory README lists every file
+and the two deviations. Intermediates go to the git-ignored `evals/runs/qwen38-effort-ablation-2026-10/`.
+
 ### `reuse-verification-2026-10-03/`
 
 | File | Computes |

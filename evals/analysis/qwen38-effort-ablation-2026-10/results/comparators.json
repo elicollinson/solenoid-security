@@ -1,0 +1,298 @@
+{
+ "gemma26-q8": {
+  "datasets": {
+   "inj-squad-mixed": {
+    "ba05": 0.9167,
+    "auroc": 0.9208
+   },
+   "inj-triviaqa-mixed": {
+    "ba05": 0.9792,
+    "auroc": 0.9792
+   },
+   "bipia-table-mixed": {
+    "ba05": 0.8167,
+    "auroc": 0.8333
+   },
+   "bipia-code-mixed": {
+    "ba05": 0.9458,
+    "auroc": 0.9625
+   },
+   "bipia-email-mixed": {
+    "ba05": 0.9167,
+    "auroc": 0.9167
+   },
+   "llmail-pool-attacks": {
+    "ba05": 0.9463,
+    "auroc": null
+   },
+   "attempt-detection": {
+    "ba05": 0.8933,
+    "auroc": null
+   },
+   "longpi-email-llmail-mixed": {
+    "ba05": 0.9865,
+    "auroc": 0.9865
+   },
+   "longpi-subtle-paper-mixed": {
+    "ba05": 0.825,
+    "auroc": 0.8333
+   },
+   "benign-false-positives": {
+    "ba05": 0.92,
+    "auroc": null
+   }
+  },
+  "groups": {
+   "qa": {
+    "ba05": 0.9479,
+    "meanAUROC": 0.95
+   },
+   "bipia": {
+    "ba05": 0.8931,
+    "meanAUROC": 0.9042
+   },
+   "email": {
+    "ba05": 0.942,
+    "meanAUROC": 0.9865
+   },
+   "longdoc": {
+    "ba05": 0.825,
+    "meanAUROC": 0.8333
+   },
+   "benign": {
+    "ba05": 0.92,
+    "meanAUROC": null
+   },
+   "target": {
+    "ba05": 0.9251,
+    "meanAUROC": 0.9332
+   },
+   "all": {
+    "ba05": 0.9146,
+    "meanAUROC": 0.9189
+   }
+  }
+ },
+ "muse-q8": {
+  "datasets": {
+   "inj-squad-mixed": {
+    "ba05": 0.7792,
+    "auroc": 0.9993
+   },
+   "inj-triviaqa-mixed": {
+    "ba05": 0.8542,
+    "auroc": 0.9953
+   },
+   "bipia-table-mixed": {
+    "ba05": 0.65,
+    "auroc": 0.9911
+   },
+   "bipia-code-mixed": {
+    "ba05": 0.9958,
+    "auroc": 1.0
+   },
+   "bipia-email-mixed": {
+    "ba05": 0.75,
+    "auroc": 0.9813
+   },
+   "llmail-pool-attacks": {
+    "ba05": 0.9533,
+    "auroc": null
+   },
+   "attempt-detection": {
+    "ba05": 0.9333,
+    "auroc": null
+   },
+   "longpi-email-llmail-mixed": {
+    "ba05": 0.9933,
+    "auroc": 1.0
+   },
+   "longpi-subtle-paper-mixed": {
+    "ba05": 0.8667,
+    "auroc": 0.9902
+   },
+   "benign-false-positives": {
+    "ba05": 0.9533,
+    "auroc": null
+   }
+  },
+  "groups": {
+   "qa": {
+    "ba05": 0.8167,
+    "meanAUROC": 0.9973
+   },
+   "bipia": {
+    "ba05": 0.7986,
+    "meanAUROC": 0.9908
+   },
+   "email": {
+    "ba05": 0.96,
+    "meanAUROC": 1.0
+   },
+   "longdoc": {
+    "ba05": 0.8667,
+    "meanAUROC": 0.9902
+   },
+   "benign": {
+    "ba05": 0.9533,
+    "meanAUROC": null
+   },
+   "target": {
+    "ba05": 0.8636,
+    "meanAUROC": 0.9945
+   },
+   "all": {
+    "ba05": 0.8729,
+    "meanAUROC": 0.9939
+   }
+  }
+ },
+ "qwen36-35b-a3b-q8": {
+  "datasets": {
+   "inj-squad-mixed": {
+    "ba05": 0.9333,
+    "auroc": 0.9375
+   },
+   "inj-triviaqa-mixed": {
+    "ba05": 0.925,
+    "auroc": 0.9292
+   },
+   "bipia-table-mixed": {
+    "ba05": 0.7417,
+    "auroc": 0.75
+   },
+   "bipia-code-mixed": {
+    "ba05": 0.8792,
+    "auroc": 0.8875
+   },
+   "bipia-email-mixed": {
+    "ba05": 0.8205,
+    "auroc": 0.824
+   },
+   "llmail-pool-attacks": {
+    "ba05": 0.7933,
+    "auroc": null
+   },
+   "attempt-detection": {
+    "ba05": 0.78,
+    "auroc": null
+   },
+   "longpi-email-llmail-mixed": {
+    "ba05": 0.96,
+    "auroc": 0.9667
+   },
+   "longpi-subtle-paper-mixed": {
+    "ba05": 0.8583,
+    "auroc": 0.8583
+   },
+   "benign-false-positives": {
+    "ba05": 0.96,
+    "auroc": null
+   }
+  },
+  "groups": {
+   "qa": {
+    "ba05": 0.9292,
+    "meanAUROC": 0.9334
+   },
+   "bipia": {
+    "ba05": 0.8138,
+    "meanAUROC": 0.8205
+   },
+   "email": {
+    "ba05": 0.8444,
+    "meanAUROC": 0.9667
+   },
+   "longdoc": {
+    "ba05": 0.8583,
+    "meanAUROC": 0.8583
+   },
+   "benign": {
+    "ba05": 0.96,
+    "meanAUROC": null
+   },
+   "target": {
+    "ba05": 0.8541,
+    "meanAUROC": 0.8825
+   },
+   "all": {
+    "ba05": 0.8651,
+    "meanAUROC": 0.879
+   }
+  }
+ },
+ "qwen38-q8gguf": {
+  "datasets": {
+   "inj-squad-mixed": {
+    "ba05": 0.725,
+    "auroc": 0.8167
+   },
+   "inj-triviaqa-mixed": {
+    "ba05": 0.75,
+    "auroc": 0.825
+   },
+   "bipia-table-mixed": {
+    "ba05": 0.6042,
+    "auroc": 0.7375
+   },
+   "bipia-code-mixed": {
+    "ba05": 0.8792,
+    "auroc": 0.9833
+   },
+   "bipia-email-mixed": {
+    "ba05": 0.6218,
+    "auroc": 0.8255
+   },
+   "llmail-pool-attacks": {
+    "ba05": 0.7867,
+    "auroc": null
+   },
+   "attempt-detection": {
+    "ba05": 0.8,
+    "auroc": null
+   },
+   "longpi-email-llmail-mixed": {
+    "ba05": 0.9733,
+    "auroc": 1.0
+   },
+   "longpi-subtle-paper-mixed": {
+    "ba05": 0.8667,
+    "auroc": 0.9833
+   },
+   "benign-false-positives": {
+    "ba05": 0.9933,
+    "auroc": null
+   }
+  },
+  "groups": {
+   "qa": {
+    "ba05": 0.7375,
+    "meanAUROC": 0.8208
+   },
+   "bipia": {
+    "ba05": 0.7017,
+    "meanAUROC": 0.8488
+   },
+   "email": {
+    "ba05": 0.8533,
+    "meanAUROC": 1.0
+   },
+   "longdoc": {
+    "ba05": 0.8667,
+    "meanAUROC": 0.9833
+   },
+   "benign": {
+    "ba05": 0.9933,
+    "meanAUROC": null
+   },
+   "target": {
+    "ba05": 0.7675,
+    "meanAUROC": 0.8647
+   },
+   "all": {
+    "ba05": 0.8,
+    "meanAUROC": 0.8816
+   }
+  }
+ }
+}

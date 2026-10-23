@@ -23,6 +23,7 @@ it meaning (`evals/datasets/*.json`, `evals/suites/*.json`, `evals/src/types.ts`
 | `…20261006090000_lmstudio_native_speed.sql` | nullable LM Studio native-v0 speed columns on `responses` (`ttft_s`, `tokens_per_second`, `generation_time_s`, `stop_reason`, `model_format`, `model_quant`, `client_http_wall_ms`) and `envelope_version` widened to `lmstudio-provenance/v1|v2`. See [LM Studio native-v0 speed stats](#lm-studio-native-v0-speed-stats-migration-20261006090000) |
 | `…20261006091000_lmstudio_speed_comment_fix.sql` | comment-only: `generation_time_s` includes TTFT on llama.cpp but not on MLX |
 | `…20261012090000_test_case_ids.sql` | nullable `tests.case_ids` (`EvalTest.caseIds`, an explicit subset applied after the selector) and `v_run_cases` filtered by it, so subset runs (the abliteration pilot) count only their own cases. Applied to the hosted project on 2026-10-12 with `supabase db push`; no data changes |
+| `…20261022090000_openai_compatible_engine.sql` | the `openai_compatible` engine: response shape `openai_compat_envelope`, backend `openai_compatible`, nullable `responses.server_timings` and `endpoint_url`, widened envelope checks. Additive; see [openai_compatible engine](#openai_compatible-engine-migration-20261022090000) |
 | `evals/db/import/` | The TypeScript/Bun importer (`bun run db:import`), its model-card catalog and its unit tests. See [Importer](#importer) |
 | `supabase/optional/publish_aggregate_views.sql` | **Not applied.** A commented template for publishing aggregate-only materialized views later |
 | `evals/db/check_import_assumptions.py` | Read-only scan of `evals/runs` that checks the identity assumptions below |
@@ -391,6 +392,18 @@ prefill rate ≈ `prompt_tokens / ttft_s`, but only on prompt-cache misses (pair
 document prefix, so later family members have very short TTFTs). Applied to the hosted project on 2026-10-06 with
 `bunx supabase@latest db push --db-url "$SUPABASE_DB_URL"`; the column checks and the widened
 `responses_envelope_version_check` were confirmed afterwards. No rows were re-imported in that step.
+
+### openai_compatible engine (migration 20261022090000)
+
+Engines with `provider: "openai_compatible"` (PR #39; the LLaDA2.2 suites) post to a user-run OpenAI-compatible server.
+The body is `{nativeResponse, openaiCompatible}`: an OpenAI chat.completion plus a llama.cpp-style `timings` object, in an
+`openai-compatible-provenance/v1` envelope (endpoint actually used, request, headers, `clientTiming.httpWallMs`,
+`serverTimings`). There are no LM Studio device or `lms ps` fields. The importer maps it to `responses.shape =
+'openai_compat_envelope'` with `envelope_version`, `client_http_wall_ms`, `endpoint_url` and `server_timings` (the
+timings object verbatim); the LM Studio speed columns stay null. Deployments get `backend = 'openai_compatible'` and the
+key `<model>@openai_compatible/<quantization>` (e.g. `LLaDA2.2-mini@openai_compatible/6-bit MLX`), with the runtime and
+weights note from the engine config; `model-catalog.json` maps them to `inclusionai/llada2.2-mini` and
+`inclusionai/llada2.2-flash`. The migration only adds two enum values and two nullable columns and widens two checks.
 
 ## Validation performed
 

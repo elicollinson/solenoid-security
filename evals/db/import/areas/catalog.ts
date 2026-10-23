@@ -85,7 +85,7 @@ export function canonicalModel(root: string, alias: string): string | null {
 
 export async function writeModels(ctx: Ctx, tx: Tx): Promise<void> {
   const catalog = loadModelCatalog(ctx.root);
-  const rows = catalog.models.map(m => ({ ...m, source_checked_on: catalog.checkedOn }));
+  const rows = catalog.models.map(m => ({ ...m, source_checked_on: m.source_checked_on ?? catalog.checkedOn }));
   await ctx.db.write(tx, "models", rows, rs => `
     insert into evals.models (canonical_name, display_name, family, publisher, architecture, params_total_b, params_active_b,
                               is_instruction_tuned, architecture_evidence, source_url, source_checked_on)

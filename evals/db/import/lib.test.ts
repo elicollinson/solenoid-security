@@ -116,6 +116,32 @@ describe("responses", () => {
       .toEqual([0.71, 117.5, 1.64, "eosFound", "gguf", "Q8_0", 1750.5]);
     expect(s.reasoning_tokens).toBe(89);
   });
+  test("openai_compatible envelope: nativeResponse, provenance, timings and no LM Studio fields", () => {
+    const timings = { queue_ms: 0.1, load_ms: 0, prompt_n: 10277, prompt_ms: 585.7, prompt_per_second: 17547.7, predicted_n: 11, predicted_ms: 233.5,
+      predicted_per_second: 47.1, total_ms: 819.2 };
+    const raw = { nativeResponse: { id: "chatcmpl-3", model: "LLaDA2.2-mini", object: "chat.completion",
+      choices: [{ index: 0, message: { role: "assistant", content: '{"concernScore": 0.1}' }, finish_reason: "stop" }],
+      usage: { prompt_tokens: 10277, completion_tokens: 11, total_tokens: 10288 }, timings },
+      openaiCompatible: { version: "openai-compatible-provenance/v1", endpoint: "https://studio.example/v1/chat/completions",
+        request: { model: "LLaDA2.2-mini", messages: [], temperature: 0, max_tokens: 128, block_length: 32 }, httpStatus: 200,
+        clientTiming: { httpWallMs: 930.505 }, serverTimings: timings, modelLoad: false } };
+    expect(responseShape(raw)).toBe("openai_compat_envelope");
+    const s = summarizeResponse(raw);
+    expect([s.shape, s.envelope_version, s.provider, s.resolved_model, s.finish_reason]).toEqual(["openai_compat_envelope", "openai-compatible-provenance/v1", "openai_compatible", "LLaDA2.2-mini", "stop"]);
+    expect(s.parsed_output).toEqual({ concernScore: 0.1 });
+    expect([s.prompt_tokens, s.completion_tokens, s.total_tokens, s.cost_usd]).toEqual([10277, 11, 10288, null]);
+    expect(s.server_timings).toEqual(timings);
+    expect([s.client_http_wall_ms, s.endpoint_url]).toEqual([930.505, "https://studio.example/v1/chat/completions"]);
+    expect([s.lms_before, s.lms_after, s.ttft_s, s.tokens_per_second, s.model_quant]).toEqual([null, null, null, null, null]);
+    expect(isAnomalousResponse(s, false)).toBe(false);
+    // Timings fall back to nativeResponse.timings; malformed output is an anomaly kept in Postgres.
+    const bad = summarizeResponse({ ...raw, nativeResponse: { ...raw.nativeResponse, choices: [{ message: { content: "{concernScore\": 0.15}" }, finish_reason: "stop" }] },
+      openaiCompatible: { version: "openai-compatible-provenance/v1" } });
+    expect(bad.server_timings).toEqual(timings);
+    expect(bad.parse_error).toMatch(/invalid JSON/);
+    expect(isAnomalousResponse(bad, false)).toBe(true);
+    expect(summarizeResponse(chat("{}")).server_timings).toBeNull();
+  });
   test("Jev and Model Armor shapes", () => {
     const jev = summarizeResponse({ model: "typesafe/jev-1.13", answers: { injection: { type: "noul", noul: 0.96 } }, usage: { input_tokens: 9, output_tokens: 2, cost: 0.0004 }, id: "gen-x", provider: "TypeSafe" });
     expect([jev.shape, jev.prompt_tokens, jev.total_tokens, jev.cost_usd]).toEqual(["jev_answers", 9, 11, 0.0004]);
@@ -190,6 +216,10 @@ describe("catalog mappers", () => {
     expect(deploymentFor(meta.engine)).toMatchObject({ deployment_key: "m@deepinfra/fp8", backend: "openrouter", quantization: "fp8" });
     const lm = deploymentFor({ ...meta.engine, lmStudio: { indexedModelIdentifier: "c575a267c1d9cc0df57f986171b2b0e6:lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit", format: "safetensors", quantization: "8bit", deviceIdentifier: "c575a267c1d9cc0df57f986171b2b0e6" } });
     expect(lm).toMatchObject({ backend: "lmstudio", weight_format: "safetensors", model_alias: "lmstudio-community/gemma-4-26B-A4B-it-MLX-8bit" });
+    const oc = deploymentFor({ ...meta.engine, model: "LLaDA2.2-mini", provider: "openai_compatible",
+      openaiCompatible: { baseUrl: "http://127.0.0.1:8088/v1", runtime: "MLX port, user-provided server on Mac Studio", quantization: "6-bit MLX", weights: "w" } });
+    expect(oc).toMatchObject({ deployment_key: "LLaDA2.2-mini@openai_compatible/6-bit MLX", backend: "openai_compatible", provider: "openai_compatible",
+      quantization: "6-bit MLX", weight_format: "safetensors", runtime: "MLX port, user-provided server on Mac Studio", device_identifier: null, model_alias: "LLaDA2.2-mini" });
     expect(deploymentFor({ id: "a", kind: "model_armor", templateId: "low-intensity" })).toMatchObject({ deployment_key: "model-armor/low-intensity", model_alias: "google/model-armor" });
   });
   test("test rows carry an explicit caseIds subset, or null without one", () => {

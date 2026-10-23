@@ -311,6 +311,15 @@ describe("markdown", () => {
     expect(evidenceRefs(f[0]!.body_md, "evals")).toEqual([
       { kind: "document", value: "evals/reports/a.md" }, { kind: "path", value: "evals/runs/research-longpi-2026-09-29" }]);
   });
+  test("findings with a design tag after the id (EXPLORATORY, PRE-REGISTERED)", () => {
+    const md = ["**O62 (EXPLORATORY): Windows lift Flash", "on long documents.**", "- Strength: **Suggestive**.", "",
+      "**O63 (PRE-REGISTERED): Flash ranks 7th of 8.**", "- Strength: **Moderate**.", "", "**O64: Untagged.**", "- x"].join("\n");
+    const f = parseFindings(md);
+    expect(f.map(x => [x.finding_id, x.title, x.strength])).toEqual([
+      ["O62", "(EXPLORATORY) Windows lift Flash on long documents.", "suggestive"],
+      ["O63", "(PRE-REGISTERED) Flash ranks 7th of 8.", "moderate"], ["O64", "Untagged.", null]]);
+    expect(f[0]!.body_md).not.toContain("O63");
+  });
   test("paths and log references", () => {
     expect(normalizeRepoPath("evals/reports", "../runs/x/y.json")).toBe("evals/runs/x/y.json");
     expect(logEntryRefs("R0–R23 and L114")).toEqual(["R0", "R23", "L114"]);

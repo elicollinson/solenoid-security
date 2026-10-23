@@ -751,16 +751,17 @@ export function parseFindings(md: string): FindingBlock[] {
     const sec = /^###\s+(\d+\.\d+)\s+(.+)$/.exec(line);
     if (sec) { section = sec[1]!; sectionTitle = sec[2]!.trim(); i++; continue; }
     if (/^##\s/.test(line)) { section = null; sectionTitle = null; }
-    const start = /^\*\*(O\d+[a-z]?):\s*(.*)$/.exec(line);
+    // An optional design tag may follow the id: **O62 (EXPLORATORY): ... or **O63 (PRE-REGISTERED): ...
+    const start = /^\*\*(O\d+[a-z]?)(?:\s+\(([^)]+)\))?:\s*(.*)$/.exec(line);
     if (!start) { i++; continue; }
     // The bold title may wrap onto following lines until the closing **.
-    let titleText = start[2]!;
+    let titleText = start[3]!;
     let j = i;
     while (!titleText.includes("**") && j + 1 < lines.length) { j++; titleText += " " + lines[j]!.trim(); }
-    const title = titleText.split("**")[0]!.trim();
+    const title = (start[2] ? `(${start[2]}) ` : "") + titleText.split("**")[0]!.trim();
     const bodyLines: string[] = [];
     let k = j + 1;
-    while (k < lines.length && !/^\*\*O\d+[a-z]?:/.test(lines[k]!) && !/^#{2,3}\s/.test(lines[k]!)) { bodyLines.push(lines[k]!); k++; }
+    while (k < lines.length && !/^\*\*O\d+[a-z]?(?:\s+\([^)]+\))?:/.test(lines[k]!) && !/^#{2,3}\s/.test(lines[k]!)) { bodyLines.push(lines[k]!); k++; }
     const body = bodyLines.join("\n").trim();
     const strengthLine = bulletField(body, ["strength"]);
     const sm = strengthLine ? /\*\*(Strong|Moderate|Suggestive|Anecdotal)\*\*|\b(Strong|Moderate|Suggestive|Anecdotal)\b/i.exec(strengthLine) : null;

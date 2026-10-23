@@ -38,14 +38,26 @@ export function createSecurity(options) {
         if (provider.threshold !== undefined && !(typeof provider.threshold === "number" && provider.threshold >= 0 && provider.threshold <= 1)) {
             throw new TypeError(`Provider ${name} has a threshold outside 0-1`);
         }
+        for (const [type, value] of Object.entries(provider.thresholdByContentType ?? {})) {
+            if (!CONTENT_TYPES.includes(type))
+                throw new TypeError(`Provider ${name} thresholdByContentType.${type} is not a content type`);
+            if (!(typeof value === "number" && value >= 0 && value <= 1))
+                throw new TypeError(`Provider ${name} has a threshold for ${type} outside 0-1`);
+        }
     }
     for (const type of Object.keys(options.contentTypes ?? {})) {
         if (!CONTENT_TYPES.includes(type))
             throw new TypeError(`contentTypes.${type} is not a content type`);
     }
     const local = options.localOverrides === undefined ? undefined : parseScreeningOverrides(options.localOverrides, "localOverrides");
-    const modelThresholds = Object.fromEntries(Object.entries(providers)
-        .map(([name, { threshold, comparator }]) => [name, { threshold, comparator }]));
+    /**
+     * Each model's own threshold for a score rule that sets none: the provider's
+     * entry for the input's content type, else its `threshold` (else 0.5, in `aggregate`).
+     */
+    const modelThresholds = (contentType) => Object.fromEntries(Object.entries(providers)
+        .map(([name, { threshold, thresholdByContentType, comparator }]) => [name, {
+            threshold: (contentType === undefined ? undefined : thresholdByContentType?.[contentType]) ?? threshold, comparator,
+        }]));
     /** Layers lowest first; each field takes the last layer that sets it (see ./recommendations.ts). */
     function resolve(contentType, overrides = {}) {
         if (contentType !== undefined && !CONTENT_TYPES.includes(contentType))
@@ -88,17 +100,18 @@ export function createSecurity(options) {
         const segments = technique.kind === "full_text" || (config.previewed && technique.kind === "decoded_preview_v1")
             ? [{ index: 0, parts: redacted }]
             : segmentText(redacted.join("\n"), technique).map(({ text, ...segment }) => ({ ...segment, parts: [text] }));
+        const context = config.contentType === undefined ? [] : [{ contentType: config.contentType }];
         let assessments;
         try {
             assessments = await Promise.all(config.models.flatMap((model) => segments.map(async ({ index, parts, ...words }) => ({
-                model, segment: index, ...(name ? { stage: name } : {}), ...words, assessment: await providers[model].assess(parts),
+                model, segment: index, ...(name ? { stage: name } : {}), ...words, assessment: await providers[model].assess(parts, ...context),
             }))));
         }
         catch (error) {
             throw new ScreeningError(error, { code: "provider_failed" });
         }
         try {
-            return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator, modelThresholds) };
+            return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator, modelThresholds(config.contentType)) };
         }
         catch (error) {
             throw new ScreeningError(error, { code: "invalid_assessment" });
@@ -128,7 +141,7 @@ export function createSecurity(options) {
                 return { ...base, decision: "allow" };
             // Preprocessing runs once, after authored text is removed, and every pass sees its output.
             const prepared = applyPreprocess(redacted, config.preprocess);
-            const stageConfig = { ...config, previewed: config.preprocess.includes("decoded_preview_v1") };
+            const stageConfig = { ...config, previewed: config.preprocess.includes("decoded_preview_v1"), contentType: input.contentType };
             // A cascade's second pass runs only when the first did not settle the
             // outcome. A flag settles it (the stages are OR-ed, so nothing later can
             // clear it), and so does another content filter's match, which blocks

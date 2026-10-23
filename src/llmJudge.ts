@@ -34,9 +34,9 @@
 //     were still deliberating when cut off. The reasoning is a draft, and an
 //     attacker's text sits in the same context window as it.
 // ---------------------------------------------------------------------------
-import type { ScreeningAssessment } from "./screen.js";
+import type { ScreeningAssessment, ScreeningContext } from "./screen.js";
 import type { FetchLike, PromptTextParts } from "./modelArmor.js";
-import { JUDGE_PROFILES, type JudgeProfile, type JudgeProfileId } from "./recommendations.js";
+import { JUDGE_PROFILES, type ContentType, type JudgeProfile, type JudgeProfileId } from "./recommendations.js";
 
 /** The eval prompt id this judge reproduces (evals/src/engines.ts `SCORE_ONLY_PROMPT_ID`). */
 export const SCORE_ONLY_PROMPT_ID = "security-eval-score-only-json-v1";
@@ -128,7 +128,11 @@ export interface OpenAICompatibleJudgeOptions {
    * or low and falls back to xhigh (issue #33).
    */
   reasoningEffort?: JudgeReasoningEffort;
-  /** A score above this flags. Defaults to the profile's threshold, else 0.5. */
+  /**
+   * A score above this flags, for every content type. Defaults to the profile's
+   * threshold (its `thresholdByContentType` entry for an input that names that
+   * type), else 0.5. Setting it replaces the profile's thresholds entirely.
+   */
   threshold?: number;
   /** Defaults to `">"`, the comparator the eval decision rules used. */
   comparator?: ">" | ">=";
@@ -187,6 +191,8 @@ export class OpenAICompatibleJudge {
     Pick<OpenAICompatibleJudgeOptions, "apiKey" | "reasoningEffort">;
   /** The resolved profile, when one was given. */
   readonly profile?: JudgeProfile;
+  /** The profile's per-content-type thresholds, unless an explicit `threshold` option replaced them. */
+  readonly thresholdByContentType: Readonly<Partial<Record<ContentType, number>>>;
 
   constructor(options: OpenAICompatibleJudgeOptions) {
     const profile: JudgeProfile | undefined = typeof options.profile === "string" ? JUDGE_PROFILES[options.profile] : options.profile;
@@ -218,18 +224,28 @@ export class OpenAICompatibleJudge {
     }
     this.options = resolved;
     if (profile) this.profile = profile;
+    this.thresholdByContentType = options.threshold === undefined ? { ...profile?.thresholdByContentType } : {};
+    for (const [type, value] of Object.entries(this.thresholdByContentType)) {
+      if (typeof value !== "number" || !(value >= 0 && value <= 1)) throw new TypeError(`Judge threshold for ${type} must be from 0 to 1`);
+    }
   }
 
   /** The score above which this judge flags. `screen` reads it for a score aggregator that sets no threshold. */
   get threshold(): number { return this.options.threshold; }
+  /** The threshold for an input of this content type: its `thresholdByContentType` entry, else `threshold`. */
+  thresholdFor(contentType?: ContentType): number {
+    return (contentType === undefined ? undefined : this.thresholdByContentType[contentType]) ?? this.options.threshold;
+  }
   get comparator(): ">" | ">=" { return this.options.comparator; }
 
-  async assess(parts: PromptTextParts): Promise<OpenAICompatibleJudgeAssessment> {
+  /** `context.contentType` selects the threshold (`thresholdFor`); `screen` passes the input's. */
+  async assess(parts: PromptTextParts, context?: ScreeningContext): Promise<OpenAICompatibleJudgeAssessment> {
     if (!Array.isArray(parts) || parts.length === 0 || parts.some((part) => typeof part !== "string")) {
       throw new TypeError("Judge input must contain at least one string");
     }
     const text = parts.join("\n");
-    const { model, threshold, comparator } = this.options;
+    const { model, comparator } = this.options;
+    const threshold = this.thresholdFor(context?.contentType);
     // Matches ModelArmorScanner: no text, nothing to inject. `screen` never sends this.
     if (!text.trim()) return { flagged: false, blocked: false, label: "BENIGN", score: 0, matchedFilters: [], provider: "openai_compatible", model, usage: {}, reasoningChars: 0 };
 

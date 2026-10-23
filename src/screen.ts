@@ -41,11 +41,23 @@ export interface TextInput {
   contentType?: ContentType;
 }
 
+/** What `screen` tells a provider about the input, beyond its text. */
+export interface ScreeningContext {
+  /** The input's `contentType`, when it named one. */
+  contentType?: ContentType;
+}
+
 /** A provider can be backed by Model Armor, a self-hosted LLM judge, or another text detector. */
 export interface TextScreeningProvider {
-  assess(parts: readonly [string, ...string[]]): Promise<ScreeningAssessment>;
+  /** `context` is passed only when the input names a content type. */
+  assess(parts: readonly [string, ...string[]], context?: ScreeningContext): Promise<ScreeningAssessment>;
   /** The score above which this provider flags, read by a score aggregator that sets no threshold. */
   readonly threshold?: number;
+  /**
+   * Replaces `threshold` for inputs that name one of these content types. An
+   * `OpenAICompatibleJudge` exposes its profile's `thresholdByContentType` here.
+   */
+  readonly thresholdByContentType?: Readonly<Partial<Record<ContentType, number>>>;
   readonly comparator?: ">" | ">=";
 }
 
@@ -184,13 +196,23 @@ export function createSecurity(options: SecurityOptions) {
     if (provider.threshold !== undefined && !(typeof provider.threshold === "number" && provider.threshold >= 0 && provider.threshold <= 1)) {
       throw new TypeError(`Provider ${name} has a threshold outside 0-1`);
     }
+    for (const [type, value] of Object.entries(provider.thresholdByContentType ?? {})) {
+      if (!(CONTENT_TYPES as readonly string[]).includes(type)) throw new TypeError(`Provider ${name} thresholdByContentType.${type} is not a content type`);
+      if (!(typeof value === "number" && value >= 0 && value <= 1)) throw new TypeError(`Provider ${name} has a threshold for ${type} outside 0-1`);
+    }
   }
   for (const type of Object.keys(options.contentTypes ?? {})) {
     if (!(CONTENT_TYPES as readonly string[]).includes(type)) throw new TypeError(`contentTypes.${type} is not a content type`);
   }
   const local = options.localOverrides === undefined ? undefined : parseScreeningOverrides(options.localOverrides, "localOverrides");
-  const modelThresholds: Record<string, ModelThreshold> = Object.fromEntries(Object.entries(providers)
-    .map(([name, { threshold, comparator }]) => [name, { threshold, comparator }]));
+  /**
+   * Each model's own threshold for a score rule that sets none: the provider's
+   * entry for the input's content type, else its `threshold` (else 0.5, in `aggregate`).
+   */
+  const modelThresholds = (contentType?: ContentType): Record<string, ModelThreshold> => Object.fromEntries(Object.entries(providers)
+    .map(([name, { threshold, thresholdByContentType, comparator }]) => [name, {
+      threshold: (contentType === undefined ? undefined : thresholdByContentType?.[contentType]) ?? threshold, comparator,
+    }]));
 
   /** Layers lowest first; each field takes the last layer that sets it (see ./recommendations.ts). */
   function resolve(contentType?: ContentType, overrides: ScreeningConfig = {}): ResolvedScreeningConfig {
@@ -227,7 +249,7 @@ export function createSecurity(options: SecurityOptions) {
   async function runStage(
     redacted: readonly string[],
     technique: SingleStageTechnique,
-    config: { models: string[]; aggregator: ScreeningAggregator; previewed: boolean },
+    config: { models: string[]; aggregator: ScreeningAggregator; previewed: boolean; contentType?: ContentType },
     name?: "first" | "then",
   ): Promise<Stage> {
     // Full text keeps the caller's parts intact; chunking works on their join.
@@ -237,16 +259,17 @@ export function createSecurity(options: SecurityOptions) {
       ? [{ index: 0, parts: redacted as [string, ...string[]] }]
       : segmentText(redacted.join("\n"), technique).map(({ text, ...segment }) => ({ ...segment, parts: [text] as [string] }));
 
+    const context: [ScreeningContext] | [] = config.contentType === undefined ? [] : [{ contentType: config.contentType }];
     let assessments: SegmentAssessment[];
     try {
       assessments = await Promise.all(config.models.flatMap((model) => segments.map(async ({ index, parts, ...words }) => ({
-        model, segment: index, ...(name ? { stage: name } : {}), ...words, assessment: await providers[model]!.assess(parts),
+        model, segment: index, ...(name ? { stage: name } : {}), ...words, assessment: await providers[model]!.assess(parts, ...context),
       }))));
     } catch (error) {
       throw new ScreeningError(error, { code: "provider_failed" });
     }
     try {
-      return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator, modelThresholds) };
+      return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, config.aggregator, modelThresholds(config.contentType)) };
     } catch (error) {
       throw new ScreeningError(error, { code: "invalid_assessment" });
     }
@@ -275,7 +298,7 @@ export function createSecurity(options: SecurityOptions) {
       if (redacted.every((part) => !part.trim())) return { ...base, decision: "allow" };
       // Preprocessing runs once, after authored text is removed, and every pass sees its output.
       const prepared = applyPreprocess(redacted, config.preprocess);
-      const stageConfig = { ...config, previewed: config.preprocess.includes("decoded_preview_v1") };
+      const stageConfig = { ...config, previewed: config.preprocess.includes("decoded_preview_v1"), contentType: input.contentType };
 
       // A cascade's second pass runs only when the first did not settle the
       // outcome. A flag settles it (the stages are OR-ed, so nothing later can

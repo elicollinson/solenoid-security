@@ -1,5 +1,5 @@
 export { createSecurity, ScreeningError } from "./screen.js";
-export type { CascadeStageResult, ResolvedScreeningConfig, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningConfigSource, ScreeningDecision, ScreeningErrorCode, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
+export type { CascadeStageResult, ResolvedScreeningConfig, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningConfigSource, ScreeningContext, ScreeningDecision, ScreeningErrorCode, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
 export { adjustThreshold, applyPreprocess, DEFAULT_SCORE_THRESHOLD, PREPROCESSORS, segmentText } from "./techniques.js";
 export type { CascadeTechnique, LengthAdjust, ModelThreshold, Preprocessor, ScoreAggregator, ScreeningAggregator, ScreeningTechnique, SegmentAssessment, SegmentingTechnique, SingleStageTechnique, TextSegment } from "./techniques.js";
 export { CONTENT_RECOMMENDATIONS, CONTENT_TYPES, DEFAULT_JUDGE_PROFILE_ID, JUDGE_PROFILES, mergeScreeningConfig, parseScreeningOverrides } from "./recommendations.js";

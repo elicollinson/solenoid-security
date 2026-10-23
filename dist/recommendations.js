@@ -8,6 +8,14 @@ const ISSUE_33 = "https://github.com/elicollinson/solenoid-security/issues/33";
 // The effort audit (FINDINGS O54, Appendix B), in PR #35 until it merges.
 const EFFORT_AUDIT = "https://github.com/elicollinson/solenoid-security/blob/feature/qwen38-effort-calibration/evals/reports/qwen38-effort-calibration-2026-10.md";
 const PR_35 = "https://github.com/elicollinson/solenoid-security/pull/35";
+// The Qwen3.8 effort ablation and Muse threshold fit (FINDINGS O65, O66), in PR #49 until it merges.
+const ABLATION_BRANCH = "https://github.com/elicollinson/solenoid-security/blob/feature/qwen38-effort-ablation";
+const ABLATION = [
+    `${ABLATION_BRANCH}/evals/reports/qwen38-effort-ablation-2026-10.md`,
+    `${ABLATION_BRANCH}/evals/FINDINGS.md#O65`,
+    `${ABLATION_BRANCH}/evals/FINDINGS.md#O66`,
+    "https://github.com/elicollinson/solenoid-security/pull/49",
+];
 const finding = (...ids) => ids.map((id) => `${FINDINGS}#${id}`);
 const MEASURED = { comparator: ">", temperature: 0, maxTokens: 4096 };
 // Every run requested `reasoning_effort: "high"`, which LM Studio never forwarded
@@ -47,18 +55,18 @@ export const JUDGE_PROFILES = {
     },
     "qwen3.8-27b": {
         id: "qwen3.8-27b", name: "Qwen3.8 27B", modelHint: "qwen/qwen3.8-27b@q8_0", architecture: "dense",
-        status: "recommended", threshold: 0.15, ...MEASURED, reasoningEffort: "xhigh", acceptedReasoningEfforts: ["xhigh", "medium", "low"],
-        template: { effortVariable: "reasoning_effort", effortApplied: "xhigh", thinking: "on", injectedText: "\"Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\" prepended to the system prompt (38 tokens)" },
+        status: "recommended", threshold: 0.15, thresholdByContentType: { web_page: 0.5 }, ...MEASURED, reasoningEffort: "low", acceptedReasoningEfforts: ["xhigh", "medium", "low"],
+        template: { effortVariable: "reasoning_effort", effortApplied: "low", thinking: "on", injectedText: "\"Reasoning effort is set to low. Keep your thinking brief and focused, moving directly to the conclusion without unnecessary elaboration.\" prepended to the system prompt (26 tokens)" },
         scores: "graded", measured: { baseline: 0.895, extension: 0.865 },
-        notes: "Threshold 0.15, chosen on the baseline and checked out of sample: it lifts extension balanced accuracy from 0.865 (at 0.5) to 0.891. Its scores are graded rather than near-binary, and its misses in email and code are mostly calibration (attacks scored 0.05-0.5). The chat template accepts only xhigh, medium or low and defaults to xhigh, which prepends a 38-token instruction to the system prompt; every measurement ran at xhigh (LM Studio never forwarded the requested \"high\"), so this profile sends xhigh and the instruction comes with it (O54, Appendix B, #33, #35).",
-        evidence: [...finding("O48", "O30"), STUDIO_BASELINE, EXTENSION_SUITE, ...AUDIT],
+        notes: "Effort low: the template accepts only xhigh, medium or low and LM Studio silently drops any other value, so the template default xhigh applied in the baseline and extension runs (the measured numbers above), with a 38-token instruction. In the pre-registered ablation (O65, #33, PR #49; 10 seeded tests, 1,606 cases per arm), mean balanced accuracy at 0.5 went from 0.800 (xhigh) to 0.841 (medium) to 0.870 (low), QA AUROC from 0.821 to 0.950, with 0.78x the reasoning tokens; NotInject false alarms rose from 1 to 7 of 150. Low prepends its own 26-token instruction. Threshold 0.15 (provisional): O55's baseline fit, which lifts extension balanced accuracy at xhigh from 0.865 to 0.891 and all-10 ablation accuracy at low from 0.870 to 0.893; it has not been rerun on the full suite at low. Web pages keep 0.5: the ablation had no web cohort, and a low threshold cost Muse web accuracy through benign-page flags (O66).",
+        evidence: [...finding("O48", "O30"), STUDIO_BASELINE, EXTENSION_SUITE, ...ABLATION, ...AUDIT],
     },
     "muse-glimmer-30b": {
         id: "muse-glimmer-30b", name: "Muse Glimmer 30B", modelHint: "muse-glimmer-30b@q8_0", architecture: "dense",
-        status: "provisional", threshold: 0.5, ...MEASURED, template: { effortVariable: "reasoning_strength", effortApplied: "high", thinking: "on", injectedText: "\"Reasoning strength: high.\" plus a fixed \"# Valid recipients\" line, after the system prompt" },
-        scores: "near_binary", measured: { baseline: 0.903 },
-        notes: "Extension suite still running; baseline only. Its template reads reasoning_strength, not reasoning_effort, and defaults to \"high\", which is what every run used; no reasoning_effort is sent. The template also appends a fixed reasoning-strength line and a recipients line at any setting (O54, Appendix B, #33, #35).",
-        evidence: [...finding("O48", "O50"), STUDIO_BASELINE, ...AUDIT],
+        status: "provisional", threshold: 0.1, thresholdByContentType: { web_page: 0.5 }, ...MEASURED, template: { effortVariable: "reasoning_strength", effortApplied: "high", thinking: "on", injectedText: "\"Reasoning strength: high.\" plus a fixed \"# Valid recipients\" line, after the system prompt" },
+        scores: "near_binary", measured: { baseline: 0.903, extension: 0.904 },
+        notes: "Threshold 0.10, fit on the baseline with O55's method and checked out of sample: extension balanced accuracy 0.904 (at 0.5) to 0.922 (+0.018 [+0.013, +0.024]; QA 0.815 to 0.912, BIPIA 0.839 to 0.907). Web pages keep 0.5: at 0.10 web falls from 0.765 to 0.588, with benign pages flagged going from 44 to 151 of 200 (O66, PR #49). Its template reads reasoning_strength, not reasoning_effort, and defaults to \"high\", which is what every run used; no reasoning_effort is sent, and the setting was not varied. The template also appends a fixed reasoning-strength line and a recipients line at any setting (O54, Appendix B, #33, #35).",
+        evidence: [...finding("O48", "O50"), STUDIO_BASELINE, EXTENSION_SUITE, ...ABLATION, ...AUDIT],
     },
     "laguna-xs-2.1": {
         id: "laguna-xs-2.1", name: "Laguna XS 2.1", modelHint: "laguna-xs-2.1", architecture: "moe",

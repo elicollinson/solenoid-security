@@ -37,11 +37,22 @@ export interface TextInput {
      */
     contentType?: ContentType;
 }
+/** What `screen` tells a provider about the input, beyond its text. */
+export interface ScreeningContext {
+    /** The input's `contentType`, when it named one. */
+    contentType?: ContentType;
+}
 /** A provider can be backed by Model Armor, a self-hosted LLM judge, or another text detector. */
 export interface TextScreeningProvider {
-    assess(parts: readonly [string, ...string[]]): Promise<ScreeningAssessment>;
+    /** `context` is passed only when the input names a content type. */
+    assess(parts: readonly [string, ...string[]], context?: ScreeningContext): Promise<ScreeningAssessment>;
     /** The score above which this provider flags, read by a score aggregator that sets no threshold. */
     readonly threshold?: number;
+    /**
+     * Replaces `threshold` for inputs that name one of these content types. An
+     * `OpenAICompatibleJudge` exposes its profile's `thresholdByContentType` here.
+     */
+    readonly thresholdByContentType?: Readonly<Partial<Record<ContentType, number>>>;
     readonly comparator?: ">" | ">=";
 }
 /** How text is screened. Set app-wide in `createSecurity`, override per `screen` call. */

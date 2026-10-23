@@ -144,12 +144,13 @@ export function responseObjectFor(runId: string, requestId: string): string {
 // Responses
 // ---------------------------------------------------------------------------
 
-export type ResponseShape = "openai_chat" | "lmstudio_envelope" | "model_armor_assessment" | "model_armor_assessment_native" | "jev_answers" | "other";
+export type ResponseShape = "openai_chat" | "lmstudio_envelope" | "openai_compat_envelope" | "model_armor_assessment" | "model_armor_assessment_native" | "jev_answers" | "other";
 
 export function responseShape(raw: unknown): ResponseShape {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) return "other";
   const r = raw as Record<string, unknown>;
   if ("lmStudio" in r && "nativeResponse" in r) return "lmstudio_envelope";
+  if ("openaiCompatible" in r && "nativeResponse" in r) return "openai_compat_envelope";
   if ("choices" in r) return "openai_chat";
   if ("answers" in r) return "jev_answers";
   if ("filterMatchState" in r) return "nativeResponse" in r ? "model_armor_assessment_native" : "model_armor_assessment";
@@ -195,6 +196,8 @@ export interface ResponseSummary {
   /** LM Studio native-v0 server stats/model_info and the client's HTTP wall time; null for other transports. */
   ttft_s: number | null; tokens_per_second: number | null; generation_time_s: number | null; stop_reason: string | null;
   model_format: string | null; model_quant: string | null; client_http_wall_ms: number | null;
+  /** openai_compatible engine: the server's llama.cpp-style `timings` object verbatim and the endpoint actually used. */
+  server_timings: Record<string, unknown> | null; endpoint_url: string | null;
   lms_before: LmsSnapshot | null; lms_after: LmsSnapshot | null; armor: ArmorSummary | null;
 }
 
@@ -263,6 +266,7 @@ export function summarizeResponse(raw: unknown): ResponseSummary {
   const base = {
     shape, envelope_version: null as string | null, raw_sha256: jsonSha(raw), lms_before: null as LmsSnapshot | null,
     lms_after: null as LmsSnapshot | null, armor: null as ArmorSummary | null,
+    server_timings: null as Record<string, unknown> | null, endpoint_url: null as string | null,
   };
   if (shape === "openai_chat") return { ...base, ...chatSummary(r, null), client_http_wall_ms: null };
   if (shape === "lmstudio_envelope") {
@@ -270,6 +274,15 @@ export function summarizeResponse(raw: unknown): ResponseSummary {
     return {
       ...base, ...chat, envelope_version: str(r.lmStudio?.version) ?? "lmstudio-provenance/v1", client_http_wall_ms: num(r.lmStudio?.clientTiming?.httpWallMs),
       lms_before: lmsSnapshot(r.lmStudio?.before, chat.resolved_model), lms_after: lmsSnapshot(r.lmStudio?.after, chat.resolved_model),
+    };
+  }
+  if (shape === "openai_compat_envelope") {
+    const oc = r.openaiCompatible ?? {};
+    const timings = oc.serverTimings ?? r.nativeResponse?.timings;
+    return {
+      ...base, ...chatSummary(r.nativeResponse, "openai_compatible"), envelope_version: str(oc.version) ?? "openai-compatible-provenance/v1",
+      client_http_wall_ms: num(oc.clientTiming?.httpWallMs), endpoint_url: str(oc.endpoint),
+      server_timings: timings && typeof timings === "object" && !Array.isArray(timings) ? timings : null,
     };
   }
   const empty = {
@@ -299,7 +312,7 @@ export function summarizeResponse(raw: unknown): ResponseSummary {
 /** Raw bodies stay in Storage except for anomalies, which are also kept in Postgres. */
 export function isAnomalousResponse(s: ResponseSummary, hasError: boolean): boolean {
   if (hasError || s.shape === "other") return true;
-  if (s.shape === "openai_chat" || s.shape === "lmstudio_envelope") return s.finish_reason !== "stop" || s.parse_error !== null;
+  if (s.shape === "openai_chat" || s.shape === "lmstudio_envelope" || s.shape === "openai_compat_envelope") return s.finish_reason !== "stop" || s.parse_error !== null;
   return false;
 }
 
@@ -451,7 +464,7 @@ export function engineRow(engine: any, deploymentKey: string | null) {
   };
 }
 
-/** Deployment natural key: LM Studio artifact, OpenRouter route, or Model Armor template. */
+/** Deployment natural key: LM Studio artifact, openai_compatible server build, OpenRouter route, or Model Armor template. */
 export function deploymentFor(engine: any): {
   deployment_key: string; backend: string; provider: string | null; quantization: string | null; weight_format: string;
   runtime: string; model_key: string | null; indexed_model_identifier: string | null; device_identifier: string | null;
@@ -470,6 +483,16 @@ export function deploymentFor(engine: any): {
       weight_format: lm.format === "gguf" ? "gguf" : "safetensors", runtime: lm.format === "gguf" ? "llama.cpp (build unreported via LM Link)" : "mlx (build unreported via LM Link)",
       model_key: lm.modelKey ?? null, indexed_model_identifier: lm.indexedModelIdentifier, device_identifier: lm.deviceIdentifier ?? null,
       size_bytes: num(lm.sizeBytes), max_context_length: int(lm.contextLength), model_alias: alias, raw: lm };
+  }
+  const oc = engine.openaiCompatible;
+  if (engine.provider === "openai_compatible" || oc) {
+    const quantization = str(oc?.quantization);
+    const mlx = /\bmlx\b/i.test(`${quantization ?? ""} ${oc?.runtime ?? ""}`);
+    return { deployment_key: `${engine.model}@openai_compatible${quantization ? `/${quantization}` : ""}`, backend: "openai_compatible",
+      provider: "openai_compatible", quantization, weight_format: mlx ? "safetensors" : "not_applicable", runtime: str(oc?.runtime) ?? "openai_compatible:unknown",
+      model_key: null, indexed_model_identifier: null, device_identifier: null, size_bytes: null, max_context_length: null,
+      model_alias: String(engine.model),
+      raw: { model: engine.model, baseUrl: oc?.baseUrl ?? null, runtime: oc?.runtime ?? null, origin: oc?.origin ?? null, quantization, weights: oc?.weights ?? null } };
   }
   const provider = str(engine.provider);
   const quant = provider && provider.includes("/") ? provider.split("/").slice(1).join("/") : null;
@@ -728,16 +751,17 @@ export function parseFindings(md: string): FindingBlock[] {
     const sec = /^###\s+(\d+\.\d+)\s+(.+)$/.exec(line);
     if (sec) { section = sec[1]!; sectionTitle = sec[2]!.trim(); i++; continue; }
     if (/^##\s/.test(line)) { section = null; sectionTitle = null; }
-    const start = /^\*\*(O\d+[a-z]?):\s*(.*)$/.exec(line);
+    // An optional design tag may follow the id: **O62 (EXPLORATORY): ... or **O63 (PRE-REGISTERED): ...
+    const start = /^\*\*(O\d+[a-z]?)(?:\s+\(([^)]+)\))?:\s*(.*)$/.exec(line);
     if (!start) { i++; continue; }
     // The bold title may wrap onto following lines until the closing **.
-    let titleText = start[2]!;
+    let titleText = start[3]!;
     let j = i;
     while (!titleText.includes("**") && j + 1 < lines.length) { j++; titleText += " " + lines[j]!.trim(); }
-    const title = titleText.split("**")[0]!.trim();
+    const title = (start[2] ? `(${start[2]}) ` : "") + titleText.split("**")[0]!.trim();
     const bodyLines: string[] = [];
     let k = j + 1;
-    while (k < lines.length && !/^\*\*O\d+[a-z]?:/.test(lines[k]!) && !/^#{2,3}\s/.test(lines[k]!)) { bodyLines.push(lines[k]!); k++; }
+    while (k < lines.length && !/^\*\*O\d+[a-z]?(?:\s+\([^)]+\))?:/.test(lines[k]!) && !/^#{2,3}\s/.test(lines[k]!)) { bodyLines.push(lines[k]!); k++; }
     const body = bodyLines.join("\n").trim();
     const strengthLine = bulletField(body, ["strength"]);
     const sm = strengthLine ? /\*\*(Strong|Moderate|Suggestive|Anecdotal)\*\*|\b(Strong|Moderate|Suggestive|Anecdotal)\b/i.exec(strengthLine) : null;

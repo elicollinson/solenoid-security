@@ -289,6 +289,32 @@
       "is_instruction_tuned": null,
       "source_url": "https://cloud.google.com/security-command-center/docs/model-armor-overview",
       "evidence": "Managed classification service with binary filter verdicts; no model card or parameter count."
+    },
+    {
+      "canonical_name": "inclusionai/llada2.2-mini",
+      "display_name": "LLaDA2.2-mini",
+      "family": "llada2",
+      "publisher": "inclusionAI",
+      "architecture": "moe",
+      "params_total_b": 16,
+      "params_active_b": 1.4,
+      "is_instruction_tuned": true,
+      "source_url": "https://huggingface.co/inclusionAI/LLaDA2.2-mini",
+      "evidence": "Model card: MoE diffusion language model (block diffusion, Levenshtein editing); 'a total of 16B parameters and only 1.4B activated during inference'.",
+      "source_checked_on": "2026-10-22"
+    },
+    {
+      "canonical_name": "inclusionai/llada2.2-flash",
+      "display_name": "LLaDA2.2-flash",
+      "family": "llada2",
+      "publisher": "inclusionAI",
+      "architecture": "moe",
+      "params_total_b": 100,
+      "params_active_b": null,
+      "is_instruction_tuned": true,
+      "source_url": "https://huggingface.co/inclusionAI/LLaDA2.2-flash",
+      "evidence": "Model card: Mixture-of-Experts diffusion language model; Total Parameters (Non-Embedding) 100B, 32 layers. The card does not state the active parameter count.",
+      "source_checked_on": "2026-10-22"
     }
   ],
   "aliases": {
@@ -329,7 +355,12 @@
     "typesafe/jev-1.13": "typesafe/jev-1.13",
     "IFM/K2-Horizon-32B-GGUF": "ifm/k2-horizon-32b",
     "IFM/K2-Horizon-MoVA-36B-A4B-GGUF": "ifm/k2-horizon-mova-36b-a4b",
-    "unsloth/gemma-4-31B-it-GGUF": "google/gemma-4-31b-it"
+    "unsloth/gemma-4-31B-it-GGUF": "google/gemma-4-31b-it",
+    "LLaDA2.2-mini": "inclusionai/llada2.2-mini",
+    "LLaDA2.2-mini-4bit": "inclusionai/llada2.2-mini",
+    "LLaDA2.2-flash": "inclusionai/llada2.2-flash",
+    "inclusionAI/LLaDA2.2-mini": "inclusionai/llada2.2-mini",
+    "inclusionAI/LLaDA2.2-flash": "inclusionai/llada2.2-flash"
   },
   "unmapped": "Configured in suites but never run (no checkpoint): liquid/lfm2-24b-a2b, qwen/qwen3-coder-next, philipjohnbasile/Qwen3.6-27B-Fable-Fusion-711-MTPLX-6bit. Their deployments keep model_id null."
 }

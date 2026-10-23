@@ -5,7 +5,9 @@ export type EvidenceStatus =
 /** This setup was run on this kind of content under a frozen protocol. */
 "measured"
 /** Inferred from adjacent measurements, or the measurement is still running. */
- | "provisional";
+ | "provisional"
+/** No eval has covered this kind of input yet; the entry is a starting point, not a result. */
+ | "unmeasured";
 /**
  * The settings a model was measured with, for `OpenAICompatibleJudge`'s
  * `profile` option. Every model below ran under one frozen protocol: GGUF Q8_0 in
@@ -64,6 +66,15 @@ export interface JudgeProfile {
     };
     readonly notes: string;
     readonly evidence: readonly string[];
+    /**
+     * Present when the model ships a vision encoder, so `OpenAICompatibleJudge`
+     * accepts `vision: true` with this profile. Always unmeasured so far: the
+     * evals are text-only, and an image-injection eval is the needed follow-up.
+     */
+    readonly vision?: {
+        readonly status: "unmeasured";
+        readonly notes: string;
+    };
 }
 export declare const JUDGE_PROFILES: {
     readonly "gemma-4-26b-a4b": {
@@ -78,6 +89,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.922;
         };
         readonly notes: string;
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -101,6 +116,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.923;
         };
         readonly notes: string;
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -145,6 +164,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.866;
         };
         readonly notes: string;
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -171,6 +194,10 @@ export declare const JUDGE_PROFILES: {
             readonly extension: 0.865;
         };
         readonly notes: "Effort low: the template accepts only xhigh, medium or low and LM Studio silently drops any other value, so the template default xhigh applied in the baseline and extension runs (the measured numbers above), with a 38-token instruction. In the pre-registered ablation (O65, #33, PR #49; 10 seeded tests, 1,606 cases per arm), mean balanced accuracy at 0.5 went from 0.800 (xhigh) to 0.841 (medium) to 0.870 (low), QA AUROC from 0.821 to 0.950, with 0.78x the reasoning tokens; NotInject false alarms rose from 1 to 7 of 150. Low prepends its own 26-token instruction. Threshold 0.15 (provisional): O55's baseline fit, which lifts extension balanced accuracy at xhigh from 0.865 to 0.891 and all-10 ablation accuracy at low from 0.870 to 0.893; it has not been rerun on the full suite at low. Web pages keep 0.5: the ablation had no web cohort, and a low threshold cost Muse web accuracy through benign-page flags (O66).";
+        readonly vision: {
+            readonly status: "unmeasured";
+            readonly notes: "Ships a vision encoder; serve it with its projector (mmproj for GGUF). Image screening uses a separate, unmeasured prompt (security-image-score-only-json-v1). No image-injection eval has run; measure before relying on it.";
+        };
         readonly evidence: readonly string[];
         readonly comparator: ">";
         readonly temperature: 0;
@@ -238,8 +265,8 @@ export declare const JUDGE_PROFILES: {
 export type JudgeProfileId = keyof typeof JUDGE_PROFILES;
 /** The recommended judge when the caller has no other preference. */
 export declare const DEFAULT_JUDGE_PROFILE_ID: JudgeProfileId;
-/** What kind of text a screen is looking at. Names a recommendation; `screen` reads it from `TextInput.contentType`. */
-export type ContentType = "long_document" | "code" | "email" | "resume" | "web_page" | "retrieved_passage" | "tool_output" | "encoded" | "user_prompt" | "unknown";
+/** What kind of content a screen is looking at. Names a recommendation; `screen` reads it from the input's `contentType`. */
+export type ContentType = "long_document" | "code" | "email" | "resume" | "web_page" | "retrieved_passage" | "tool_output" | "encoded" | "user_prompt" | "image" | "unknown";
 export declare const CONTENT_TYPES: readonly ContentType[];
 export interface ContentRecommendation {
     /** The fields this recommendation fills. It never names models: those are the app's providers. */

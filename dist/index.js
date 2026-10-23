@@ -1,8 +1,9 @@
-export { createSecurity, ScreeningError } from "./screen.js";
+export { createSecurity, DEFAULT_MAX_DOCUMENT_BYTES, ScreeningError } from "./screen.js";
+export { BUILTIN_EXTRACTORS, documentText, extractCsv, extractHtml, extractJson } from "./documents.js";
 export { adjustThreshold, applyPreprocess, DEFAULT_SCORE_THRESHOLD, PREPROCESSORS, segmentText } from "./techniques.js";
 export { CONTENT_RECOMMENDATIONS, CONTENT_TYPES, DEFAULT_JUDGE_PROFILE_ID, JUDGE_PROFILES, mergeScreeningConfig, parseScreeningOverrides } from "./recommendations.js";
-export { ModelArmorScanner } from "./modelArmor.js";
-export { OpenAICompatibleJudge, SCORE_ONLY_PROMPT, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_SCHEMA, SCORE_ONLY_SCHEMA_ID } from "./llmJudge.js";
+export { MODEL_ARMOR_DOCUMENT_TYPES, MODEL_ARMOR_IMAGE_TYPES, MODEL_ARMOR_MAX_BYTES, ModelArmorScanner } from "./modelArmor.js";
+export { DEFAULT_MAX_IMAGE_BYTES, JUDGE_IMAGE_MIME_TYPES, OpenAICompatibleJudge, SCORE_ONLY_IMAGE_PROMPT, SCORE_ONLY_IMAGE_PROMPT_ID, SCORE_ONLY_PROMPT, SCORE_ONLY_PROMPT_ID, SCORE_ONLY_SCHEMA, SCORE_ONLY_SCHEMA_ID } from "./llmJudge.js";
 export { AuthoredTextRegistry, MIN_AUTHORED_LENGTH, authoredText } from "./authoredText.js";
 export { actionFor, DEFAULT_ORIGIN, ORIGIN_ACTION } from "./trust.js";
 export { authorizeTool, currentToolGate, withToolGate, currentConsent, withConsent } from "./toolGate.js";

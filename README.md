@@ -231,17 +231,17 @@ Every entry uses the measured decision rule, the maximum score against each mode
 
 **Judge profiles** (`JUDGE_PROFILES`) record the settings each model was measured with: GGUF Q8_0, temperature 0, 4,096 tokens, score-only prompt. Accuracy is mean balanced accuracy on the 21-dataset [baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md) and the 14-dataset extension suite.
 
-| Profile | Threshold | Effort | Baseline / extension | Status |
+| Profile | Threshold | Effort sent (measured template behavior) | Baseline / extension | Status |
 | --- | --- | --- | --- | --- |
-| `gemma-4-26b-a4b` (default) | 0.5 | high | 0.923 / 0.922 | recommended: fewest false alarms on hard benign sets (1.4% pooled), MoE and fast |
-| `gemma-4-31b-it` | 0.5 | high | 0.915 / 0.923 | recommended (dense, slowest) |
-| `ornith-1.5-35b-a3b` | 0.5 | high | 0.906 / 0.895 | recommended |
-| `qwen3.6-35b-a3b` | 0.5 | high | 0.901 / 0.866 | recommended |
-| `qwen3.8-27b` | **0.15** | **xhigh** | 0.895 / 0.865 (0.891 at 0.15) | recommended: graded scores, threshold chosen on the baseline and checked out of sample ([#33](https://github.com/elicollinson/solenoid-security/issues/33)) |
-| `muse-glimmer-30b` | 0.5 | high | 0.903 / pending | provisional |
-| `laguna-xs-2.1` | 0.5 | high | 0.712 / 0.702 | not recommended |
+| `gemma-4-26b-a4b` (default) | 0.5 | none (no effort variable; thinking on) | 0.923 / 0.922 | recommended: fewest false alarms on hard benign sets (1.4% pooled), MoE and fast |
+| `gemma-4-31b-it` | 0.5 | none (no effort variable; thinking on) | 0.915 / 0.923 | recommended (dense, slowest) |
+| `ornith-1.5-35b-a3b` | 0.5 | none (no effort variable) | 0.906 / 0.895 | recommended |
+| `qwen3.6-35b-a3b` | 0.5 | none (no effort variable) | 0.901 / 0.866 | recommended |
+| `qwen3.8-27b` | **0.15** (provisional); **0.5** for `web_page` | **low** (injects a 26-token instruction) | 0.895 / 0.865 at xhigh (0.891 at 0.15) | recommended: graded scores; effort and threshold from the ablation ([O65, PR #49](https://github.com/elicollinson/solenoid-security/pull/49)) |
+| `muse-glimmer-30b` | **0.10**; **0.5** for `web_page` | none (template's own `reasoning_strength` defaults to high) | 0.903 / 0.904 (0.922 at 0.10) | provisional |
+| `laguna-xs-2.1` | 0.5 | none (thinking state unresolved) | 0.712 / 0.702 | not recommended |
 
-Every judge setting resolves as: the option you pass, then the profile's value, then the library default. `"high"` is the effort the evals sent; whether each model's template honored it is under audit ([#33](https://github.com/elicollinson/solenoid-security/issues/33)). Qwen3.8's template accepts only `xhigh`, `medium` or `low`, so its profile sends `xhigh` (what every measurement actually ran at) and the judge rejects other values. The Gemma models flag 40–54% of encoded benign text on raw full text ([O50](evals/FINDINGS.md)), so screen encoded content with `contentType: "encoded"`.
+Every judge setting resolves as: the option you pass, then the profile's value, then the library default. The evals requested `reasoning_effort: "high"`, but LM Studio did not forward it to any template, so each model ran on its template's defaults. Each profile reproduces that and records it in `profile.template` (FINDINGS O54 and Appendix B, from the effort audit in [#35](https://github.com/elicollinson/solenoid-security/pull/35); [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Qwen3.8's template accepts only `xhigh`, `medium` or `low` (LM Studio silently drops any other value, so the template default `xhigh` and its 38-token instruction applied in the baseline and extension runs), and the judge rejects other values. Its profile sends `low`: in the pre-registered effort ablation (FINDINGS O65, [report](https://github.com/elicollinson/solenoid-security/blob/feature/qwen38-effort-ablation/evals/reports/qwen38-effort-ablation-2026-10.md), [PR #49](https://github.com/elicollinson/solenoid-security/pull/49), [#33](https://github.com/elicollinson/solenoid-security/issues/33); 10 seeded tests, 1,606 cases per arm), balanced accuracy at 0.5 went from 0.800 at `xhigh` to 0.841 at `medium` and 0.870 at `low`, QA AUROC from 0.821 to 0.950, with 0.78× the reasoning tokens. `low` prepends its own 26-token instruction ("Reasoning effort is set to low. Keep your thinking brief…"). Its 0.15 threshold is the conservative baseline fit and is provisional until a full-suite run at `low`. Muse's 0.10 was fit on the baseline and lifts extension balanced accuracy from 0.904 to 0.922 out of sample (O66). Both keep 0.5 for `web_page`: at 0.10 Muse's web accuracy falls from 0.765 to 0.588, and the Qwen ablation had no web cohort. The Gemma models flag 40–54% of encoded benign text on raw full text ([O50](evals/FINDINGS.md)), so screen encoded content with `contentType: "encoded"`.
 
 **Layers.** Each setting (`technique`, `preprocess`, `models`, `aggregator`) is resolved separately, and the highest layer that sets it wins:
 
@@ -302,7 +302,15 @@ await security.screen(
 
 Every model screens every segment, and the aggregator sees the whole matrix, so a function can express rules such as "two of three models agree". The score comparator defaults to `>`. Without a `seed`, random chunk boundaries are unpredictable; pass one only when you need reproducible chunks. The chunk techniques split on the same code as the [eval workspace](evals/README.md) input strategies of the same `kind`, so evaluate a technique, model, and threshold together before adopting them. A Model Armor PI verdict is binary and scores 1 or 0.
 
-**Per-model thresholds.** A score rule's threshold resolves in this order: the `threshold` on the rule, then each model's own threshold (an `OpenAICompatibleJudge`'s `threshold` option, else its profile's, else 0.5; any provider can expose a `threshold` property), then 0.5. Without a threshold on the rule, each model's segment scores are reduced separately and compared with that model's threshold, and the text is flagged if any model flags. So a Qwen3.8 judge at 0.15 and a Gemma judge at 0.5 can share one screen. The comparator resolves the same way and defaults to `>`.
+**Per-model thresholds.** A score rule's threshold resolves in this order:
+
+1. the `threshold` on the rule (from whichever layer set the aggregator, including `contentTypes[type]`);
+2. the judge's explicit `threshold` option, which replaces its profile's thresholds for every content type;
+3. the profile's `thresholdByContentType[contentType]`, when the input names that content type (Qwen3.8 and Muse set `web_page: 0.5`);
+4. the profile's `threshold`;
+5. 0.5.
+
+Any provider can expose `threshold` and `thresholdByContentType` properties instead of a profile, and `screen` passes `{ contentType }` as `assess`'s second argument when the input names one, so the judge's own flag (read by `"any"`) uses the same threshold. Without a threshold on the rule, each model's segment scores are reduced separately and compared with that model's threshold, and the text is flagged if any model flags. So a Qwen3.8 judge at 0.15 and a Gemma judge at 0.5 can share one screen. The comparator resolves the same way and defaults to `>`.
 
 **Decoded previews compose.** `preprocess: ["decoded_preview_v1"]` appends bounded decoded views of Base64, percent- and `\u`-escaped and invisible-character text, then hands the result to any technique, windows included. In a cascade, both passes see the previewed text. Preprocessing joins the parts with a newline first. `{ kind: "decoded_preview_v1" }` remains as an alias for preview plus `full_text` and sends the same bytes as before.
 
@@ -352,7 +360,7 @@ const security = createSecurity({
 | `maxTokens` | `4096` | Shared by reasoning and the answer. A 1,024 cap cut verbose reasoning models off before they answered ([Appendix A](evals/FINDINGS.md)). |
 | `profile` | unset | A `JUDGE_PROFILES` id or a `JudgeProfile` object. Supplies the defaults for the settings below; an option you pass wins. |
 | `reasoningEffort` | profile's, else unset | Sent as `reasoning_effort`. Rejected if the profile lists accepted values and this is not one. Prefer builds that actually reason ([O42](evals/FINDINGS.md)). |
-| `threshold`, `comparator` | profile's, else `0.5`, `">"` | A score above the threshold flags. Exposed as `judge.threshold` for score aggregators. |
+| `threshold`, `comparator` | profile's, else `0.5`, `">"` | A score above the threshold flags. Exposed as `judge.threshold` for score aggregators. An explicit `threshold` also replaces the profile's `thresholdByContentType`; `judge.thresholdFor(contentType)` gives the threshold a screen of that type uses. |
 | `responseFormat` | `"json_schema"` | `"prompt_json"` omits `response_format`, for LM Studio MLX builds that route schema-constrained output to `reasoning_content`. |
 
 The answer must be exactly `{"concernScore": <0..1>}`. A cut-off response (`finish_reason: "length"`), an answer only in the reasoning channel, malformed JSON, or an out-of-range score is never clamped or guessed: it is an **inconclusive** assessment (`label: "INCONCLUSIVE"`, `inconclusive: true`, `inconclusiveReason`, `score: NaN`). An HTTP error or a body that is not a chat completion throws. Each assessment also records `usage` (including `reasoningTokens`), `finishReason`, `responseId` and the answering `model`. Small non-reasoning judges can be steered into the score an injection asks for ([O12](evals/FINDINGS.md)), so evaluate a model before relying on it.

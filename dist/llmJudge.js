@@ -78,6 +78,8 @@ export class OpenAICompatibleJudge {
     profile;
     /** Text always; images when `vision` is on. `screen` reads this to route inputs. */
     supports;
+    /** The profile's per-content-type thresholds, unless an explicit `threshold` option replaced them. */
+    thresholdByContentType;
     constructor(options) {
         const profile = typeof options.profile === "string" ? JUDGE_PROFILES[options.profile] : options.profile;
         if (options.profile !== undefined && !profile)
@@ -126,11 +128,21 @@ export class OpenAICompatibleJudge {
         if (profile)
             this.profile = profile;
         this.supports = options.vision ? { text: true, image: { mimeTypes: JUDGE_IMAGE_MIME_TYPES, maxBytes: maxImageBytes } } : { text: true };
+        this.thresholdByContentType = options.threshold === undefined ? { ...profile?.thresholdByContentType } : {};
+        for (const [type, value] of Object.entries(this.thresholdByContentType)) {
+            if (typeof value !== "number" || !(value >= 0 && value <= 1))
+                throw new TypeError(`Judge threshold for ${type} must be from 0 to 1`);
+        }
     }
     /** The score above which this judge flags. `screen` reads it for a score aggregator that sets no threshold. */
     get threshold() { return this.options.threshold; }
+    /** The threshold for an input of this content type: its `thresholdByContentType` entry, else `threshold`. */
+    thresholdFor(contentType) {
+        return (contentType === undefined ? undefined : this.thresholdByContentType[contentType]) ?? this.options.threshold;
+    }
     get comparator() { return this.options.comparator; }
-    async assess(parts) {
+    /** `context.contentType` selects the threshold (`thresholdFor`); `screen` passes the input's. */
+    async assess(parts, context) {
         if (!Array.isArray(parts) || parts.length === 0 || parts.some((part) => typeof part !== "string")) {
             throw new TypeError("Judge input must contain at least one string");
         }
@@ -139,7 +151,7 @@ export class OpenAICompatibleJudge {
         // Matches ModelArmorScanner: no text, nothing to inject. `screen` never sends this.
         if (!text.trim())
             return { flagged: false, blocked: false, label: "BENIGN", score: 0, matchedFilters: [], provider: "openai_compatible", model, usage: {}, reasoningChars: 0 };
-        return this.complete([{ role: "system", content: SCORE_ONLY_PROMPT }, { role: "user", content: text }]);
+        return this.complete([{ role: "system", content: SCORE_ONLY_PROMPT }, { role: "user", content: text }], this.thresholdFor(context?.contentType));
     }
     /**
      * Screens one image with the image prompt. Requires `vision: true`, and
@@ -147,7 +159,7 @@ export class OpenAICompatibleJudge {
      * so a direct caller fails closed too. Sent as a base64 data URL: the server
      * never fetches a URL on the library's behalf.
      */
-    async assessImage(image) {
+    async assessImage(image, context) {
         const capability = this.supports.image;
         if (!capability)
             throw new TypeError("Judge image screening needs vision: true");
@@ -160,10 +172,10 @@ export class OpenAICompatibleJudge {
         return this.complete([
             { role: "system", content: SCORE_ONLY_IMAGE_PROMPT },
             { role: "user", content: [{ type: "image_url", image_url: { url: dataUrl(image) } }] },
-        ]);
+        ], this.thresholdFor(context?.contentType));
     }
-    async complete(messages) {
-        const { model, threshold, comparator } = this.options;
+    async complete(messages, threshold) {
+        const { model, comparator } = this.options;
         const response = await this.options.fetchFn(`${this.options.baseUrl.replace(/\/+$/, "")}/chat/completions`, {
             method: "POST",
             redirect: "error",

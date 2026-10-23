@@ -85,6 +85,12 @@ export function createSecurity(options) {
         if (provider.threshold !== undefined && !(typeof provider.threshold === "number" && provider.threshold >= 0 && provider.threshold <= 1)) {
             throw new TypeError(`Provider ${name} has a threshold outside 0-1`);
         }
+        for (const [type, value] of Object.entries(provider.thresholdByContentType ?? {})) {
+            if (!CONTENT_TYPES.includes(type))
+                throw new TypeError(`Provider ${name} thresholdByContentType.${type} is not a content type`);
+            if (!(typeof value === "number" && value >= 0 && value <= 1))
+                throw new TypeError(`Provider ${name} has a threshold for ${type} outside 0-1`);
+        }
         validateCapabilities(name, provider);
     }
     for (const type of Object.keys(options.contentTypes ?? {})) {
@@ -102,8 +108,16 @@ export function createSecurity(options) {
     if (!Number.isInteger(maxDocumentBytes) || maxDocumentBytes < 1)
         throw new TypeError("documents.maxBytes must be a positive integer");
     const local = options.localOverrides === undefined ? undefined : parseScreeningOverrides(options.localOverrides, "localOverrides");
-    const modelThresholds = Object.fromEntries(Object.entries(providers)
-        .map(([name, { threshold, comparator }]) => [name, { threshold, comparator }]));
+    /**
+     * Each model's own threshold for a score rule that sets none: the provider's
+     * entry for the input's content type, else its `threshold` (else 0.5, in `aggregate`).
+     */
+    const modelThresholds = (contentType) => Object.fromEntries(Object.entries(providers)
+        .map(([name, { threshold, thresholdByContentType, comparator }]) => [name, {
+            threshold: (contentType === undefined ? undefined : thresholdByContentType?.[contentType]) ?? threshold, comparator,
+        }]));
+    /** The context argument a provider call gets: none unless the input names a content type. */
+    const contextArgs = (contentType) => contentType === undefined ? [] : [{ contentType }];
     /** Layers lowest first; each field takes the last layer that sets it (see ./recommendations.ts). */
     function resolve(contentType, overrides = {}) {
         if (contentType !== undefined && !CONTENT_TYPES.includes(contentType))
@@ -159,7 +173,7 @@ export function createSecurity(options) {
         return { models, skipped: unable };
     }
     /** Every model judges every segment, then the verdicts are aggregated. */
-    async function runPass(models, segments, aggregator, call, technique, name) {
+    async function runPass(models, segments, aggregator, call, technique, contentType, name) {
         let assessments;
         try {
             assessments = await Promise.all(models.flatMap((model) => segments.map(async (segment) => {
@@ -171,7 +185,7 @@ export function createSecurity(options) {
             throw new ScreeningError(error, { code: "provider_failed" });
         }
         try {
-            return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, aggregator, modelThresholds) };
+            return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, aggregator, modelThresholds(contentType)) };
         }
         catch (error) {
             throw new ScreeningError(error, { code: "invalid_assessment" });
@@ -185,7 +199,8 @@ export function createSecurity(options) {
         const segments = technique.kind === "full_text" || (config.previewed && technique.kind === "decoded_preview_v1")
             ? [{ index: 0, parts: redacted }]
             : segmentText(redacted.join("\n"), technique).map(({ text, ...segment }) => ({ ...segment, parts: [text] }));
-        return runPass(config.models, segments, config.aggregator, (provider, { parts }) => provider.assess(parts), technique, name);
+        const context = contextArgs(config.contentType);
+        return runPass(config.models, segments, config.aggregator, (provider, { parts }) => provider.assess(parts, ...context), technique, config.contentType, name);
     }
     /** Turns the passes that ran into a decision: the same rules for every input type. */
     function decide(stages, base, origin, boundary, cascade) {
@@ -264,7 +279,7 @@ export function createSecurity(options) {
             base.skippedModels = skipped;
         // Preprocessing runs once, after authored text is removed, and every pass sees its output.
         const prepared = applyPreprocess(redacted, config.preprocess);
-        const stageConfig = { models, aggregator: config.aggregator, previewed: config.preprocess.includes("decoded_preview_v1") };
+        const stageConfig = { models, aggregator: config.aggregator, previewed: config.preprocess.includes("decoded_preview_v1"), contentType };
         // A cascade's second pass runs only when the first did not settle the
         // outcome. A flag settles it (the stages are OR-ed, so nothing later can
         // clear it), and so does another content filter's match, which blocks
@@ -296,10 +311,11 @@ export function createSecurity(options) {
             input: { type: modality, mimeType: content.mimeType, bytes: content.bytes.byteLength, ...(content.filename ? { filename: content.filename } : {}), via: modality === "image" ? "image" : "native" },
             ...(skipped.length ? { skippedModels: skipped } : {}),
         };
+        const context = contextArgs(common.contentType);
         const call = modality === "image"
-            ? (provider) => provider.assessImage(content)
-            : (provider) => provider.assessDocument(content);
-        const stage = await runPass(models, [{ index: 0 }], config.aggregator, call, { kind: "full_text" });
+            ? (provider) => provider.assessImage(content, ...context)
+            : (provider) => provider.assessDocument(content, ...context);
+        const stage = await runPass(models, [{ index: 0 }], config.aggregator, call, { kind: "full_text" }, common.contentType);
         return decide([stage], base, common.origin, common.boundary, false);
     }
     return {

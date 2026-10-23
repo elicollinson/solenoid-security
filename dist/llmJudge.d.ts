@@ -1,7 +1,7 @@
-import type { ScreeningAssessment } from "./screen.js";
+import type { ScreeningAssessment, ScreeningContext } from "./screen.js";
 import type { FetchLike, PromptTextParts } from "./modelArmor.js";
 import { type BinaryContent } from "./binary.js";
-import { type JudgeProfile, type JudgeProfileId } from "./recommendations.js";
+import { type ContentType, type JudgeProfile, type JudgeProfileId } from "./recommendations.js";
 /** The eval prompt id this judge reproduces (evals/src/engines.ts `SCORE_ONLY_PROMPT_ID`). */
 export declare const SCORE_ONLY_PROMPT_ID = "security-eval-score-only-json-v1";
 /** The system prompt, byte-identical to the measured eval prompt. */
@@ -106,7 +106,11 @@ export interface OpenAICompatibleJudgeOptions {
      * or low and falls back to xhigh (issue #33).
      */
     reasoningEffort?: JudgeReasoningEffort;
-    /** A score above this flags. Defaults to the profile's threshold, else 0.5. */
+    /**
+     * A score above this flags, for every content type. Defaults to the profile's
+     * threshold (its `thresholdByContentType` entry for an input that names that
+     * type), else 0.5. Setting it replaces the profile's thresholds entirely.
+     */
     threshold?: number;
     /** Defaults to `">"`, the comparator the eval decision rules used. */
     comparator?: ">" | ">=";
@@ -154,17 +158,22 @@ export declare class OpenAICompatibleJudge {
             readonly maxBytes: number;
         };
     };
+    /** The profile's per-content-type thresholds, unless an explicit `threshold` option replaced them. */
+    readonly thresholdByContentType: Readonly<Partial<Record<ContentType, number>>>;
     constructor(options: OpenAICompatibleJudgeOptions);
     /** The score above which this judge flags. `screen` reads it for a score aggregator that sets no threshold. */
     get threshold(): number;
+    /** The threshold for an input of this content type: its `thresholdByContentType` entry, else `threshold`. */
+    thresholdFor(contentType?: ContentType): number;
     get comparator(): ">" | ">=";
-    assess(parts: PromptTextParts): Promise<OpenAICompatibleJudgeAssessment>;
+    /** `context.contentType` selects the threshold (`thresholdFor`); `screen` passes the input's. */
+    assess(parts: PromptTextParts, context?: ScreeningContext): Promise<OpenAICompatibleJudgeAssessment>;
     /**
      * Screens one image with the image prompt. Requires `vision: true`, and
      * refuses an unsupported type or an image over `maxImageBytes` by throwing,
      * so a direct caller fails closed too. Sent as a base64 data URL: the server
      * never fetches a URL on the library's behalf.
      */
-    assessImage(image: BinaryContent): Promise<OpenAICompatibleJudgeAssessment>;
+    assessImage(image: BinaryContent, context?: ScreeningContext): Promise<OpenAICompatibleJudgeAssessment>;
     private complete;
 }

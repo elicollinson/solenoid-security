@@ -128,9 +128,12 @@ export type ScreeningAggregator =
  *
  * The threshold resolves in this order:
  *   1. `threshold` here, when set (at whichever configuration layer set this aggregator);
- *   2. otherwise each model's own threshold: a provider's `threshold` property,
- *      which for `OpenAICompatibleJudge` is its `threshold` option, else its
- *      judge profile's, else 0.5;
+ *   2. otherwise each model's own threshold: for an input that names a
+ *      `contentType`, the provider's `thresholdByContentType` entry for it, else
+ *      its `threshold` property. For `OpenAICompatibleJudge` that is its
+ *      `threshold` option when set (which replaces the profile's thresholds),
+ *      else its profile's content-type threshold, else the profile's
+ *      `threshold`, else 0.5;
  *   3. otherwise `DEFAULT_SCORE_THRESHOLD` (0.5).
  * With an explicit threshold, every assessment's score is reduced together, as
  * before. Without one, each model's segment scores are reduced separately and

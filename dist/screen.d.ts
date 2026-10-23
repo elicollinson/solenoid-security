@@ -89,18 +89,29 @@ export interface ProviderCapabilities {
     /** Native document screening of the raw bytes. Requires `assessDocument`. */
     readonly document?: BinaryCapability;
 }
+/** What `screen` tells a provider about the input, beyond its content. */
+export interface ScreeningContext {
+    /** The input's `contentType`, when it named one. */
+    contentType?: ContentType;
+}
 /** A provider can be backed by Model Armor, a self-hosted LLM judge, or another detector. */
 export interface TextScreeningProvider {
-    assess(parts: readonly [string, ...string[]]): Promise<ScreeningAssessment>;
+    /** `context` is passed only when the input names a content type. */
+    assess(parts: readonly [string, ...string[]], context?: ScreeningContext): Promise<ScreeningAssessment>;
     /** The score above which this provider flags, read by a score aggregator that sets no threshold. */
     readonly threshold?: number;
+    /**
+     * Replaces `threshold` for inputs that name one of these content types. An
+     * `OpenAICompatibleJudge` exposes its profile's `thresholdByContentType` here.
+     */
+    readonly thresholdByContentType?: Readonly<Partial<Record<ContentType, number>>>;
     readonly comparator?: ">" | ">=";
     /** Which inputs this provider accepts. Omitted: text only. */
     readonly supports?: ProviderCapabilities;
     /** Screens one image. Called only for a MIME type and size within `supports.image`. */
-    assessImage?(image: BinaryContent): Promise<ScreeningAssessment>;
+    assessImage?(image: BinaryContent, context?: ScreeningContext): Promise<ScreeningAssessment>;
     /** Screens a document's raw bytes. Called only for a MIME type and size within `supports.document`. */
-    assessDocument?(document: BinaryContent): Promise<ScreeningAssessment>;
+    assessDocument?(document: BinaryContent, context?: ScreeningContext): Promise<ScreeningAssessment>;
 }
 /** The provider interface; `TextScreeningProvider` is its original name. */
 export type ScreeningProvider = TextScreeningProvider;

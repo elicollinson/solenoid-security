@@ -56,10 +56,39 @@ describe("judge profiles", () => {
   test("ships the measured thresholds and statuses", () => {
     expect(DEFAULT_JUDGE_PROFILE_ID).toBe("gemma-4-26b-a4b");
     expect(JUDGE_PROFILES[DEFAULT_JUDGE_PROFILE_ID]).toMatchObject({ status: "recommended", threshold: 0.5, measured: { baseline: 0.923, extension: 0.922 } });
-    expect(JUDGE_PROFILES["qwen3.8-27b"]).toMatchObject({ threshold: 0.15, reasoningEffort: "xhigh", acceptedReasoningEfforts: ["xhigh", "medium", "low"], scores: "graded" });
-    for (const id of ["gemma-4-31b-it", "qwen3.6-35b-a3b", "ornith-1.5-35b-a3b", "muse-glimmer-30b"] as const) expect(JUDGE_PROFILES[id].threshold).toBe(0.5);
+    expect(JUDGE_PROFILES["qwen3.8-27b"]).toMatchObject({ threshold: 0.15, thresholdByContentType: { web_page: 0.5 }, reasoningEffort: "low", acceptedReasoningEfforts: ["xhigh", "medium", "low"], scores: "graded" });
+    expect(JUDGE_PROFILES["muse-glimmer-30b"]).toMatchObject({ threshold: 0.1, thresholdByContentType: { web_page: 0.5 }, measured: { baseline: 0.903, extension: 0.904 } });
+    expect("reasoningEffort" in JUDGE_PROFILES["muse-glimmer-30b"]).toBe(false);
+    for (const id of ["gemma-4-26b-a4b", "gemma-4-31b-it", "qwen3.6-35b-a3b", "ornith-1.5-35b-a3b", "laguna-xs-2.1"] as const) {
+      expect(JUDGE_PROFILES[id].threshold).toBe(0.5);
+      expect("thresholdByContentType" in JUDGE_PROFILES[id]).toBe(false);
+    }
+    for (const id of ["qwen3.8-27b", "muse-glimmer-30b"] as const) {
+      expect(JUDGE_PROFILES[id].evidence).toContain("https://github.com/elicollinson/solenoid-security/pull/49");
+      expect(JUDGE_PROFILES[id].evidence.some((ref) => ref.endsWith("evals/reports/qwen38-effort-ablation-2026-10.md"))).toBe(true);
+    }
     expect(JUDGE_PROFILES["muse-glimmer-30b"].status).toBe("provisional");
     expect(JUDGE_PROFILES["laguna-xs-2.1"].status).toBe("not_recommended");
+  });
+
+  test("profiles reproduce what each template received: effort is sent only to Qwen3.8 (O54, Appendix B)", async () => {
+    for (const profile of Object.values(JUDGE_PROFILES) as JudgeProfile[]) {
+      if (profile.id === "qwen3.8-27b") continue;
+      expect(profile.reasoningEffort).toBeUndefined();
+      const { judge, bodies } = judgeAt(0.1, { profile: profile.id as never });
+      await judge.assess(["text"]);
+      expect("reasoning_effort" in bodies[0]!).toBe(false);
+      expect(profile.evidence).toContain("evals/FINDINGS.md#O54");
+    }
+    expect(JUDGE_PROFILES["qwen3.8-27b"].template).toMatchObject({ effortVariable: "reasoning_effort", effortApplied: "low", thinking: "on" });
+    expect(JUDGE_PROFILES["qwen3.8-27b"].template.injectedText).toContain("Reasoning effort is set to low.");
+    expect(JUDGE_PROFILES["qwen3.8-27b"].template.injectedText).toContain("26 tokens");
+    expect(JUDGE_PROFILES["muse-glimmer-30b"].template).toMatchObject({ effortVariable: "reasoning_strength", effortApplied: "high" });
+    expect(JUDGE_PROFILES["muse-glimmer-30b"].template.injectedText).toContain("Reasoning strength: high.");
+    for (const id of ["gemma-4-26b-a4b", "gemma-4-31b-it", "ornith-1.5-35b-a3b", "qwen3.6-35b-a3b"] as const) {
+      expect(JUDGE_PROFILES[id].template).toMatchObject({ effortVariable: "none", thinking: "on" });
+    }
+    expect(JUDGE_PROFILES["laguna-xs-2.1"].template).toEqual({ effortVariable: "none", thinking: "unresolved" });
   });
 
   test("settings resolve option, then profile, then library default", async () => {
@@ -67,7 +96,7 @@ describe("judge profiles", () => {
     expect(fromProfile.judge.threshold).toBe(0.15);
     expect(fromProfile.judge.profile?.id).toBe("qwen3.8-27b");
     expect((await fromProfile.judge.assess(["text"])).flagged).toBe(true);
-    expect(fromProfile.bodies[0]).toMatchObject({ temperature: 0, max_tokens: 4096, reasoning_effort: "xhigh" });
+    expect(fromProfile.bodies[0]).toMatchObject({ temperature: 0, max_tokens: 4096, reasoning_effort: "low" });
 
     const overridden = judgeAt(0.3, { profile: "qwen3.8-27b", threshold: 0.4, maxTokens: 8192, reasoningEffort: "medium", comparator: ">=" });
     expect(overridden.judge.threshold).toBe(0.4);
@@ -89,6 +118,8 @@ describe("judge profiles", () => {
     const base = { baseUrl: "http://localhost:1234/v1", model: "m" };
     expect(() => new OpenAICompatibleJudge({ ...base, profile: "gpt-9" as never })).toThrow("Unknown judge profile");
     expect(() => new OpenAICompatibleJudge({ ...base, profile: "qwen3.8-27b", reasoningEffort: "high" })).toThrow("not accepted by Qwen3.8 27B");
+    for (const effort of ["low", "medium", "xhigh"] as const) expect(() => new OpenAICompatibleJudge({ ...base, profile: "qwen3.8-27b", reasoningEffort: effort })).not.toThrow();
+    expect(new OpenAICompatibleJudge({ ...base, profile: "qwen3.8-27b" }).profile?.reasoningEffort).toBe("low");
     expect(() => new OpenAICompatibleJudge({ ...base, profile: "gemma-4-26b-a4b", reasoningEffort: "low" })).not.toThrow();
   });
 
@@ -105,6 +136,55 @@ describe("judge profiles", () => {
     const bare = createSecurity({ provider: recorder(() => ({ ...clean, score: 0.3 })).provider, screening: { aggregator: { kind: "score", reduce: "max" } } });
     expect((await bare.screen({ type: "text", content: "x" })).decision).toBe("allow");
     expect(() => createSecurity({ provider: { threshold: 3, assess: async () => clean } })).toThrow("threshold outside");
+  });
+
+  test("threshold precedence: rule > content-type threshold > threshold > 0.5", async () => {
+    // Judge-level resolution: an explicit option replaces the profile's thresholds; else content type, else profile.
+    const qwen = judgeAt(0.3, { profile: "qwen3.8-27b" }).judge;
+    expect(qwen.thresholdFor()).toBe(0.15);
+    expect(qwen.thresholdFor("email")).toBe(0.15);
+    expect(qwen.thresholdFor("web_page")).toBe(0.5);
+    expect(judgeAt(0.3, { profile: "muse-glimmer-30b" }).judge.thresholdFor("web_page")).toBe(0.5);
+    expect(judgeAt(0.3, { profile: "muse-glimmer-30b" }).judge.thresholdFor("code")).toBe(0.1);
+    const explicit = judgeAt(0.3, { profile: "qwen3.8-27b", threshold: 0.2 }).judge;
+    expect(explicit.thresholdFor("web_page")).toBe(0.2);
+    expect(explicit.thresholdByContentType).toEqual({});
+    expect(judgeAt(0.3).judge.thresholdFor("web_page")).toBe(0.5);
+
+    // The judge's own flag (read by "any") follows the input's content type.
+    expect((await qwen.assess(["text"], { contentType: "web_page" })).flagged).toBe(false);
+    expect((await qwen.assess(["text"], { contentType: "email" })).flagged).toBe(true);
+    expect((await qwen.assess(["text"])).flagged).toBe(true);
+
+    // Through screen: the recommendations' score rule sets no threshold, so each model's applies.
+    const security = createSecurity({ provider: judgeAt(0.3, { profile: "qwen3.8-27b" }).judge });
+    expect((await security.screen({ type: "text", content: "x", contentType: "web_page" })).decision).toBe("allow");
+    expect((await security.screen({ type: "text", content: "x", contentType: "email" })).decision).toBe("block");
+    expect((await security.screen({ type: "text", content: "x" })).decision).toBe("block");
+    // The default "any" aggregator reads the judge's own flag, which uses the same threshold.
+    expect((await security.screen({ type: "text", content: "x", contentType: "web_page" }, { aggregator: "any" })).decision).toBe("allow");
+    // An explicit rule threshold wins over both.
+    const rule = { aggregator: { kind: "score", reduce: "max", threshold: 0.2 } } as const;
+    expect((await security.screen({ type: "text", content: "x", contentType: "web_page" }, rule)).decision).toBe("block");
+    expect((await security.screen({ type: "text", content: "x", contentType: "email" }, { aggregator: { kind: "score", reduce: "max", threshold: 0.4 } })).decision).toBe("allow");
+    // An app's per-content-type rule threshold also wins.
+    const app = createSecurity({ provider: judgeAt(0.3, { profile: "qwen3.8-27b" }).judge, contentTypes: { web_page: rule } });
+    expect((await app.screen({ type: "text", content: "x", contentType: "web_page" })).decision).toBe("block");
+
+    // Any provider can declare per-content-type thresholds; context is passed only with a content type.
+    const contexts: unknown[][] = [];
+    const custom = createSecurity({
+      provider: { threshold: 0.2, thresholdByContentType: { web_page: 0.6 }, assess: async (...args) => { contexts.push(args.slice(1)); return { ...clean, score: 0.4 }; } },
+      screening: { aggregator: { kind: "score", reduce: "max" } },
+    });
+    expect((await custom.screen({ type: "text", content: "x", contentType: "web_page" })).decision).toBe("allow");
+    expect((await custom.screen({ type: "text", content: "x", contentType: "email" })).decision).toBe("block");
+    expect((await custom.screen({ type: "text", content: "x" })).decision).toBe("block");
+    expect(contexts).toEqual([[{ contentType: "web_page" }], [{ contentType: "email" }], []]);
+    expect(() => createSecurity({ provider: { thresholdByContentType: { web_page: 2 }, assess: async () => clean } })).toThrow("outside 0-1");
+    expect(() => createSecurity({ provider: { thresholdByContentType: { pdf: 0.5 } as never, assess: async () => clean } })).toThrow("not a content type");
+    const badProfile: JudgeProfile = { ...JUDGE_PROFILES["gemma-4-26b-a4b"], id: "bad", thresholdByContentType: { web_page: -1 } };
+    expect(() => judgeAt(0.3, { profile: badProfile })).toThrow("threshold for web_page");
   });
 
   test("models with different thresholds are each held to their own", async () => {

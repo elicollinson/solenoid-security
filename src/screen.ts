@@ -99,18 +99,30 @@ export interface ProviderCapabilities {
   readonly document?: BinaryCapability;
 }
 
+/** What `screen` tells a provider about the input, beyond its content. */
+export interface ScreeningContext {
+  /** The input's `contentType`, when it named one. */
+  contentType?: ContentType;
+}
+
 /** A provider can be backed by Model Armor, a self-hosted LLM judge, or another detector. */
 export interface TextScreeningProvider {
-  assess(parts: readonly [string, ...string[]]): Promise<ScreeningAssessment>;
+  /** `context` is passed only when the input names a content type. */
+  assess(parts: readonly [string, ...string[]], context?: ScreeningContext): Promise<ScreeningAssessment>;
   /** The score above which this provider flags, read by a score aggregator that sets no threshold. */
   readonly threshold?: number;
+  /**
+   * Replaces `threshold` for inputs that name one of these content types. An
+   * `OpenAICompatibleJudge` exposes its profile's `thresholdByContentType` here.
+   */
+  readonly thresholdByContentType?: Readonly<Partial<Record<ContentType, number>>>;
   readonly comparator?: ">" | ">=";
   /** Which inputs this provider accepts. Omitted: text only. */
   readonly supports?: ProviderCapabilities;
   /** Screens one image. Called only for a MIME type and size within `supports.image`. */
-  assessImage?(image: BinaryContent): Promise<ScreeningAssessment>;
+  assessImage?(image: BinaryContent, context?: ScreeningContext): Promise<ScreeningAssessment>;
   /** Screens a document's raw bytes. Called only for a MIME type and size within `supports.document`. */
-  assessDocument?(document: BinaryContent): Promise<ScreeningAssessment>;
+  assessDocument?(document: BinaryContent, context?: ScreeningContext): Promise<ScreeningAssessment>;
 }
 
 /** The provider interface; `TextScreeningProvider` is its original name. */
@@ -340,6 +352,10 @@ export function createSecurity(options: SecurityOptions) {
     if (provider.threshold !== undefined && !(typeof provider.threshold === "number" && provider.threshold >= 0 && provider.threshold <= 1)) {
       throw new TypeError(`Provider ${name} has a threshold outside 0-1`);
     }
+    for (const [type, value] of Object.entries(provider.thresholdByContentType ?? {})) {
+      if (!(CONTENT_TYPES as readonly string[]).includes(type)) throw new TypeError(`Provider ${name} thresholdByContentType.${type} is not a content type`);
+      if (!(typeof value === "number" && value >= 0 && value <= 1)) throw new TypeError(`Provider ${name} has a threshold for ${type} outside 0-1`);
+    }
     validateCapabilities(name, provider);
   }
   for (const type of Object.keys(options.contentTypes ?? {})) {
@@ -355,8 +371,16 @@ export function createSecurity(options: SecurityOptions) {
   const maxDocumentBytes = options.documents?.maxBytes ?? DEFAULT_MAX_DOCUMENT_BYTES;
   if (!Number.isInteger(maxDocumentBytes) || maxDocumentBytes < 1) throw new TypeError("documents.maxBytes must be a positive integer");
   const local = options.localOverrides === undefined ? undefined : parseScreeningOverrides(options.localOverrides, "localOverrides");
-  const modelThresholds: Record<string, ModelThreshold> = Object.fromEntries(Object.entries(providers)
-    .map(([name, { threshold, comparator }]) => [name, { threshold, comparator }]));
+  /**
+   * Each model's own threshold for a score rule that sets none: the provider's
+   * entry for the input's content type, else its `threshold` (else 0.5, in `aggregate`).
+   */
+  const modelThresholds = (contentType?: ContentType): Record<string, ModelThreshold> => Object.fromEntries(Object.entries(providers)
+    .map(([name, { threshold, thresholdByContentType, comparator }]) => [name, {
+      threshold: (contentType === undefined ? undefined : thresholdByContentType?.[contentType]) ?? threshold, comparator,
+    }]));
+  /** The context argument a provider call gets: none unless the input names a content type. */
+  const contextArgs = (contentType?: ContentType): [ScreeningContext] | [] => contentType === undefined ? [] : [{ contentType }];
 
   /** Layers lowest first; each field takes the last layer that sets it (see ./recommendations.ts). */
   function resolve(contentType?: ContentType, overrides: ScreeningConfig = {}): ResolvedScreeningConfig {
@@ -416,6 +440,7 @@ export function createSecurity(options: SecurityOptions) {
     aggregator: ScreeningAggregator,
     call: (provider: TextScreeningProvider, segment: Segment) => Promise<ScreeningAssessment>,
     technique: SingleStageTechnique,
+    contentType: ContentType | undefined,
     name?: "first" | "then",
   ): Promise<Stage> {
     let assessments: SegmentAssessment[];
@@ -428,7 +453,7 @@ export function createSecurity(options: SecurityOptions) {
       throw new ScreeningError(error, { code: "provider_failed" });
     }
     try {
-      return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, aggregator, modelThresholds) };
+      return { name, technique, chunkCount: segments.length, assessments, verdict: aggregate(assessments, aggregator, modelThresholds(contentType)) };
     } catch (error) {
       throw new ScreeningError(error, { code: "invalid_assessment" });
     }
@@ -438,7 +463,7 @@ export function createSecurity(options: SecurityOptions) {
   function runStage(
     redacted: readonly string[],
     technique: SingleStageTechnique,
-    config: { models: string[]; aggregator: ScreeningAggregator; previewed: boolean },
+    config: { models: string[]; aggregator: ScreeningAggregator; previewed: boolean; contentType?: ContentType },
     name?: "first" | "then",
   ): Promise<Stage> {
     // Full text keeps the caller's parts intact; chunking works on their join.
@@ -447,7 +472,8 @@ export function createSecurity(options: SecurityOptions) {
     const segments: Segment[] = technique.kind === "full_text" || (config.previewed && technique.kind === "decoded_preview_v1")
       ? [{ index: 0, parts: redacted as [string, ...string[]] }]
       : segmentText(redacted.join("\n"), technique).map(({ text, ...segment }) => ({ ...segment, parts: [text] as [string] }));
-    return runPass(config.models, segments, config.aggregator, (provider, { parts }) => provider.assess(parts!), technique, name);
+    const context = contextArgs(config.contentType);
+    return runPass(config.models, segments, config.aggregator, (provider, { parts }) => provider.assess(parts!, ...context), technique, config.contentType, name);
   }
 
   type Base = Omit<ScreeningResult, "decision" | "assessment" | "assessments" | "cascade">;
@@ -533,7 +559,7 @@ export function createSecurity(options: SecurityOptions) {
     if (skipped.length) base.skippedModels = skipped;
     // Preprocessing runs once, after authored text is removed, and every pass sees its output.
     const prepared = applyPreprocess(redacted, config.preprocess);
-    const stageConfig = { models, aggregator: config.aggregator, previewed: config.preprocess.includes("decoded_preview_v1") };
+    const stageConfig = { models, aggregator: config.aggregator, previewed: config.preprocess.includes("decoded_preview_v1"), contentType };
 
     // A cascade's second pass runs only when the first did not settle the
     // outcome. A flag settles it (the stages are OR-ed, so nothing later can
@@ -571,10 +597,11 @@ export function createSecurity(options: SecurityOptions) {
       input: { type: modality, mimeType: content.mimeType, bytes: content.bytes.byteLength, ...(content.filename ? { filename: content.filename } : {}), via: modality === "image" ? "image" : "native" },
       ...(skipped.length ? { skippedModels: skipped } : {}),
     };
+    const context = contextArgs(common.contentType);
     const call = modality === "image"
-      ? (provider: TextScreeningProvider) => provider.assessImage!(content)
-      : (provider: TextScreeningProvider) => provider.assessDocument!(content);
-    const stage = await runPass(models, [{ index: 0 }], config.aggregator, call, { kind: "full_text" });
+      ? (provider: TextScreeningProvider) => provider.assessImage!(content, ...context)
+      : (provider: TextScreeningProvider) => provider.assessDocument!(content, ...context);
+    const stage = await runPass(models, [{ index: 0 }], config.aggregator, call, { kind: "full_text" }, common.contentType);
     return decide([stage], base, common.origin, common.boundary, false);
   }
 

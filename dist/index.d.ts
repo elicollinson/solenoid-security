@@ -1,5 +1,5 @@
 export { createSecurity, DEFAULT_MAX_DOCUMENT_BYTES, ScreeningError } from "./screen.js";
-export type { BinaryCapability, CascadeStageResult, DocumentInput, ExtractionSummary, ImageInput, InputSummary, ProviderCapabilities, ResolvedScreeningConfig, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningConfigSource, ScreeningDecision, ScreeningErrorCode, ScreeningInput, ScreeningProvider, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
+export type { BinaryCapability, CascadeStageResult, DocumentInput, ExtractionSummary, ImageInput, InputSummary, ProviderCapabilities, ResolvedScreeningConfig, ScreeningAssessment, ScreeningBoundary, ScreeningConfig, ScreeningConfigSource, ScreeningContext, ScreeningDecision, ScreeningErrorCode, ScreeningInput, ScreeningProvider, ScreeningResult, SecurityOptions, TextInput, TextScreeningProvider } from "./screen.js";
 export { BUILTIN_EXTRACTORS, documentText, extractCsv, extractHtml, extractJson } from "./documents.js";
 export type { DocumentContent, DocumentExtractor, ExtractedDocument } from "./documents.js";
 export type { BinaryContent, BinaryData } from "./binary.js";

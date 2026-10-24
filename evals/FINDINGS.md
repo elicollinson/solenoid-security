@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-21. The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-24. Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -684,6 +684,7 @@ balanced accuracy. The differences between them sit in specific data types.**
 - Follow-up: the extension suite (varied templates) under the same protocol; per-content recommendation profiles.
 - **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B, O55):** Qwen3.8's 0.895 is Qwen3.8 at `xhigh` effort with a template-injected system instruction, not `high`. At 0.5 its scores are under-calibrated: a 0.15 threshold chosen on this baseline gives 0.906 here and lifts its extension BA from 0.865 to 0.891 out of sample. Ranks involving Qwen3.8 (including "benign leader") carry this caveat.
 - **Update 2026-10-17 (extension suite, O56):** the saturation did not hold on harder data. On 14 new datasets the six non-Laguna models span 0.865–0.923 (range 0.059 vs 0.028 here; +0.031 [+0.023, +0.042]), and 4/15 model pairs are more than 0.05 apart (0/15 here). QA, BIPIA, BrowseSafe, LLMail and RepoGuard separate the models. Agent output stays saturated (0.982–1.000; O57). The two Gemma models tie at the top again (0.923 and 0.922); Qwen3.6 35B-A3B and Qwen3.8 fall to 0.866 and 0.865 ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
+- **Update 2026-10-24 (O67):** rerun at `reasoning_effort: "low"` on the full suites, Qwen3.8 scores 0.912 here (3rd of 7, behind Gemma 4 26B-A4B 0.923 and Gemma 4 31B-it 0.915) and 0.900 on the extension (4th). Low gains on email (0.712 → 0.812) and agent and loses benign specificity (0.994 → 0.965), so Qwen3.8 is no longer the benign leader. The xhigh 0.895 remains the historical protocol row ([report](reports/studio-qwen38-low-2026-10.md)).
 
 **O49: Skill-Inject policy pairs cannot rank full-text detectors. Every model scores exactly 0.500 (Gemma26 0.513)
 because both members of each pair send a byte-identical input.**
@@ -794,6 +795,7 @@ added in front of our system prompt.**
 - Follow-up: the Qwen3.8 effort ablation (`xhigh`, `medium`, `low`, `xhigh` without the instruction; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). The
   judge should send only effort values each template accepts, recorded per model.
 - **Update 2026-10-21 (O65):** the mechanism is now measured. LM Studio 0.4.25 does forward `reasoning_effort` to the template for the values the model declares (`xhigh`/`medium`/`low` for Qwen3.8; `prompt_tokens` −38 and −12, exact on 1,606/1,606 cases each). It silently drops the generic `"high"` on `/api/v0` and `/v1`, and the native `/api/v1/chat` rejects it. A body `chat_template_kwargs` and a load-time `--chat-template-kwargs` override are ignored ([ablation report](reports/qwen38-effort-ablation-2026-10.md)).
+- **Update 2026-10-24 (O67):** the full-suite rerun at `low` confirms the mechanism on every case: `prompt_tokens` = xhigh − 12 on all 14,085 requests with usage, in all 35 cells. The other models were not rerun and still ran at their template defaults ([report](reports/studio-qwen38-low-2026-10.md)).
 
 **O55: Qwen3.8's category gaps behind Qwen3.6 35B-A3B are mostly calibration (graded, hedged scores below 0.5), except
 in QA, where it is a recognition gap. A threshold chosen on the baseline lifts its extension BA from 0.865 to 0.891.**
@@ -819,6 +821,7 @@ in QA, where it is a recognition gap. A threshold chosen on the baseline lifts i
   - **QA.** Removing the xhigh instruction raises Qwen3.8's QA AUROC from 0.821 to 0.950 on a 400-case subset. QA attacks scored exactly 0 fall from 36% to 10%, so the QA "recognition gap" was mostly the instruction.
   - **BA at 0.5.** BA rises on every target group, by +0.054 pooled at `medium` and more at `low`.
   - **Calibration.** Scores stay graded, and the best threshold stays at 0–0.02, so most of the calibration gap remains at every effort.
+- **Update 2026-10-24 (O67):** on full cohorts at `low`, QA AUROC rises from 0.821 to 0.943 and QA BA at 0.5 from 0.730 to 0.825, which confirms that the QA gap was mostly the instruction. Calibration remains: O55's method now fits 0.08 (baseline flat over 0.05–0.15), and 0.15 still lifts extension non-web BA from 0.906 to 0.928 out of sample. Web should stay at 0.5 (BrowseSafe 0.820 → 0.698 at 0.15) ([report](reports/studio-qwen38-low-2026-10.md)).
 
 ### 2.16 Mac Studio Q8 extension suite (2026-10-17)
 
@@ -884,6 +887,7 @@ remains a reasonable default.**
 - Strength: **Moderate** (complete cohorts and paired intervals; the Gemma margins are 0.014–0.028).
 - Caveats: Gemma runs had thinking on through the template and no effort level (O54). Equal dataset weights.
 - Follow-up: feed the per-content rows into the recommendation profiles (PR #34).
+- **Update 2026-10-24 (O67):** at `low`, Qwen3.8's pooled extension FPR is 1.5% (29/1,973 [1.0, 2.1]), next to Gemma 4 26B-A4B's 1.4%. Its content rows become: long docs 0.918, BIPIA 0.805, QA 0.825, web 0.820 (second to Gemma 4 31B-it's 0.825), agent 0.997 and LLMail 0.933. The Gemma lead and the default are unchanged ([report](reports/studio-qwen38-low-2026-10.md)).
 
 **O60: Muse Glimmer ranks attacks above benign cases almost perfectly on QA and BIPIA tables, but scores many attacks
 below 0.5, so its BA there understates its ranking.**
@@ -1095,6 +1099,7 @@ gap" in O55 was the instruction.**
 - Follow-up: recommended profile `reasoning_effort: "low"` with threshold 0.15 for non-web content (provisional) and
   0.5 for web. A full-suite rerun at `low` (about 21 h) would replace the frozen Qwen3.8 rows. Engines should send
   only values a template declares.
+- **Update 2026-10-24 (O67):** the follow-up ran. On the full suites, low beats xhigh on both suites (baseline +0.017, extension +0.035). The ablation's QA, BIPIA and email gains hold at full size. The NotInject false-alarm increase is now significant on the baseline benign group (1 vs 27). The 0.15 non-web threshold passed its pre-registered check and is no longer provisional.
 
 **O66: Muse Glimmer's under-calibration at 0.5 is recoverable out of sample. A threshold of 0.10, chosen on the 21
 baseline datasets, lifts its extension BA from 0.904 to 0.922, but it costs web pages.**
@@ -1111,6 +1116,46 @@ baseline datasets, lifts its extension BA from 0.904 to 0.922, but it costs web 
   where extension BA is 0.915–0.922).
 - Caveats: equal dataset weights; Muse's `reasoning_strength: high` was not varied (O54).
 - Follow-up: per-content thresholds in the profiles: Muse 0.10 for non-web content, 0.5 for web.
+
+### 2.19 Qwen3.8 at `low` effort on the full Studio suites (2026-10-22/24)
+
+> **Design:** pre-registered in `d77b6f4` ([plan](reports/studio-qwen38-low-plan-2026-10.md)), pushed before the run.
+> - **Engine:** #49's low engine, byte-for-byte. It is the frozen Qwen3.8 Q8_0 engine with only `reasoning_effort: "low"`.
+> - **Tests:** the frozen baseline (21) and extension (14) tests, unchanged: 14,085 cases.
+> - **Comparison:** paired against the frozen xhigh checkpoints. Exact McNemar per group with Holm within each suite.
+> - **Run:** 14,085 calls, strictly serial, in 22.3 h, with 0 transport or provenance errors.
+
+**O67 (PRE-REGISTERED): On the full suites, `reasoning_effort: "low"` lifts Qwen3.8 from 0.895 to 0.912 (baseline) and
+from 0.865 to 0.900 (extension) at 0.5, at about 0.86× the time. The gain is on QA, email and BIPIA. It costs benign
+false alarms on the baseline's benign sets.**
+- Evidence ✔:
+  - **Drift.** The first 24 cases reproduced the #49 low arm exactly: prompt tokens, scores, answers and
+    reasoning-token counts all 24/24. `prompt_tokens` = xhigh − 12 on every case with usage in all 35 cells.
+  - **Overall.**
+    - Baseline ΔBA +0.017 [+0.009, +0.024], 253 vs 168 discordant, p = 4.0×10⁻⁵.
+    - Extension +0.035 [+0.029, +0.042], 579 vs 99, p = 2×10⁻⁸³.
+    - Unchanged when abstentions count as errors.
+  - **Groups that improve (Holm).** Extension QA 0.730 → 0.825, email 0.810 → 0.933 and BIPIA 0.748 → 0.805.
+    Baseline email 0.712 → 0.812, agent 0.971 → 0.991 and long docs 0.964 → 0.972.
+  - **Groups that do not change.** Web (0.856 → 0.854; 0.802 → 0.820), obfuscated, extension long docs, agent and code.
+  - **Benign cost.** The baseline benign group falls from 0.994 to 0.965 (1 vs 27, p = 1.3×10⁻⁶). Flagged:
+    NotInject 3 → 18, hard-benign PIDS 3 → 14, encoded benign controls 33 → 82. Extension pooled FPR falls from 2.2% to
+    1.5% (29/1,973 [1.0, 2.1]; BrowseSafe benign 30 → 16 of 200).
+  - **Ranking.** QA AUROC 0.821 → 0.943. Mean AUROC 0.938 → 0.940 (baseline) and 0.923 → 0.945 (extension).
+  - **Abstentions.** 19 vs 17 (baseline) and 12 vs 2 (extension, all BIPIA table attacks).
+  - **Cost.** Mean reasoning tokens 0.87× and 0.84×, request time 0.87× and 0.86×.
+  - **Threshold.** O55's method fits 0.08 (baseline flat at 0.917–0.918 over 0.05–0.15). Extension 0.900 → 0.913
+    (+0.013 [+0.007, +0.019]); non-web 0.906 → 0.937, and 0.928 at 0.15. BrowseSafe falls to 0.698 at 0.15.
+  - See the [report](reports/studio-qwen38-low-2026-10.md) and
+    [`low-results.json`](analysis/studio-qwen38-low-2026-10-22/results/low-results.json).
+- Strength: **Strong** for the overall and QA/email/BIPIA gains (pre-registered, paired, complete cohorts, exact
+  mechanism and drift checks). **Moderate** for the threshold, a single fit on a flat curve.
+- Caveats:
+  - The xhigh arm is the frozen checkpoints.
+  - Equal dataset weights, and several datasets are single-class.
+  - Only Qwen3.8's effort was changed; the other models remain at their template defaults (O54).
+- Follow-up: the README headline row now uses low; xhigh is kept as the historical protocol. Profiles (PR #34):
+  Qwen3.8 `reasoning_effort: "low"`, threshold 0.15 for non-web content (pre-registered rule passed) and 0.5 for web.
 
 ---
 
@@ -1428,6 +1473,8 @@ template accepts, and audits should check `prompt_tokens` against a hand-rendere
 - low: higher still, at 0.82× the wall time.
 
 The frozen numbers stay as reported and labelled. The recommended Qwen3.8 setting for new work is `low` ([report](reports/qwen38-effort-ablation-2026-10.md)).
+
+**Update 2026-10-24 (O67).** The full-suite rerun at `low` ran: baseline 0.912 and extension 0.900. These replace the Qwen3.8 row in the README headline table. The xhigh numbers (0.895 / 0.865) stay published as the historical protocol ([report](reports/studio-qwen38-low-2026-10.md)).
 
 **Implications for earlier results.** Affected: the MacBook Qwen3.8 runs from 2026-10-04 (same rendering, verified on
 976 inputs), Studio Study A, the Studio baseline, the extension suite and the abliteration pilot. Not covered: hosted

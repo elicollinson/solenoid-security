@@ -4993,3 +4993,42 @@ recomputation reproduces O55 exactly.
 - Report: [`qwen38-effort-ablation-2026-10.md`](qwen38-effort-ablation-2026-10.md).
 - FINDINGS O65 and O66, with dated notes on O54, O55, O60 and Appendix B.
 - The README footnote.
+
+### L158 — 2026-10-22/24: Qwen3.8 at `reasoning_effort: "low"` on the full Studio suites (#33, PRE-REGISTERED); 0.912 / 0.900, replaces the xhigh row
+
+The user approved about 21 Studio hours. This is stacked on #49 (L157, O65).
+
+**Pre-registration.** `d77b6f4` was pushed before the first call ([plan](studio-qwen38-low-plan-2026-10.md)).
+
+- **Suites.** Two new suites copy the frozen baseline (21 tests, 7,326 cases) and extension (14 tests, 6,759 cases)
+  tests unchanged (sorted-JSON diff). Each has one engine, #49's low engine byte-for-byte, and one condition,
+  `baseline-qwen38-q8gguf-low-t4096-full`.
+- **Gates.** Drift against #49's low arm, a mechanism gate on the extension, a per-cell −12 `prompt_tokens` check, the
+  L141 rule and a 25 h cap.
+
+**Run.** It ran from the main checkout (detached at `2c6dd56`, the runner #49 used) into
+`evals/runs/studio-qwen38-low-2026-10-22/`, 2026-10-23 02:56:27 to 2026-10-24 01:16:29 UTC (22.3 h: 20.9 h of
+requests plus 35 loads).
+
+- **Calls.** 14,085, strictly serial. No retries, no LM Link waits, 0 transport or provenance errors, no halt.
+- **Drift.** 24/24 identical to #49's low arm on prompt tokens, scores, final answers and reasoning-token counts.
+- **Abstentions.** 31 length abstentions: 19 baseline and 12 extension (all BIPIA table).
+
+**Results (O67).**
+
+- **Overall.** Baseline 0.895 → 0.912 (+0.017 [+0.009, +0.024], p = 4×10⁻⁵). Extension 0.865 → 0.900 (+0.035
+  [+0.029, +0.042], p = 2×10⁻⁸³). Qwen3.8 is now 3rd and 4th of 7.
+- **Gains.** QA +0.096, extension email +0.123, baseline email +0.099, BIPIA +0.056, baseline agent +0.020.
+- **Unchanged.** Web, obfuscated text, extension long docs, agent and code.
+- **Benign cost.** The baseline benign group falls from 0.994 to 0.965 (1 vs 27 discordant). Extension pooled FPR
+  falls from 2.2% to 1.5%.
+- **Cost.** 0.86–0.87× the request time.
+- **Threshold.** The O55 fit is 0.08 on a flat curve. The pre-registered rule keeps 0.15 for non-web content
+  (extension non-web 0.906 → 0.928) and 0.5 for web (BrowseSafe 0.820 → 0.698 at 0.15).
+
+**Published.**
+- `evals/analysis/studio-qwen38-low-2026-10-22/` (scripts, plan, queue, progress log, `low-results.json`) and
+  PROVENANCE rows.
+- The [report](studio-qwen38-low-2026-10.md).
+- FINDINGS O67 and §2.19, with dated notes on O48, O54, O55, O59, O65 and Appendix B.
+- The README headline row now shows the low numbers, with xhigh in the footnote.

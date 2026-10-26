@@ -1,0 +1,85 @@
+{
+ "suite": {
+  "path": "evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json",
+  "sha256": "5063ccb4b16e9596962c2a05c51def38147791ae4187816b8e6e5ef7fe06f989"
+ },
+ "cases": {
+  "benign-false-positives": 40,
+  "pids-obfuscated": 40,
+  "bipia-email-mixed": 40,
+  "inj-squad-mixed": 40,
+  "web-mixed": 60,
+  "agentdyn-github": 50,
+  "agentdojo-suites-mixed": 50,
+  "longpi-paper": 60,
+  "longpi-email": 60,
+  "browsesafe-mixed": 60
+ },
+ "models": {
+  "gemma26": {
+   "frozenCondition": "baseline-gemma26-q8-t4096-full",
+   "serialEstimateH": 0.46,
+   "casesWithoutFrozenTiming": 0,
+   "worstConsecutiveDemand": {
+    "2": {
+     "maxTokens": 45785,
+     "test": "browsesafe-mixed",
+     "context": 65536,
+     "fits": true
+    },
+    "4": {
+     "maxTokens": 90379,
+     "test": "browsesafe-mixed",
+     "context": 131072,
+     "fits": true
+    },
+    "8": {
+     "maxTokens": 168118,
+     "test": "browsesafe-mixed",
+     "context": 262144,
+     "fits": true
+    }
+   },
+   "conditions": [
+    "batching-gemma26-q8-p1-full",
+    "batching-gemma26-q8-p2-full",
+    "batching-gemma26-q8-p4-full",
+    "batching-gemma26-q8-p8-full",
+    "batching-gemma26-q8-p4-repeat-full"
+   ]
+  },
+  "qwen38low": {
+   "frozenCondition": "baseline-qwen38-q8gguf-low-t4096-full",
+   "serialEstimateH": 0.79,
+   "casesWithoutFrozenTiming": 0,
+   "worstConsecutiveDemand": {
+    "2": {
+     "maxTokens": 42600,
+     "test": "browsesafe-mixed",
+     "context": 65536,
+     "fits": true
+    },
+    "4": {
+     "maxTokens": 84093,
+     "test": "browsesafe-mixed",
+     "context": 131072,
+     "fits": true
+    },
+    "8": {
+     "maxTokens": 156703,
+     "test": "browsesafe-mixed",
+     "context": 196608,
+     "fits": true
+    }
+   },
+   "conditions": [
+    "batching-qwen38low-q8-p1-full",
+    "batching-qwen38low-q8-p2-full",
+    "batching-qwen38low-q8-p4-full",
+    "batching-qwen38low-q8-p8-full",
+    "batching-qwen38low-q8-p4-repeat-full"
+   ]
+  }
+ },
+ "dryRunCells": 100
+}

@@ -4931,3 +4931,55 @@ published baseline and extension aggregates.
 - README result tables gained a Flash row.
 
 The O62 claims "no added false alarms" and "parity on code and email" are withdrawn.
+
+### L156 — 2026-10-19: Flash surface-cue re-analysis (#38); (a) not supported, (b) supported (modest), (c) mixed
+
+This entry follows L155. After O63, the conversation suggested that Flash is a "surface-cue detector": that it flags
+salient, explicit, AI-directed imperatives rather than judging task redirection. The user asked for an offline test
+of three predictions, with Gemma26 and Qwen3.8 (plus Laguna) as controls on the same cases, published whatever the
+result.
+
+**Order.** On `feature/flash-surface-cue-analysis`, stacked on #44, `coding.json` was committed first (`263e26c`). It
+fixes:
+
+- the explicitness coding, read from the upstream template text: LongPI naive and combine explicit, authority_spoof
+  task-shaped; subtle `explicitness`; AgentDojo override, system and authority explicit, `TODO:` task-shaped; PIDS
+  direct_override against contextual and role play; LLMail direct against social engineering;
+- six regex lexical features;
+- quartile length bins.
+
+Only the O63 per-dataset aggregates had been seen. `analyze-surface-cues.ts` audits 140 checkpoints (35 tests × 4
+models) and uses the 13,801 jointly valid cases. It writes aggregates only.
+
+**Results.**
+
+- **(a) NOT SUPPORTED.**
+  - The pooled explicit − task-shaped gap is −0.205 for Flash, against +0.067, +0.031 and −0.049 for the controls.
+    It is driven by LongPIBench, where Flash catches the long authority-spoof narrative and misses the one-line
+    "ignore previous" and "you should" payloads (papers 0–11%).
+  - Without that family (added after the first run), the gap is +0.210 for Flash, +0.153 for Gemma26 and +0.216 for
+    Laguna.
+- **(b) SUPPORTED (modest).**
+  - The within-stratum slope is −0.106 log-odds per doubling for Flash, against +0.138, +0.029 and −0.007. All
+    differences exclude 0.
+  - Benign FPR also falls with length for Flash.
+  - Payload model (added after the first run): +1.12 per doubling of payload words and −0.61 per doubling of
+    document words for Flash, against about 0 for the document term in Gemma26 and Qwen3.8.
+- **(c) MIXED.**
+  - "You", imperative-initial sentences and "please" go with Flash's false alarms (AUROC 0.71, 0.58 and 0.60). AI and
+    override terms do not (0.48, 0.42).
+  - Gemma26 shows the same "you" association.
+  - The feature model reaches 0.80 for Flash and 0.76 for Gemma26, but only 0.58–0.65 on web and BrowseSafe.
+
+**Coding inconsistency.** It was found while writing up and is disclosed in the report. authority_spoof (LongPI) is
+coded task-shaped, while AgentDojo's authority message is coded explicit. The sensitivity analysis covers it.
+
+**Published.**
+
+- `evals/analysis/llada-flash-surface-cues-2026-10/`: coding, script, README, PROVENANCE and results.
+- An index entry and PROVENANCE rows.
+- Report: [`llada-flash-surface-cues-2026-10.md`](llada-flash-surface-cues-2026-10.md).
+- FINDINGS O64, with a dated note on O63.
+
+The suggested next step, a pre-registered matched-length framing × payload-length × document-length test, was not
+run.

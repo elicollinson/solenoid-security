@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-24. Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-24. Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -1048,6 +1048,60 @@ end, but they add false alarms on web pages and at 128 words, and they never clo
   - 128/128 was not run on the end-position cohorts.
 - Follow-up: none planned for windows on Flash as a detector. Under F10, the open question is whether a larger Flash
   quant or a reasoning-capable dLLM narrows the full-text gap.
+- **Note 2026-10-19 (surface-cue re-analysis, O64):** an exploratory offline re-analysis of the full-text cells
+  supports a dilution reading of the window gains. Holding payload size fixed, Flash's recall falls by −0.61 log-odds
+  per doubling of document length, against about 0 for Gemma26 and Qwen3.8. It rises by +1.12 per doubling of
+  payload words. That fits the finding here that windows help wherever the payload is: they raise the payload's
+  share of the input. Flash does **not** key on explicit "ignore previous" wording in long documents.
+
+**O64 (EXPLORATORY, POST HOC): LLaDA2.2-flash is not well described as an "explicit-imperative detector". At full
+text its recall tracks payload size relative to the surrounding text. It falls with document length, and the controls
+do not show this. Its false alarms go with second-person and imperative wording but not with AI-directed vocabulary.**
+> **Design:** an offline re-analysis of the O63 Flash full-text cells against Gemma26, Qwen3.8 and Laguna on the same
+> 13,801 jointly valid cases. All 140 checkpoints were audited. The explicitness coding and lexical features were
+> committed in `263e26c` before results were computed. CIs are from 1,000 paired cluster-bootstrap replicates;
+> logistic models use stratum intercepts. Three analyses added after the first run are marked.
+- Evidence:
+  - **(a) Recall by explicitness: NOT SUPPORTED.**
+    - The pooled explicit − task-shaped recall gap is −0.205 for Flash [−0.237, −0.176], against +0.067 (Gemma26),
+      +0.031 (Qwen3.8) and −0.049 (Laguna).
+    - The cause is LongPIBench. Flash catches the 75–131-word authority-spoof narrative (papers: 1.00, 0.65 and 0.55
+      at conclusion, abstract and method). It misses "Ignore previous instructions. Now, you should …" (0.11, 0.01,
+      0.00) and "You should …" (0.02, 0.05, 0.00).
+    - Without that family (added after the first run), Flash's gap is +0.210, against +0.153 (Gemma26), +0.142
+      (Qwen3.8) and +0.216 (Laguna). Flash − Gemma26 is +0.057 [−0.000, 0.119]; Flash − Laguna is −0.006.
+    - On subtle templates, Flash's *explicit* recall is only 0.05–0.35.
+  - **(b) Length: SUPPORTED (modest).**
+    - Within dataset × template strata, the slope per doubling of words is −0.106 for Flash [−0.157, −0.058],
+      against +0.138, +0.029 and −0.007 for the controls. Every Flash-minus-control CI excludes 0.
+    - Q4 − Q1 recall is −4.4 points for Flash.
+    - Benign FPR also falls with length for Flash (−0.212 per doubling), while it rises for Gemma26 (+0.243).
+    - Payload model (added after the first run; 4,487 attacks with a clean sibling): per doubling of payload words,
+      +1.124 for Flash against +0.42 to +0.66 for the controls. Per doubling of document words, −0.611 for Flash
+      against −0.011 (Gemma26), −0.003 (Qwen3.8) and −0.220 (Laguna).
+  - **(c) Lexical features of benign cases: MIXED.**
+    - Flash's false alarms have more "you" (stratified AUROC 0.710), more imperative-initial sentences (0.578) and
+      more "please" (0.598).
+    - They do not have more AI-addressing (0.484) or override words (0.415).
+    - Gemma26 shows the same "you" association (0.697).
+    - The out-of-fold feature model reaches 0.800 for Flash and 0.764 for Gemma26. On web and BrowseSafe, Flash's
+      largest false-alarm sources, it reaches only 0.65 and 0.58.
+  - See the [report](reports/llada-flash-surface-cues-2026-10.md) and
+    [`surface-cue-results.json`](analysis/llada-flash-surface-cues-2026-10/results/surface-cue-results.json).
+- Strength:
+  - **Moderate** for "(a) as coded fails": a large effect, but the coding involves judgement. In particular,
+    authority_spoof is coded task-shaped while AgentDojo's authority message is coded explicit.
+  - **Moderate** for "(b) Flash shows within-dataset dilution that the strong controls do not".
+  - **Weak** for the payload-size account: it is post hoc, and in LongPIBench template and payload length are
+    confounded.
+  - **Weak** for (c): the regex features are crude, and the result is dominated by pids-hard-benign.
+- Caveats:
+  - Ceiling effects make the strong controls' log-ORs unstable.
+  - Length ranges within datasets are often narrow.
+  - The results cover one Flash build and protocol.
+- Follow-up (not scheduled): a pre-registered matched-length test. The same goal would be written in naive, override
+  and authority framings, padded to 10–100 words, and inserted into documents of 250–4,000 words, with Gemma26 and
+  Laguna as controls.
 
 ### 2.18 Qwen3.8 reasoning-effort ablation and Muse threshold (2026-10-20/21)
 

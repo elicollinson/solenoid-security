@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-19. The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-21. The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -793,6 +793,7 @@ added in front of our system prompt.**
   byte.
 - Follow-up: the Qwen3.8 effort ablation (`xhigh`, `medium`, `low`, `xhigh` without the instruction; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). The
   judge should send only effort values each template accepts, recorded per model.
+- **Update 2026-10-21 (O65):** the mechanism is now measured. LM Studio 0.4.25 does forward `reasoning_effort` to the template for the values the model declares (`xhigh`/`medium`/`low` for Qwen3.8; `prompt_tokens` −38 and −12, exact on 1,606/1,606 cases each). It silently drops the generic `"high"` on `/api/v0` and `/v1`, and the native `/api/v1/chat` rejects it. A body `chat_template_kwargs` and a load-time `--chat-template-kwargs` override are ignored ([ablation report](reports/qwen38-effort-ablation-2026-10.md)).
 
 **O55: Qwen3.8's category gaps behind Qwen3.6 35B-A3B are mostly calibration (graded, hedged scores below 0.5), except
 in QA, where it is a recognition gap. A threshold chosen on the baseline lifts its extension BA from 0.865 to 0.891.**
@@ -814,6 +815,10 @@ in QA, where it is a recognition gap. A threshold chosen on the baseline lifts i
   that the `xhigh` instruction ("consider plausible alternatives") drives the hedging is untested (O54).
 - Follow-up: the effort ablation (#33); per-model thresholds in the recommended-defaults config.
 - **Update 2026-10-17 (extension complete):** Muse, excluded above because its run was incomplete, shows a similar pattern: AUROC 0.994–0.997 on QA and BIPIA tables, but 26–63% of attacks scored in (0, 0.5] (O60). Qwen3.8's extension row is unchanged (0.865 at 0.5) ([extension report](reports/studio-extension-q8-t4096-2026-10.md)).
+- **Update 2026-10-21 (O65, pre-registered ablation):** the hypothesis is supported for QA, and partly for the rest.
+  - **QA.** Removing the xhigh instruction raises Qwen3.8's QA AUROC from 0.821 to 0.950 on a 400-case subset. QA attacks scored exactly 0 fall from 36% to 10%, so the QA "recognition gap" was mostly the instruction.
+  - **BA at 0.5.** BA rises on every target group, by +0.054 pooled at `medium` and more at `low`.
+  - **Calibration.** Scores stay graded, and the best threshold stays at 0–0.02, so most of the calibration gap remains at every effort.
 
 ### 2.16 Mac Studio Q8 extension suite (2026-10-17)
 
@@ -892,6 +897,7 @@ below 0.5, so its BA there understates its ranking.**
   attacks scored above 0. Muse's template adds "Reasoning strength: high." (O54).
 - Follow-up: choose a Muse threshold on the baseline and test it on the extension, as O55 did for Qwen3.8; include
   Muse in the effort work (#33).
+- **Update 2026-10-21 (O66):** done. A threshold of 0.10, chosen on the baseline, lifts Muse's extension BA from 0.904 to 0.922 out of sample (+0.018 [+0.013, +0.024]): QA 0.815 → 0.912, BIPIA 0.839 → 0.907. It costs web (0.765 → 0.588), so the profile uses 0.10 for non-web content only. Muse's effort setting was not varied.
 
 ### 2.17 LLaDA2.2 text-diffusion pilot (2026-10-18)
 
@@ -1092,6 +1098,73 @@ do not show this. Its false alarms go with second-person and imperative wording 
 - Follow-up (not scheduled): a pre-registered matched-length test. The same goal would be written in naive, override
   and authority framings, padded to 10–100 words, and inserted into documents of 250–4,000 words, with Gemma26 and
   Laguna as controls.
+
+### 2.18 Qwen3.8 reasoning-effort ablation and Muse threshold (2026-10-20/21)
+
+> **Design:** pre-registered in `7091f85` ([plan](reports/qwen38-effort-ablation-plan-2026-10.md)), pushed before
+> the main run.
+> - **Arms:** the frozen Qwen3.8 Q8_0 engine with only `reasoning_effort` changed, `medium` (primary) and `low`,
+>   compared with the frozen `xhigh` checkpoints on identical cases. A 100-case drift re-run checks the frozen arm.
+> - **Cases:** 10 seeded fixed-quota tests, 1,606 cases per arm.
+> - **Tests:** exact McNemar, Holm over a 10-test family.
+> - **Run:** 3,312 calls, strictly serial, in 5 h 08 min, with 0 transport or provenance errors.
+>
+> The Muse fit (O66) is offline.
+
+**O65 (PRE-REGISTERED): Qwen3.8's xhigh effort instruction costs it accuracy. Removing it (`medium`) raises BA at
+0.5 on QA, BIPIA and email, and `low` raises it further at 22% fewer reasoning tokens. Most of the QA "recognition
+gap" in O55 was the instruction.**
+- Evidence ✔:
+  - **Mechanism.** LM Studio 0.4.25 forwards `reasoning_effort` `xhigh`/`medium`/`low` on `/api/v0` to the GGUF
+    template. It silently drops the undeclared `"high"`, and the native `/api/v1/chat` rejects `"high"` with HTTP 400.
+    `prompt_tokens` vs frozen: −38 on 1,606/1,606 (medium) and −12 on 1,606/1,606 (low). A template with the xhigh
+    instruction blanked rendered and completed byte-identically to `medium`, so "xhigh without the instruction" is the
+    medium arm.
+  - **Drift.** Explicit `xhigh` reproduced the frozen runs: `prompt_tokens` 100/100, outcomes 100/100, scores 99/100.
+  - **Primary.** Medium vs xhigh on the 8 QA+BIPIA+email tests: 112 vs 25 discordant, p = 2.4×10⁻¹⁴, ΔBA
+    +0.054 [+0.040, +0.069].
+  - **By group (Holm).** Medium: QA +0.079 (42/4), BIPIA +0.040 (37/11), email +0.051 (33/10). Low: QA +0.090,
+    BIPIA +0.071, email +0.102 (all p ≤ 8×10⁻⁹).
+  - **All 10 tests.** BA@0.5 is 0.800 (xhigh), 0.841 (medium) and 0.870 (low). Low beats medium 77 vs 29
+    (p = 3.5×10⁻⁶).
+  - **Context.** On the same cases, frozen Qwen3.6 35B-A3B scores 0.865 and Gemma26 0.915.
+  - **Calibration (H2).** QA AUROC went from 0.821 to 0.950 and 0.954, and QA attacks scored exactly 0 went from 36%
+    to 10% and 9%. BIPIA AUROC was unchanged at medium (−0.001 [−0.024, +0.023]) and up at low (+0.028
+    [+0.004, +0.052]). The best threshold stays at 0–0.02 in every arm.
+  - **Cost (H3).** Median reasoning tokens were 212 (xhigh), 256 (medium) and 180 (low). Total wall time was 1.01×
+    (medium) and 0.82× (low).
+  - **Controls.** The long-doc control is unchanged. NotInject false alarms rose from 1 to 5 to 7 of 150 (ΔBA −0.027
+    and −0.040, both intervals excluding 0; Holm p = 0.375 and 0.125).
+  - See the [report](reports/qwen38-effort-ablation-2026-10.md) and
+    [`ablation-results.json`](analysis/qwen38-effort-ablation-2026-10/results/ablation-results.json).
+- Strength: **Strong** for "the xhigh instruction lowers BA@0.5 on these content types": pre-registered, paired, an
+  exact mechanism check on every case, consistent across 8 of 8 target tests at low. **Moderate** for the
+  recommendation, which rests on subsets of 10 tests with no web, agent, code or obfuscated cohort and only one
+  benign set.
+- Caveats:
+  - The xhigh arm is the frozen checkpoint (drift-checked).
+  - Equal dataset weights, and two email tests are attack-only.
+  - The benign false-alarm increase is small-n.
+  - Effort also changes reasoning length, so "instruction" and "effort level" are not separable at low.
+- Follow-up: recommended profile `reasoning_effort: "low"` with threshold 0.15 for non-web content (provisional) and
+  0.5 for web. A full-suite rerun at `low` (about 21 h) would replace the frozen Qwen3.8 rows. Engines should send
+  only values a template declares.
+
+**O66: Muse Glimmer's under-calibration at 0.5 is recoverable out of sample. A threshold of 0.10, chosen on the 21
+baseline datasets, lifts its extension BA from 0.904 to 0.922, but it costs web pages.**
+- Evidence ✔: O55's method, unchanged (the Qwen3.8 recomputation reproduces O55: 0.15, 0.865 → 0.891).
+  - **Fit and gain.** Muse's threshold is 0.10 (baseline 0.903 → 0.907). The extension gain is +0.018 [+0.013,
+    +0.024] (paired, class-stratified bootstrap), and +0.033 [+0.028, +0.038] excluding web. The in-sample extension
+    oracle is 0.929.
+  - **Groups, 0.5 → 0.10.** QA 0.815 → 0.912, BIPIA 0.839 → 0.907, email 0.943 → 0.990, long docs 0.929 → 0.939.
+  - **Web.** 0.765 → **0.588**: benign pages flagged go from 44 to 151 of 200.
+  - **Ranking.** Mean AUROC over the 11 mixed extension sets is 0.978.
+  - See the [report](reports/qwen38-effort-ablation-2026-10.md) §4 and
+    [`muse-threshold.json`](analysis/qwen38-effort-ablation-2026-10/results/muse-threshold.json).
+- Strength: **Moderate** (out-of-sample, complete cohorts; one fit, and the baseline BA curve is flat over 0.10–0.20,
+  where extension BA is 0.915–0.922).
+- Caveats: equal dataset weights; Muse's `reasoning_strength: high` was not varied (O54).
+- Follow-up: per-content thresholds in the profiles: Muse 0.10 for non-web content, 0.5 for web.
 
 ---
 
@@ -1403,6 +1476,12 @@ embed the same template and got the same instruction. Cross-model comparisons th
 (dated notes on O17, O30, O38, O43, O45, O46, O48, O50, O52 and O53). An effort ablation on the QA, BIPIA and email
 groups is queued after the extension run ([#33](https://github.com/elicollinson/solenoid-security/issues/33)). Future engines must send only effort values the model's
 template accepts, and audits should check `prompt_tokens` against a hand-rendered prompt.
+
+**Update 2026-10-21 (O65).** The pre-registered ablation ran, on 1,606 cases per arm. `reasoning_effort: "medium"` and `"low"` reach the template through LM Studio's existing field. On QA, BIPIA and email, the xhigh instruction lowered Qwen3.8's BA at 0.5:
+- medium vs xhigh: +0.054, p = 2.4×10⁻¹⁴;
+- low: higher still, at 0.82× the wall time.
+
+The frozen numbers stay as reported and labelled. The recommended Qwen3.8 setting for new work is `low` ([report](reports/qwen38-effort-ablation-2026-10.md)).
 
 **Implications for earlier results.** Affected: the MacBook Qwen3.8 runs from 2026-10-04 (same rendering, verified on
 976 inputs), Studio Study A, the Studio baseline, the extension suite and the abliteration pilot. Not covered: hosted

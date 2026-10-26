@@ -1,0 +1,38 @@
+# Resume 1 (2026-10-20 ~22:10 UTC): queue.txt from the CELL step that halted on the cell.ts bug (bipia-table-mixed medium finished with 3 abstentions).
+CELL|effort-medium-qwen38-q8gguf-t4096-full|bipia-table-mixed
+RUN|medium/bipia-code-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-code-mixed --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|bipia-code-mixed
+RUN|medium/bipia-email-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-email-mixed --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|bipia-email-mixed
+RUN|medium/llmail-pool-attacks|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=llmail-pool-attacks --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|llmail-pool-attacks
+RUN|medium/attempt-detection|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=attempt-detection --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|attempt-detection
+RUN|medium/longpi-email-llmail-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-email-llmail-mixed --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|longpi-email-llmail-mixed
+RUN|medium/longpi-subtle-paper-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-subtle-paper-mixed --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|longpi-subtle-paper-mixed
+RUN|medium/benign-false-positives|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=benign-false-positives --conditions=effort-medium-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-medium-qwen38-q8gguf-t4096-full|benign-false-positives
+RUN|mechanism-low|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=inj-squad-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --max-new-segments=10 --continue-after-output-errors
+GATE|mechanism-low|mechanism effort-low-qwen38-q8gguf-t4096-full inj-squad-mixed 10
+RUN|low/inj-squad-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=inj-squad-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|inj-squad-mixed
+RUN|low/inj-triviaqa-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=inj-triviaqa-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|inj-triviaqa-mixed
+RUN|low/bipia-table-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-table-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|bipia-table-mixed
+RUN|low/bipia-code-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-code-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|bipia-code-mixed
+RUN|low/bipia-email-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-email-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|bipia-email-mixed
+RUN|low/llmail-pool-attacks|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=llmail-pool-attacks --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|llmail-pool-attacks
+RUN|low/attempt-detection|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=attempt-detection --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|attempt-detection
+RUN|low/longpi-email-llmail-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-email-llmail-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|longpi-email-llmail-mixed
+RUN|low/longpi-subtle-paper-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-subtle-paper-mixed --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|longpi-subtle-paper-mixed
+RUN|low/benign-false-positives|--suite=evals/suites/prompt-injection-lmstudio-studio-qwen38-effort-ablation-q8-t4096-v1.json --output-dir=evals/runs/qwen38-effort-ablation-2026-10 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=benign-false-positives --conditions=effort-low-qwen38-q8gguf-t4096-full --continue-after-output-errors
+CELL|effort-low-qwen38-q8gguf-t4096-full|benign-false-positives

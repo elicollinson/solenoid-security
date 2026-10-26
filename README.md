@@ -33,7 +33,9 @@ Reports: [baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md),
 
 ¹ Ran at `xhigh` effort with a template-injected instruction, not the requested `high`, and is under-calibrated at
 0.5: a 0.15 threshold chosen on the baseline lifts its extension score to 0.891 ([Appendix B](evals/FINDINGS.md),
-[report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)).
+[report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)). In a pre-registered ablation, `reasoning_effort: "low"` raised its
+BA at 0.5 from 0.800 to 0.870 on 1,606 cases (QA, BIPIA, email and two controls), at 0.82× the time
+([O65](evals/FINDINGS.md), [ablation report](evals/reports/qwen38-effort-ablation-2026-10.md)).
 ² A non-reasoning text-diffusion model, run as MLX 4-bit through the `openai_compatible` engine with prompt-only
 JSON, so it is not the frozen Q8 protocol.
 
@@ -59,11 +61,12 @@ JSON, so it is not the frozen Q8 protocol.
 ## Status (2026-10-19)
 
 Complete: the Studio Q8 full-text baseline (7 models × 21 datasets), the extension suite (7 × 14), the abliteration
-pilot ([results](evals/reports/abliteration-pilot-results-2026-10.md)) and the LLaDA2.2 runs
+pilot ([results](evals/reports/abliteration-pilot-results-2026-10.md)), the Qwen3.8 effort ablation
+([report](evals/reports/qwen38-effort-ablation-2026-10.md)) and the LLaDA2.2 runs
 ([pilot](evals/reports/llada-pilot-2026-10.md), [window sweep](evals/reports/llada-window-sweep-2026-10.md),
 [pre-registered Flash run](evals/reports/llada-flash-full-2026-10.md)). Nothing is running.
 
-Next candidates (not yet chosen): the Qwen3.8 effort ablation ([#33](https://github.com/elicollinson/solenoid-security/issues/33)),
+Next candidates (not yet chosen): a full-suite Qwen3.8 rerun at `low` effort (about 21 h; [#33](https://github.com/elicollinson/solenoid-security/issues/33)),
 the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31)), the full abliteration run
 ([#23](https://github.com/elicollinson/solenoid-security/issues/23)) and the deferred Qwen3.6 27B (about 3.7× slower
 than Qwen3.8).

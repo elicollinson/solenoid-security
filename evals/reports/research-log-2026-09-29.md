@@ -4983,3 +4983,65 @@ coded task-shaped, while AgentDojo's authority message is coded explicit. The se
 
 The suggested next step, a pre-registered matched-length framing × payload-length × document-length test, was not
 run.
+
+### L157 — 2026-10-20/21: Qwen3.8 reasoning-effort ablation (#33, PRE-REGISTERED); xhigh instruction costs accuracy, `low` recommended; Muse threshold 0.10
+
+Numbered L157 as assigned. L156 is not on this branch. The user approved 4–8 h of Studio time for #33.
+
+**Step 0, mechanism probe.** The probe used synthetic requests only, on the Studio with the frozen Q8_0 Qwen3.8 and
+LM Studio 0.4.25 build 1: 6 loads and 33 requests.
+
+- **What works.** `reasoning_effort` `"medium"` / `"low"` reaches the GGUF template on `/api/v0` and `/v1`
+  (`prompt_tokens` 98 / 124 vs 136 at the xhigh default). `/api/v1/chat` `reasoning` and `/v1/responses`
+  `reasoning.effort` also work.
+- **What was dropped.** Our frozen `"high"` is not declared by the template, so it was silently dropped. The native
+  API rejects it with HTTP 400.
+- **What is ignored.** A body `chat_template_kwargs`, a `/v1` `reasoning: {effort}` and a load-time
+  `llamaCppArgumentsOverride --chat-template-kwargs`.
+- **The patched template.** A load-time `promptTemplate` override with the xhigh instruction blanked renders and
+  completes byte-identically to medium. "xhigh without the instruction" is therefore not a separate arm.
+- **No code change.** The ablation uses the existing engine field.
+
+**Pre-registration.** `7091f85` was pushed before the main run ([plan](qwen38-effort-ablation-plan-2026-10.md)).
+
+- **Arms.** Medium (primary) and low against the frozen xhigh checkpoints on identical cases.
+- **Cases.** 10 seeded fixed-quota tests, 1,606 cases per arm: QA (SQuAD, TriviaQA), BIPIA (table, code, email),
+  email (LLMail pool, attempt-detection, LongPI LLMail), and controls (LongPI subtle paper, NotInject).
+- **Gates and cap.** A drift gate, mechanism gates and an 8 h cap.
+- **Primary test.** Medium vs xhigh pooled over the 8 target tests (exact McNemar). A Holm family of 10 covers the
+  rest.
+
+**Run.** 2026-10-20 21:03:55 to 2026-10-21 02:11:52 UTC, 3,312 calls, strictly serial, 0 transport or provenance
+errors.
+
+- **Drift.** 100/100 prompt tokens and outcomes, 99/100 scores.
+- **Mechanism.** −38 on 1,606/1,606 (medium) and −12 on 1,606/1,606 (low).
+- **Abstentions.** Length only: 3 at medium and 5 at low, mostly BIPIA table attacks.
+- **Queue halt.** One halt at 22:05:40 was a bug in `cell.ts`, which required a `complete` marker that a cell with
+  abstentions does not write. After the fix, the queue resumed at the same step 47 s later. No data was affected.
+
+**Results (O65).**
+
+- **Primary.** 112 vs 25 discordant, p = 2.4×10⁻¹⁴, ΔBA +0.054 [+0.040, +0.069].
+- **All 10 tests, BA@0.5.** 0.800 (xhigh), 0.841 (medium), 0.870 (low). Low beats medium (77 vs 29).
+- **QA AUROC.** 0.821 → 0.950 / 0.954, and QA attacks scored exactly 0 fall from 36% to 10%. The O55 "recognition
+  gap" was mostly the instruction.
+- **BIPIA at medium.** A calibration shift only: AUROC −0.001.
+- **Cost.** Low uses 0.78× the reasoning tokens and 0.82× the wall time. Medium uses 1.04× and 1.01×.
+- **Benign.** NotInject false alarms rose 1 → 5 → 7 of 150 (not significant after Holm).
+- **Threshold.** The best threshold stays at 0–0.02 in every arm.
+
+**Muse threshold (O66, offline).** O55's method picks 0.10 on the baseline. It lifts Muse's extension BA from 0.904
+to 0.922 (+0.018 [+0.013, +0.024]; +0.033 excluding web), and web falls from 0.765 to 0.588. The Qwen3.8
+recomputation reproduces O55 exactly.
+
+**Recommended profile values (for PR #34, not edited).**
+- Qwen3.8: `reasoning_effort: "low"`, threshold 0.15 for non-web content (provisional) and 0.5 for web.
+- Muse: threshold 0.10 for non-web content and 0.5 for web.
+
+**Published.**
+- `evals/analysis/qwen38-effort-ablation-2026-10/`: probe, plan, suite, scripts, progress log and aggregates.
+- PROVENANCE rows and an index entry.
+- Report: [`qwen38-effort-ablation-2026-10.md`](qwen38-effort-ablation-2026-10.md).
+- FINDINGS O65 and O66, with dated notes on O54, O55, O60 and Appendix B.
+- The README footnote.

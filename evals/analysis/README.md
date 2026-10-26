@@ -27,7 +27,8 @@ those numbers without rerunning inference. Folder names mirror the original run 
   replaces that URL with the placeholder `$LLADA_BASE_URL`, and nothing else differs. The original SHA-256 is of the
   unredacted file. The pre-registered Flash run (`llada-flash-full-2026-10/`) adds `authored` scripts, plan, queue and
   dry run (they ran from byte-identical untracked copies in the main checkout), one `verbatim` progress log, one
-  `host-redacted` console log and two `generated` results files.
+  `host-redacted` console log and two `generated` results files. The Flash surface-cue re-analysis (`llada-flash-surface-cues-2026-10/`) adds
+  `authored` coding, script, README and folder provenance, and two `generated` results files.
 
 ## Running them
 
@@ -131,6 +132,15 @@ declared long-document cohorts, and 128/128 on the 6 H2 cohorts: 88,163 calls. `
 rows, then runs H1–H3 as declared plus the exploratory position, firing-window, cascade, abstention, comparator,
 latency and determinism analyses. See the folder's own `README.md`.
 
+
+### `llada-flash-surface-cues-2026-10/`
+
+**Exploratory, post hoc** offline re-analysis ([#38](https://github.com/elicollinson/solenoid-security/issues/38)),
+2026-10-19 ([report](../reports/llada-flash-surface-cues-2026-10.md), `FINDINGS.md` O64, research log L156). It asks
+whether Flash's full-text recall and false alarms follow explicit wording, input length or imperative vocabulary,
+against Gemma26, Qwen3.8 and Laguna on the same cases. No inference was run. `coding.json` (the explicitness coding and
+lexical features) was committed before results. `analyze-surface-cues.ts` and `README.md` are `authored`; `results/`
+is `generated`. The folder has its own `PROVENANCE.tsv`, and its rows are also listed here.
 ### `lmstudio-available-panel-2026-10-04/`
 
 | File | Computes |

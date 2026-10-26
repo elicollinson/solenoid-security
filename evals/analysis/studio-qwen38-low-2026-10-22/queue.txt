@@ -1,0 +1,79 @@
+# Qwen3.8-low full-suite rerun queue (#33), frozen 2026-10-22 with the pre-registration note. Serial. Order: a 24-case drift
+# tranche on bipia-email-mixed (fully inside PR #49's low arm) and its gate, then the 21 baseline cells in suite order, then
+# a 10-case mechanism gate on the first extension cell and the 14 extension cells. Each RUN resumes its own checkpoint.
+RUN|drift/bipia-email-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-email-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --max-new-segments=24 --continue-after-output-errors
+GATE|drift|drift bipia-email-mixed 24
+RUN|baseline/longpi-paper|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-paper
+RUN|baseline/longpi-paper-abstract|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper-abstract --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-paper-abstract
+RUN|baseline/longpi-paper-method|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-paper-method --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-paper-method
+RUN|baseline/longpi-resume|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-resume --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-resume
+RUN|baseline/longpi-code|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-code --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-code
+RUN|baseline/bipia-email-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-email-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|bipia-email-mixed
+RUN|baseline/longpi-email|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-email --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-email
+RUN|baseline/attempt-detection|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=attempt-detection --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|attempt-detection
+RUN|baseline/web-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=web-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|web-mixed
+RUN|baseline/agentdyn-shopping|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=agentdyn-shopping --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|agentdyn-shopping
+RUN|baseline/agentdyn-github|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=agentdyn-github --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|agentdyn-github
+RUN|baseline/agentdyn-dailylife|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=agentdyn-dailylife --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|agentdyn-dailylife
+RUN|baseline/agentdojo-travel-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=agentdojo-travel-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|agentdojo-travel-mixed
+RUN|baseline/agent-injection-bench-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=agent-injection-bench-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|agent-injection-bench-mixed
+RUN|baseline/pids-obfuscated|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=pids-obfuscated --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|pids-obfuscated
+RUN|baseline/encoding-eligible-existing-v1|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=encoding-eligible-existing-v1 --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|encoding-eligible-existing-v1
+RUN|baseline/encoding-benign-controls-v1|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=encoding-benign-controls-v1 --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|encoding-benign-controls-v1
+RUN|baseline/benign-false-positives|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=benign-false-positives --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|benign-false-positives
+RUN|baseline/pids-hard-benign-public|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=pids-hard-benign-public --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|pids-hard-benign-public
+RUN|baseline/skill-policy-pairs|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=skill-policy-pairs --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|skill-policy-pairs
+RUN|baseline/paper-score-counterfactual|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=paper-score-counterfactual --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|paper-score-counterfactual
+SUMMARY|baseline|1/2|Qwen3.8 27B GGUF Q8_0 low
+RUN|mechanism/bipia-table-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-table-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --max-new-segments=10 --continue-after-output-errors
+GATE|mechanism|mechanism bipia-table-mixed 10
+RUN|extension/bipia-table-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-table-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|bipia-table-mixed
+RUN|extension/bipia-code-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=bipia-code-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|bipia-code-mixed
+RUN|extension/browsesafe-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=browsesafe-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|browsesafe-mixed
+RUN|extension/nemotron-ipi-attacks|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=nemotron-ipi-attacks --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|nemotron-ipi-attacks
+RUN|extension/agentdojo-suites-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=agentdojo-suites-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|agentdojo-suites-mixed
+RUN|extension/repoguard-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=repoguard-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|repoguard-mixed
+RUN|extension/inj-squad-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=inj-squad-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|inj-squad-mixed
+RUN|extension/inj-triviaqa-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=inj-triviaqa-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|inj-triviaqa-mixed
+RUN|extension/llmail-pool-attacks|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=llmail-pool-attacks --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|llmail-pool-attacks
+RUN|extension/longpi-email-llmail-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-email-llmail-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-email-llmail-mixed
+RUN|extension/longpi-subtle-paper-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-subtle-paper-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-subtle-paper-mixed
+RUN|extension/longpi-subtle-code-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-subtle-code-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-subtle-code-mixed
+RUN|extension/longpi-subtle-resume-mixed|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-subtle-resume-mixed --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-subtle-resume-mixed
+RUN|extension/longpi-authorized-benign|--suite=evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json --output-dir=evals/runs/studio-qwen38-low-2026-10-22 --require-device=2e1a82366471bc1a78e9b74d2469172d --tests=longpi-authorized-benign --conditions=baseline-qwen38-q8gguf-low-t4096-full --continue-after-output-errors
+CELL|longpi-authorized-benign
+SUMMARY|extension|2/2|Qwen3.8 27B GGUF Q8_0 low

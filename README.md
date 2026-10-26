@@ -18,10 +18,10 @@ budget, > 0.5 flags), datasets weighted equally and never pooled. The content co
 |---|---|---|---|---|---|---|---|---|---|
 | Gemma 4 26B-A4B | MoE | **0.923** | 0.922 | 0.906 | 0.904 | **0.948** | 0.820 | 0.999 | 1.4% |
 | Gemma 4 31B-it | Dense | 0.915 | **0.923** | 0.917 | **0.917** | 0.921 | **0.825** | 0.999 | **0.9%** |
+| Qwen3.8 27B ¹ | Dense | 0.912 | 0.900 | 0.918 | 0.805 | 0.825 | 0.820 | 0.997 | 1.5% |
 | Ornith 1.5 35B-A3B | MoE | 0.906 | 0.895 | 0.914 | 0.857 | 0.858 | 0.662 | 0.991 | 7.1% |
 | Muse Glimmer 30B | Dense | 0.903 | 0.904 | **0.929** | 0.839 | 0.815 | 0.765 | **1.000** | 3.0% |
 | Qwen3.6 35B-A3B | MoE | 0.901 | 0.866 | 0.854 | 0.828 | 0.914 | 0.703 | 0.982 | 4.5% |
-| Qwen3.8 27B ¹ | Dense | 0.895 | 0.865 | 0.908 | 0.748 | 0.730 | 0.802 | 0.999 | 2.2% |
 | LLaDA2.2-flash ² | Diffusion | 0.718 | 0.707 | 0.659 | 0.711 | 0.562 | 0.635 | 0.955 | 5.6% |
 | Laguna XS 2.1 | MoE (coding) | 0.712 | 0.702 | 0.685 | 0.644 | 0.591 | 0.608 | 0.955 | 7.5% |
 
@@ -31,11 +31,17 @@ Reports: [baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md),
 [extension](evals/reports/studio-extension-q8-t4096-2026-10.md),
 [LLaDA2.2-flash](evals/reports/llada-flash-full-2026-10.md).
 
-¹ Ran at `xhigh` effort with a template-injected instruction, not the requested `high`, and is under-calibrated at
-0.5: a 0.15 threshold chosen on the baseline lifts its extension score to 0.891 ([Appendix B](evals/FINDINGS.md),
-[report](evals/reports/qwen38-effort-calibration-2026-10.md), [#33](https://github.com/elicollinson/solenoid-security/issues/33)). In a pre-registered ablation, `reasoning_effort: "low"` raised its
-BA at 0.5 from 0.800 to 0.870 on 1,606 cases (QA, BIPIA, email and two controls), at 0.82× the time
-([O65](evals/FINDINGS.md), [ablation report](evals/reports/qwen38-effort-ablation-2026-10.md)).
+¹ Run at `reasoning_effort: "low"`, which is the only setting changed from the frozen protocol, in a pre-registered
+full-suite rerun. That gives +0.017 and +0.035 over the frozen run (p = 4×10⁻⁵ and 2×10⁻⁸³), with more false alarms on
+the baseline's benign sets ([O67](evals/FINDINGS.md), [report](evals/reports/studio-qwen38-low-2026-10.md)). The frozen
+run dropped the requested `"high"` and applied the template's `xhigh` instruction. Its numbers are kept as the
+historical protocol ([Appendix B](evals/FINDINGS.md), [O65](evals/FINDINGS.md)):
+
+| Model | Baseline | Extension | Long docs | BIPIA | QA | Web | Agent | Benign FPR |
+|---|---|---|---|---|---|---|---|---|
+| Qwen3.8 at `xhigh` | 0.895 | 0.865 | 0.908 | 0.748 | 0.730 | 0.802 | 0.999 | 2.2% |
+
+Scores at `low` are still under-calibrated at 0.5. Use a 0.15 threshold for non-web content and 0.5 for web.
 ² A non-reasoning text-diffusion model, run as MLX 4-bit through the `openai_compatible` engine with prompt-only
 JSON, so it is not the frozen Q8 protocol.
 
@@ -43,7 +49,7 @@ JSON, so it is not the frozen Q8 protocol.
 
 - The extension breaks the baseline's saturation (spread 0.028 → 0.059), except on agent tool output, which stays at 0.98–1.00 ([O56](evals/FINDINGS.md), [O57](evals/FINDINGS.md)).
 - The two Gemmas tie at the top; Gemma 4 26B-A4B is the default, an MoE about 3× faster than Gemma 4 31B-it (3.8 s vs 12.3 s per request) ([O59](evals/FINDINGS.md)).
-- Qwen3.8 27B is a hedging scorer whose gaps are mostly calibration, and it ran at `xhigh` with an injected instruction ([O54](evals/FINDINGS.md), [O55](evals/FINDINGS.md)).
+- Qwen3.8 27B's template-default `xhigh` instruction cost it accuracy; at `low` it ranks 3rd on the baseline and 4th on the extension, gaining most on QA, email and BIPIA ([O65](evals/FINDINGS.md), [O67](evals/FINDINGS.md)).
 - Abliterated Qwen3.8 builds detect significantly worse than the original in a pre-registered pilot (0.854 and 0.858 vs 0.888; McNemar p ≤ 5×10⁻⁴) ([O53](evals/FINDINGS.md)).
 - Windows help long documents mainly on the subtle template and can lower concern for a payload, so the full-then-windows cascade is recommended ([O1](evals/FINDINGS.md), [O10](evals/FINDINGS.md), [O46](evals/FINDINGS.md)).
 - Diffusion LLMs (LLaDA2.2) are weak at full text; windows significantly lift Flash on long documents, mid-document payloads included, but it still trails the reasoning models and adds web false alarms ([O61–O63](evals/FINDINGS.md)).
@@ -54,20 +60,20 @@ JSON, so it is not the frozen Q8 protocol.
 
 - One quant and one runtime per model (Q8_0 GGUF in LM Studio; Flash MLX 4-bit), on one machine.
 - Long-document cohorts are built on LongPIBench's synthetic documents; the baseline reuses about 12 fixed attack sentences.
-- Effort was never set: each model ran at its chat template's default, which differs by model ([Appendix B](evals/FINDINGS.md), [O54](evals/FINDINGS.md)).
+- Effort was not set except for Qwen3.8 (`low`). Every other model ran at its chat template's default, which differs by model ([Appendix B](evals/FINDINGS.md), [O54](evals/FINDINGS.md)).
 - Agent sets are saturated, and several datasets are single-class (attack-only or benign-only), where balanced accuracy is recall or specificity alone.
 - Flash's protocol differs (no reasoning pass, prompt-only JSON, 4-bit), so its row is a reference, not a like-for-like rank.
 
-## Status (2026-10-19)
+## Status (2026-10-24)
 
 Complete: the Studio Q8 full-text baseline (7 models × 21 datasets), the extension suite (7 × 14), the abliteration
 pilot ([results](evals/reports/abliteration-pilot-results-2026-10.md)), the Qwen3.8 effort ablation
-([report](evals/reports/qwen38-effort-ablation-2026-10.md)) and the LLaDA2.2 runs
+([report](evals/reports/qwen38-effort-ablation-2026-10.md)), the full-suite Qwen3.8 rerun at `low`
+([report](evals/reports/studio-qwen38-low-2026-10.md)) and the LLaDA2.2 runs
 ([pilot](evals/reports/llada-pilot-2026-10.md), [window sweep](evals/reports/llada-window-sweep-2026-10.md),
 [pre-registered Flash run](evals/reports/llada-flash-full-2026-10.md)). Nothing is running.
 
-Next candidates (not yet chosen): a full-suite Qwen3.8 rerun at `low` effort (about 21 h; [#33](https://github.com/elicollinson/solenoid-security/issues/33)),
-the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31)), the full abliteration run
+Next candidates (not yet chosen): the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31)), the full abliteration run
 ([#23](https://github.com/elicollinson/solenoid-security/issues/23)) and the deferred Qwen3.6 27B (about 3.7× slower
 than Qwen3.8).
 

@@ -257,6 +257,16 @@ The pre-registered Qwen3.8 reasoning-effort ablation (`xhigh` / `medium` / `low`
 (100 drift, 1,606 medium, 1,606 low) in 5 h 08 min, plus 33 synthetic probe requests. The directory README lists every file
 and the two deviations. Intermediates go to the git-ignored `evals/runs/qwen38-effort-ablation-2026-10/`.
 
+### `studio-qwen38-low-2026-10-22/`
+
+The pre-registered full-suite rerun of Qwen3.8 27B at `reasoning_effort: "low"`, covering the baseline (21 tests) and
+the extension (14) ([#33](https://github.com/elicollinson/solenoid-security/issues/33);
+[plan](../reports/studio-qwen38-low-plan-2026-10.md), [report](../reports/studio-qwen38-low-2026-10.md), `FINDINGS.md`
+O67, research log L158).
+- **Studio.** 14,085 calls in 22.3 h, with no halt.
+- **Files.** The directory README lists every file.
+- **Intermediates.** Written to the git-ignored `evals/runs/studio-qwen38-low-2026-10-22/`.
+
 ### `reuse-verification-2026-10-03/`
 
 | File | Computes |

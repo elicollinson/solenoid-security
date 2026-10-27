@@ -64,18 +64,30 @@ JSON, so it is not the frozen Q8 protocol.
 - Agent sets are saturated, and several datasets are single-class (attack-only or benign-only), where balanced accuracy is recall or specificity alone.
 - Flash's protocol differs (no reasoning pass, prompt-only JSON, 4-bit), so its row is a reference, not a like-for-like rank.
 
-## Status (2026-10-24)
+## Status (2026-10-27)
 
 Complete: the Studio Q8 full-text baseline (7 models × 21 datasets), the extension suite (7 × 14), the abliteration
 pilot ([results](evals/reports/abliteration-pilot-results-2026-10.md)), the Qwen3.8 effort ablation
 ([report](evals/reports/qwen38-effort-ablation-2026-10.md)), the full-suite Qwen3.8 rerun at `low`
-([report](evals/reports/studio-qwen38-low-2026-10.md)) and the LLaDA2.2 runs
+([report](evals/reports/studio-qwen38-low-2026-10.md)), the LLaDA2.2 runs
 ([pilot](evals/reports/llada-pilot-2026-10.md), [window sweep](evals/reports/llada-window-sweep-2026-10.md),
-[pre-registered Flash run](evals/reports/llada-flash-full-2026-10.md)). Nothing is running.
+[pre-registered Flash run](evals/reports/llada-flash-full-2026-10.md)) and the batching equivalence runs (write-up in
+progress; [#21](https://github.com/elicollinson/solenoid-security/issues/21)).
 
-Next candidates (not yet chosen): the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31)), the full abliteration run
-([#23](https://github.com/elicollinson/solenoid-security/issues/23)) and the deferred Qwen3.6 27B (about 3.7× slower
-than Qwen3.8).
+**Now running: abliteration extension ([#23](https://github.com/elicollinson/solenoid-security/issues/23)).** Each
+abliterated build is compared with its vanilla model's existing results on identical cases; vanilla models are not
+re-run. All builds are static Q8_0 GGUF of the abliteration author's weights, matching the vanilla quant, and each must
+reproduce the vanilla prompt rendering exactly before it runs (template overrides are recorded as deviations).
+
+| Stage | What | Status | Expected (UTC) |
+|---|---|---|---|
+| 1 | Qwen3.8 27B heretic-ara and huihui at `low`, full baseline + extension (14,085 cases each) | ▶ Running (started 2026-10-27 11:28) | heretic-ara ≈ Oct 28 13:00–17:00; huihui ≈ Oct 29 14:00–22:00 |
+| 2 | 998-case pilot screen: Gemma 4 26B (huihui, heretic, heretic-ultra), Qwen3.6 35B-A3B (huihui, heretic), Qwen3.8 MPOA, Gemma 4 31B (huihui, heretic), Muse (heretic) | Armed; starts when stage 1 ends | ≈ 21 h, done ≈ Oct 30 12:00 – Oct 31 00:00 |
+| 3 | Full suites for builds with a confirmed pilot effect, Gemma 4 26B first | Not scheduled | Decided from stage 2 |
+
+Next candidates after that: the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31)),
+the speculative-decoding check ([#52](https://github.com/elicollinson/solenoid-security/issues/52)) and the deferred
+Qwen3.6 27B.
 
 ## Design
 

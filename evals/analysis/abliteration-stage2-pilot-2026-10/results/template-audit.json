@@ -1,0 +1,233 @@
+{
+ "schema": "abliteration-stage2-template-audit-v1",
+ "inputs": 980,
+ "vanilla": {
+  "gemma4": {
+   "templateSha256": "85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98",
+   "servedVariables": {
+    "enable_thinking": true
+   }
+  },
+  "qwen36": {
+   "templateSha256": "55d4931433fe502b794226ee7f4d206a6bdd436ac9f80eb7d8ebb4c639f9ea0c",
+   "servedVariables": {}
+  },
+  "qwen38": {
+   "templateSha256": "c3cf9e34abf4f9e36c2d72165aa9c132d3e2a725b6c2586aaa3a8af9d7a81041",
+   "servedVariables": {
+    "reasoning_effort": "low"
+   }
+  },
+  "muse": {
+   "templateSha256": "114f55ebdc1804c1af371197b9fdf2d6bb925966c9dfe46b73782a71bc07965e",
+   "servedVariables": {}
+  }
+ },
+ "builds": {
+  "gemma26-huihui": {
+   "family": "gemma4",
+   "gguf": "mradermacher/Huihui-gemma-4-26B-A4B-it-abliterated-GGUF/Huihui-gemma-4-26B-A4B-it-abliterated.Q8_0.gguf",
+   "embeddedTemplateSha256": "2dfbfc7d538912f4ea11d29d85b4e25d7bc26386e53f57529f1d707c28b5828c",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "2": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "-1": 980
+    }
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/abliteration-stage2-pilot-2026-10/templates/gemma4-vanilla-q8-default-thinking.jinja",
+    "sha256": "d146538020386a03c52fc68715241c38d18bbec01580c158bc0c4365edab6ec5",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "gemma26-heretic": {
+   "family": "gemma4",
+   "gguf": "llmfan46/gemma-4-26B-A4B-it-uncensored-heretic-GGUF/gemma-4-26B-A4B-it-uncensored-heretic-Q8_0.gguf",
+   "embeddedTemplateSha256": "85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98",
+   "sameAsVanillaTemplate": true,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "2": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/abliteration-stage2-pilot-2026-10/templates/gemma4-vanilla-q8-default-thinking.jinja",
+    "sha256": "d146538020386a03c52fc68715241c38d18bbec01580c158bc0c4365edab6ec5",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "gemma26-ultra": {
+   "family": "gemma4",
+   "gguf": "llmfan46/gemma-4-26B-A4B-it-ultra-uncensored-heretic-GGUF/gemma-4-26B-A4B-it-ultra-uncensored-heretic-Q8_0.gguf",
+   "embeddedTemplateSha256": "85a08664d16d8f3be4416c92427b3ac10df1024ac566cc0b4bc3bab409393f98",
+   "sameAsVanillaTemplate": true,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "2": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/abliteration-stage2-pilot-2026-10/templates/gemma4-vanilla-q8-default-thinking.jinja",
+    "sha256": "d146538020386a03c52fc68715241c38d18bbec01580c158bc0c4365edab6ec5",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "gemma26-huihui-udq8kxl": {
+   "family": "gemma4",
+   "gguf": "groxaxo/Huihui-gemma-4-26B-A4B-it-abliterated-GGUF/gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf",
+   "embeddedTemplateSha256": "2dfbfc7d538912f4ea11d29d85b4e25d7bc26386e53f57529f1d707c28b5828c",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "2": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "-1": 980
+    }
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/abliteration-stage2-pilot-2026-10/templates/gemma4-vanilla-q8-default-thinking.jinja",
+    "sha256": "d146538020386a03c52fc68715241c38d18bbec01580c158bc0c4365edab6ec5",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "qwen36-huihui": {
+   "family": "qwen36",
+   "gguf": "mradermacher/Huihui-Qwen3.6-35B-A3B-abliterated-GGUF/Huihui-Qwen3.6-35B-A3B-abliterated.Q8_0.gguf",
+   "embeddedTemplateSha256": "e84f32a23fdda27689f868aa4a1a5621f41133e51a48d7f3efcbea2839574259",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": false
+  },
+  "qwen36-heretic": {
+   "family": "qwen36",
+   "gguf": "llmfan46/Qwen3.6-35B-A3B-uncensored-heretic-GGUF/Qwen3.6-35B-A3B-uncensored-heretic-Q8_0.gguf",
+   "embeddedTemplateSha256": "e7018ebe03fa07c44c7eea46fa3734173a90237a02b7c352d3260914b40d7c6f",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": false
+  },
+  "qwen38-mpoa-ultra": {
+   "family": "qwen38",
+   "gguf": "llmfan46/Qwen3.8-27B-Uncensored-Heretic-Native-MTP-Preserved-GGUF/Qwen3.8-27B-Ultra-Uncensored-Heretic-Native-MTP-Preserved-Q8_0.gguf",
+   "embeddedTemplateSha256": "9bfdde60e0e4b3d10d920bdd09f95ac19c2a61e41fca20e1efda5b92a87cef1b",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "-26": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/studio-qwen38-abliterated-low-2026-10-27/templates/qwen38-embedded-default-low.jinja",
+    "sha256": "690af918a83d305315d94bde649fc7fa8d8c12afc096fe1683092c29727129b2",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "gemma31-huihui": {
+   "family": "gemma4",
+   "gguf": "mradermacher/Huihui-gemma-4-31B-it-abliterated-v2-GGUF/Huihui-gemma-4-31B-it-abliterated-v2.Q8_0.gguf",
+   "embeddedTemplateSha256": "2dfbfc7d538912f4ea11d29d85b4e25d7bc26386e53f57529f1d707c28b5828c",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "2": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "-1": 980
+    }
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/abliteration-stage2-pilot-2026-10/templates/gemma4-vanilla-q8-default-thinking.jinja",
+    "sha256": "d146538020386a03c52fc68715241c38d18bbec01580c158bc0c4365edab6ec5",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "gemma31-heretic": {
+   "family": "gemma4",
+   "gguf": "llmfan46/gemma-4-31B-it-uncensored-heretic-GGUF/gemma-4-31B-it-uncensored-heretic-Q8_0.gguf",
+   "embeddedTemplateSha256": "0a52be69cda5ab8aeb627d6ff51a7b34c7d06afabb6b0f00cf8ee63df16a6315",
+   "sameAsVanillaTemplate": false,
+   "default": {
+    "identicalRenderings": 0,
+    "tokenDeltaWhenDifferent": {
+     "2": 980
+    }
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": true,
+   "override": {
+    "path": "evals/analysis/abliteration-stage2-pilot-2026-10/templates/gemma4-vanilla-q8-default-thinking.jinja",
+    "sha256": "d146538020386a03c52fc68715241c38d18bbec01580c158bc0c4365edab6ec5",
+    "identicalRenderingsAtDefault": 980
+   }
+  },
+  "muse-heretic": {
+   "family": "muse",
+   "gguf": "bartowski/darkc0de_Muse-Glimmer-30B-heretic-GGUF/darkc0de_Muse-Glimmer-30B-heretic-Q8_0.gguf",
+   "embeddedTemplateSha256": "114f55ebdc1804c1af371197b9fdf2d6bb925966c9dfe46b73782a71bc07965e",
+   "sameAsVanillaTemplate": true,
+   "default": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "vanillaServedVariables": {
+    "identicalRenderings": 980,
+    "tokenDeltaWhenDifferent": {}
+   },
+   "needsOverride": false
+  }
+ }
+}

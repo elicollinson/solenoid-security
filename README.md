@@ -50,7 +50,7 @@ JSON, so it is not the frozen Q8 protocol.
 - The extension breaks the baseline's saturation (spread 0.028 → 0.059), except on agent tool output, which stays at 0.98–1.00 ([O56](evals/FINDINGS.md), [O57](evals/FINDINGS.md)).
 - The two Gemmas tie at the top; Gemma 4 26B-A4B is the default, an MoE about 3× faster than Gemma 4 31B-it (3.8 s vs 12.3 s per request) ([O59](evals/FINDINGS.md)).
 - Qwen3.8 27B's template-default `xhigh` instruction cost it accuracy; at `low` it ranks 3rd on the baseline and 4th on the extension, gaining most on QA, email and BIPIA ([O65](evals/FINDINGS.md), [O67](evals/FINDINGS.md)).
-- Abliterated Qwen3.8 builds detect significantly worse than the original in a pre-registered pilot (0.854 and 0.858 vs 0.888; McNemar p ≤ 5×10⁻⁴) ([O53](evals/FINDINGS.md)).
+- Abliterated Qwen3.8 builds detect significantly worse than the original in a pre-registered pilot (0.854 and 0.858 vs 0.888; McNemar p ≤ 5×10⁻⁴); a full-scale replication and more model families are running ([summary](evals/reports/abliteration-findings.md), [O53](evals/FINDINGS.md)).
 - Windows help long documents mainly on the subtle template and can lower concern for a payload, so the full-then-windows cascade is recommended ([O1](evals/FINDINGS.md), [O10](evals/FINDINGS.md), [O46](evals/FINDINGS.md)).
 - Diffusion LLMs (LLaDA2.2) are weak at full text; windows significantly lift Flash on long documents, mid-document payloads included, but it still trails the reasoning models and adds web false alarms ([O61–O63](evals/FINDINGS.md)).
 - The Skill-Inject policy pairs cannot rank full-text detectors: both members send identical input, so every model scores 0.500 ([O49](evals/FINDINGS.md)).
@@ -358,4 +358,22 @@ For development:
 bun install
 bun run build
 bun test
+```
+
+## License and citation
+
+The code is released under the [MIT License](LICENSE): free to use, modify and redistribute, provided as-is with no
+warranty or liability. Evaluation datasets keep their upstream licenses ([sources](evals/datasets/PUBLIC_SOURCES.md)).
+
+If you use the library, results or findings in your work, please cite it. GitHub's "Cite this repository" button
+generates APA and BibTeX from [`CITATION.cff`](CITATION.cff):
+
+```bibtex
+@software{collinson_solenoid_security_2026,
+  author = {Collinson, Eli},
+  title  = {Solenoid Security: screening untrusted content for AI agents, with an open prompt-injection evaluation lab},
+  year   = {2026},
+  url    = {https://github.com/elicollinson/solenoid-security},
+  license = {MIT}
+}
 ```

@@ -33,3 +33,38 @@ test('local matrix retains failed model-load output without inference or touchin
   expect(commands.some(a=>a[0]==='unload')).toBe(false);
  }finally{rmSync(root,{recursive:true,force:true});}
 });
+
+test('local matrix refuses an unexpected loaded model unless that identifier is explicitly tolerated, and never unloads it',()=>{
+ const repo=process.cwd(),root=mkdtempSync(resolve(tmpdir(),'local-matrix-tolerate-'));
+ try{
+  mkdirSync(resolve(root,'evals/scripts'),{recursive:true});mkdirSync(resolve(root,'evals/suites'));mkdirSync(resolve(root,'evals/runs'));mkdirSync(resolve(root,'bin'));
+  writeFileSync(resolve(root,'evals/scripts/run-lmstudio-matrix.ts'),readFileSync(resolve(repo,'evals/scripts/run-lmstudio-matrix.ts')));
+  symlinkSync(resolve(repo,'evals/src'),resolve(root,'evals/src'));
+  symlinkSync(resolve(repo,'evals/scripts/analyze-research.ts'),resolve(root,'evals/scripts/analyze-research.ts'));
+  const suite=JSON.parse(readFileSync(resolve(repo,'evals/suites/prompt-injection-lmstudio-available-panel-thinking1024-v1.json'),'utf8'));
+  const condition=suite.conditions.find((c:{inputStrategy:string})=>c.inputStrategy==='full');
+  suite.conditions=[condition];suite.tests=[suite.tests[0]];
+  writeFileSync(resolve(root,'evals/suites/fixture.json'),JSON.stringify(suite));
+  const engine=suite.engines[condition.engine],c=engine.lmStudio;
+  const inventory=[{type:'llm',...c,quantization:{name:c.quantization}}];
+  const foreign=[{type:'llm',identifier:'user-service-model',modelKey:'other/model',deviceIdentifier:c.deviceIdentifier}];
+  const lms=resolve(root,'bin/lms'),trace=resolve(root,'commands.jsonl');
+  writeFileSync(lms,'#!'+process.execPath+'\n'+`import{appendFileSync}from'node:fs';const a=process.argv.slice(2);appendFileSync(${JSON.stringify(trace)},JSON.stringify(a)+'\\n');if(a[0]==='ls')console.log(${JSON.stringify(JSON.stringify(inventory))});else if(a[0]==='ps')console.log(${JSON.stringify(JSON.stringify(foreign))});else if(a[0]==='load'){console.error('load fixture stop');process.exit(2);}`);
+  chmodSync(lms,0o755);
+  const env={...process.env,PATH:resolve(root,'bin')+':'+process.env.PATH};
+  const run=(out:string,extra:string[])=>spawnSync(process.execPath,[resolve(root,'evals/scripts/run-lmstudio-matrix.ts'),'--suite=evals/suites/fixture.json',`--output-dir=${out}`,'--execute',...extra],{cwd:root,encoding:'utf8',env,stdio:['ignore','pipe','pipe']});
+  const refused=run('evals/runs/refused',[]);
+  expect(refused.status).toBe(1);
+  expect(refused.stderr).toContain('Another model is loaded');
+  const commands=()=>readFileSync(trace,'utf8').trimEnd().split('\n').map(s=>JSON.parse(s));
+  expect(commands().some(a=>a[0]==='load')).toBe(false);
+  expect(run('evals/runs/self',[`--tolerate-instance=${engine.model}`]).stderr).toContain('cannot name a selected engine identifier');
+  const tolerated=run('evals/runs/tolerated',['--tolerate-instance=user-service-model']);
+  expect(tolerated.status).toBe(1);
+  const logs=readFileSync(resolve(root,'evals/runs/tolerated/driver.ndjson'),'utf8').trimEnd().split('\n').map(s=>JSON.parse(s).value);
+  expect(logs.find(e=>e.event==='tolerated_instances')).toMatchObject({identifiers:['user-service-model'],loaded:foreign});
+  expect(commands().filter(a=>a[0]==='load')).toHaveLength(1);
+  expect(commands().some(a=>a[0]==='unload')).toBe(false);
+  expect(existsSync(resolve(root,'evals/runs/lmstudio-device.lock'))).toBe(false);
+ }finally{rmSync(root,{recursive:true,force:true});}
+});

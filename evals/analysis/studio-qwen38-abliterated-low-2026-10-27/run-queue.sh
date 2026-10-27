@@ -5,9 +5,12 @@
 # Stop at the first non-zero RUN, GATE or CELL. LM Link wait guard before every RUN; after every RUN the device lock must be
 # gone and nothing but the tolerated instance may be loaded. Resumable: each RUN resumes its own checkpoint.
 # Step file lines:  RUN|<label>|<args for eval:local>   GATE|<label>|<build> <test> <n>   CELL|<build>|<test>   SUMMARY|<build>|<suite>|<k>
-cd /Users/eli/Documents/Code/solenoid-security
+# v2: runs from the feature worktree (its runner pins the load-time template); git-ignored data are symlinked in from the
+# main checkout (evals/runs, evals/private, three datasets, node_modules), so outputs and the device lock are the main ones.
+M=/Users/eli/Documents/Code/solenoid-security
+cd $M/.claude/worktrees/abl-qwen38-low || exit 1
 D=evals/runs/studio-qwen38-abliterated-low-2026-10-27
-A=.claude/worktrees/abl-qwen38-low/evals/analysis/studio-qwen38-abliterated-low-2026-10-27
+A=evals/analysis/studio-qwen38-abliterated-low-2026-10-27
 P=$D/progress.log
 TOL=google/gemma-4-26b-a4b-qat
 CAP=$((60 * 3600))
@@ -15,7 +18,7 @@ halt() { echo "HALTED|$(date -u +%FT%TZ)|$1" >> $P; echo "=== QUEUE STOPPED: $1"
 trap 'halt "queue process received a termination signal" 143' TERM INT HUP
 link_ok() { lms link status 2>&1 | grep -q "Status: Online" && lms link status 2>&1 | grep -A1 "Elis-Mac-Studio" | grep -q "Status: connected"; }
 others() { lms ps --json | python3 -c "import json,sys; print(len([m for m in json.load(sys.stdin) if m.get('identifier') != '$TOL']))"; }
-start=$(cat $D/chain-start.epoch); budget=""
+start=$(cat $D/chain-start-v2.epoch); budget=""
 while IFS='|' read -r kind a b c; do
   [[ -z "$kind" || "$kind" == \#* ]] && continue
   if [[ -n "$budget" && "$kind" != SUMMARY ]]; then echo "=== SKIP $kind $a (budget)"; continue; fi
@@ -32,17 +35,17 @@ while IFS='|' read -r kind a b c; do
     if [[ $code -ne 0 ]]; then halt "step $a exited $code (inspect driver.ndjson/console.log; do not resume a provenance failure, see L141)" $code; fi
   elif [[ "$kind" == GATE ]]; then
     echo "=== GATE $a $(date -u +%FT%TZ)"
-    eval "bun $A/gate.ts $b" < /dev/null
+    eval "DATA_ROOT=$M bun $A/gate.ts $b" < /dev/null
     code=$?
     if [[ $code -ne 0 ]]; then halt "gate $a exited $code" $code; fi
   elif [[ "$kind" == CELL ]]; then
-    line=$(bun $A/cell.ts "$a" "$b" < /dev/null)
+    line=$(DATA_ROOT=$M bun $A/cell.ts "$a" "$b" < /dev/null)
     code=$?
     echo "CELL|$(date -u +%FT%TZ)|$line" >> $P
     if [[ $code -ne 0 ]]; then halt "cell $a/$b incomplete, prompt-token/identity check failed or abstentions over the pre-registered limit" $code; fi
   elif [[ "$kind" == SUMMARY ]]; then
     echo "=== SUMMARY $a $b $(date -u +%FT%TZ)"
-    bun $A/summarize-model.ts "$a" "$b" "$c" < /dev/null
+    DATA_ROOT=$M bun $A/summarize-model.ts "$a" "$b" "$c" < /dev/null
   else
     halt "unknown step kind $kind" 4
   fi

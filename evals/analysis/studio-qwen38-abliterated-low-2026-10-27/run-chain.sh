@@ -5,9 +5,12 @@
 # driver runs and nothing but the tolerated user instance is loaded, dry-runs every cell offline (case counts must equal
 # the plan, both conditions), then runs queue.txt through run-queue.sh. progress.log lines: CHAIN_START / DRIFT|DRIFT_FAIL /
 # CELL / MODEL_DONE / BUDGET_STOP / RUN_DONE / HALTED. Any stop writes HALTED.
-cd /Users/eli/Documents/Code/solenoid-security
+# v2: runs from the feature worktree (its runner pins the load-time template); git-ignored data are symlinked in from the
+# main checkout (evals/runs, evals/private, three datasets, node_modules), so outputs and the device lock are the main ones.
+M=/Users/eli/Documents/Code/solenoid-security
+cd $M/.claude/worktrees/abl-qwen38-low || exit 1
 D=evals/runs/studio-qwen38-abliterated-low-2026-10-27
-A=.claude/worktrees/abl-qwen38-low/evals/analysis/studio-qwen38-abliterated-low-2026-10-27
+A=evals/analysis/studio-qwen38-abliterated-low-2026-10-27
 P=$D/progress.log
 TOL=google/gemma-4-26b-a4b-qat
 mkdir -p $D
@@ -42,9 +45,12 @@ for s in plan["suites"].values():
         out = subprocess.run(["bun", "evals/scripts/run-lmstudio-matrix.ts", f"--suite={s['path']}", f"--conditions={cond}", f"--output-dir={plan['runDir']}", "--require-device=2e1a82366471bc1a78e9b74d2469172d", "--tolerate-instance=google/gemma-4-26b-a4b-qat"], capture_output=True, text=True)
         if out.returncode or len(json.loads(out.stdout)["cells"]) != len(s["cases"]): sys.exit(f"matrix dry run failed {cond}: {out.stderr[-400:]}")
 print("preflight ok:", n, "cases")
+for rel in ["evals/runs", "evals/private", "node_modules"]:
+    import os
+    if not os.path.islink(rel): sys.exit(f"{rel} is not the symlink into the main checkout")
 PY
-[[ -f $D/chain-start.epoch ]] || date +%s > $D/chain-start.epoch
-echo "CHAIN_START|$(date -u +%FT%TZ)|Qwen3.8 27B abliterated builds (heretic-ara, huihui) GGUF Q8_0 reasoning_effort low: baseline 21 tests (7326 cases) + extension 14 tests (6759 cases) per build" >> $P
+[[ -f $D/chain-start-v2.epoch ]] || date +%s > $D/chain-start-v2.epoch
+echo "CHAIN_START|$(date -u +%FT%TZ)|Qwen3.8 27B abliterated builds (heretic-ara, huihui) GGUF Q8_0 reasoning_effort low via load-time template (v2): baseline 21 tests (7326 cases) + extension 14 tests (6759 cases) per build" >> $P
 zsh $A/run-queue.sh $A/queue.txt >> $D/queue.log 2>&1
 code=$?
 if ! tail -1 $D/queue.log | grep -q "QUEUE DONE"; then halt "queue exited $code without QUEUE DONE (see queue.log)"; fi

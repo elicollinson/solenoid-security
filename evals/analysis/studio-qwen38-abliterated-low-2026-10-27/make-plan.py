@@ -1,4 +1,5 @@
-"""Freezes plan.json and queue.txt for the abliterated-builds low run (#23 stage 1; Claude Code 2026-10-27). Offline.
+"""v2 (load-time low template, see make-suites.ts). Run from the run worktree root with DATA_ROOT unset; vanilla spans
+are read from the main checkout. Freezes plan.json and queue.txt for the abliterated-builds low run (#23 stage 1; Claude Code 2026-10-27). Offline.
 Run from the main checkout root (it holds the vanilla-low run dir):
     python3 .claude/worktrees/abl-qwen38-low/evals/analysis/studio-qwen38-abliterated-low-2026-10-27/make-plan.py
 Records both suite hashes, per-test case counts for both conditions (from offline dry runs), and the estimate: the
@@ -9,10 +10,11 @@ here = os.path.dirname(os.path.abspath(__file__))
 RUN = "evals/runs/studio-qwen38-abliterated-low-2026-10-27"
 DEV = "2e1a82366471bc1a78e9b74d2469172d"
 TOL = "google/gemma-4-26b-a4b-qat"
-VAN = ("evals/runs/studio-qwen38-low-2026-10-22", "baseline-qwen38-q8gguf-low-t4096-full")
-BUILDS = {"heretic-ara": "baseline-qwen38-heretic-ara-q8-low-t4096-full", "huihui": "baseline-qwen38-huihui-abl-q8-low-t4096-full"}
-SUITES = {"baseline": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38-abliterated-low-v1.json",
-          "extension": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v1.json"}
+MAIN = "/Users/eli/Documents/Code/solenoid-security"
+VAN = (MAIN + "/evals/runs/studio-qwen38-low-2026-10-22", "baseline-qwen38-q8gguf-low-t4096-full")
+BUILDS = {"heretic-ara": "baseline-qwen38-heretic-ara-q8-lowtmpl-t4096-full", "huihui": "baseline-qwen38-huihui-abl-q8-lowtmpl-t4096-full"}
+SUITES = {"baseline": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38-abliterated-low-v2.json",
+          "extension": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v2.json"}
 VAN_SUITES = {"baseline": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json",
               "extension": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json"}
 ORDER = [("heretic-ara", "baseline"), ("huihui", "baseline"), ("heretic-ara", "extension"), ("huihui", "extension")]
@@ -30,7 +32,7 @@ def span_h(path):
         if first is None and e.get("type") == "dispatch": first = t
         last = t
     return (last - first) / 3600
-plan = {"schemaVersion": "qwen38-abliterated-low-plan/v1", "runDir": RUN, "builds": BUILDS, "order": [f"{b}/{s}" for b, s in ORDER], "suites": {}, "vanillaLow": {"runDir": VAN[0], "condition": VAN[1], "suites": {k: {"path": p, "sha256": sha(p)} for k, p in VAN_SUITES.items()}}}
+plan = {"schemaVersion": "qwen38-abliterated-low-plan/v1", "runDir": RUN, "builds": BUILDS, "order": [f"{b}/{s}" for b, s in ORDER], "suites": {}, "vanillaLow": {"runDir": "evals/runs/studio-qwen38-low-2026-10-22", "condition": VAN[1], "suites": {k: {"path": p, "sha256": sha(p)} for k, p in VAN_SUITES.items()}}}
 for k, path in SUITES.items():
     s = json.load(open(path)); cases = {}
     for t in s["tests"]:

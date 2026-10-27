@@ -2,7 +2,8 @@
  * Shared per-case extraction for the Qwen3.8 abliterated-builds run at low effort (#23 stage 1; Claude Code 2026-10-27).
  * Same extraction as studio-qwen38-low-2026-10-22/rows.ts (the repo's partial auditor for suite, engine, dataset and
  * input-hash provenance, then the last native response's usage and final answer), plus the response's model identity
- * and speculative-decoding draft counts (#52). IDs and numbers only.
+ * and speculative-decoding draft counts (#52). IDs and numbers only. v2 suites and conditions (load-time low template; the
+ * v1 conditions, whose drift gate failed because LM Studio ignored the request's effort, are kept but not analyzed).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -15,15 +16,15 @@ export const VANILLA_DIR = "evals/runs/studio-qwen38-low-2026-10-22";
 export const VANILLA_CONDITION = "baseline-qwen38-q8gguf-low-t4096-full";
 export const PILOT_DIR = "evals/runs/abliteration-pilot-2026-10";
 export const BUILDS = {
-  "heretic-ara": { condition: "baseline-qwen38-heretic-ara-q8-low-t4096-full", model: "solenoid-studio-qwen38-heretic-ara-q8-thinking4096-effort-low",
+  "heretic-ara": { condition: "baseline-qwen38-heretic-ara-q8-lowtmpl-t4096-full", model: "solenoid-studio-qwen38-heretic-ara-q8-thinking4096-effort-low-tmpl",
     indexed: "2e1a82366471bc1a78e9b74d2469172d:mradermacher/Qwen3.8-27B-heretic-ara-GGUF/Qwen3.8-27B-heretic-ara.Q8_0.gguf", pilotCondition: "pilot-qwen38-heretic-ara-q8-t4096-full", display: "Qwen3.8 27B heretic-ara Q8_0 low" },
-  "huihui": { condition: "baseline-qwen38-huihui-abl-q8-low-t4096-full", model: "solenoid-studio-qwen38-huihui-abl-q8-thinking4096-effort-low",
+  "huihui": { condition: "baseline-qwen38-huihui-abl-q8-lowtmpl-t4096-full", model: "solenoid-studio-qwen38-huihui-abl-q8-thinking4096-effort-low-tmpl",
     indexed: "2e1a82366471bc1a78e9b74d2469172d:huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF/Huihui-Qwen3.8-27B-abliterated-Q8_0.gguf", pilotCondition: "pilot-qwen38-huihui-abl-q8-t4096-full", display: "Qwen3.8 27B huihui-abliterated Q8_0 low" },
 } as const;
 export type Build = keyof typeof BUILDS;
 export const SUITES = {
-  baseline: { path: "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38-abliterated-low-v1.json" },
-  extension: { path: "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v1.json" },
+  baseline: { path: "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38-abliterated-low-v2.json" },
+  extension: { path: "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v2.json" },
 } as const;
 export type SuiteKind = keyof typeof SUITES;
 export const EXPECTED_PROMPT_DELTA_VS_VANILLA_LOW = 0;   // same embedded template (O54: +0 vs vanilla on 24/24 in the pilot)

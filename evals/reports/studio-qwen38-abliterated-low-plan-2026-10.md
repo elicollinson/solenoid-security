@@ -93,3 +93,43 @@ pushed before any call. Scripts: [`evals/analysis/studio-qwen38-abliterated-low-
 - **Sensitivity check.** Abstentions are counted as errors.
 - **What is not compared.** The pilot (xhigh) is cited for the earlier protocol only. It is not compared numerically
   with low.
+
+## Amendment 1 (2026-10-27, 11:20–12:10Z, before any analyzed call): the effort mechanism
+
+**What happened.** The v1 chain started at 11:17:45Z. The heretic-ara drift gate failed at 11:20:33Z and the chain
+halted:
+- `prompt_tokens` equaled vanilla-low on 0/24. Every case was +12, which is vanilla xhigh.
+- The low signature held on 0/24. Every case was equal to heretic-ara's own xhigh pilot (Δ 0).
+- Identity was correct on 24/24.
+
+Diagnosis:
+- **The templates are the same.** The GGUF chat templates of mradermacher/Qwen3.8-27B-heretic-ara-GGUF,
+  huihui-ai/Huihui-Qwen3.8-27B-abliterated-GGUF and lmstudio-community/Qwen3.8-27B-GGUF are byte-identical (HF API
+  `gguf.chat_template`, SHA-256 `c3cf9e34…`, 8,952 bytes). LM Studio reports the same hash as the loaded template for
+  both builds. All three accept `xhigh`/`medium`/`low`, with default `xhigh`.
+- **The request did carry `low`.** The runner sends `parameters.reasoning_effort`.
+- **LM Studio does not forward it.** For these two non-hub GGUF imports, LM Studio 0.4.25 does not pass the request's
+  effort to the template. The probe ([`probe/`](../analysis/studio-qwen38-abliterated-low-2026-10-27/probe/))
+  measured 136 `prompt_tokens` (xhigh) for none/xhigh/medium/low on `/api/v0` and for low on `/v1` and `/v1/responses`,
+  on both builds. The hub model `qwen/qwen3.8-27b@q8_0` gets the effort, which is how vanilla-low has 124.
+- **Consequence for O53.** The pilot was at xhigh as recorded, and nothing in O53 changes.
+
+**Change (v2).** Both builds are loaded with a load-time prompt template: the embedded template with only
+`default('xhigh')` changed to `default('low')`, in
+[`templates/qwen38-embedded-default-low.jinja`](../analysis/studio-qwen38-abliterated-low-2026-10-27/templates/qwen38-embedded-default-low.jinja),
+SHA-256 `690af918…`.
+- **Why it is equivalent.** The rendered prompt is the same string that vanilla-low's request-level `low` produces. The
+  probe measured 124 = low on heretic-ara. PR #49's probe found the same load-time-template route byte-identical in full
+  completions for medium.
+- **Runner change.** The runner gains an optional `lmStudio.promptTemplate {path, sha256}`. It loads through the SDK
+  with that template, then checks the loaded template's hash, and a mismatch is a provenance failure. The request still
+  sends `reasoning_effort: "low"`.
+- **New IDs.** Suites `…-qwen38-abliterated-low-v2`, engines `…-effort-low-tmpl-v1`, conditions
+  `baseline-qwen38-{heretic-ara-q8,huihui-abl-q8}-lowtmpl-t4096-full`.
+- **Unchanged.** Hypotheses, order, gates, stopping rules and the analysis. The drift gate (prompt tokens equal to
+  vanilla-low on 24/24) remains the hard check that the semantics match.
+- **The failed v1 drift cell is kept, not analyzed.** It is the 24-case heretic-ara v1 checkpoint,
+  `bipia-email-mixed/baseline-qwen38-heretic-ara-q8-low-t4096-full.jsonl`, an xhigh run under a low label.
+- **Where it runs.** The chain runs from the feature worktree (its runner has the template pin). The main checkout's
+  git-ignored data are symlinked in, so outputs and the device lock are shared. The cap is restarted at the v2
+  `CHAIN_START`.

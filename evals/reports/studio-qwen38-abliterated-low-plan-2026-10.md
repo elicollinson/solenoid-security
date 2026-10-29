@@ -170,3 +170,14 @@ started reports `provider_or_transport_error`, and whether the device-lock and l
 
 Failed partial checkpoints are never touched. Hypotheses, gates, stopping rules and the analysis are unchanged. The
 stage-2 pilot chain gets the same rule (see its plan).
+
+**Restart log (2026-10-29).**
+- **22:41:44Z, restart 1.** The 24-case heretic-ara repoguard-mixed v3 drift tranche ran.
+- **22:44:01Z, gate crash.** The gate failed with `ENOENT`. The checkpoint audit reads suites from the main checkout,
+  whose git-ignored `evals/suites` lacked v3–v5. They were copied there byte-identical.
+- **22:44:53Z, gate passed** when rerun by hand: prompt_tokens equal to vanilla-low on 24/24, identity 24/24, 0
+  abstentions.
+- **22:45:13Z, restart 1b**
+  ([`queue-restart-1b.txt`](../analysis/studio-qwen38-abliterated-low-2026-10-27/queue-restart-1b.txt)). It resumes
+  the v3 cohort from the tranche. That failure was in an analysis script, not the provider or provenance, so resuming
+  is allowed.

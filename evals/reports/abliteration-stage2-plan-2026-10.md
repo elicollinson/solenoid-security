@@ -192,3 +192,23 @@ is done offline after `DONE`.
   per build.
 - Card KL and refusal numbers are the authors' own and were measured differently across authors. They are used only
   within the Gemma 26B ARA pair.
+
+## Amendment (2026-10-29, before re-arming): automatic transport reruns
+
+Stage 1 halted on 2026-10-28T21:51Z after a single `provider_or_transport_error`. That stopped this chain as designed
+(`HALTED|2026-10-28T21:56:12Z`), and both chains then sat idle for about 25 h. Stage 1 was restarted at
+2026-10-29T22:41:44Z with its own amendment 2. This chain is re-armed unchanged in its wait: it waits for `RUN_DONE` after
+stage 1's last `CHAIN_START`, so it never runs concurrently with stage 1.
+
+**New rule.** A runner step can exit non-zero on a clean device (no lock, nothing but the tolerated instance loaded)
+while its console output since the step started reports `provider_or_transport_error`. Such a cohort is not resumed and
+the build is no longer skipped:
+- **Rerun.** The chain writes a `RETRY` line, waits for LM Link to show the Studio connected, then waits 5 minutes. It
+  then reruns the cohort (build + test, including the drift tranche) in full under a fresh condition.
+- **The fresh condition.** It comes from `make-suite.ts <build> --rerun=1|2`. That is the build's v1 suite with only the
+  suite ID (`-v2`/`-v3`) and the condition ID (`stage2-<label>-r1|r2-t4096-full`) changed, checked field by field, plus
+  an offline dry run.
+- **Analysis.** `rows.ts` analyzes the newest rerun checkpoint of a cohort. The failed partial stays on disk untouched
+  and is excluded.
+- **Limit.** At most 2 automatic reruns per cohort. A third transport failure HALTS the chain for a human.
+- **Other failures.** They keep the existing rule (skip the build, two in a row halt).

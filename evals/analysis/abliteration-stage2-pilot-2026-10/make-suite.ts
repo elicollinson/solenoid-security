@@ -16,6 +16,10 @@
  * Checks: the pilot suite hash; vanilla inputStrategies/decisionRules equal the pilot's; the engine differs from vanilla
  * only in the allowed fields; every vanilla checkpoint for the nine tests carries the vanilla engine (canonical JSON).
  * --write never overwrites a different existing file (exit 2): a changed identity needs a new suite version.
+ *
+ *   bun make-suite.ts <build> --rerun=<n> --write                 fresh-condition rerun suite n (1 or 2; plan amendment
+ *                                                                 2026-10-29): the v1 suite with only the suite ID (-v<1+n>)
+ *                                                                 and the condition ID (stage2-<label>-r<n>-t4096-full) changed
  */
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
@@ -30,9 +34,20 @@ const canon = (v: unknown) => JSON.stringify(sorted(v));
 const opt = (name: string) => process.argv.find(a => a.startsWith(`--${name}=`))?.slice(name.length + 3);
 
 export const plan = JSON.parse(readFileSync(resolve(import.meta.dir, "plan.json"), "utf8"));
-export const suiteIdOf = (build: string) => `prompt-injection-lmstudio-studio-abliteration-stage2-pilot-q8-t4096-${build}-v1`;
-export const suitePathOf = (build: string) => `evals/suites/${suiteIdOf(build)}.json`;
-export const conditionOf = (build: string) => `stage2-${plan.builds[build].label}-t4096-full`;
+export const suiteIdOf = (build: string, n = 0) => `prompt-injection-lmstudio-studio-abliteration-stage2-pilot-q8-t4096-${build}-v${1 + n}`;
+export const suitePathOf = (build: string, n = 0) => `evals/suites/${suiteIdOf(build, n)}.json`;
+export const conditionOf = (build: string, n = 0) => `stage2-${plan.builds[build].label}${n ? `-r${n}` : ""}-t4096-full`;
+/** Rerun suite n: the build's v1 suite with only the suite ID and the condition ID changed (checked). */
+export function rerunSuite(build: string, n: number) {
+  const baseText = read(suitePathOf(build)), base = JSON.parse(baseText);
+  if (base.conditions.length !== 1 || base.conditions[0].id !== conditionOf(build)) throw new Error("v1 suite condition differs");
+  const suite = { ...base, id: suiteIdOf(build, n), conditions: [{ ...base.conditions[0], id: conditionOf(build, n) }] };
+  const text = JSON.stringify(suite, null, 2) + "\n", back = JSON.parse(text);
+  for (const k of ["schemaVersion", "tests", "engines", "inputStrategies", "decisionRules"]) if (JSON.stringify(back[k]) !== JSON.stringify(base[k])) throw new Error(`rerun ${n}: ${k} differs`);
+  const { id: _a, ...x } = back.conditions[0], { id: _b, ...y } = base.conditions[0];
+  if (JSON.stringify(x) !== JSON.stringify(y)) throw new Error(`rerun ${n}: condition differs beyond its id`);
+  return { text, sha256: sha(text), base: suitePathOf(build), baseSha256: sha(baseText), condition: conditionOf(build, n) };
+}
 const TEMPLATE_NOTE: Record<string, string> = {
   gemma4: "load-time lmStudio.promptTemplate = vanilla Gemma 4 Q8_0 embedded template (sha256 85a08664...) with one prepended line defaulting enable_thinking to true: the vanilla hub model was served enable_thinking=true (O54 audit, offset 0 on 7,317/7,317), while LM Studio passes no effort/thinking variable to non-hub GGUF imports (stage 1, 2026-10-27); request still sends reasoning_effort high (dropped by LM Studio, O65)",
   qwen38: "load-time lmStudio.promptTemplate = stage 1's template: vanilla Qwen3.8 embedded template (sha256 c3cf9e34...) with only its default changed xhigh->low; LM Studio 0.4.25 does not forward request reasoning_effort to non-hub GGUFs (stage 1 probe 2026-10-27); this build's own embedded template (sha256 9bfdde60...) renders the same at low but defaults to no instruction; request still sends reasoning_effort low",
@@ -86,6 +101,17 @@ export function buildSuite(build: string, pin: { modelKey: string; indexedModelI
   return { text, sha256: sha(text), engineId: e.id, model: e.model, condition: conditionOf(build), testsSha256: sha(canon(pilot.tests)) };
 }
 
+if (import.meta.main && opt("rerun")) {
+  const build = process.argv[2]!, n = Number(opt("rerun"));
+  if (!(n === 1 || n === 2)) { console.error("--rerun must be 1 or 2"); process.exit(1); }
+  const r = rerunSuite(build, n), out = resolve(repo, suitePathOf(build, n));
+  if (process.argv.includes("--write")) {
+    if (existsSync(out) && readFileSync(out, "utf8") !== r.text) { console.error(`refusing to overwrite a different ${out}`); process.exit(2); }
+    writeFileSync(out, r.text);
+  }
+  console.log(JSON.stringify({ build, rerun: n, path: suitePathOf(build, n), sha256: r.sha256, condition: r.condition, base: r.base, baseSha256: r.baseSha256 }));
+  process.exit(0);
+}
 if (import.meta.main) {
   const build = process.argv[2]!;
   const b = plan.builds[build];

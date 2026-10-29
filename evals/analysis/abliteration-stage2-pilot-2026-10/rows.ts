@@ -6,7 +6,7 @@
  * draft counts). The vanilla side is the build's vanilla FULL-suite checkpoint, audited whole and then restricted to the
  * pilot caseIds of that test (no vanilla reruns). IDs and numbers only.
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { extract, type Extract, type Row } from "../studio-qwen38-abliterated-low-2026-10-27/rows.js";
 import { plan, suitePathOf, conditionOf } from "./make-suite.js";
@@ -26,7 +26,13 @@ function load(build: string) {
     vanilla: plan.vanilla[plan.builds[build].vanilla] as { runDir: string; condition: string } };
 }
 export const ctx = (build: string) => { if (!ctxCache.has(build)) ctxCache.set(build, load(build)); return ctxCache.get(build)!; };
-export const buildRows = (build: string, test: string) => extract(resolve(RUN_DIR, test, `${ctx(build).condition}.jsonl`));
+/** The analyzed checkpoint of a cohort: the newest fresh-condition rerun (r2, r1; plan amendment 2026-10-29) that exists,
+ * else the original condition. Superseded partials stay on disk untouched and are never analyzed. */
+export const buildFile = (build: string, test: string) => {
+  for (const n of [2, 1]) { const f = resolve(RUN_DIR, test, `${conditionOf(build, n)}.jsonl`); if (existsSync(f)) return f; }
+  return resolve(RUN_DIR, test, `${ctx(build).condition}.jsonl`);
+};
+export const buildRows = (build: string, test: string) => extract(buildFile(build, test));
 /** The vanilla checkpoint for this build's model family, restricted to the pilot caseIds of the test. */
 export function vanillaRows(build: string, test: string): Extract | null {
   const c = ctx(build), full = extract(resolve(ROOT, c.vanilla.runDir, test, `${c.vanilla.condition}.jsonl`));

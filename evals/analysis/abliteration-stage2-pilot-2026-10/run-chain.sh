@@ -15,6 +15,12 @@
 # the tolerated instance loaded) skips that build without resuming it (L141); two such builds in a row, or an unclean
 # device, halt the chain. Data retention: checkpoints are only ever resumed, never deleted or overwritten; an existing
 # suite with a different pinned identity is not overwritten (the build is skipped and needs a new suite version).
+# Amendment (2026-10-29, after stage 1's 25 h idle): a RUN that exits non-zero on a clean device with
+# provider_or_transport_error in its console output is rerun automatically: RETRY line, wait for LM Link connected, wait
+# 5 min, rerun that cohort (build + test) in full under the next fresh condition (make-suite.ts --rerun=1|2: suite -v2/-v3,
+# condition stage2-<label>-r1|r2-t4096-full; the failed partial is kept untouched and excluded). At most 2 per cohort;
+# after that the chain HALTS for a human. Other RUN failures keep the skip rule above. Stage 1 RUN_DONE is waited for
+# after its LAST CHAIN_START, so a restarted stage 1 chain (new CHAIN_START) re-arms this wait.
 M=/Users/eli/Documents/Code/solenoid-security
 W=$M/.claude/worktrees/abl-stage2
 cd $W || exit 1
@@ -75,6 +81,33 @@ run_step() {  # $1 label, $2 suite, $3 condition, rest: extra args. Returns the 
   return $code
 }
 skip() { log SKIP "$1: $2"; SKIP_B+=($1); }
+typeset -A RV
+RETRY_WAIT=${RETRY_WAIT_S:-300}; MAX_RETRY=2
+# Restart-safe: earlier automatic reruns are read back from the RETRY lines (".. cohort <build>/<test> .. under r<n> ..").
+while read -r line; do k=${line#*cohort }; k=${k%% *}; n=${line#* under r}; n=${n%%[^0-9]*}; RV[$k]=$n; done < <(grep '^RETRY|' $P 2>/dev/null)
+run_cohort() {  # $1 label, $2 build, $3 test, $4 suite, $5 condition, rest: extra args. Reruns on transport failures.
+  local label=$1 b=$2 t=$3 suite=$4 cond=$5; shift 5
+  local key=$b/$t code c0 n tr ms dr lbl
+  while true; do
+    n=${RV[$key]:-0}
+    if (( n )); then
+      ms=$(bun $A/make-suite.ts $b --rerun=$n --write 2>>$D/pins/$b.make-suite.err) || halt "rerun suite $n for $key could not be written"
+      suite=$(echo "$ms" | python3 -c "import json,sys; print(json.load(sys.stdin)['path'])"); cond=$(echo "$ms" | python3 -c "import json,sys; print(json.load(sys.stdin)['condition'])")
+      dr=$(python3 $A/dryrun.py $suite $cond 2>&1) || halt "offline dry run of rerun suite $suite failed"
+    fi
+    c0=$(stat -f %z $D/console.log 2>/dev/null || echo 0)
+    lbl=$label; (( n )) && lbl=$label/r$n
+    run_step $lbl $suite $cond --tests=$t "$@"; code=$?
+    (( code == 0 )) && return 0
+    tr=$(tail -c +$((c0 + 1)) $D/console.log 2>/dev/null | grep -c provider_or_transport_error)
+    [[ "$tr" == "0" ]] && return $code
+    (( n >= MAX_RETRY )) && halt "$label exited $code with provider_or_transport_error after $n automatic reruns (limit $MAX_RETRY); cohort $key needs a human (L141: rerun under a fresh condition, keep the partial)" $code
+    RV[$key]=$((n + 1))
+    log RETRY "$label exited $code with provider_or_transport_error; automatic rerun $((n + 1))/$MAX_RETRY of cohort $key in full under r$((n + 1)) after LM Link is connected + ${RETRY_WAIT}s; the partial checkpoint is kept and excluded (L141)"
+    until link_ok; do sleep 60; done
+    sleep $RETRY_WAIT
+  done
+}
 process_build() {  # $1 build, $2 k. Returns 0 done/skipped, 3 absent (defer).
   local b=$1 k=$2 code
   # Restart-safe: a build already summarized, or skipped for any reason but absence, is not touched again.
@@ -97,7 +130,7 @@ process_build() {  # $1 build, $2 k. Returns 0 done/skipped, 3 absent (defer).
   local dr; dr=$(python3 $A/dryrun.py $suite $cond 2>&1) || { skip $b "offline dry run failed: ${${dr//|/ }[-300,-1]}"; return 0; }
   log PIN "$b $(echo "$ms" | python3 -c "import json,sys; d=json.load(sys.stdin); p=d['pin']; print(f\"{d['path']} sha256 {d['sha256']} condition {d['condition']} modelKey {p['modelKey']} sizeBytes {p['sizeBytes']} quant {p['quantization']} indexed {p['indexedModelIdentifier']}\")"); $dr"
   if ! grep -q "^DRIFT|.*|$b " $P; then
-    run_step drift/$b $suite $cond --tests=bipia-email-mixed --max-new-segments=24; code=$?
+    run_cohort drift/$b $b bipia-email-mixed $suite $cond --max-new-segments=24; code=$?
     if (( code != 0 )); then
       FAILS=$((FAILS + 1)); skip $b "drift tranche exited $code (inspect driver.ndjson/console.log; not resumed, L141)"; return 0
     fi
@@ -106,7 +139,7 @@ process_build() {  # $1 build, $2 k. Returns 0 done/skipped, 3 absent (defer).
   local t line
   for t in $TESTS; do
     if (( $(date +%s) - START > CAP )); then skip $b "36 h chain cap reached before $t (partial checkpoints kept, not reported as results)"; return 0; fi
-    run_step $b/$t $suite $cond --tests=$t; code=$?
+    run_cohort $b/$t $b $t $suite $cond; code=$?
     if (( code != 0 )); then
       FAILS=$((FAILS + 1)); skip $b "step $t exited $code (inspect driver.ndjson/console.log; not resumed, L141)"; return 0
     fi

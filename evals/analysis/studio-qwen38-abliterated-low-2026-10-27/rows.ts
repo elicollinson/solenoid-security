@@ -65,7 +65,16 @@ export function extract(file: string): Extract | null {
 }
 
 export const suiteJson = (kind: SuiteKind) => JSON.parse(readFileSync(resolve(ROOT, SUITES[kind].path), "utf8"));
-export const buildFile = (build: Build, testId: string) => resolve(RUN_DIR, testId, `${BUILDS[build].condition}.jsonl`);
+/** Rerun condition IDs (amendment 2, L141): a cohort that failed under vN reran in full under vN+1 (extension v3..v5). */
+export const RERUN_VERSIONS = [5, 4, 3] as const;
+export const conditionFor = (build: Build, n: number | null) => n === null ? BUILDS[build].condition : BUILDS[build].condition.replace(/-t4096-full$/, `-v${n}-t4096-full`);
+/** The analyzed checkpoint for a cohort: the newest fresh-condition rerun that exists, else the original condition. The
+ * superseded partial checkpoints are kept on disk untouched and never analyzed (see supersededFiles). */
+export const buildFile = (build: Build, testId: string) => {
+  for (const n of RERUN_VERSIONS) { const f = resolve(RUN_DIR, testId, `${conditionFor(build, n)}.jsonl`); if (existsSync(f)) return f; }
+  return resolve(RUN_DIR, testId, `${BUILDS[build].condition}.jsonl`);
+};
+export const supersededFiles = (build: Build, testId: string) => [null, ...[...RERUN_VERSIONS].reverse()].map(n => resolve(RUN_DIR, testId, `${conditionFor(build, n)}.jsonl`)).filter(f => existsSync(f) && f !== buildFile(build, testId));
 export const vanillaFile = (testId: string) => resolve(ROOT, VANILLA_DIR, testId, `${VANILLA_CONDITION}.jsonl`);
 export const pilotFile = (build: Build, testId: string) => resolve(ROOT, PILOT_DIR, testId, `${BUILDS[build].pilotCondition}.jsonl`);
 /** Identity check on rows that have a response: the response model, the quant and the loaded instance's indexed file. */

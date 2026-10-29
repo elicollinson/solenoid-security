@@ -7,6 +7,10 @@
 # CELL / MODEL_DONE / BUDGET_STOP / RUN_DONE / HALTED. Any stop writes HALTED.
 # v2: runs from the feature worktree (its runner pins the load-time template); git-ignored data are symlinked in from the
 # main checkout (evals/runs, evals/private, three datasets, node_modules), so outputs and the device lock are the main ones.
+# Amendment 2 (2026-10-29): QUEUE (default queue.txt; restart 1 uses queue-restart-1.txt), CHAIN_EPOCH (cap start file;
+# restart 1 uses chain-start-r1.epoch with CAP_HOURS=40) and LABEL are passed through; the fresh-condition rerun suites
+# (extension v3..v5, retry-suites.json) are hash-checked and dry-run too; run-queue.sh reruns a transport-failed cohort
+# under the next version automatically (at most 2 per cohort, RETRY lines).
 M=/Users/eli/Documents/Code/solenoid-security
 cd $M/.claude/worktrees/abl-qwen38-low || exit 1
 D=evals/runs/studio-qwen38-abliterated-low-2026-10-27
@@ -25,6 +29,16 @@ p = json.load(open(sys.argv[1]))
 for s in list(p["suites"].values()) + list(p["vanillaLow"]["suites"].values()):
     h = hashlib.sha256(open(s["path"], "rb").read()).hexdigest()
     if h != s["sha256"]: sys.exit(f"{s['path']}: {h}")
+PY
+python3 - "$A/retry-suites.json" <<'PY' || halt "rerun suite hash differs from retry-suites.json or its dry run failed"
+import json, hashlib, subprocess, sys
+for v, s in json.load(open(sys.argv[1])).items():
+    h = hashlib.sha256(open(s["path"], "rb").read()).hexdigest()
+    if h != s["sha256"]: sys.exit(f"{s['path']}: {h}")
+    for cond in s["conditions"]:
+        out = subprocess.run(["bun", "evals/scripts/run-suite.ts", f"--suite={s['path']}", "--test=repoguard-mixed", f"--condition={cond}"], capture_output=True, text=True)
+        if out.returncode or json.loads(out.stdout)["cases"] != 575: sys.exit(f"dry run failed {v} {cond}: {out.stderr[-400:]}")
+print("rerun suites ok")
 PY
 others=$(lms ps --json | python3 -c "import json,sys; print(len([m for m in json.load(sys.stdin) if m.get('identifier') != '$TOL']))")
 [[ "$others" == "0" ]] || halt "a non-tolerated model was loaded before the chain started"
@@ -49,9 +63,10 @@ for rel in ["evals/runs", "evals/private", "node_modules"]:
     import os
     if not os.path.islink(rel): sys.exit(f"{rel} is not the symlink into the main checkout")
 PY
-[[ -f $D/chain-start-v2.epoch ]] || date +%s > $D/chain-start-v2.epoch
-echo "CHAIN_START|$(date -u +%FT%TZ)|Qwen3.8 27B abliterated builds (heretic-ara, huihui) GGUF Q8_0 reasoning_effort low via load-time template (v2): baseline 21 tests (7326 cases) + extension 14 tests (6759 cases) per build" >> $P
-zsh $A/run-queue.sh $A/queue.txt >> $D/queue.log 2>&1
+EP=${CHAIN_EPOCH:-chain-start-v2.epoch}; Q=${QUEUE:-$A/queue.txt}
+[[ -f $D/$EP ]] || date +%s > $D/$EP
+echo "CHAIN_START|$(date -u +%FT%TZ)|${LABEL:-Qwen3.8 27B abliterated builds (heretic-ara, huihui) GGUF Q8_0 reasoning_effort low via load-time template (v2): baseline 21 tests (7326 cases) + extension 14 tests (6759 cases) per build}" >> $P
+CHAIN_EPOCH=$EP zsh $A/run-queue.sh $Q >> $D/queue.log 2>&1
 code=$?
 if ! tail -1 $D/queue.log | grep -q "QUEUE DONE"; then halt "queue exited $code without QUEUE DONE (see queue.log)"; fi
 echo "=== CHAIN DONE $(date -u +%FT%TZ)"

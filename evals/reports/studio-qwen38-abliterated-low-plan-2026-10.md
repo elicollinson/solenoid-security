@@ -133,3 +133,40 @@ SHA-256 `690af918…`.
 - **Where it runs.** The chain runs from the feature worktree (its runner has the template pin). The main checkout's
   git-ignored data are symlinked in, so outputs and the device lock are shared. The cap is restarted at the v2
   `CHAIN_START`.
+
+## Amendment 2 (2026-10-29, before the restart): transport halt, fresh-condition rerun and automatic reruns
+
+**What happened.** At 2026-10-28T21:51:29Z, heretic-ara `extension/repoguard-mixed` stopped after 79/575 cases with one
+`provider_or_transport_error` (errorName `Error`, no HTTP status). The previous response landed 0.2 s earlier. The
+LM Studio log shows the tolerated foreign instance (`google/gemma-4-26b-a4b-qat`) vanishing at the same second
+(`getLoadConfig … Instance does not exist`), so the Studio's instance set changed under the in-flight request. No
+model was loaded afterwards and no device lock was left. The queue halted as designed, but nobody restarted it for
+about 25 h.
+
+**Rerun (L141).** The cohort is not resumed. It reruns in full under a fresh condition: extension suite `…-v3`
+([`make-retry-suites.ts`](../analysis/studio-qwen38-abliterated-low-2026-10-27/make-retry-suites.ts), hashes in
+[`retry-suites.json`](../analysis/studio-qwen38-abliterated-low-2026-10-27/retry-suites.json)).
+- **What changes.** Only the suite ID and the condition IDs (`…-lowtmpl-v3-t4096-full`). Tests, engines, input
+  strategies and decision rules are byte-identical to v2.
+- **The partial is kept.** The v2 partial (79 cases) stays on disk untouched and is excluded from the analysis.
+  `rows.ts` analyzes the newest rerun checkpoint of a cohort.
+
+**Restart queue.** [`queue-restart-1.txt`](../analysis/studio-qwen38-abliterated-low-2026-10-27/queue-restart-1.txt)
+contains the remaining steps of `queue.txt` verbatim. A 24-case drift tranche and gate open each build's first cell
+after the restart, with the same pass criteria (prompt_tokens equal to vanilla-low on 24/24):
+- heretic-ara on `repoguard-mixed` v3;
+- huihui on `bipia-table-mixed`.
+
+**Cap.** The 60 h cap was meant to bound run time, not idle time. It restarts at the restart's `CHAIN_START`
+(`chain-start-r1.epoch`) with 40 h, which covers the remaining roughly 22 h estimate.
+
+**Automatic reruns (new).** When a RUN exits non-zero, the queue checks whether the console output since that RUN
+started reports `provider_or_transport_error`, and whether the device-lock and loaded-model checks pass. If both hold:
+- **Rerun.** It writes a `RETRY` line, waits for LM Link to show the Studio connected, then waits 5 minutes. It then
+  reruns the cohort in full under the next suite version (vN to vN+1; v4 and v5 are frozen now). Later steps of that
+  cohort use the new version.
+- **Limit.** At most 2 automatic reruns per cohort. After that it writes `HALTED` for a human.
+- **No resume.** A provenance or any other failure still halts at once.
+
+Failed partial checkpoints are never touched. Hypotheses, gates, stopping rules and the analysis are unchanged. The
+stage-2 pilot chain gets the same rule (see its plan).

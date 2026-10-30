@@ -212,3 +212,18 @@ the build is no longer skipped:
   and is excluded.
 - **Limit.** At most 2 automatic reruns per cohort. A third transport failure HALTS the chain for a human.
 - **Other failures.** They keep the existing rule (skip the build, two in a row halt).
+
+## Amendment (2026-10-30): do not stand down on a stage 1 HALTED that is followed by a restart
+
+Stage 1 was restarted twice after halts, at 22:44Z and 06:40Z. Each halt made this chain stand down, and it had to be
+re-armed by hand.
+
+**New rule.** When stage 1's last state is `HALTED`, the chain now waits up to 10 minutes (`HALT_GRACE_S=600`) for a
+new stage 1 `CHAIN_START`:
+- if one appears, it logs `WAIT … stage 1 restarted` and keeps waiting for `RUN_DONE`;
+- if none appears, it halts as before.
+
+Stage 1's own automatic reruns write `RETRY`, not `HALTED`, so they never trigger this.
+
+**Gate.** The stage 2 drift gate has no pilot low-signature check: the comparison is on the same pilot cases. So the
+`0/0 overlapping` fix of stage 1's amendment 4 does not apply here.

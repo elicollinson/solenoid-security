@@ -48,7 +48,14 @@ s1_state() { awk '/^CHAIN_START[|]/{s=""} {s=s"\n"$0} END{print s}' $S1 | grep -
 log WAIT "armed (pid $$); waiting for stage 1 RUN_DONE in $S1, no matrix driver, no device lock"
 while true; do
   st=$(s1_state)
-  if [[ "$st" == HALTED* ]]; then halt "stage 1 halted (${st//|/ }); stage 1 needs attention, stage 2 not started"; fi
+  if [[ "$st" == HALTED* ]]; then
+    # Amendment 2026-10-30: a stage 1 HALTED followed within HALT_GRACE_S (default 10 min) by a new CHAIN_START (a
+    # restart) re-arms the wait instead of standing down; only a HALTED that stays the last word halts stage 2.
+    g=0; while [[ "$(s1_state)" == "$st" ]] && (( g < ${HALT_GRACE_S:-600} )); do sleep 30; g=$((g + 30)); done
+    [[ "$(s1_state)" == "$st" ]] && halt "stage 1 halted (${st//|/ }) and did not restart within ${HALT_GRACE_S:-600}s; stage 1 needs attention, stage 2 not started"
+    log WAIT "stage 1 restarted after ${st//|/ }; still waiting for its RUN_DONE"
+    continue
+  fi
   [[ "$st" == RUN_DONE* ]] && break
   sleep $POLL
 done

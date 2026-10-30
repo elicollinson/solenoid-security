@@ -205,3 +205,17 @@ as passed.
   ([`queue-restart-1c.txt`](../analysis/studio-qwen38-abliterated-low-2026-10-27/queue-restart-1c.txt)). This is a gate
   decision, not a provider or provenance failure.
 - **Reporting.** The report lists this deviation.
+
+## Amendment 4 (2026-10-30): the low-signature check with no pilot overlap is reported as not applicable
+
+The gate's low-signature check compares `prompt_tokens` with the build's pilot xhigh minus 12. It covers only the cases
+that overlap the 998-case pilot. When a cohort has no overlap, the log line read `on 0/0 overlapping`. That already
+passed, since 0 equals 0, but it read like a failure. gate.ts now prints `n/a (no overlap with the pilot)` and states
+the rule in code: the check applies only when the overlap is non-empty.
+
+The verdict does not change. Neither restart halt came from this check:
+- **22:44Z.** The gate crashed with `ENOENT`, because the v3 suites were missing from the main checkout.
+- **06:40Z.** The `≤ 1 abstention` clause failed (amendment 3).
+
+The pass rule is unchanged otherwise: prompt_tokens equal to vanilla-low on all n cases, identity on all n, and the
+abstention clause. No running step uses the gate; the remaining queue has no GATE step.

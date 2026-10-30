@@ -28,6 +28,9 @@ const abst = done.filter(r => r.status !== "scored").length;
 const agree = done.filter(r => { const v = van.byId.get(r.caseId); return v && v.status === r.status && v.flagged === r.flagged; }).length;
 const drafts = withUsage.filter(r => (r.draftTotal ?? 0) > 0).length;
 const accept = withUsage.reduce((a, r) => a + (r.draftAccepted ?? 0), 0) / Math.max(1, withUsage.reduce((a, r) => a + (r.draftTotal ?? 0), 0));
-const pass = done.length === n && withUsage.length === n && ptEq === n && lowSig === overlap.length && ident === n && abst <= 1;
-log(`${pass ? "DRIFT" : "DRIFT_FAIL"}|${now()}|${build} ${test} first ${n}: finished ${done.length}/${n}; prompt_tokens == vanilla-low on ${ptEq}/${n}; low signature (== pilot xhigh ${EXPECTED_PROMPT_DELTA_VS_PILOT_XHIGH}) on ${lowSig}/${overlap.length} overlapping; identity (model, Q8_0, GGUF) ${ident}/${n}; abstentions ${abst}; outcome agreement with vanilla-low ${agree}/${n} (reported); speculative drafts on ${drafts}/${n}, acceptance ${(100 * accept).toFixed(0)}%`);
+// The low signature is checked only where the cohort overlaps the pilot; with no overlap it is not applicable (n/a), not
+// a failure (0 === 0 already passed; amendment 4 makes it explicit in the log line).
+const lowSigOk = overlap.length === 0 || lowSig === overlap.length;
+const pass = done.length === n && withUsage.length === n && ptEq === n && lowSigOk && ident === n && abst <= 1;
+log(`${pass ? "DRIFT" : "DRIFT_FAIL"}|${now()}|${build} ${test} first ${n}: finished ${done.length}/${n}; prompt_tokens == vanilla-low on ${ptEq}/${n}; low signature (== pilot xhigh ${EXPECTED_PROMPT_DELTA_VS_PILOT_XHIGH}) ${overlap.length ? `on ${lowSig}/${overlap.length} overlapping` : "n/a (no overlap with the pilot)"}; identity (model, Q8_0, GGUF) ${ident}/${n}; abstentions ${abst}; outcome agreement with vanilla-low ${agree}/${n} (reported); speculative drafts on ${drafts}/${n}, acceptance ${(100 * accept).toFixed(0)}%`);
 process.exit(pass ? 0 : 1);

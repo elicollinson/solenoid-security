@@ -1,0 +1,6 @@
+# Restart 1d (2026-10-30T21:3xZ): the last two steps of queue-restart-1c.txt. The final RUN (huihui longpi-authorized-benign)
+# completed 384/384 and unloaded its model, but the post-RUN check halted because the user had loaded an untolerated, non-study
+# instance (google/gemma-4-26b-a4b, Q4_K_M; not the tolerated QAT identifier). No RUN step remains, so the chain's
+# loaded-model preflight does not apply; run-queue.sh runs these directly.
+CELL|huihui|longpi-authorized-benign
+SUMMARY|huihui|extension|4/4

@@ -64,9 +64,20 @@ S1END=$(date +%s)
 log WAIT "stage 1 done (${st//|/ }); matrix driver gone and lock absent; waiting for LM Link"
 link_ok() { lms link status 2>&1 | grep -q "Status: Online" && lms link status 2>&1 | grep -A1 "Elis-Mac-Studio" | grep -q "Status: connected"; }
 others() { lms ps --json | python3 -c "import json,sys; print(len([m for m in json.load(sys.stdin) if m.get('identifier') != '$TOL']))"; }
+# Amendment 2026-10-30: a study instance is one this project loads (identifier solenoid-*). Any other untolerated instance
+# is the user's: the chain waits for it to go (LM Studio's idle TTL unloads it) for up to OTHERS_WAIT_S (default 4 h)
+# before a model is loaded, instead of halting; a study instance left loaded after a step still halts.
+study() { lms ps --json | python3 -c "import json,sys; print(len([m for m in json.load(sys.stdin) if str(m.get('identifier','')).startswith('solenoid-')]))"; }
+wait_clear() {  # $1 where
+  local w=0; [[ "$(others)" == "0" ]] && return 0
+  log WAIT "an untolerated non-study instance is loaded before $1 ($(lms ps --json | python3 -c "import json,sys; print(','.join(m.get('identifier','?') for m in json.load(sys.stdin) if m.get('identifier') != '$TOL'))")); waiting up to ${OTHERS_WAIT_S:-14400}s for it to unload"
+  while [[ "$(others)" != "0" ]]; do (( w >= ${OTHERS_WAIT_S:-14400} )) && halt "an untolerated instance stayed loaded ${OTHERS_WAIT_S:-14400}s before $1"; sleep 60; w=$((w + 60)); done
+  log WAIT "instances clear before $1"
+}
 until link_ok; do sleep 60; done
 sleep 30
-[[ "$(others)" == "0" ]] || halt "a non-tolerated model is loaded at stage 2 start"
+[[ "$(study)" == "0" ]] || halt "a study model is loaded at stage 2 start"
+wait_clear "stage 2 start"
 pgrep -f $MPAT > /dev/null && halt "another LM Studio matrix driver started"
 [[ -f $LOCK ]] && halt "device lock appeared before stage 2 start"
 [[ -f $D/chain-start.epoch ]] || date +%s > $D/chain-start.epoch
@@ -79,12 +90,13 @@ run_step() {  # $1 label, $2 suite, $3 condition, rest: extra args. Returns the 
   local label=$1 suite=$2 cond=$3; shift 3
   until link_ok; do echo "=== WAIT LM Link $(ts)"; sleep 60; done
   local n=0; while [[ -f $LOCK ]]; do (( n++ > 10 )) && halt "device lock present before $label"; sleep 60; done
+  wait_clear $label
   echo "=== START $label $(ts)"
   ${MOCK_RUN:-bun run eval:local} --execute --suite=$suite --conditions=$cond "$@" --output-dir=$D --require-device=$DEV --tolerate-instance=$TOL --concurrency=1 --continue-after-output-errors < /dev/null
   local code=$?
   echo "=== EXIT $code $label $(ts)"; echo "lms ps: $(lms ps --json | tr -d '\n ')"
   [[ -f $LOCK ]] && halt "device lock still present after $label" 2
-  [[ "$(others)" != "0" ]] && halt "a study model is still loaded after $label" 3
+  [[ "$(study)" != "0" ]] && halt "a study model is still loaded after $label" 3
   return $code
 }
 skip() { log SKIP "$1: $2"; SKIP_B+=($1); }

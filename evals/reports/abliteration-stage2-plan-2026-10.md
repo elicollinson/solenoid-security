@@ -227,3 +227,19 @@ Stage 1's own automatic reruns write `RETRY`, not `HALTED`, so they never trigge
 
 **Gate.** The stage 2 drift gate has no pilot low-signature check: the comparison is on the same pilot cases. So the
 `0/0 overlapping` fix of stage 1's amendment 4 does not apply here.
+
+## Amendment (2026-10-30T21:3xZ): wait for the user's untolerated instances instead of halting
+
+Stage 1 finished at `RUN_DONE|2026-10-30T21:27:34Z`. At 21:28:23Z this chain halted at its start check because the
+user had loaded `google/gemma-4-26b-a4b` (Q4_K_M, idle TTL 1 h). That is not the tolerated QAT identifier, and it is
+not a study model.
+
+**New rule.** A study instance is one this project loads: its identifier starts with `solenoid-`.
+- **At start.** A study instance that is already loaded still halts the chain.
+- **Before any model loads** (start and each step): another untolerated instance makes the chain log `WAIT` and wait
+  for it to be unloaded, which LM Studio's idle TTL does, for up to 4 h (`OTHERS_WAIT_S`). If it is still loaded
+  after that, the chain halts.
+- **After a step.** Only a study instance left loaded halts the chain.
+
+The runner's own preflight still refuses to run beside any untolerated instance. Re-armed from the same plan; no stage
+2 call had run.

@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "qwen38-abliterated-low-plan/v1",
+  "runDir": "evals/runs/studio-qwen38-abliterated-low-2026-10-27",
+  "builds": {
+    "heretic-ara": "baseline-qwen38-heretic-ara-q8-lowtmpl-t4096-full",
+    "huihui": "baseline-qwen38-huihui-abl-q8-lowtmpl-t4096-full"
+  },
+  "order": [
+    "heretic-ara/baseline",
+    "huihui/baseline",
+    "heretic-ara/extension",
+    "huihui/extension"
+  ],
+  "suites": {
+    "baseline": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38-abliterated-low-v2.json",
+      "sha256": "5d518de7172e1c96921c2229bd367c99de4c56ab365e661f13f5fb7aeeb8f6a4",
+      "tests": 21,
+      "totalCases": 7326,
+      "cases": {
+        "longpi-paper": 400,
+        "longpi-paper-abstract": 300,
+        "longpi-paper-method": 300,
+        "longpi-resume": 400,
+        "longpi-code": 400,
+        "bipia-email-mixed": 156,
+        "longpi-email": 400,
+        "attempt-detection": 400,
+        "web-mixed": 480,
+        "agentdyn-shopping": 183,
+        "agentdyn-github": 237,
+        "agentdyn-dailylife": 411,
+        "agentdojo-travel-mixed": 21,
+        "agent-injection-bench-mixed": 182,
+        "pids-obfuscated": 405,
+        "encoding-eligible-existing-v1": 229,
+        "encoding-benign-controls-v1": 969,
+        "benign-false-positives": 339,
+        "pids-hard-benign-public": 808,
+        "skill-policy-pairs": 234,
+        "paper-score-counterfactual": 72
+      },
+      "engines": {
+        "heretic-ara": "studio-qwen38-heretic-ara-q8-lmstudio-score-v1-thinking4096-native-v0-effort-low-tmpl-v1",
+        "huihui": "studio-qwen38-huihui-abl-q8-lmstudio-score-v1-thinking4096-native-v0-effort-low-tmpl-v1"
+      },
+      "vanillaLowSpanHours": 15.25
+    },
+    "extension": {
+      "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v2.json",
+      "sha256": "62cf5e06efdb8d65d9efbcf376185357c11788c8724ccd5dcf73751bac70a6fc",
+      "tests": 14,
+      "totalCases": 6759,
+      "cases": {
+        "bipia-table-mixed": 600,
+        "bipia-code-mixed": 400,
+        "browsesafe-mixed": 400,
+        "nemotron-ipi-attacks": 360,
+        "agentdojo-suites-mixed": 280,
+        "repoguard-mixed": 575,
+        "inj-squad-mixed": 1200,
+        "inj-triviaqa-mixed": 1200,
+        "llmail-pool-attacks": 300,
+        "longpi-email-llmail-mixed": 400,
+        "longpi-subtle-paper-mixed": 220,
+        "longpi-subtle-code-mixed": 220,
+        "longpi-subtle-resume-mixed": 220,
+        "longpi-authorized-benign": 384
+      },
+      "engines": {
+        "heretic-ara": "studio-qwen38-heretic-ara-q8-lmstudio-score-v1-thinking4096-native-v0-effort-low-tmpl-v1",
+        "huihui": "studio-qwen38-huihui-abl-q8-lmstudio-score-v1-thinking4096-native-v0-effort-low-tmpl-v1"
+      },
+      "vanillaLowSpanHours": 10.68
+    }
+  },
+  "vanillaLow": {
+    "runDir": "evals/runs/studio-qwen38-low-2026-10-22",
+    "condition": "baseline-qwen38-q8gguf-low-t4096-full",
+    "suites": {
+      "baseline": {
+        "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-qwen38low-v1.json",
+        "sha256": "c62f2abf07676c3e37099dbc5ee11c6e6bff4b013bd471009bad076eed2251a5"
+      },
+      "extension": {
+        "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38low-v1.json",
+        "sha256": "0ca96cd2d40836e012486b86762da933479ddaa661987627086859b8666292b5"
+      }
+    }
+  },
+  "estimate": {
+    "basis": "vanilla-low checkpoint spans per suite, once per build (same architecture, serial)",
+    "perBuildHours": 25.93,
+    "totalHours": 51.86,
+    "hardCapHours": 60
+  },
+  "drift": {
+    "test": "bipia-email-mixed",
+    "cases": 24
+  }
+}

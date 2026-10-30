@@ -118,7 +118,7 @@ for suite, S in res['suites'].items():
     for bld in BUILDS:
         o = S['vsVanilla'][bld]['overall']; fam = S['vsVanilla'][bld]['groups']
         lost, added = o['positives']['aRight'] - o['positives']['bRight'], o['negatives']['aRight'] - o['negatives']['bRight']
-        losses = sorted(fam, key=lambda x: x['dBA'])[:2]
+        losses = sorted(fam, key=lambda x: -x['dBA'])[:2]  # dBA = vanilla - build: largest positive = largest loss
         V[f'{suite}/{bld}'] = dict(H1=bool(o['h1Holm'] < .05 and o['aRight'] > o['bRight']), dBA=o['dBA'], h1Holm=o['h1Holm'],
             H2=bool(lost > added and o['h2PositivesHolm'] < .05), netLostDetections=lost, netAddedFalseAlarms=added, h2Holm=o['h2PositivesHolm'],
             H3=bool(any(x['group'] in O53_GROUPS[suite] and x['pHolm'] < .05 and x['dBA'] < 0 for x in losses)), twoLargestGroupLosses=[(x['group'], x['dBA'], r4(x['pHolm'])) for x in losses])
@@ -136,7 +136,7 @@ for bld in BUILDS:
         encoding={t: {a: recall_fpr('baseline', t, a) for a in ('vanilla', bld)} for t in ["encoding-eligible-existing-v1", "encoding-benign-controls-v1"]},
         agentdynNegatives=dict(vanillaRight=agn[0], buildRight=agn[1], p=agn[2], fp={a: sum(res['suites']['baseline']['datasets'][t][a]['fp'] for t in ["agentdyn-shopping","agentdyn-github","agentdyn-dailylife"]) for a in ('vanilla', bld)},
                                negatives=sum(res['suites']['baseline']['datasets'][t][bld]['fp'] + res['suites']['baseline']['datasets'][t][bld]['tn'] for t in ["agentdyn-shopping","agentdyn-github","agentdyn-dailylife"])),
-        groupRanks={suite: [(x['group'], x['dBA'], r4(x['pHolm'])) for x in sorted(res['suites'][suite]['vsVanilla'][bld]['groups'], key=lambda x: x['dBA'])] for suite in GROUPS})
+        groupRanks={suite: [(x['group'], x['dBA'], r4(x['pHolm'])) for x in sorted(res['suites'][suite]['vsVanilla'][bld]['groups'], key=lambda x: -x['dBA'])] for suite in GROUPS})
 res['o53Replication'] = O53
 res['covariates'] = {'heretic-ara': dict(cardRefusals='0/100', cardKL=0.0535, pilotXhigh=dict(ba=0.854, vanillaBa=0.888, discordant='49 vs 16', pHolm=1.0e-4)),
                      'huihui': dict(cardRefusals=None, cardKL=None, pilotXhigh=dict(ba=0.858, vanillaBa=0.888, discordant='42 vs 15', pHolm=4.6e-4)),

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this software, its evaluation results or its findings, please cite it as below."
+title: "Solenoid Security: screening untrusted content for AI agents, with an open prompt-injection evaluation lab"
+type: software
+authors:
+  - family-names: Collinson
+    given-names: Eli
+repository-code: "https://github.com/elicollinson/solenoid-security"
+url: "https://github.com/elicollinson/solenoid-security"
+license: MIT
+keywords:
+  - prompt injection
+  - LLM security
+  - AI agents
+  - guardrails
+  - evaluation
+  - abliteration
+date-released: "2026-10-27"

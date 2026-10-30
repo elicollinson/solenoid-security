@@ -243,3 +243,11 @@ not a study model.
 
 The runner's own preflight still refuses to run beside any untolerated instance. Re-armed from the same plan; no stage
 2 call had run.
+
+## Amendment (2026-10-30T23:1xZ): fix the runner invocation; exit-127 skips are not runs
+
+At 23:00:01Z the first build (gemma26-huihui) was skipped with exit 127: zsh did not word-split the default
+`${MOCK_RUN:-bun run eval:local}`, so the shell looked for a command literally named "bun run eval:local". The mock test
+always set `MOCK_RUN`, so the real path was never exercised. **No runner started and no inference ran.** Fix:
+`${=MOCK_RUN:-bun run eval:local}`. A SKIP whose cause is exit 127 (no runner started) no longer counts as a prior
+attempt, so gemma26-huihui runs normally on restart. The chain was stopped at 23:0xZ and restarted from the same plan.

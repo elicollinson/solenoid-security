@@ -92,7 +92,7 @@ run_step() {  # $1 label, $2 suite, $3 condition, rest: extra args. Returns the 
   local n=0; while [[ -f $LOCK ]]; do (( n++ > 10 )) && halt "device lock present before $label"; sleep 60; done
   wait_clear $label
   echo "=== START $label $(ts)"
-  ${MOCK_RUN:-bun run eval:local} --execute --suite=$suite --conditions=$cond "$@" --output-dir=$D --require-device=$DEV --tolerate-instance=$TOL --concurrency=1 --continue-after-output-errors < /dev/null
+  ${=MOCK_RUN:-bun run eval:local} --execute --suite=$suite --conditions=$cond "$@" --output-dir=$D --require-device=$DEV --tolerate-instance=$TOL --concurrency=1 --continue-after-output-errors < /dev/null
   local code=$?
   echo "=== EXIT $code $label $(ts)"; echo "lms ps: $(lms ps --json | tr -d '\n ')"
   [[ -f $LOCK ]] && halt "device lock still present after $label" 2
@@ -131,7 +131,7 @@ process_build() {  # $1 build, $2 k. Returns 0 done/skipped, 3 absent (defer).
   local b=$1 k=$2 code
   # Restart-safe: a build already summarized, or skipped for any reason but absence, is not touched again.
   if grep -q "^MODEL_DONE|[^|]*|[^|]*|$k/$NB|" $P 2>/dev/null; then DONE_B+=($b); return 0; fi
-  if grep "^SKIP|[^|]*|$b: " $P 2>/dev/null | grep -qv "|$b: absent"; then SKIP_B+=($b); return 0; fi
+  if grep "^SKIP|[^|]*|$b: " $P 2>/dev/null | grep -v -e "|$b: absent" -e "exited 127" | grep -q .; then SKIP_B+=($b); return 0; fi
   local out c; out=$(bun $A/pin.ts $b 2>>$D/pins/probe.err); c=$?
   (( c == 3 )) && return 3
   (( c != 0 )) && { skip $b "inventory probe failed or ambiguous (exit $c)"; return 0; }

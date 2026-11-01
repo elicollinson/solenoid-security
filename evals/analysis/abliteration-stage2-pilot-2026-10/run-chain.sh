@@ -31,7 +31,7 @@ S1=${STAGE1_LOG:-evals/runs/studio-qwen38-abliterated-low-2026-10-27/progress.lo
 DEV=2e1a82366471bc1a78e9b74d2469172d
 TOL=google/gemma-4-26b-a4b-qat
 LOCK=${MOCK_LOCK:-evals/runs/lmstudio-device.lock}; MPAT=${MOCK_MATRIX_PATTERN:-run-lmstudio-matrix}
-CAP=$((36 * 3600)); GIVEUP=${GIVEUP_S:-$((6 * 3600))}; POLL=${POLL_S:-300}
+CAP=$((${CAP_H:-60} * 3600)); GIVEUP=${GIVEUP_S:-$((6 * 3600))}; POLL=${POLL_S:-300}
 mkdir -p $D/pins
 ts() { date -u +%FT%TZ; }
 log() { echo "$1|$(ts)|$2" >> $P; echo "=== $1 $(ts) $2"; }

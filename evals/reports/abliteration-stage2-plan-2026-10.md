@@ -251,3 +251,12 @@ At 23:00:01Z the first build (gemma26-huihui) was skipped with exit 127: zsh did
 always set `MOCK_RUN`, so the real path was never exercised. **No runner started and no inference ran.** Fix:
 `${=MOCK_RUN:-bun run eval:local}`. A SKIP whose cause is exit 127 (no runner started) no longer counts as a prior
 attempt, so gemma26-huihui runs normally on restart. The chain was stopped at 23:0xZ and restarted from the same plan.
+
+## Amendment (2026-11-01T01:4xZ): raise the chain cap from 36 h to 60 h wall-clock
+
+The 36 h cap is measured from the first chain start (2026-10-30T22:00:40Z) and counts wall-clock time. About 14 h of that
+went to deliberate waits while the user's own model instances were loaded on the Studio (2026-10-31 00:29–04:00Z and
+12:12–13:00Z), plus a user-requested pause (2026-10-31 13:08Z – 2026-11-01 01:4xZ). The cap exists to stop a runaway chain,
+not to drop builds because of planned pauses. It is now 60 h (`CAP_H`). No build has been skipped because of the cap. The
+Qwen3.6 heretic build's last cell completed (72/72) before the pause; on restart, its finished cells resume as no-ops and
+its summary is written.

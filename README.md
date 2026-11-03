@@ -50,7 +50,7 @@ JSON, so it is not the frozen Q8 protocol.
 - The extension breaks the baseline's saturation (spread 0.028 → 0.059), except on agent tool output, which stays at 0.98–1.00 ([O56](evals/FINDINGS.md), [O57](evals/FINDINGS.md)).
 - The two Gemmas tie at the top; Gemma 4 26B-A4B is the default, an MoE about 3× faster than Gemma 4 31B-it (3.8 s vs 12.3 s per request) ([O59](evals/FINDINGS.md)).
 - Qwen3.8 27B's template-default `xhigh` instruction cost it accuracy; at `low` it ranks 3rd on the baseline and 4th on the extension, gaining most on QA, email and BIPIA ([O65](evals/FINDINGS.md), [O67](evals/FINDINGS.md)).
-- Abliterated Qwen3.8 builds detect significantly worse than the original in a pre-registered pilot (0.854 and 0.858 vs 0.888; McNemar p ≤ 5×10⁻⁴); a full-scale replication and more model families are running ([summary](evals/reports/abliteration-findings.md), [O53](evals/FINDINGS.md)).
+- Abliterated builds detect significantly worse than their originals: Qwen3.8 in a pre-registered pilot (0.854 and 0.858 vs 0.888), and 6 of 7 builds across Gemma 4, Qwen3.6 and Muse in a pre-registered 998-case screen (Holm p ≤ 0.03). The loss is large on Gemma 4 (−0.055 to −0.226), small on Qwen, and mostly missed attacks ([summary](evals/reports/abliteration-findings.md), [O53](evals/FINDINGS.md), [O70](evals/FINDINGS.md)).
 - Windows help long documents mainly on the subtle template and can lower concern for a payload, so the full-then-windows cascade is recommended ([O1](evals/FINDINGS.md), [O10](evals/FINDINGS.md), [O46](evals/FINDINGS.md)).
 - Diffusion LLMs (LLaDA2.2) are weak at full text; windows significantly lift Flash on long documents, mid-document payloads included, but it still trails the reasoning models and adds web false alarms ([O61–O63](evals/FINDINGS.md)).
 - The Skill-Inject policy pairs cannot rank full-text detectors: both members send identical input, so every model scores 0.500 ([O49](evals/FINDINGS.md)).
@@ -64,7 +64,7 @@ JSON, so it is not the frozen Q8 protocol.
 - Agent sets are saturated, and several datasets are single-class (attack-only or benign-only), where balanced accuracy is recall or specificity alone.
 - Flash's protocol differs (no reasoning pass, prompt-only JSON, 4-bit), so its row is a reference, not a like-for-like rank.
 
-## Status (2026-10-27)
+## Status (2026-11-03)
 
 Complete: the Studio Q8 full-text baseline (7 models × 21 datasets), the extension suite (7 × 14), the abliteration
 pilot ([results](evals/reports/abliteration-pilot-results-2026-10.md)), the Qwen3.8 effort ablation
@@ -74,16 +74,16 @@ pilot ([results](evals/reports/abliteration-pilot-results-2026-10.md)), the Qwen
 [pre-registered Flash run](evals/reports/llada-flash-full-2026-10.md)) and the batching equivalence runs (write-up in
 progress; [#21](https://github.com/elicollinson/solenoid-security/issues/21)).
 
-**Now running: abliteration extension ([#23](https://github.com/elicollinson/solenoid-security/issues/23)).** Each
-abliterated build is compared with its vanilla model's existing results on identical cases; vanilla models are not
-re-run. All builds are static Q8_0 GGUF of the abliteration author's weights, matching the vanilla quant, and each must
-reproduce the vanilla prompt rendering exactly before it runs (template overrides are recorded as deviations).
+**Now running: nothing.** The Studio is idle.
 
-| Stage | What | Status | Expected (UTC) |
-|---|---|---|---|
-| 1 | Qwen3.8 27B heretic-ara and huihui at `low`, full baseline + extension (14,085 cases each) | ▶ Running (started 2026-10-27 11:28) | heretic-ara ≈ Oct 28 13:00–17:00; huihui ≈ Oct 29 14:00–22:00 |
-| 2 | 998-case pilot screen: Gemma 4 26B (huihui, heretic, heretic-ultra), Qwen3.6 35B-A3B (huihui, heretic), Qwen3.8 MPOA, Gemma 4 31B (huihui, heretic), Muse (heretic) | Armed; starts when stage 1 ends | ≈ 21 h, done ≈ Oct 30 12:00 – Oct 31 00:00 |
-| 3 | Full suites for builds with a confirmed pilot effect, Gemma 4 26B first | Not scheduled | Decided from stage 2 |
+**Abliteration extension ([#23](https://github.com/elicollinson/solenoid-security/issues/23)).** Each abliterated build
+is compared with its vanilla model's existing results on identical cases; vanilla models are not re-run.
+
+| Stage | What | Status |
+|---|---|---|
+| 1 | Qwen3.8 27B heretic-ara and huihui at `low`, full baseline + extension (14,085 cases each) | Complete 2026-10-30; results in PR #57 |
+| 2 | 998-case pilot screen of 9 builds on Gemma 4 26B, Gemma 4 31B, Qwen3.6 35B-A3B, Qwen3.8 and Muse | Complete 2026-11-03: 6 of 7 completed builds lose significantly ([results](evals/reports/abliteration-stage2-results-2026-11.md), [O70](evals/FINDINGS.md)) |
+| 3 | Full suites for the six stage 2 candidates (four Gemma builds, Qwen3.6 huihui, Muse heretic) | Not scheduled; about 335 h of request time for all six |
 
 Next candidates after that: the enhanced agent set ([#31](https://github.com/elicollinson/solenoid-security/issues/31)),
 the speculative-decoding check ([#52](https://github.com/elicollinson/solenoid-security/issues/52)) and the deferred

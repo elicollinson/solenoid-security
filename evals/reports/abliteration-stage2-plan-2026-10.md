@@ -1,6 +1,6 @@
 # Abliteration extension, stage 2: pre-registered pilot screen (2026-10-27)
 
-Status: **frozen, armed, not run.** This plan is fixed before any stage 2 inference. Stage 2 starts automatically
+Status: **frozen, armed, not run.** This plan is fixed before any stage 2 inference. (Run complete 2026-11-03; amendments below, results in [abliteration-stage2-results-2026-11.md](abliteration-stage2-results-2026-11.md).) Stage 2 starts automatically
 when stage 1 (the two Qwen3.8 builds at `low` on the full suites, [plan](studio-qwen38-abliterated-low-plan-2026-10.md))
 writes `RUN_DONE`. It extends FINDINGS O53 ([#23](https://github.com/elicollinson/solenoid-security/issues/23)) from
 one model family to four (five with Muse): does abliteration lower prompt-injection detection across families and
@@ -334,3 +334,18 @@ This is a **declared deviation**, separate from the pre-registered screen. It ru
     so the real default expansion was exercised.
 - **Order and estimate.** qwen38-mpoa (≈ 1 h), then gemma26-huihui (≈ 2.5–3.5 h, with longer reasoning). Start after
   stage 2's `DONE`, expected ≈ 18:50–19:00Z when the dropped UD-Q8_K_XL arm is given up. Done ≈ 23:00Z.
+
+## Amendment (2026-11-03, recorded after the fact for an operational reason): the chain was closed with `GIVEUP_S=0`
+
+After muse-heretic's last cell (`MODEL_DONE|2026-11-03T16:02:58Z`), the only build left was the robustness arm, which had
+been dropped (amendment above) and would never appear in the inventory. The chain would have waited until ≈ 18:50–19:00Z
+before giving it up. It was re-invoked at 16:03:58Z with the absent-build give-up wait set to 0 (`GIVEUP_S=0`) and logged
+`SKIP` (absent) and `DONE` at 16:04:29Z. That let the declared-deviation chain start at 16:07:16Z. No inference, gate,
+build or data was affected. This amendment was written after the fact. The re-invocation's `CHAIN_START` line reads
+"stage 1 ended 2026-11-03T16:03:58Z" and its `SKIP` line "6 h after stage 1 ended". Both reflect the zero wait. Stage 1
+ended at 2026-10-30T21:27:34Z, as the `WAIT` line just before them records.
+
+## Analysis (2026-11-03)
+
+Done offline by [`analyze.ts`](../analysis/abliteration-stage2-pilot-2026-10/analyze.ts). Results:
+[abliteration-stage2-results-2026-11.md](abliteration-stage2-results-2026-11.md) (FINDINGS O70).

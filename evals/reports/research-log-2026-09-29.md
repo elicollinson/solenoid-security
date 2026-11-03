@@ -5084,3 +5084,61 @@ requests plus 35 loads).
 - The [report](studio-qwen38-low-2026-10.md).
 - FINDINGS O67 and §2.19, with dated notes on O48, O54, O55, O59, O65 and Appendix B.
 - The README headline row now shows the low numbers, with xhigh in the footnote.
+
+### L161 — 2026-10-30 to 2026-11-03: abliteration stage 2 pilot screen (#23, PRE-REGISTERED); O53 generalizes (6/7 Holm losses, 0 gains), size depends on the base
+
+**Pre-registration.** The [plan](abliteration-stage2-plan-2026-10.md) was frozen and armed on 2026-10-27 (PR #53),
+before any stage 2 inference. Its dated amendments cover:
+- transport reruns;
+- waiting through stage 1 halts and the user's own instances;
+- the runner invocation fix;
+- the 60 h cap, counted per invocation;
+- the robustness arm being dropped;
+- the local API preflight;
+- the declared-deviation reruns, written before they ran;
+- the `GIVEUP_S=0` close, recorded after the fact.
+
+**Run.** The stage 2 chain ran from the feature worktree into `evals/runs/abliteration-stage2-pilot-2026-10/`, from
+2026-10-30T22:00:40Z to 2026-11-03T16:04:29Z, including user-requested pauses.
+- **Completed (7):** gemma26-heretic, gemma26-ultra, qwen36-huihui, qwen36-heretic, gemma31-huihui (v2),
+  gemma31-heretic and muse-heretic. Each ran 998 cases, `prompt_tokens` == vanilla on every case, and identity held on
+  every response.
+- **Stopped by the abstention rule (2):** gemma26-huihui at its first cell (6/120 vs 0) and qwen38-mpoa after 6 cells
+  (pids-obfuscated 6/112 vs 2).
+- **Skipped (1):** the robustness arm, dropped by the user and never downloaded.
+- **Muse.** muse-heretic longpi-paper needed two automatic transport reruns (the local API server was down; no
+  inference in either failed attempt).
+- **Close.** The chain was closed with `GIVEUP_S=0` at 16:03:58Z rather than waiting about 3 h for the absent arm.
+  The re-invocation's `CHAIN_START` line therefore shows the restart time as "stage 1 ended".
+
+**Deviation reruns.** These ran in `evals/runs/abliteration-stage2-deviation-2026-11/`, 16:07:16Z–19:27:59Z, with the
+abstention rule report-only.
+- **qwen38-mpoa:** pids-obfuscated, benign-false-positives and the probe. Its 6 stage 2 cells were kept.
+- **gemma26-huihui:** all 9 tests, after the re-download was verified (same pin and the same HF LFS blobs).
+- **Gates.** The drift gates passed 24/24.
+- **Determinism.** Both reruns of the stopped cells reproduced the retained originals exactly on every case.
+
+**Analysis.** `analyze.ts`, offline. It re-checked all 81 cells. All numbers match the chain's `CELL`/`MODEL_DONE`
+lines.
+- **H1 (Holm over 7).** Six significant losses: Gemma 26B heretic −0.141 and ultra −0.226, Gemma 31B huihui −0.156
+  and heretic −0.055, Muse −0.062, Qwen3.6 huihui −0.028 (Holm 0.028). Qwen3.6 heretic (MPOA) −0.017 is not
+  significant (Holm 0.105).
+- **Decision.** The decision rule is met: O53 generalizes. The sensitivity family of 9 adds gemma26-huihui (−0.147,
+  significant loss) and qwen38-mpoa (+0.015, p = 0.058), and the verdict is the same.
+- **H2.** Supported for 6 of 7. Misses dominate, and benign false alarms fall.
+- **H3.** Supported. Ultra is below heretic, 105 vs 17, p = 1×10⁻¹⁶. KL–ΔBA ρ = −0.70 (descriptive).
+- **Methods.** The MPOA builds had the two smallest effects. Gemma 31B heretic beats huihui v2. The base matters more
+  than the method.
+- **Stage 3 candidates (pre-registered rule).** gemma26-heretic, gemma26-ultra, qwen36-huihui, gemma31-huihui,
+  gemma31-heretic and muse-heretic: about 335 h of estimated request time. gemma26-huihui would add about 44 h, via
+  the deviation only. Not scheduled.
+
+**Published.**
+- `evals/analysis/abliteration-stage2-pilot-2026-10/analyze.ts` and `results/stage2-summary.json`.
+- The 13 stage 2 and deviation suites.
+- Both progress logs.
+- The [results report](abliteration-stage2-results-2026-11.md).
+- FINDINGS O70 and §2.20, with dated notes on O53 and F7.
+- The living [abliteration summary](abliteration-findings.md) and the README status.
+
+**Supabase and backup.** See the PR #53 description for the import and rsync counts.

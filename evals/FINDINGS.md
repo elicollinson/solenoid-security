@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-24. Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-11-03. The pre-registered abliteration stage 2 screen is complete (O70). Nine abliterated builds on five bases were run on the 998 pilot cases against their vanilla models. Six of the seven completed builds lose significantly after Holm, and none gains, so O53 generalizes. The loss is large on Gemma 4 (ΔBA −0.055 to −0.226), −0.062 on Muse and small or absent on Qwen. It is mostly missed attacks, and the stronger Gemma 26B Heretic build is worse than the standard one (p = 1×10⁻¹⁶) ([report](reports/abliteration-stage2-results-2026-11.md)). On 2026-10-24: Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -763,6 +763,9 @@ original on identical cases. They missed more marginal attacks, and one added ag
 - Follow-up: F7 escalates to the full 21-dataset Studio baseline protocol for both builds (#23). The reasoning screen
   needs human coding before it can be relied on.
 - **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** all three builds embed the same chat template and ran at `xhigh` effort with the same 38-token injected instruction (+0 `prompt_tokens` vs vanilla on shared cases). The comparison stays internally valid, but it describes abliteration at `xhigh`, not `high`.
+- **Update 2026-11-03 (O70):** the direction generalizes beyond Qwen3.8. In the stage 2 screen on the same 998 cases,
+  6 of 7 completed builds on Gemma 4, Qwen3.6 and Muse lose significantly, mostly through missed attacks again. The
+  huihui AgentDyn false alarms do not recur for any huihui build ([stage 2 results](reports/abliteration-stage2-results-2026-11.md)).
 
 ### 2.15 Reasoning-effort audit and Qwen3.8 calibration (2026-10-16)
 
@@ -1211,6 +1214,62 @@ false alarms on the baseline's benign sets.**
 - Follow-up: the README headline row now uses low; xhigh is kept as the historical protocol. Profiles (PR #34):
   Qwen3.8 `reasoning_effort: "low"`, threshold 0.15 for non-web content (pre-registered rule passed) and 0.5 for web.
 
+### 2.20 Abliteration stage 2: pilot screen across families (2026-10-30 to 2026-11-03)
+
+> **Design:** pre-registered ([plan](reports/abliteration-stage2-plan-2026-10.md), with dated amendments), #23 stage 2.
+> - **Builds:** 9 abliterated Q8_0 GGUF builds on 5 bases (Gemma 4 26B-A4B, Gemma 4 31B-it, Qwen3.6 35B-A3B, Qwen3.8 27B
+>   at `low`, Muse Glimmer 30B), by Heretic (ARA, MPOA, 1.4.0) and classic huihui abliteration.
+> - **Cases:** the 998 O53 pilot cases (9 datasets) per build, against each vanilla's existing full-suite checkpoint
+>   on the same case IDs. `prompt_tokens` equal vanilla on every case, through a load-time template override for 8 builds.
+> - **Completion:** 7 builds completed under the plan. Two (gemma26-huihui, qwen38-mpoa) were stopped by the
+>   pre-registered abstention rule and finished in a declared-deviation rerun with that rule report-only. The
+>   robustness arm (UD-Q8_K_XL) was dropped by the user before it ran.
+
+**O70 (PRE-REGISTERED): Across families, abliterated builds detect prompt injection worse than their vanilla models on
+identical cases. Six of the seven completed builds show a Holm-significant loss and none a gain, so O53 generalizes
+under the plan's rule. The size depends mostly on the base: large on Gemma 4 (ΔBA −0.055 to −0.226), moderate on Muse
+(−0.062), small or absent on Qwen. Nearly all of the loss is missed attacks.**
+- Evidence ✔:
+  - **H1 (pooled exact McNemar vanilla → build, Holm across the 7 completed builds).**
+    - Gemma 26B: heretic 0.953 → 0.812 (156 vs 10, Holm 4×10⁻³⁴) and ultra → 0.727 (243 vs 9, Holm 2×10⁻⁵⁹).
+    - Gemma 31B: huihui v2 0.938 → 0.782 (177 vs 13, Holm 4×10⁻³⁷) and heretic → 0.883 (68 vs 11, Holm 1×10⁻¹⁰).
+    - Muse: heretic 0.893 → 0.831 (83 vs 19, Holm 3×10⁻¹⁰).
+    - Qwen3.6: huihui 0.896 → 0.869 (70 vs 43, Holm 0.028), and heretic (MPOA) → 0.879 (51 vs 35, Holm 0.105, not
+      significant).
+  - **Deviation builds (sensitivity family of 9).** gemma26-huihui 0.953 → 0.806 (154 vs 12, Holm 8×10⁻³²; 25
+    abstentions vs 0, and PIDS obfuscated 0.902 → 0.288). qwen38-mpoa 0.897 → 0.912 (20 vs 35, p = 0.058, Holm 0.116).
+    Verdict unchanged: 7 of 9 losses, 0 gains. The reruns of the two stopped cells reproduced the originals exactly on
+    every case.
+  - **H2 (misses).** Supported for 6 of 7 completed builds (sign test on positives).
+    - Detections lost vs gained: 153/2, 238/1, 169/3, 67/3, 83/3 and 66/41. False alarms added in those builds: 0–8.
+    - qwen36-heretic has the direction only (48/31, p = 0.07). qwen38-mpoa † runs the other way (12/25).
+    - The largest source of misses is PIDS obfuscated, then the LongPI naive template. Gemma also loses the
+      authority-spoof and combine templates that O53 found robust, plus BIPIA email.
+    - Benign text is flagged less, not more. AgentDyn false alarms (the O53 huihui effect) appear only for qwen38-mpoa
+      (0 → 6 of 47).
+  - **H3 (KL dose-response, Gemma 26B ARA).** Supported: vanilla 0.953 > heretic (KL 0.047) 0.812 > ultra (KL 0.124)
+    0.727. Heretic → ultra: 105 vs 17, p = 1×10⁻¹⁶. Across builds, Spearman ρ(KL, ΔBA) = −0.70 (n = 5; −0.77 with
+    qwen38-mpoa). This is descriptive and confounded by base.
+  - **Method (descriptive).** The two MPOA builds had the two smallest effects (−0.017, +0.015 †). They are also the
+    only Heretic builds on Qwen bases. Within a base: Gemma 31B heretic beats huihui v2 (115 vs 8, p = 2×10⁻²⁵). On
+    Gemma 26B † and Qwen3.6 the methods tie (p = 0.70, 0.33).
+  - **Cost.** Gemma 26B builds reason 2.2–3.1× longer than vanilla, the others 1.2–1.7× (Muse 0.97×).
+  - See the [results report](reports/abliteration-stage2-results-2026-11.md) and
+    [`stage2-summary.json`](analysis/abliteration-stage2-pilot-2026-10/results/stage2-summary.json).
+- Strength: **Moderate** for "abliteration lowers detection across families" (pre-registered, paired, 6 of 7 survive
+  Holm, every analyzed case re-checked for identical rendering and identity). **Suggestive** for the base-dependence
+  and the KL dose-response: one KL pair, and method and base are confounded.
+- Caveats:
+  - Pilot scale: about 100 cases per dataset, 4 of 9 datasets LongPIBench.
+  - One quant and one runtime. The quantizer differs from vanilla's, and the robustness arm that would test this was
+    dropped.
+  - Gemma vanilla is a hub model and the builds are not.
+  - The two deviation builds waived the pre-registered abstention stop.
+  - Card KL values are the authors' own.
+- Follow-up: stage 3 full-suite candidates under the pre-registered rule are gemma26-heretic, gemma26-ultra,
+  qwen36-huihui, gemma31-huihui, gemma31-heretic and muse-heretic (gemma26-huihui only via the deviation). That is
+  about 335 h of request time in total, and is not scheduled.
+
 ---
 
 ## 3. Numbers that did not reconcile, or could not be checked
@@ -1361,6 +1420,10 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   in direction, H1 fails narrowly, H3 is mixed (heretic 3/18 probe flips, no target matching), and H4 is not supported.
   Both builds meet the escalation rule, so F7 moves to the full 21-dataset protocol. See the
   [pilot results](reports/abliteration-pilot-results-2026-10.md).
+  **Update 2026-11-03 (stage 2 done, O70):** the pre-registered 998-case screen of 9 builds on 5 bases found
+  Holm-significant losses for 6 of 7 completed builds and no gains, so O53 generalizes. Gemma 4 builds lose most
+  (−0.055 to −0.226), Qwen least. Stage 3 candidates: the four Gemma builds, qwen36-huihui and muse-heretic. See the
+  [stage 2 results](reports/abliteration-stage2-results-2026-11.md).
 - **F8 — Does KV-cache quantization change detection?** Separate from weight quantization, inference servers can
   quantize the attention key/value cache to save memory and speed up long contexts: llama.cpp `--cache-type-k` /
   `--cache-type-v` (f16 default, q8_0, q4_0) and LM Studio's experimental K/V cache quantization for GGUF. Detection

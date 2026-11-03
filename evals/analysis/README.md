@@ -76,6 +76,20 @@ and `PROVENANCE.tsv` records them as `verbatim`.
 | `supplement-pilot.ts` | **Authored after the run.** Holm over the two primary tests, H1/H2 thresholds, attack strata, paired accuracy intervals, escalation-rule checks, and a post-hoc descriptive keyword screen of reasoning on newly missed attacks (counts only) (`supplement.json`). |
 | `results/` | `comparison.json`, `comparison.md`, `supplement.json`: counts, rates, scores, token/timing statistics and case IDs only. |
 
+### `abliteration-stage2-pilot-2026-10/` and `abliteration-stage2-deviation-2026-11/`
+
+The pre-registered [abliteration stage 2 pilot screen](../reports/abliteration-stage2-plan-2026-10.md) (#23), run
+2026-10-30 to 2026-11-03, and its declared-deviation reruns of the two abstention-stopped builds
+([results](../reports/abliteration-stage2-results-2026-11.md), `FINDINGS.md` O70, research log L161). These are the
+original tracked scripts. The chains ran them from the feature worktree, and none was copied into the run directories.
+
+| File | Computes |
+|---|---|
+| `plan.json`, `make-suite.ts`, `pin.ts`, `template-audit.py`, `template-inputs.ts`, `templates/`, `dryrun.py` | Builds, gates, per-build suites with the run-time identity pin, and the template audit and override (`results/template-audit.json`). |
+| `run-chain.sh`, `gate.ts`, `cell.ts`, `summarize.ts`, `rows.ts` | The chain, the drift and cell gates, `MODEL_DONE` lines and read-only extraction. `progress.log` is a copy of the run log. |
+| `analyze.ts` | **Authored after the run.** The pre-registered analysis: H1 with Holm (two families), H2, H3 and KL, method contrasts, per-test tables, abstentions, the probe, deviation determinism and stage 3 hour estimates (`results/stage2-summary.json`; the full JSON goes to the run directory). |
+| `../abliteration-stage2-deviation-2026-11/` | `dev-plan.json`, `dev.ts`, `run-chain.sh` and `progress.log` for the declared-deviation reruns (abstention rule report-only). |
+
 ### `attack-following-evidence-2026-10-04/`
 
 Cited by [injection-following findings](../reports/injection-following-findings-2026-10-04.md) and `FINDINGS.md`.

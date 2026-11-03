@@ -1,6 +1,6 @@
 # Abliterated models as prompt-injection detectors
 
-_A living summary. Last updated 2026-10-27. Each stage links to its frozen, detailed report._
+_A living summary. Last updated 2026-11-03. Each stage links to its frozen, detailed report._
 
 **Question.** "Abliteration" removes a model's refusal behaviour by editing its weights. Tools such as
 [Heretic](https://github.com/p-e-w/heretic) automate it, and thousands of these builds are published. If you use one as
@@ -8,8 +8,9 @@ a **prompt-injection detector**, screening emails, web pages, documents and tool
 does it still work?
 
 **Answer so far.** It works less well. In a pre-registered pilot, both abliterated Qwen3.8 27B builds were significantly
-worse than the original, and the loss comes mostly from **missed attacks**, not extra false alarms. A full-scale
-replication is running.
+worse than the original, and the loss comes mostly from **missed attacks**, not extra false alarms. A pre-registered
+screen of nine more builds across Gemma 4, Qwen3.6, Qwen3.8 and Muse (stage 2) found the same direction in six of the
+seven completed builds. How much is lost depends mostly on the base model: a lot for Gemma 4, little for Qwen.
 
 ## How it is tested
 
@@ -58,18 +59,51 @@ Both Qwen3.8 builds on the full baseline (21 datasets) and extension (14 dataset
 on 1. The largest gaps are on code (0.860 vs 0.925) and email-style attack detection (0.860 vs 0.922). Final numbers,
 paired tests and the huihui build will replace this paragraph when the stage completes.
 
-### Stage 2: more model families (scheduled)
+### Stage 2: more model families (complete, pre-registered)
 
-A 998-case pilot screen of Gemma 4 26B-A4B (huihui, Heretic and a stronger "ultra" Heretic build, for a KL
-dose-response), Qwen3.6 35B-A3B (huihui, Heretic), a third Qwen3.8 method (Heretic MPOA), Gemma 4 31B (huihui,
-Heretic) and Muse Glimmer 30B (Heretic). Plan:
-[#53](https://github.com/elicollinson/solenoid-security/pull/53) (pre-registration). Full suites follow only for builds
-with a confirmed pilot effect.
+The same 998 pilot cases were run for nine abliterated builds on five bases. Each build is compared with its own
+vanilla model on identical cases, with identical rendered prompts (checked on every case).
+
+| Build | Method | Vanilla → build balanced accuracy | vs vanilla (McNemar, Holm over 7) |
+|---|---|---|---|
+| Gemma 4 26B-A4B heretic | Heretic (ARA), KL 0.047 | 0.953 → 0.812 | 156 vs 10 discordant, p = 4×10⁻³⁴ |
+| Gemma 4 26B-A4B ultra | Heretic (ARA), KL 0.124 | 0.953 → **0.727** | 243 vs 9, p = 2×10⁻⁵⁹ |
+| Gemma 4 31B-it huihui v2 | classic | 0.938 → 0.782 | 177 vs 13, p = 4×10⁻³⁷ |
+| Gemma 4 31B-it heretic | Heretic (ARA), KL 0.054 | 0.938 → 0.883 | 68 vs 11, p = 1×10⁻¹⁰ |
+| Muse Glimmer 30B heretic | Heretic 1.4.0, KL 0.074 | 0.893 → 0.831 | 83 vs 19, p = 3×10⁻¹⁰ |
+| Qwen3.6 35B-A3B huihui | classic | 0.896 → 0.869 | 70 vs 43, p = 0.028 |
+| Qwen3.6 35B-A3B heretic | Heretic (MPOA), KL 0.0015 | 0.896 → 0.879 | 51 vs 35, p = 0.105 (not significant) |
+| Gemma 4 26B-A4B huihui † | classic | 0.953 → 0.806 | 154 vs 12, p = 8×10⁻³² (Holm over 9) |
+| Qwen3.8 27B MPOA † | Heretic (MPOA), KL 0.024 | 0.897 → 0.912 | 20 vs 35, p = 0.058 (not significant) |
+
+† These two builds were stopped by the pre-registered rule on length abstentions (reasoning running out of budget).
+They were finished in a declared deviation with that rule made report-only, so they are reported separately.
+
+- **The finding generalizes.** Six of seven builds lose significantly and none gains. Under the pre-registered rule
+  this means the pilot result holds across families.
+- **The base model matters most.** All Gemma 4 builds lose 0.055–0.226, whatever the method. The Qwen builds lose
+  little or nothing. The two MPOA builds had the two smallest effects, but both are on Qwen.
+- **A stronger edit hurts more.** On Gemma 4 26B, the "ultra" Heretic build (KL 0.124) is clearly worse than the
+  standard one (KL 0.047): 105 vs 17 discordant, p = 1×10⁻¹⁶.
+- **Missed attacks again.** Obfuscated attacks (PIDS) lose the most. Balanced accuracy there falls from 0.81–0.90 to
+  0.29–0.55 for six of the builds. Gemma builds also miss long-document and email attacks that vanilla caught every time. False
+  alarms on benign text go down, not up.
+- **They think longer.** Gemma 4 26B builds reason 2–3× as long as vanilla before answering.
+- **Not tested.** The quantization-only check (same weights, another quant scheme) was dropped before it ran.
+
+Detailed report: [abliteration-stage2-results-2026-11.md](abliteration-stage2-results-2026-11.md), plan:
+[abliteration-stage2-plan-2026-10.md](abliteration-stage2-plan-2026-10.md), FINDINGS [O70](../FINDINGS.md).
+
+### Stage 3: full suites for the confirmed builds (not scheduled)
+
+The pre-registered rule names six candidates: both Gemma 4 26B Heretic builds, both Gemma 4 31B builds, Qwen3.6 huihui
+and Muse heretic. Running all six is about 335 h of Studio request time.
 
 ## Caveats
 
-- One model family so far, at one quantization (Q8_0 GGUF) and one runtime.
-- Abliteration methods and strengths vary between builds; the stage 2 dose-response arm addresses strength directly.
+- Five model families, but one or two builds per family, at one quantization (Q8_0 GGUF) and one runtime.
+- Stage 2 is a 998-case screen, not a full-suite run. Method and base are confounded (for example, both MPOA builds
+  are on Qwen), and the KL values are the authors' own.
 - Several datasets are synthetic LongPIBench documents; the extension suite adds varied and real-world sources.
 - The detector is asked for a concern score with a 0.5 threshold. Per-model thresholds are covered separately
   ([O55](../FINDINGS.md), [O67](../FINDINGS.md)).

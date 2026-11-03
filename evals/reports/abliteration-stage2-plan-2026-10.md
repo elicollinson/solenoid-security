@@ -260,3 +260,9 @@ went to deliberate waits while the user's own model instances were loaded on the
 not to drop builds because of planned pauses. It is now 60 h (`CAP_H`). No build has been skipped because of the cap. The
 Qwen3.6 heretic build's last cell completed (72/72) before the pause; on restart, its finished cells resume as no-ops and
 its summary is written.
+
+## Amendment (2026-11-03): robustness arm dropped
+
+The optional robustness arm (groxaxo `gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf`, the same huihui weights in an unsloth dynamic
+quant) is dropped by the user's decision, to keep the comparison to static Q8_0 builds that match their vanilla quant.
+It was never downloaded or run; the chain skips it as absent. The quant-scheme question stays open for a later study.

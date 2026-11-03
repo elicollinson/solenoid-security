@@ -29,6 +29,9 @@ those numbers without rerunning inference. Folder names mirror the original run 
   dry run (they ran from byte-identical untracked copies in the main checkout), one `verbatim` progress log, one
   `host-redacted` console log and two `generated` results files. The Flash surface-cue re-analysis (`llada-flash-surface-cues-2026-10/`) adds
   `authored` coding, script, README and folder provenance, and two `generated` results files.
+  The batching equivalence study (`batching-equivalence-2026-10/`) adds `authored` scripts, plan, queue, README and
+  folder provenance, one `generated` results file, and its progress log as `filtered`: the `PS` lines (LM Studio
+  inventory snapshots naming the user's resident model) are removed, nothing else differs, and the hash is of the original.
 
 ## Running them
 
@@ -266,6 +269,17 @@ O67, research log L158).
 - **Studio.** 14,085 calls in 22.3 h, with no halt.
 - **Files.** The directory README lists every file.
 - **Intermediates.** Written to the git-ignored `evals/runs/studio-qwen38-low-2026-10-22/`.
+
+### `batching-equivalence-2026-10/`
+
+The pre-registered batching (parallel-slot) equivalence study: Gemma 4 26B-A4B Q8 and Qwen3.8 27B Q8 (`low`) at
+parallel 1, 2, 4 and 8 on 500 seeded cases, plus a 100-case p4 repeat
+([#21](https://github.com/elicollinson/solenoid-security/issues/21);
+[plan](../reports/batching-equivalence-plan-2026-10.md), [report](../reports/batching-equivalence-2026-10.md),
+`FINDINGS.md` O69, research log L160).
+- **Studio.** 4,200 calls in 4.6 h, with no halt or capacity failure.
+- **Files.** The directory README lists every file; `results/batching-results.json` holds the aggregates for every arm.
+- **Intermediates.** Written to the git-ignored `evals/runs/batching-equivalence-2026-10-26/`.
 
 ### `reuse-verification-2026-10-03/`
 

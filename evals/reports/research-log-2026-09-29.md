@@ -5084,3 +5084,48 @@ requests plus 35 loads).
 - The [report](studio-qwen38-low-2026-10.md).
 - FINDINGS O67 and §2.19, with dated notes on O48, O54, O55, O59, O65 and Appendix B.
 - The README headline row now shows the low numbers, with xhigh in the footnote.
+
+### L160 — 2026-10-26/27 (written up 2026-11-03): batching (parallel-slot) equivalence (#21, PRE-REGISTERED); no accuracy shift, Gemma26 fails the agreement bar, stay serial
+
+Numbered L160 because L159 is taken by the abliteration stage 1 entry on an open branch (PR #57).
+
+**Pre-registration.** `7914c42` was pushed before the first call ([plan](batching-equivalence-plan-2026-10.md)). The
+context-per-slot probes and LM Studio memory estimates were run first and are part of the plan.
+
+- **Suite.** `prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1`: ten frozen tests, 500 seeded,
+  label-balanced cases in three length bands. p1 engines are the frozen ones byte-for-byte; p2/p4/p8 differ only in id,
+  identifier, `parallel`, `contextLength` (65,536 / 65,536 / 131,072 / 262,144; Qwen3.8 p8 196,608 by the memory
+  guardrail) and `timeoutMs`.
+- **Arms.** Gemma 4 26B-A4B Q8 and Qwen3.8 27B Q8 `low`, each p1, p2, p4, a 100-case p4 repeat and p8, client
+  concurrency = parallel.
+- **Rule.** A level passes at agreement ≥ 99%, McNemar p ≥ 0.05, abstentions ≤ +0.5 pts and no capacity failure, and
+  every lower level must pass. Repo-wide = the smaller model's level.
+
+**Run.** From the main checkout detached at `7914c42`, into `evals/runs/batching-equivalence-2026-10-26/`,
+2026-10-26 22:50:40 to 2026-10-27 03:25:55 UTC (4.6 h). 4,200 calls, no halt, no retry, no capacity failure. The
+user's assistant model (`google/gemma-4-26b-a4b-qat`) stayed loaded, tolerated by name (`--tolerate-instance`), and
+sent 0–4 requests inside any arm. Identity check after the run: all 5,200 analysed responses (incl. frozen) came from
+the study's own instance with the intended model key, parallel and context (0 mismatches).
+
+**Results (O69).**
+
+- **Drift floor.** p1 vs frozen 500/500 for both models.
+- **Gemma26.** Agreement 98.6 / 98.8 / 98.6% (p2/p4/p8): fails the bar at every level. ΔBA −0.006 / +0.004 / −0.006,
+  McNemar p 0.45 / 0.69 / 0.38. Identical answers 86–89% (floor 98.4%). Flips are on confident serial scores. p8 adds
+  two length abstentions. The p4 repeat differs from p4 as much as p4 from p1.
+- **Qwen3.8 low.** Agreement 99.6 / 99.8 / 99.8%, ΔBA +0.002 to +0.004, McNemar p ≥ 0.5: passes every level. Repeat
+  100/100.
+- **Verdict.** Gemma adopts 1, Qwen3.8 adopts 8; repo-wide **parallel 1**. Frozen comparisons stay serial regardless.
+- **Throughput.** Gemma 1.35× / 1.60× / 1.69×; Qwen3.8 1.32× / 1.45× / 1.26×. Qwen3.8 p8 is slower than p4 in every
+  band. Latency at p8 is 3.6× (Gemma) and 4.8× (Qwen3.8) the serial median.
+- **MTP drafting (#52).** On for Qwen3.8 in every arm; pooled acceptance 68.25–68.28% at every level (frozen 68.26%).
+  Off for Gemma. Candidate causes of the p8 slowdown (drafting competing with batching on a dense model, Metal
+  small-batch kernels, memory pressure at 196,608) are listed in the report, not tested.
+
+**Published.**
+- `evals/analysis/batching-equivalence-2026-10/` (scripts, plan, queue, filtered progress log, README, folder
+  PROVENANCE, `batching-results.json` with every arm) and top-level PROVENANCE rows.
+- The [report](batching-equivalence-2026-10.md).
+- FINDINGS O69 and §2.21, with dated notes on F5 and O52.
+- `evals/README.md`: "Batched (parallel-slot) runs (opt-in)".
+- Supabase import and the raw backup of the run directory (see the PR).

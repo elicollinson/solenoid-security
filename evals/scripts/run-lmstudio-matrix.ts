@@ -25,6 +25,11 @@ function requireDevice(ps: unknown) {
   if (!requiredDevice) return;
   if (!Array.isArray(ps) || ps.some(m => m?.deviceIdentifier !== requiredDevice)) throw new Error("Loaded instance is not on --require-device");
 }
+// Optional pre-existing instances owned by someone else on the same server (e.g. a user's service). Each must be named
+// explicitly; the driver never unloads or validates them as its own and logs their snapshot. Any other loaded model still halts.
+const tolerated = option("tolerate-instance").split(",").filter(Boolean);
+if (cells.some(c => "model" in c.engine && tolerated.includes(c.engine.model))) throw new Error("--tolerate-instance cannot name a selected engine identifier");
+const untolerated = (ps: unknown) => Array.isArray(ps) ? ps.filter(m => !tolerated.includes(m?.identifier)) : ps;
 const limit = option("limit"), tranche = option("max-new-segments"), maxCells = Number(option("max-cells", "100000"));
 const reuseSource = option("reuse-from");
 const inputReuseSource = option("reuse-inputs-from");
@@ -90,6 +95,7 @@ try {
   log({event: "start", suite: suite.id, cells: cells.length});
   const snapshot = await lmsInventoryJson(); const inventory = snapshot.flattened;
   log({event: "inventory", inventory: snapshot.ls, variants: snapshot.variants});
+  if (tolerated.length) { const ps = await lmsJson("ps"); log({event: "tolerated_instances", identifiers: tolerated, loaded: Array.isArray(ps) ? ps.filter(m => tolerated.includes(m?.identifier)) : null}); }
   let executed = 0;
   for (const cell of cells) {
     if (stopping || executed >= maxCells) break;
@@ -111,7 +117,7 @@ try {
     }
     if (active?.id !== engine.id) {
       await unloadOwned();
-      const ps = await lmsJson("ps");
+      const ps = untolerated(await lmsJson("ps"));
       if (!Array.isArray(ps) || ps.length) throw new Error("Another model is loaded; refusing to evict user models or stack memory allocations");
       const c = engine.lmStudio!;
       if (!("model" in engine) || !Array.isArray(inventory) || inventory.filter(m => m.modelKey === c.modelKey && m.deviceIdentifier === c.deviceIdentifier && m.indexedModelIdentifier === c.indexedModelIdentifier && (m.quantization as {name?: string} | undefined)?.name === c.quantization && m.sizeBytes === c.sizeBytes && m.format === c.format).length !== 1) throw new Error("Pinned LM Studio inventory provenance mismatch");

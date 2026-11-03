@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-24. Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-11-03. The pre-registered batching equivalence study is complete (O69, [report](reports/batching-equivalence-2026-10.md)): parallel slots do not shift balanced accuracy, but Gemma 4 26B flips 6–7 of 500 verdicts at every level and batched reruns are not reproducible, so the declared rule keeps all runs serial (Qwen3.8 passes; throughput 1.3–1.7×, and Qwen3.8 is slower at p8 than at p4). On 2026-10-24: Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -730,6 +730,7 @@ much within groups, and more reasoning did not buy accuracy.**
 - Caveats: TTFT is cache-affected (shared LongPIBench prefixes); serial, parallel 1, over LM Link.
 - Follow-up: a within-model reasoning-budget arm (O29, issue #11).
 - **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), O54):** reasoning length is not comparable on a common setting. Qwen3.8 ran at `xhigh` with an injected instruction, the Gemma models with LM Studio's thinking switch and no effort level, Muse at its template's `reasoning_strength: high`, and Laguna's thinking state is unresolved.
+- **Note 2026-10-27 (O69, [#52](https://github.com/elicollinson/solenoid-security/issues/52)):** Qwen3.8's decode speed here is with LM Studio's MTP drafter on (68% of drafts accepted, about two-thirds of generated tokens), so its dense-group speed is inflated and the MoE-dense gap is likely larger. Under batching, per-request decode speed falls with parallel (Gemma26 116 → 34 tok/s, Qwen3.8 65 → 13 tok/s at p8), so per-request speeds are only comparable at parallel 1.
 
 ### 2.14 Abliteration pilot (2026-10-12)
 
@@ -1211,6 +1212,52 @@ false alarms on the baseline's benign sets.**
 - Follow-up: the README headline row now uses low; xhigh is kept as the historical protocol. Profiles (PR #34):
   Qwen3.8 `reasoning_effort: "low"`, threshold 0.15 for non-web content (pre-registered rule passed) and 0.5 for web.
 
+### 2.21 Batching (parallel-slot) equivalence (2026-10-26/27)
+
+> Numbered after the abliteration stage 1 section (§2.20, O68), which is on a separate branch.
+
+**O69 (PRE-REGISTERED): Batched serving does not shift accuracy, but it makes Gemma 4 26B's verdicts depend on server
+load; Qwen3.8 27B stays within the bar. The declared rule keeps every run serial. Throughput gains are 1.3–1.7×, and
+Qwen3.8 is slower at p8 than at p4.**
+- Evidence ✔:
+  - **Design.** 500 seeded, label-balanced cases (ten frozen tests, three length bands), Gemma 4 26B-A4B Q8 and Qwen3.8
+    27B Q8 at `low`, LM Studio parallel 1/2/4/8 with matching client concurrency, the frozen protocol otherwise, plus a
+    100-case p4 repeat. 4,200 calls in 4.6 h, no halt and no context-capacity failure. Every response came from the
+    study's own loaded instance (0 identity mismatches; the user's resident QAT model was tolerated by name).
+  - **Drift floor.** Serial p1 vs the frozen checkpoints: 500/500 outcome agreement for both models.
+  - **Gemma26.** Agreement vs p1 493, 494, 493 of 500 (p2, p4, p8); identical answers 86–89% (serial floor 98.4%),
+    identical reasoning 27–32% (93%). ΔBA −0.006 / +0.004 / −0.006, all CIs contain 0; McNemar 5 vs 2 (p = 0.45),
+    2 vs 4 (0.69), 4 vs 1 (0.38). p8 adds 2 length abstentions (+0.4 pts). Every flip came from a serial score more
+    than 0.3 from 0.5 (shifts up to 0.95), across bands and datasets.
+  - **Qwen3.8 low.** Agreement 498, 499, 499; identical answers 97.6–98.8%; ΔBA +0.002 to +0.004; McNemar p ≥ 0.5;
+    the same borderline web case (0.55 → 0.10) flips at every level.
+  - **Determinism.** Gemma's p4 rerun differs from the first p4 run (99/100, 86% identical answers) as much as p4 differs
+    from p1 (99/100, 88%); Qwen3.8's matches (100/100, 97%).
+  - **Throughput** (cases/h vs p1). Gemma 959 → 1,296 / 1,530 / 1,620 (1.35×, 1.60×, 1.69×); Qwen3.8 564 → 744 / 820
+    / 713 (1.32×, 1.45×, 1.26×). Median request latency rises 3.6× (Gemma) and 4.8× (Qwen3.8) at p8.
+  - **Speculative decoding (#52).** Qwen3.8's MTP drafter was on in every arm with unchanged acceptance (68.25–68.28%
+    pooled; frozen 68.26%; 0.98 drafted tokens per generated token). Gemma reports no drafting.
+  - **Context.** LM Studio's context is one pool shared by all slots; over-subscribing it fails every in-flight
+    request (HTTP 400). Size it as parallel × (longest prompt + output cap).
+  - **Rule.** Gemma fails p2 (agreement < 99%), so its adopted level is 1; Qwen3.8 passes all and adopts 8. The
+    repo-wide recommendation is the minimum: **parallel 1**.
+  - See the [report](reports/batching-equivalence-2026-10.md) and
+    [`batching-results.json`](analysis/batching-equivalence-2026-10/results/batching-results.json).
+- Strength: **Strong** for "no accuracy shift" and for Gemma's batch-dependence (pre-registered, paired, complete arms,
+  a 0/500 serial floor and a repeat). **Suggestive** for the causes of Qwen3.8's p8 slowdown (not instrumented).
+- Caveats:
+  - Two models, one device and runtime (LM Studio 0.4.25), 500 cases; fixed order (level confounded with time).
+  - Co-batched requests came from the same dataset; mixed-length batches were not tested.
+  - Qwen3.8 ran with drafting on in all arms, so its stability under batching may not carry over to drafting off.
+  - The 99% bar is strict at n = 500 (Gemma misses by 1–2 cases per level); applied as declared.
+- Interpretation (not tested): drafting already verifies several tokens per step at p1, which may be why Qwen3.8's
+  serial and batched numerics agree more closely. The p8 slowdown is consistent with drafting and batching competing
+  for the same compute on a dense 27B model (about 16 tokens per decode step at p8), with llama.cpp's Metal small-batch
+  decode kernels (upstream PR #29869; whether LM Studio's runtime includes it is unknown), or with memory pressure at
+  196,608 context next to the resident model.
+- Follow-up: the drafting-off arm in #52 at p4 and p8; #7 (speculative decoding) remains open. The README documents
+  batched runs as an opt-in for exploratory screens that report pooled metrics only.
+
 ---
 
 ## 3. Numbers that did not reconcile, or could not be checked
@@ -1313,6 +1360,10 @@ Open items are tracked as GitHub issues with the [`research` label](https://gith
   (naive-template) cases. If flips are material, a detector's verdict depends on server load. All local panel runs to
   date are serial (decision 2026-10-06), so they are the baseline.
   _Tracked in [#21](https://github.com/elicollinson/solenoid-security/issues/21)._
+  **Answered 2026-10-27 (O69, pre-registered):** batching does not shift BA on either model, but Gemma 4 26B flips
+  6–7 of 500 verdicts at every level (serial floor 0/500) and batched reruns are not reproducible; Qwen3.8 passes. The
+  declared rule keeps runs serial ([report](reports/batching-equivalence-2026-10.md)). Not tested: mixed-dataset
+  batches and other runtimes (MLX, vLLM).
 - **F6 — Jev-class decision models on open weights: a broad sweep.** Jev (TypeSafe AI) is a "System One" decision
   model: it takes a state plus typed questions (Noul = calibrated yes/no probability, Choice, Score), answers them all in
   one parallel pass without generating text, and is trained with RL for calibrated decisions (RLCD). Weights are

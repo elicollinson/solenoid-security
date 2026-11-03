@@ -1,0 +1,22 @@
+# Batching equivalence queue (#21), frozen 2026-10-26 with the pre-registration. One model and level at a time; Gemma26 then Qwen3.8-low;
+# within a model p1, p2, p4, the p4 repeat (first 10 cases of each test, same dispatch order), then p8. Client concurrency = parallel.
+RUN|gemma26/p1|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-gemma26-q8-p1-full --concurrency=1 --continue-after-output-errors
+CELL|gemma26|p1
+RUN|gemma26/p2|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-gemma26-q8-p2-full --concurrency=2 --continue-after-output-errors
+CELL|gemma26|p2
+RUN|gemma26/p4|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-gemma26-q8-p4-full --concurrency=4 --continue-after-output-errors
+CELL|gemma26|p4
+RUN|gemma26/p4-repeat|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-gemma26-q8-p4-repeat-full --concurrency=4 --continue-after-output-errors --limit=10
+CELL|gemma26|p4-repeat
+RUN|gemma26/p8|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-gemma26-q8-p8-full --concurrency=8 --continue-after-output-errors
+CELL|gemma26|p8
+RUN|qwen38low/p1|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-qwen38low-q8-p1-full --concurrency=1 --continue-after-output-errors
+CELL|qwen38low|p1
+RUN|qwen38low/p2|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-qwen38low-q8-p2-full --concurrency=2 --continue-after-output-errors
+CELL|qwen38low|p2
+RUN|qwen38low/p4|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-qwen38low-q8-p4-full --concurrency=4 --continue-after-output-errors
+CELL|qwen38low|p4
+RUN|qwen38low/p4-repeat|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-qwen38low-q8-p4-repeat-full --concurrency=4 --continue-after-output-errors --limit=10
+CELL|qwen38low|p4-repeat
+RUN|qwen38low/p8|--suite=evals/suites/prompt-injection-lmstudio-studio-batching-equivalence-q8-t4096-v1.json --output-dir=evals/runs/batching-equivalence-2026-10-26 --require-device=2e1a82366471bc1a78e9b74d2469172d --conditions=batching-qwen38low-q8-p8-full --concurrency=8 --continue-after-output-errors
+CELL|qwen38low|p8

@@ -323,6 +323,35 @@ the captured source binding. Tranche limits count only new native requests;
 exact cached observations can be populated without consuming that limit.
 External cache chains are deliberately unsupported.
 
+### Batched (parallel-slot) runs (opt-in)
+
+**Verdict (2026-10-27, pre-registered, [report](reports/batching-equivalence-2026-10.md), `FINDINGS.md` O69): run
+serially.** Frozen comparisons always run at parallel 1 and `--concurrency=1`. Batching never shifted balanced accuracy
+(no significant ΔBA on either model), but on Gemma 4 26B it flipped 6–7 of 500 verdicts at every level, and batched
+reruns are not reproducible. Qwen3.8 27B passed every level. Throughput gains were 1.3–1.7×, with much higher
+per-request latency, and Qwen3.8 was slower at p8 than at p4.
+
+A new, non-frozen exploratory screen that reports pooled metrics only may opt in. Do not opt in when individual
+verdicts must be reproducible or when the run is compared with a serial one.
+
+- **Engine.** Use a distinct engine (and loaded identifier) per level, e.g. `…-p4-ctx131072-v1`. Set
+  `lmStudio.parallel` to N. It is part of the engine identity, so a batched run never resumes or replaces a serial
+  one.
+- **Context.** `contextLength` is one pool shared by all slots, not per slot. Size it as
+  `N × (longest prompt + max_tokens)`, floored at 65,536. Over-subscribing it fails **every** in-flight request with
+  HTTP 400 "Context size has been exceeded"; nothing is queued or truncated. Check the load fits LM Studio's memory
+  guardrail first (`lms load --estimate-only`, or the study's `memory-estimate.ts`).
+- **Client.** Pass `--concurrency=N` (≤ the engine's `parallel`; `run-suite.ts` refuses more). It is recorded in the
+  checkpoint, and a resume at a different concurrency is refused. Within-run reuse (`--deduplicate-inputs`) requires
+  serial runs.
+- **Timeout.** Raise `timeoutMs` (the study used 900,000) so a request waiting behind co-batched long prefills is not
+  cut off.
+- **Level.** p4 was the throughput optimum on both models (Gemma 1.60×, Qwen3.8 1.45×); p8 added 6% on Gemma and
+  lost throughput on Qwen3.8. Qwen3.8 runs with LM Studio's MTP drafter on (#52), which competes with batching for the
+  same compute.
+- **Shared server.** `run-lmstudio-matrix.ts --tolerate-instance=<identifier>` lets a named, unrelated resident model
+  stay loaded (it is neither unloaded nor counted as foreign). Any other loaded model still halts the driver.
+
 ## OpenAI-compatible backend (`openai_compatible`)
 
 A generic transport for `llm_score_json` engines served by any OpenAI-compatible

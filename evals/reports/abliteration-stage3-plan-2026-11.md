@@ -246,3 +246,18 @@ The analysis (Holm, H2, H3, the write-up) is done offline after each build's `MO
   (as in the stage 2 deviation).
 - The estimate assumes each build's pilot slowdown holds on all datasets. Long-document datasets may differ. At ≈ 16
   days in total the chain will likely meet user pauses; the waits and the restart rules above handle them.
+
+## Launch record (2026-11-03)
+
+- **Pre-registration commit.** `fa732d3`, pushed before any stage 3 call.
+- **Offline mock test, 19:48–19:50Z.** The chain ran unchanged with `MOCK_RUN="bun …/mock-runner.ts"`, a scratch run dir
+  and a mock inventory holding the two present builds. It completed:
+  - for gemma26-huihui and muse-heretic: the pin, HF and dry-run checks, a drift gate pass, and 70 CELL lines;
+  - one simulated transport failure, which produced a `RETRY` and a full rerun under `-r1`;
+  - both MODEL_DONE lines;
+  - the 24 h give-up for the five absent builds (shortened for the test), then `DONE`.
+
+  A second invocation on the same directory reran nothing: both builds were already done, and the absent builds were
+  re-probed and given up again. The mock never called a model.
+- **Real chain started 19:50:51Z.** `CHAIN_START` at 19:51:22Z. gemma26-huihui is first, because it is the first build in
+  plan order that is present; its `PIN` was logged at 19:53:26Z.

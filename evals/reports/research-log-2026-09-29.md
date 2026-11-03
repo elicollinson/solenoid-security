@@ -5135,10 +5135,24 @@ lines.
 
 **Published.**
 - `evals/analysis/abliteration-stage2-pilot-2026-10/analyze.ts` and `results/stage2-summary.json`.
-- The 13 stage 2 and deviation suites.
+- The 11 run-time-pinned stage 2 suites (the 2 deviation suites were already tracked).
 - Both progress logs.
 - The [results report](abliteration-stage2-results-2026-11.md).
 - FINDINGS O70 and §2.20, with dated notes on O53 and F7.
 - The living [abliteration summary](abliteration-findings.md) and the README status.
 
-**Supabase and backup.** See the PR #53 description for the import and rsync counts.
+**Supabase and backup.**
+- **Import.** The importer ran from the feature worktree, with the dry run first: `--only=suites,artifacts,checkpoints,bodies,ledgers,documents,behavior,finalize`.
+  - It wrote 13 suites, 85 runs and checkpoints (73 stage 2, 12 deviation), 9,216 requests, and 9,214 responses with
+    bodies in Storage.
+  - It also wrote 9,156 observations, 60 abstention errors, 42 artifacts and 1,034 driver events, with 0 Storage
+    errors.
+  - Run completeness reads 62 `complete`, 21 `finished_with_abstentions` and 2 `partial`. The 2 partials are the
+    superseded muse longpi-paper attempts.
+- **Known gap.** The documents step loaded L161, but not O70. `parseFindings` only matches `**O<n>:`, so
+  `**O<n> (PRE-REGISTERED):` headings (O65, O67, O70) are skipped. This is a pre-existing importer gap, not fixed
+  here.
+- **Backup.** `evals/runs` was rsynced additively (`--ignore-existing`) to the raw backup: 38 new files (27 deviation,
+  11 stage 2), none modified. The four append-only stage 2 logs (`chain.log`, `console.log`, `driver.ndjson`,
+  `progress.log`) were checked to have the backup copy as an exact byte prefix, then refreshed. Both run directories
+  now match the backup file for file.

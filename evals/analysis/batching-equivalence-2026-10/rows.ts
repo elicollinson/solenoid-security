@@ -24,6 +24,10 @@ export interface Row {
   caseId: string; positive: boolean; status: string; flagged: boolean | null; score: number | null;
   promptTokens: number | null; completionTokens: number | null; reasoningTokens: number | null; wallMs: number | null;
   finalAnswer: string | null; reasoningSha: string | null; startedAt: string | null; endedAt: string | null; ttftS: number | null;
+  /** Identity checks (the resident assistant model shared the server): the model the response names, and the loaded instance it maps to. */
+  responseModel: string | null; loadedModelKey: string | null; loadedParallel: number | null; loadedContext: number | null; nativeArch: string | null;
+  /** Speculative (MTP) drafting counters, null when the runtime reports none (#52). */
+  draftTotal: number | null; draftAccepted: number | null; tokPerS: number | null;
 }
 export interface Extract { rows: Row[]; byId: Map<string, Row>; complete: boolean; firstAt: string | null; lastAt: string | null }
 const h = (s: string) => createHash("sha256").update(s).digest("hex");
@@ -50,9 +54,17 @@ export function extract(file: string): Extract | null {
       reasoningTokens: r?.usage?.completion_tokens_details?.reasoning_tokens ?? null,
       wallMs: resp?.raw?.lmStudio?.clientTiming?.httpWallMs ?? null,
       finalAnswer: typeof msg?.content === "string" ? msg.content : null, reasoningSha: reasoning === null ? null : h(reasoning),
-      startedAt: firstDispatch.get(caseId) ?? null, endedAt: resp?.at ?? null, ttftS: r?.stats?.time_to_first_token ?? null });
+      startedAt: firstDispatch.get(caseId) ?? null, endedAt: resp?.at ?? null, ttftS: r?.stats?.time_to_first_token ?? null,
+      ...identity(resp?.raw, r) });
   }
   return { rows, byId: new Map(rows.map(r => [r.caseId, r])), complete: events.some(e => e.type === "complete"), firstAt, lastAt };
+}
+function identity(raw: any, r: any) {
+  const model = typeof r?.model === "string" ? r.model : null;
+  const inst = (raw?.lmStudio?.before ?? []).find((x: any) => x?.identifier === model);
+  return { responseModel: model, loadedModelKey: inst?.modelKey ?? null, loadedParallel: inst?.parallel ?? null, loadedContext: inst?.contextLength ?? null,
+    nativeArch: r?.model_info?.arch ?? null, draftTotal: r?.usage?.total_draft_tokens_count ?? null, draftAccepted: r?.usage?.accepted_draft_tokens_count ?? null,
+    tokPerS: r?.stats?.tokens_per_second ?? null };
 }
 export const suiteJson = () => JSON.parse(readFileSync(resolve(ROOT, SUITE_PATH), "utf8"));
 export const armFile = (m: ModelKey, arm: string, test: string) => resolve(RUN_DIR, test, `${condition(m, arm)}${arm === "p4-repeat" ? `-limit${REPEAT_LIMIT}` : ""}.jsonl`);

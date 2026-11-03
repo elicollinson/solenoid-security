@@ -1,0 +1,12 @@
+CHAIN_START|2026-10-26T22:50:40Z|batching equivalence: 2 models x {p1,p2,p4,p8} x 500 cases + p4 repeat 100
+CELL|2026-10-26T23:22:13Z|gemma26/p1|finished 500/500; abstentions 0; span 31.3 min; outcome agreement with frozen 500/500
+CELL|2026-10-26T23:45:33Z|gemma26/p2|finished 500/500; abstentions 0; span 23.2 min; outcome agreement with p1 493/500
+CELL|2026-10-27T00:05:20Z|gemma26/p4|finished 500/500; abstentions 0; span 19.6 min; outcome agreement with p1 494/500
+CELL|2026-10-27T00:08:40Z|gemma26/p4-repeat|finished 100/100; abstentions 0; span 3.2 min; outcome agreement with p1 100/100
+CELL|2026-10-27T00:27:21Z|gemma26/p8|finished 500/500; abstentions 2; span 18.5 min; outcome agreement with p1 493/500
+CELL|2026-10-27T01:20:46Z|qwen38low/p1|finished 500/500; abstentions 0; span 53.2 min; outcome agreement with frozen 500/500
+CELL|2026-10-27T02:01:17Z|qwen38low/p2|finished 500/500; abstentions 0; span 40.3 min; outcome agreement with p1 498/500
+CELL|2026-10-27T02:38:03Z|qwen38low/p4|finished 500/500; abstentions 0; span 36.6 min; outcome agreement with p1 499/500
+CELL|2026-10-27T02:43:41Z|qwen38low/p4-repeat|finished 100/100; abstentions 0; span 5.5 min; outcome agreement with p1 100/100
+CELL|2026-10-27T03:25:55Z|qwen38low/p8|finished 500/500; abstentions 0; span 42.1 min; outcome agreement with p1 499/500
+RUN_DONE|2026-10-27T03:25:55Z

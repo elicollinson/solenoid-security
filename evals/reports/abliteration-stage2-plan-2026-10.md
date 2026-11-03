@@ -274,3 +274,12 @@ start (2026-10-30T22:00:40Z), and user-requested pauses had used it up. No cell 
 The cap (60 h) now counts from each chain invocation, which still stops a runaway run. A SKIP caused by the cap no longer
 counts as an attempt, so the build resumes from its completed cells on the next start. `chain-start.epoch` is kept as a
 record of the first start.
+
+## Amendment (2026-11-03T13:1xZ): the local API was down; preflight it before every step
+
+The 12:43Z and 12:48Z muse-heretic/longpi-paper failures (`provider_or_transport_error`, `TypeError` about 1 ms after
+dispatch) happened because the Mac mini's local LM Studio API server (127.0.0.1:1234), which the runner sends requests
+through, was not running. `lms` CLI calls still worked, so the model loaded and unloaded normally. No inference
+happened in either attempt (0/120 scored), and both partial checkpoints are kept. The server was restarted
+(`lms server start`). The chain now checks the local API before every step, starts it once if it is down, and halts if
+it stays unreachable. The muse longpi-paper cohort reruns under the next fresh condition.

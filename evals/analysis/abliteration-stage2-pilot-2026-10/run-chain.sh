@@ -91,6 +91,11 @@ run_step() {  # $1 label, $2 suite, $3 condition, rest: extra args. Returns the 
   until link_ok; do echo "=== WAIT LM Link $(ts)"; sleep 60; done
   local n=0; while [[ -f $LOCK ]]; do (( n++ > 10 )) && halt "device lock present before $label"; sleep 60; done
   wait_clear $label
+  # amendment 2026-11-03: the runner talks to the Mac mini's local LM Studio API (127.0.0.1:1234); make sure it is up
+  if ! curl -s -m 5 -o /dev/null http://127.0.0.1:1234/v1/models; then
+    echo "=== LOCAL API DOWN $(ts); starting it"; lms server start >/dev/null 2>&1; sleep 5
+    curl -s -m 5 -o /dev/null http://127.0.0.1:1234/v1/models || halt "local LM Studio API (127.0.0.1:1234) is not reachable before $label"
+  fi
   echo "=== START $label $(ts)"
   ${=MOCK_RUN:-bun run eval:local} --execute --suite=$suite --conditions=$cond "$@" --output-dir=$D --require-device=$DEV --tolerate-instance=$TOL --concurrency=1 --continue-after-output-errors < /dev/null
   local code=$?

@@ -266,3 +266,11 @@ its summary is written.
 The optional robustness arm (groxaxo `gemma-4-26B-A4B-it-UD-Q8_K_XL.gguf`, the same huihui weights in an unsloth dynamic
 quant) is dropped by the user's decision, to keep the comparison to static Q8_0 builds that match their vanilla quant.
 It was never downloaded or run; the chain skips it as absent. The quant-scheme question stays open for a later study.
+
+## Amendment (2026-11-03T12:4xZ): the wall-clock cap counts per invocation; cap skips are not attempts
+
+At 12:38:37Z the resumed chain skipped muse-heretic before its second cell because the cap still counted from the first
+start (2026-10-30T22:00:40Z), and user-requested pauses had used it up. No cell had started, so no data was affected.
+The cap (60 h) now counts from each chain invocation, which still stops a runaway run. A SKIP caused by the cap no longer
+counts as an attempt, so the build resumes from its completed cells on the next start. `chain-start.epoch` is kept as a
+record of the first start.

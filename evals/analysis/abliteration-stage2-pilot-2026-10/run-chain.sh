@@ -81,7 +81,7 @@ wait_clear "stage 2 start"
 pgrep -f $MPAT > /dev/null && halt "another LM Studio matrix driver started"
 [[ -f $LOCK ]] && halt "device lock appeared before stage 2 start"
 [[ -f $D/chain-start.epoch ]] || date +%s > $D/chain-start.epoch
-START=$(cat $D/chain-start.epoch)
+START=$(date +%s)  # amendment 2026-11-03: the cap counts this invocation only; chain-start.epoch is kept for provenance
 log CHAIN_START "abliteration stage 2 pilot screen: ${NB} builds (${ORDER[*]}), 998 pilot cases each vs vanilla full-suite checkpoints on the same caseIds; serial; stage 1 ended $(date -u -r $S1END +%FT%TZ)"
 
 # ---- per-build steps ----
@@ -131,7 +131,7 @@ process_build() {  # $1 build, $2 k. Returns 0 done/skipped, 3 absent (defer).
   local b=$1 k=$2 code
   # Restart-safe: a build already summarized, or skipped for any reason but absence, is not touched again.
   if grep -q "^MODEL_DONE|[^|]*|[^|]*|$k/$NB|" $P 2>/dev/null; then DONE_B+=($b); return 0; fi
-  if grep "^SKIP|[^|]*|$b: " $P 2>/dev/null | grep -v -e "|$b: absent" -e "exited 127" | grep -q .; then SKIP_B+=($b); return 0; fi
+  if grep "^SKIP|[^|]*|$b: " $P 2>/dev/null | grep -v -e "|$b: absent" -e "exited 127" -e "chain cap reached" | grep -q .; then SKIP_B+=($b); return 0; fi
   local out c; out=$(bun $A/pin.ts $b 2>>$D/pins/probe.err); c=$?
   (( c == 3 )) && return 3
   (( c != 0 )) && { skip $b "inventory probe failed or ambiguous (exit $c)"; return 0; }

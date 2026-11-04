@@ -111,7 +111,7 @@ run_cohort() {  # $1 label, $2 build, $3 kind, $4 test, $5 suite, $6 condition, 
     lbl=$label; (( n )) && lbl=$label/r$n
     run_step $lbl $suite $cond --tests=$t "$@"; code=$?
     (( code == 0 )) && return 0
-    tr=$(tail -c +$((c0 + 1)) $D/console.log 2>/dev/null | grep -c provider_or_transport_error)
+    tr=$(tail -c +$((c0 + 1)) $D/console.log 2>/dev/null | grep -c -E 'provider_or_transport_error|EINTR|interrupted system call')  # OS-level EINTR is infrastructure too (amendment 2026-11-04)
     [[ "$tr" == "0" ]] && return $code
     (( n >= MAX_RETRY )) && halt "$label exited $code with provider_or_transport_error after $n automatic reruns (limit $MAX_RETRY); cohort $key needs a human (L141: rerun under a fresh condition, keep the partial)" $code
     RV[$key]=$((n + 1))
@@ -149,7 +149,7 @@ display_of() { pl "p['builds']['$1']['display']"; }
 finished_before() {  # $1 build: 0 if MODEL_DONE, or a SKIP that counts as an attempt, is already in the log
   local b=$1
   grep "^MODEL_DONE|" $P 2>/dev/null | cut -d'|' -f3 | grep -qxF "$(display_of $b)" && return 0
-  grep "^SKIP|[^|]*|$b: " $P 2>/dev/null | grep -v -e "|$b: absent" -e "exited 127" -e "cap reached" -e "not attempted" | grep -q . && return 0
+  grep "^SKIP|[^|]*|$b: " $P 2>/dev/null | grep -v -e "|$b: absent" -e "exited 127" -e "cap reached" -e "not attempted" -e "|2026-11-03T22:05:2" | grep -q . && return 0  # 22:05Z skips: Mac mini memory/EINTR incident, not attempts (amendment 2026-11-04)
   return 1
 }
 process_build() {  # $1 build, $2 k. Returns 0 done or skipped, 3 absent (defer).

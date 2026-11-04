@@ -261,3 +261,35 @@ The analysis (Holm, H2, H3, the write-up) is done offline after each build's `MO
   re-probed and given up again. The mock never called a model.
 - **Real chain started 19:50:51Z.** `CHAIN_START` at 19:51:22Z. gemma26-huihui is first, because it is the first build in
   plan order that is present; its `PIN` was logged at 19:53:26Z.
+
+## Amendment (2026-11-04, before restarting): Mac mini memory incident and EINTR
+
+On 2026-11-03 the Mac mini that drives the chain ran out of memory. Swap reached 45 GB on a 16 GB machine, the load
+average reached 185 and `kernel_task` held about 99 GB. The cause was macOS background services: `mediaanalysisd`,
+the ANE compiler and Siri/asset daemons. The user turned off Siri, and the mini recovered at once: swap fell to 0.6 GB
+and free memory rose to 77%. No study model ran on the mini, and inference runs on the Mac Studio.
+
+During the incident:
+
+- At 20:43:48Z, gemma26-huihui `baseline/longpi-paper` failed with `provider_or_transport_error`. It was rerun in full
+  under `r1` as designed.
+- `r1` finished all inference (389 scored, 11 abstentions, of 400). The read-only post-run inspection then crashed with
+  `EINTR: interrupted system call` while opening the dataset file (exit 1, 22:05:26Z). The chain did not recognize this
+  as an infrastructure failure, so it skipped gemma26-huihui as an attempt.
+- In the same second, the inventory probes for gemma26-heretic and gemma26-ultra failed (both are absent). The chain
+  then started muse-heretic.
+
+Changes, made before the restart and after the stop at 2026-11-04T00:12Z:
+
+1. OS-level `EINTR` / "interrupted system call" in a step's console output now counts as an infrastructure failure, the
+   same as `provider_or_transport_error`, and gets the bounded automatic rerun.
+2. The three SKIP lines at 2026-11-03T22:05:2xZ no longer count as attempts, so gemma26-huihui is requeued. In plan
+   order it runs before muse-heretic.
+3. The gemma26-huihui `r1` checkpoint is complete, and its inference ran without any transport error. Only the
+   inspection after it crashed. On restart the chain re-enters `r1`, so the runner re-inspects this completed checkpoint
+   and makes no new requests. This is not a resume of an interrupted transport failure (L141): the interrupted `r0`
+   partial stays excluded and kept.
+4. The muse-heretic step that was running (`baseline/longpi-paper-abstract`) was allowed to finish. The old chain
+   process logs `HALTED ... termination signal` when that step ends. This was a deliberate stop.
+
+No data was deleted or overwritten, and no threshold, case or analysis changed.

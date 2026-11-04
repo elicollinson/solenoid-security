@@ -5,7 +5,7 @@ research that began on 2026-09-29. Each observation states one scoped claim and 
 strength rating, confounds and a follow-up. The list is meant to feed future blog posts. It is not a leaderboard: cohorts
 measure different things and must not be pooled.
 
-**Last updated:** 2026-10-24. Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
+**Last updated:** 2026-10-30. Two abliterated Qwen3.8 27B builds ran on the full Studio suites at `low`, pre-registered (O68). Both are significantly worse than vanilla-low on both suites. heretic-ara scores 0.898 and 0.883, huihui 0.899 and 0.858, against 0.912 and 0.900 (Holm p ≤ 2×10⁻⁷). The loss is missed attacks, and ranking (AUROC) is intact ([report](reports/studio-qwen38-abliterated-low-2026-10.md)). On 2026-10-24: Qwen3.8 at `reasoning_effort: "low"` ran on the full Studio suites, pre-registered (O67). It scores 0.912 on the baseline and 0.900 on the extension, up from 0.895 and 0.865 at xhigh (p = 4×10⁻⁵ and 2×10⁻⁸³). The gain is on QA, email and BIPIA, and it costs benign false alarms on the baseline's benign sets. Thresholds: 0.15 for non-web content and 0.5 for web ([report](reports/studio-qwen38-low-2026-10.md)). On 2026-10-21: The pre-registered Qwen3.8 effort ablation is complete (O65). The xhigh template instruction cost Qwen3.8 accuracy. `medium` raises BA@0.5 on QA, BIPIA and email by +0.054 (p = 2.4×10⁻¹⁴), and `low` raises it further at 0.82× the time. A baseline-fit threshold of 0.10 lifts Muse's extension BA from 0.904 to 0.922 (O66; [report](reports/qwen38-effort-ablation-2026-10.md)). On 2026-10-19: The LLaDA2.2 text-diffusion work is complete: pilot (O61), exploratory window sweep (O62) and the pre-registered Flash full-suite run (O63; Flash ranks 7th of 8 at full text, and windows lift its long-document recall but add web false alarms; [report](reports/llada-flash-full-2026-10.md)). An exploratory re-analysis (O64, [report](reports/llada-flash-surface-cues-2026-10.md)) finds that Flash's full-text recall tracks payload size relative to the document, not explicit wording. On 2026-10-17: the Studio Q8 extension suite is complete: seven models × 14 datasets; it breaks the baseline's saturation except on agent output (O56–O60, [extension report](reports/studio-extension-q8-t4096-2026-10.md)). On 2026-10-16: every local Qwen3.8 run used `xhigh` effort with a template-injected instruction, not the requested `high` (Appendix B, O54); its scores are under-calibrated at 0.5 (O55; [#33](https://github.com/elicollinson/solenoid-security/issues/33)). Earlier, on 2026-10-12: The Mac Studio Q8 full-text baseline is complete: seven models × 21 datasets (O48–O52,
 [Studio baseline report](reports/studio-baseline-q8-t4096-2026-10.md)). The abliteration pilot (F7) is complete
 (O53, [pilot results](reports/abliteration-pilot-results-2026-10.md)). **Status:** the MoE-vs-dense full-input panel is complete (six models, seven builds; see §5
 and the [panel report](reports/lmstudio-moe-dense-panel-2026-10-05.md)). Studio Study A, the within-model full-vs-window
@@ -763,6 +763,7 @@ original on identical cases. They missed more marginal attacks, and one added ag
 - Follow-up: F7 escalates to the full 21-dataset Studio baseline protocol for both builds (#23). The reasoning screen
   needs human coding before it can be relied on.
 - **Caveat 2026-10-16 ([#33](https://github.com/elicollinson/solenoid-security/issues/33), Appendix B):** all three builds embed the same chat template and ran at `xhigh` effort with the same 38-token injected instruction (+0 `prompt_tokens` vs vanilla on shared cases). The comparison stays internally valid, but it describes abliteration at `xhigh`, not `high`.
+- **Update 2026-10-30 (O68):** at full scale and `low` effort, the main result replicates: both builds are significantly worse on both suites (14,085 cases each; Holm p ≤ 2×10⁻⁷), and the loss is missed attacks. The pre-registered pattern test (H3) does not: email, long docs, BIPIA and QA carry the largest losses. Item by item, PIDS obfuscated recall replicates (0.728 → 0.670 / 0.611, p = 0.002 / 1×10⁻⁸) and naive LongPI code replicates. huihui's AgentDyn false alarms do not (2 → 4 of 182). AUROC is unchanged or higher, consistent with "recognized but downgraded" ([report](reports/studio-qwen38-abliterated-low-2026-10.md)).
 
 ### 2.15 Reasoning-effort audit and Qwen3.8 calibration (2026-10-16)
 
@@ -1210,6 +1211,58 @@ false alarms on the baseline's benign sets.**
   - Only Qwen3.8's effort was changed; the other models remain at their template defaults (O54).
 - Follow-up: the README headline row now uses low; xhigh is kept as the historical protocol. Profiles (PR #34):
   Qwen3.8 `reasoning_effort: "low"`, threshold 0.15 for non-web content (pre-registered rule passed) and 0.5 for web.
+
+---
+
+### 2.20 Abliterated Qwen3.8 builds at `low` effort on the full Studio suites (2026-10-27/30)
+
+**O68 (PRE-REGISTERED): On the full suites at `reasoning_effort: "low"`, both abliterated Qwen3.8 27B builds detect
+prompt injection significantly worse than vanilla Qwen3.8. heretic-ara scores 0.898 / 0.883 and huihui 0.899 / 0.858,
+against 0.912 / 0.900 (baseline / extension). Nearly all of the loss is missed attacks; ranking (AUROC) is unchanged
+or better.**
+- Evidence ✔:
+  - **Setup.**
+    - 14,085 cases per build (21 + 14 datasets), with the vanilla-low engine and only the model identity swapped.
+    - The `low` effort comes from a load-time template (LM Studio does not forward it to these GGUFs).
+    - `prompt_tokens` equal vanilla-low on every case with usage in all 70 cells, and identity holds on every response.
+  - **H1 (Holm across 2 builds × 2 suites).**
+    - Baseline: ΔBA −0.014 [−0.021, −0.007] (239 vs 131 discordant, p = 4×10⁻⁸) and −0.013 [−0.020, −0.006] (289 vs
+      177, p = 2×10⁻⁷).
+    - Extension: −0.017 [−0.023, −0.011] (334 vs 162, p = 3×10⁻¹⁴) and −0.042 [−0.049, −0.036] (498 vs 161,
+      p = 2×10⁻⁴⁰).
+    - Unchanged with abstentions counted as errors.
+  - **H2 (missed attacks).**
+    - Positives lost vs gained: 219/47 and 269/48 (baseline), 306/145 and 438/148 (extension).
+    - On the baseline the builds raise fewer false alarms (20 vs 84 and 20 vs 129).
+    - On the extension they add some: 28 vs 17, and huihui 60 vs 13, mostly BrowseSafe benign pages (16 → 29 / 67 of
+      200).
+  - **Groups (Holm).**
+    - Baseline email −0.041 / −0.046 and long docs −0.024 / −0.008.
+    - Extension BIPIA −0.043 / −0.073 and QA −0.022 / −0.038.
+    - huihui also loses extension email (−0.103), web (−0.080) and long docs (−0.036).
+    - Agent and code do not change.
+  - **H3 (O53 pattern) not supported.** No obfuscated or agent group is among the two largest significant losses.
+    PIDS obfuscated recall still falls 0.728 → 0.670 / 0.611 (p = 0.002 / 1×10⁻⁸), but the encoded benign controls
+    improve (82 → 55 / 46 flagged), which offsets the group.
+  - **Heretic-ara vs huihui.** Tied on the baseline (p = 0.81). heretic-ara is better on the extension (374 vs 209,
+    p = 8×10⁻¹²).
+  - **Ranking.** Mean AUROC on mixed datasets is 0.940 / 0.944 / 0.951 (baseline) and 0.945 / 0.951 / 0.977 (extension).
+  - **Cost.** Reasoning tokens 1.13× / 1.38× (baseline) and 1.23× / 1.51× (extension).
+  - See the [report](reports/studio-qwen38-abliterated-low-2026-10.md) and
+    [`abliterated-low-results.json`](analysis/studio-qwen38-abliterated-low-2026-10-27/results/abliterated-low-results.json).
+- Strength: **Strong** for H1 and H2: pre-registered, paired, complete cohorts, exact prompt equivalence, and it
+  replicates O53's direction at a different effort. **Weak** for any card covariate (two builds).
+- Caveats:
+  - GGUFs from different publishers.
+  - The effort is delivered by template, not request (rendering verified equal).
+  - Vanilla was not rerun.
+  - Deviations, all in the plan's amendments:
+    - one transport-halted partial (79 cases) was rerun under a fresh condition and excluded;
+    - the huihui drift re-check's abstention clause was waived after the result, with prompt tokens 24/24;
+    - the cap was restarted after a 25 h idle.
+  - The calibration reading (AUROC intact, scores lower) is post hoc.
+- Follow-up: stage 2 (#53) screens 10 more builds across four families. A per-build threshold analysis would test the
+  calibration reading (not pre-registered).
 
 ---
 

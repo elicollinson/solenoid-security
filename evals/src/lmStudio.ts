@@ -64,6 +64,9 @@ export function validateLMStudioConfig(engine: EngineSpec): void {
   if (engine.parameters?.temperature !== 0 || cap === undefined || engine.parameters?.max_tokens !== cap) throw new Error("LM Studio requires a bounded score-only (64/1024/4096) or neutral-context (256) protocol with matching temperature and token cap");
   if (engine.parameters?.reasoning_enabled !== undefined) throw new Error("LM Studio uses reasoning_effort, not OpenRouter reasoning_enabled");
   if (!["none", "minimal", "low", "medium", "high", "xhigh"].includes(String(engine.parameters?.reasoning_effort))) throw new Error("Explicit LM Studio reasoning_effort required");
+  if (c.promptTemplate !== undefined && (typeof c.promptTemplate !== "object" || c.promptTemplate === null || Object.keys(c.promptTemplate).sort().join() !== "path,sha256"
+    || typeof c.promptTemplate.path !== "string" || !/^evals\/[\w./-]+\.jinja$/.test(c.promptTemplate.path) || c.promptTemplate.path.includes("..")
+    || typeof c.promptTemplate.sha256 !== "string" || !/^[0-9a-f]{64}$/.test(c.promptTemplate.sha256))) throw new Error("Invalid LM Studio promptTemplate (repo-relative evals/*.jinja path and lowercase SHA-256)");
 }
 export function validateLoadedModel(engine: EngineSpec, value: unknown): Record<string, unknown> {
   validateLMStudioConfig(engine);

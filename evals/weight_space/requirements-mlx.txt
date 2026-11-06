@@ -1,0 +1,5 @@
+# macOS host only; install alongside requirements.txt. Never install inside the CPU kernel image.
+mlx==0.32.4
+mlx-metal==0.32.4
+mlx-lm==0.28.3
+protobuf==7.36.2

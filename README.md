@@ -56,6 +56,8 @@ JSON, so it is not the frozen Q8 protocol.
 - The Skill-Inject policy pairs cannot rank full-text detectors: both members send identical input, so every model scores 0.500 ([O49](evals/FINDINGS.md)).
 - From the hosted phase: small non-reasoning judges copy an injected score ([O12](evals/FINDINGS.md)), decoded previews cut encoded-text false alarms by up to 92% ([O23](evals/FINDINGS.md)), and Model Armor misses embedded attacks ([O35](evals/FINDINGS.md)).
 
+In a separate weight-editing experiment, Astra raised Qwen3-4B’s heldout attack detection rate from 75.36% to 93.27% at the fixed decision threshold. The joint edit met both targets on practice, but heldout detection fell short of 95% and false positives reached 8.42% against a target below 5%. [Full experiment write-up](evals/reports/joint-weight-editing-2026-11.md)
+
 **Limits**
 
 - One quant and one runtime per model (Q8_0 GGUF in LM Studio; Flash MLX 4-bit), on one machine.
@@ -135,6 +137,8 @@ The library's chunking techniques run on the same code as the eval input strateg
 ([`src/techniques.ts`](src/techniques.ts)), so a recommendation measured in the lab is exactly what ships.
 
 ## Where to look
+
+- [Frozen Qwen3-4B detector: MLX scoring and private Tailscale serving](evals/weight_space/README.md)
 
 1. **[`evals/FINDINGS.md`](evals/FINDINGS.md):** 63 observations, each with numbers, sample size, strength rating,
    confounds and a follow-up, plus an open-questions backlog and future research avenues.

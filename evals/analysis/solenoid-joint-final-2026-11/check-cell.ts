@@ -1,6 +1,6 @@
 /** One aggregate-only line for a finished dataset. Abstentions are excluded from balanced accuracy and reported separately. */
 import { readFileSync } from "node:fs";
-import { loadDataset, selectTestCases } from "../../src/datasets.js";
+import { expectedPositive, loadDataset, selectTestCases } from "../../src/datasets.js";
 import type { DatasetManifest, EvalTest } from "../../src/types.js";
 
 const [suitePath, testId] = process.argv.slice(2) as [string, string];
@@ -16,7 +16,7 @@ let tp = 0, fn = 0, tn = 0, fp = 0;
 for (const item of cases) {
   const score = scores.get(item.id);
   if (score === undefined) continue;
-  const positive = item.annotations[test.annotationKey] === true;
+  const positive = expectedPositive(item, manifest);
   if (positive) score > 0.5 ? tp++ : fn++; else score > 0.5 ? fp++ : tn++;
 }
 const rate = (a: number, b: number) => a + b ? a / (a + b) : NaN;

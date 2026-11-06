@@ -138,6 +138,8 @@ The library's chunking techniques run on the same code as the eval input strateg
 
 ## Where to look
 
+- [Frozen Qwen3-4B detector: MLX scoring and private Tailscale serving](evals/weight_space/README.md)
+
 1. **[`evals/FINDINGS.md`](evals/FINDINGS.md):** 63 observations, each with numbers, sample size, strength rating,
    confounds and a follow-up, plus an open-questions backlog and future research avenues.
 2. **Key reports:** [Studio baseline](evals/reports/studio-baseline-q8-t4096-2026-10.md) ·

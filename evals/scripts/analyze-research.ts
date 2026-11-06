@@ -7,6 +7,7 @@ import { decideCase } from "../src/decisions.js";
 import { lmStudioSpeed, unwrapLMStudioResponse, validateNativeModelInfo } from "../src/lmStudio.js";
 import { taskContextForCase, isLengthLimitedResponse, isOutputAbstention } from "../src/engines.js";
 import { OPENAI_COMPATIBLE_PROVIDER, unwrapOpenAICompatibleResponse } from "../src/openaiCompatible.js";
+import { classifyScoreBatchResponse, SCORE_BATCH_PROVIDER, unwrapScoreBatchResponse } from "../src/scoreBatch.js";
 import { confusionMatrix } from "../src/metrics.js";
 import { segmentCase, sha256 } from "../src/strategies.js";
 import type { CaseDecision, DatasetManifest, DecisionRule, EngineSpec, EvalTest, InferenceObservation, InputSegment, InputStrategy } from "../src/types.js";
@@ -46,7 +47,7 @@ export interface ValidatedRun {
     execution: { kind: "live" | "derived" | "mixed"; newInferenceCalls: number; reusedObservations: number; sourceRunId?: string; sourceCheckpointSha256?: string };
     attempts: { dispatches: number; responses: number; errors: number; rateLimits: number };
     usage: { knownCostUsd: number | null; totalCostUsd: number | null; incrementalCostUsd: number | null; reusedResponseCostUsd: number | null; sourceBilledCostUsd: number | null; costKnownObservations: number; inputTokens: number | null; outputTokens: number | null };
-    latencyMs: { basis: "hosted_inference" | "local_link_inference" | "openai_compatible_inference" | "reused_source_observations" | "mixed_source_observations"; knownObservations: number; total: number | null; mean: number | null; p50: number | null; p95: number | null };
+    latencyMs: { basis: "hosted_inference" | "local_link_inference" | "openai_compatible_inference" | "score_batch_inference" | "reused_source_observations" | "mixed_source_observations"; knownObservations: number; total: number | null; mean: number | null; p50: number | null; p95: number | null };
     primary: Replay; exploratoryReplays: Replay[];
   };
   /** These maps remain in memory and are deliberately absent from aggregate JSON. */
@@ -137,6 +138,12 @@ function expectedEngine(configured: EngineSpec, captured: EngineSpec): EngineSpe
 
 /** Validate saved raw output against captured observation, without publishing response bodies. */
 function validateResponse(engine: EngineSpec, rawValue: unknown, observation: InferenceObservation): void {
+  if (engine.kind === "score_batch") {
+    const outcome = classifyScoreBatchResponse(engine, unwrapScoreBatchResponse(rawValue));
+    check(outcome.kind === "scored" && outcome.score === observation.rawScore && outcome.tokens === observation.usage.inputTokens, "score_batch raw score differs");
+    check(observation.provider === SCORE_BATCH_PROVIDER && observation.resolvedModel === engine.model && observation.responseIds.length === 0 && observation.usage.outputTokens === 0, "score_batch observation provenance differs");
+    return;
+  }
   const raw = engine.lmStudio ? unwrapLMStudioResponse(engine, rawValue) : engine.openaiCompatible ? unwrapOpenAICompatibleResponse(engine, rawValue) : object(rawValue);
   const provider = engine.lmStudio ? "LM Studio" : engine.openaiCompatible ? OPENAI_COMPATIBLE_PROVIDER : raw.provider;
   if (engine.kind === "model_armor") {
@@ -389,7 +396,7 @@ function inspectCheckpoint(events: readonly Event[], root: string, partial: bool
       usage: { knownCostUsd: derived ? 0 : providerCost, totalCostUsd: derived ? 0 : completeProviderCost, incrementalCostUsd: derived ? 0 : completeProviderCost,
         reusedResponseCostUsd: reusedCosts.length ? sum(reusedCosts) : null, sourceBilledCostUsd: source?.run.aggregate.usage.totalCostUsd ?? null,
         costKnownObservations: knownCosts.length + reusedCosts.length, inputTokens: tokens("inputTokens"), outputTokens: tokens("outputTokens") },
-      latencyMs: { basis: derived ? "reused_source_observations" : reuse || deduplicate ? "mixed_source_observations" : metadata.engine.lmStudio ? "local_link_inference" : metadata.engine.openaiCompatible ? "openai_compatible_inference" : "hosted_inference", knownObservations: durations.length, total: durations.length ? sum(durations) : null, mean: durations.length ? sum(durations) / durations.length : null, p50: quantile(0.5), p95: quantile(0.95) },
+      latencyMs: { basis: derived ? "reused_source_observations" : reuse || deduplicate ? "mixed_source_observations" : metadata.engine.lmStudio ? "local_link_inference" : metadata.engine.openaiCompatible ? "openai_compatible_inference" : metadata.engine.scoreBatch ? "score_batch_inference" : "hosted_inference", knownObservations: durations.length, total: durations.length ? sum(durations) : null, mean: durations.length ? sum(durations) / durations.length : null, p50: quantile(0.5), p95: quantile(0.95) },
       primary: primary.summary, exploratoryReplays,
     },
     primaryFlags: new Map(cases.map(item => [item.id, { positive: expectedPositive(item, manifest), flagged: flags.get(item.id)! }])),

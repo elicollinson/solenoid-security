@@ -99,14 +99,29 @@ export interface OpenAICompatibleConfig {
   decodingNote?: string;
 }
 
+/** A direct numeric scorer over POST /score_batch. The server owns the prompt and tokenizer, pinned here by protocol and hash. */
+export interface ScoreBatchConfig {
+  /** Environment variable holding the server URL. The URL itself never appears in suites or checkpoints. */
+  baseUrlEnv: string;
+  /** Serving runtime as declared by the operator (recorded, not checked). */
+  runtime: string;
+  /** Exact protocol every response must report. */
+  protocol: string;
+  /** Exact weight identities every response must report. */
+  baseIdentitySha256: string;
+  manifestSha256: string;
+  timeoutMs: number;
+}
+
 export type EngineSpec = (
   | { id: string; kind: "jev"; model: string; provider: string; questionId: string; questionSha256: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-rationale-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "llm_score_json"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "concern-score-only-json-v1"; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "task_context_llm"; model: string; provider: string; promptId: string; promptSha256: string; schemaId: "task-context-score-rationale-v1" | "task-context-score-rationale-neutral-v2"; parameters?: Readonly<Record<string, AnnotationValue>> }
+  | { id: string; kind: "score_batch"; model: string; provider: string; parameters?: Readonly<Record<string, AnnotationValue>> }
   | { id: string; kind: "model_armor"; templateId: string; projectId: string; location: string; filter: "pi_and_jailbreak"; parameters?: Readonly<Record<string, AnnotationValue>> }
-) & { lmStudio?: LMStudioConfig; openaiCompatible?: OpenAICompatibleConfig };
+) & { lmStudio?: LMStudioConfig; openaiCompatible?: OpenAICompatibleConfig; scoreBatch?: ScoreBatchConfig };
 
 export type InputStrategy =
   | { id: string; kind: "decoded_preview_v1"; turnSelection: "all" | "last_external" | "all_external" }

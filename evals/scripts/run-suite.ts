@@ -1,6 +1,7 @@
 /** Run one explicit dataset test × engine/strategy condition. Never runs network calls without --execute. */
 import { validateLMStudioConfig } from "../src/lmStudio.js";
 import { resolveOpenAICompatibleBaseUrl, validateOpenAICompatibleConfig, type OpenAICompatibleEnvelope } from "../src/openaiCompatible.js";
+import { validateScoreBatchConfig } from "../src/scoreBatch.js";
 import { randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, mkdirSync, readFileSync, truncateSync } from "node:fs";
 import { dirname, relative, resolve } from "node:path";
@@ -49,6 +50,7 @@ const tasks = cases.flatMap(item => segmentCase(item, strategy).map(segment => (
 validateTaskContextEngine(engine);
 validateLMStudioConfig(engine);
 validateOpenAICompatibleConfig(engine);
+validateScoreBatchConfig(engine);
 // openai_compatible: --base-url= (or OPENAI_COMPATIBLE_BASE_URL) overrides the suite URL for transport only, e.g. another
 // local port forward. Engine identity keeps the suite URL; every response envelope records the URL actually used.
 const baseUrlOverride = option("base-url", process.env.OPENAI_COMPATIBLE_BASE_URL ?? "");
@@ -79,7 +81,7 @@ if (inputCache) {
 // so serial and batched checkpoints can never be resumed into or pooled with each other silently.
 const requestedConcurrency = Number(option("concurrency", serial ? "1" : "8"));
 if (engine.openaiCompatible && requestedConcurrency !== 1) throw new Error("openai_compatible engines run strictly serially (--concurrency=1)");
-if (engine.lmStudio && requestedConcurrency !== 1) metadata = { ...metadata, clientConcurrency: requestedConcurrency };
+if ((engine.lmStudio || engine.scoreBatch) && requestedConcurrency !== 1) metadata = { ...metadata, clientConcurrency: requestedConcurrency };
 const reusePlan = reuseSource ? prepareReusedRun(metadata, cases, reuseSource, root) : undefined;
 if (reusePlan) metadata = reusePlan.metadata;
 if (!args.includes("--execute")) {
@@ -129,7 +131,7 @@ for (const event of events.slice(1)) {
   else if (!["response", "error", "rateLimit", "complete"].includes(event.type)) throw new Error("Unknown checkpoint event");
 }
 const continueOutputErrors = args.includes("--continue-after-output-errors");
-if (continueOutputErrors && !serial) throw new Error("Output-abstention continuation is limited to local and openai_compatible engines");
+if (continueOutputErrors && !serial && !engine.scoreBatch) throw new Error("Output-abstention continuation is limited to local, openai_compatible and score_batch engines");
 const outputFailures = new Set<string>();
 if (continueOutputErrors) for (const event of events) {
   if (event.type === "response" && isOutputAbstention(liveEngine, event.raw) && events.some(error => error.type === "error" && error.requestId === event.requestId && error.segmentId === event.segmentId && (error as {wireResponse?: {status: number}}).wireResponse?.status === 200)) {

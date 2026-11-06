@@ -1,5 +1,6 @@
 import { isLMStudioOutputAbstention, lmsJson, lmStudioChatPath, lmStudioEnvelopeVersion, lmStudioSpeed, validateLMStudioConfig, validateLoadedModel, validateNativeModelInfo, type LMStudioSpeed } from "./lmStudio.js";
 import { classifyOpenAICompatibleResponse, isOpenAICompatibleOutputAbstention, OPENAI_COMPATIBLE_ENVELOPE, OPENAI_COMPATIBLE_PROVIDER, openAICompatibleEndpoint, openAICompatibleServerTimings, resolveOpenAICompatibleBaseUrl, validateOpenAICompatibleConfig, type OpenAICompatibleEnvelope } from "./openaiCompatible.js";
+import { classifyScoreBatchResponse, isScoreBatchOutputAbstention, SCORE_BATCH_ENVELOPE, SCORE_BATCH_PATH, SCORE_BATCH_PROVIDER, scoreBatchEndpoint, validateScoreBatchConfig, type ScoreBatchEnvelope } from "./scoreBatch.js";
 import { ModelArmorScanner } from "../../src/modelArmor.js";
 import { sha256 } from "./strategies.js";
 import type { EngineSpec, EvalCase, InputSegment } from "./types.js";
@@ -30,6 +31,7 @@ export function isLengthLimitedResponse(raw: unknown): boolean {
 
 /** A verified 200 completion whose output is unusable (token limit, empty or malformed JSON, schema drift): an abstention, never a miss. */
 export function isOutputAbstention(engine: EngineSpec, raw: unknown): boolean {
+  if (engine.scoreBatch) return isScoreBatchOutputAbstention(engine, raw);
   return engine.openaiCompatible ? isOpenAICompatibleOutputAbstention(engine, raw) : isLMStudioOutputAbstention(engine, raw);
 }
 
@@ -122,6 +124,8 @@ export async function inferText(engine: EngineSpec, text: string, runtime: Engin
   if (!text.trim()) throw new Error("Cannot infer on empty text");
   validateLMStudioConfig(engine);
   validateOpenAICompatibleConfig(engine);
+  validateScoreBatchConfig(engine);
+  if (engine.kind === "score_batch") return inferScoreBatch(engine, text, runtime);
   if (engine.openaiCompatible) return inferOpenAICompatible(engine, text, runtime);
   if (engine.kind === "model_armor") {
     let nativeResponse: unknown;
@@ -237,6 +241,29 @@ export function openAICompatibleRequestBody(engine: EngineSpec, text: string): R
     ...(c.responseFormat === "json_schema" ? { response_format: { type: "json_schema", json_schema: { name: "score_only_v1", strict: true, schema: scoreOnlySchema } } } : {}),
     ...(c.sendDecodingParams ? c.decoding : {}),
   };
+}
+
+/** One text per request against the frozen scorer. Only the token-budget item error is an abstention; everything else fails closed. */
+async function inferScoreBatch(engine: EngineSpec, text: string, runtime: EngineRuntime): Promise<EngineOutput> {
+  const c = engine.scoreBatch!;
+  const started = performance.now();
+  // Transport errors propagate unchanged and pause the run.
+  const response = await (runtime.fetchFn ?? fetch)(scoreBatchEndpoint(engine), {
+    method: "POST", redirect: "error", signal: AbortSignal.timeout(c.timeoutMs),
+    headers: { "Content-Type": "application/json" }, body: JSON.stringify({ texts: [text] }),
+  });
+  const body = await response.text();
+  const meta = { version: SCORE_BATCH_ENVELOPE, path: SCORE_BATCH_PATH, httpStatus: response.status, clientTiming: { httpWallMs: Math.round((performance.now() - started) * 1000) / 1000 } } as const;
+  let raw: Record<string, unknown>;
+  try { raw = object(JSON.parse(body)); } catch {
+    throw new EngineResponseError(response.ok ? "score_batch response body provenance mismatch (not a JSON object)" : `score_batch HTTP ${response.status}`, { nativeResponse: { body }, scoreBatch: meta } satisfies ScoreBatchEnvelope);
+  }
+  const captured: ScoreBatchEnvelope = { nativeResponse: raw, scoreBatch: meta };
+  if (!response.ok) throw new EngineResponseError(`score_batch HTTP ${response.status}`, captured);
+  const outcome = classifyScoreBatchResponse(engine, raw);
+  if (outcome.kind === "provenance" || outcome.kind === "server_error") throw new EngineResponseError(outcome.reason, captured);
+  if (outcome.kind === "token_budget") throw new EngineResponseError("score_batch token-budget abstention", captured);
+  return { rawScore: outcome.score, rawVerdict: null, provider: SCORE_BATCH_PROVIDER, resolvedModel: String(raw.model), responseIds: [], usage: { inputTokens: outcome.tokens, outputTokens: 0, costUsd: null }, rawResponse: captured };
 }
 
 /** Serial, fail-closed inference against a generic OpenAI-compatible /v1 server. */

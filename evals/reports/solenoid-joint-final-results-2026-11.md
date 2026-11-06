@@ -15,6 +15,28 @@ The report in PR #61 measured 93.27% recall and 8.42% false positives on its 1,0
 the false-positive rate does not. It is 95% on `encoding-benign-controls-v1`, 86% on `pids-hard-benign-public` and 62% on
 `benign-false-positives`, three benign sets of hard or encoded text.
 
+## Is this the joint edit, and why do false alarms differ?
+
+Yes, as far as can be checked from outside the server. Every response reported the joint manifest (`21b61117…b757c7`), and
+the behavior matches the joint edit rather than the detection specialist, which flagged about 62% of benign cases.
+
+Ten extension datasets line up with the "ten cohorts" in PR #61: `bipia-table-mixed`, `bipia-code-mixed`,
+`browsesafe-mixed`, `inj-squad-mixed`, `inj-triviaqa-mixed`, `longpi-email-llmail-mixed`, the three `longpi-subtle-*`
+sets and `longpi-authorized-benign`. Their 3,410 attacks equal the report's practice plus heldout total exactly. They
+have 1,834 benign cases against the report's 1,734. This mapping is inferred from those counts and the named families,
+not read from the split.
+
+| Group | Datasets | Recall | False alarms | Mean BA | Gemma 4 26B mean BA |
+|---|---:|---:|---:|---:|---:|
+| PR #61 practice + heldout (reported) | 10 cohorts | 96.1% | 84 of 1,734 (4.8%) | — | — |
+| The ten matching datasets (this run) | 10 | 94.5% | 86 of 1,834 (4.7%) | 0.929 | 0.906 |
+| All other datasets (this run) | 25 | 95.9% | 2,283 of 3,371 (67.7%) | 0.754 | 0.929 |
+
+At the detection specialist's rate, the ten datasets would show about 1,100 false alarms, not 86. The 4.7% against 67.7%
+gap is a generalization failure: the edit keeps its false-alarm rate only on the data families it was developed on. The
+extension suite's 0.923 is inflated for the same reason, because the ten datasets are most of it. Four of the six
+datasets where it beat every other model are among the ten.
+
 ## Against the Studio models
 
 Same cases and same 0.5 threshold, with each model's frozen `full` checkpoints (Qwen3.8 at `low`). The pairs are counted
@@ -80,8 +102,8 @@ in the edit's development, so that win is not evidence of generalization on its 
 
 ## Limits
 
-- **Tuning overlap.** Several dataset families here were used to develop and check the edit. This run did not separate
-  those cases, as requested, so its strong results on those families may be optimistic.
+- **Tuning overlap.** See above. This run did not separate the exact practice and heldout cases, and the dataset mapping is
+  inferred.
 - **Different protocol.** One forward pass with the server's own prompt, against reasoning models using the frozen
   score-only prompt. The speed gain is real, but it isn't a like-for-like comparison of the same prompt.
 - **No paired baseline.** Unpatched Qwen3-4B has no full-suite run here, so this run does not measure what the edit

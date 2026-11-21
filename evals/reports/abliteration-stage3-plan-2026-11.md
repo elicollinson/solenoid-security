@@ -293,3 +293,23 @@ Changes, made before the restart and after the stop at 2026-11-04T00:12Z:
    process logs `HALTED ... termination signal` when that step ends. This was a deliberate stop.
 
 No data was deleted or overwritten, and no threshold, case or analysis changed.
+
+## Amendment (2026-11-21, before resuming): user pause and the close-out
+
+- **The pause.** On 2026-11-06 the user asked for a pause for their own tests and stopped the model. At 02:22Z this
+  cut off muse-heretic `baseline/web-mixed` partway (about 150 of 480 cases), and the chain halted on its termination
+  signal. The chain stayed paused until 2026-11-21.
+- **web-mixed is rerun, not resumed.** The interruption came from the provider side, so under L141 the cohort is rerun
+  in full under a fresh condition (`r1`). To record this, the orchestrator added a `RETRY` line to `progress.log`. The
+  chain reads that line back on restart, exactly as it does its own automatic reruns. The partial checkpoint is kept
+  and excluded.
+- **Close-out without the 24 h wait.** The chain restarts with `GIVEUP_S=0`. After muse-heretic, builds still missing
+  from the Studio (gemma26-ultra, gemma26-heretic, qwen36-huihui, gemma31-huihui, gemma31-heretic) are given up at
+  once rather than after 24 h, so a new, separately pre-registered evaluation can use the Studio. Giving a build up is
+  not an attempt: a later restart probes these builds again if they are re-downloaded.
+- **Correction to the 2026-11-04 amendment, item 3.** On restart the chain did not re-enter `r1` for gemma26-huihui
+  `longpi-paper`, nor the interrupted-at-boundary `agent-injection-bench-mixed`. Its cell check found both checkpoints
+  complete and passing, so it continued without writing a `CELL` line for either. Both are complete, pass the
+  prompt-token and identity checks, and are counted in MODEL_DONE (21/21).
+
+No data was deleted or overwritten. No threshold, case or analysis changed.

@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "security-eval-suite/v1",
+  "id": "prompt-injection-lmstudio-studio-inkling2mini-pilot-t4096-inkling2mini-q8gguf-v1",
+  "tests": [
+    {
+      "id": "bipia-email-mixed",
+      "datasetId": "bipia-email-paired-v1",
+      "datasetRevision": "sha256:386e8275a8bf5b805e0f74f0700a254e4ec219ec4f533f516263139e6ad9365a",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "benign-false-positives",
+      "datasetId": "notinject-benign-339",
+      "datasetRevision": "sha256:f8d28adfb5895e33a6e28270fe13c21c3739b5a6fb02f565bf71c4756d9cca61",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "negative",
+      "metrics": [
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "longpi-paper",
+      "datasetId": "longpibench-paper-default-v1",
+      "datasetRevision": "sha256:a894883dc318735a99ce98012592c8e2d95432a411ce20ef419c9d19e6e467af",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "agentdyn-shopping",
+      "datasetId": "agentdyn-shopping-exposures-v1",
+      "datasetRevision": "sha256:b5bc56e656072a3049c500c010f5c25388fc35cd98000c0b8e03b37e59109de4",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    },
+    {
+      "id": "browsesafe-mixed",
+      "datasetId": "browsesafe-test-stratified-v1",
+      "datasetRevision": "sha256:579c0c1c5059791aaf083fafc2b9547cbbe27b69fc7f7e38ba685083e0f091ae",
+      "annotationKey": "prompt_injection_attempt",
+      "caseSelector": "all",
+      "metrics": [
+        "detection_rate",
+        "false_positive_rate",
+        "confusion_matrix"
+      ]
+    }
+  ],
+  "engines": {
+    "inkling2mini-q8gguf": {
+      "id": "studio-inkling2mini-q8gguf-lmstudio-score-v1-thinking4096-native-v0-v1",
+      "kind": "llm_score_json",
+      "model": "solenoid-studio-inkling2mini-q8gguf-thinking4096",
+      "provider": "lmstudio",
+      "promptId": "security-eval-score-only-json-v1",
+      "promptSha256": "f194db14605133e23fc4871659c89e7ac155452468d5e69d526f105138617d36",
+      "schemaId": "concern-score-only-json-v1",
+      "parameters": {
+        "temperature": 0,
+        "max_tokens": 4096,
+        "reasoning_effort": "high",
+        "effort_mechanism": "lmstudio native-v0 request reasoning_effort high (as every frozen Studio engine); the embedded template (== upstream, sha256 53a9035f) maps high and an absent effort both to 'Thinking effort level: 0.9', so the rendering is 0.9 whether or not LM Studio forwards the field; verified by the pre-run probe (PROBE line)",
+        "speculative_decoding": "LM Studio default, not set by the driver (as every frozen Studio engine); recorded by the pre-run probe (load config) and per response from usage draft-token counts (#52)"
+      },
+      "lmStudio": {
+        "baseUrl": "http://127.0.0.1:1234",
+        "modelKey": "inkling-2-mini",
+        "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:lmstudio-community/Inkling-2-Mini-GGUF/Inkling-2-Mini-Q8_0.gguf",
+        "deviceIdentifier": "2e1a82366471bc1a78e9b74d2469172d",
+        "format": "gguf",
+        "quantization": "Q8_0",
+        "sizeBytes": 28461905056,
+        "contextLength": 65536,
+        "parallel": 1,
+        "timeoutMs": 300000,
+        "endpoint": "native-v0"
+      }
+    }
+  },
+  "inputStrategies": {
+    "full": {
+      "id": "full-last-external-v1",
+      "kind": "full_text",
+      "turnSelection": "last_external"
+    }
+  },
+  "decisionRules": {
+    "score05": {
+      "id": "max-score-gt-05-v1",
+      "kind": "score_threshold",
+      "aggregation": "max",
+      "comparator": ">",
+      "threshold": 0.5
+    }
+  },
+  "conditions": [
+    {
+      "id": "pilot-inkling2mini-q8gguf-t4096-full",
+      "engine": "inkling2mini-q8gguf",
+      "inputStrategy": "full",
+      "decisionRule": "score05",
+      "repeat": 1
+    }
+  ]
+}

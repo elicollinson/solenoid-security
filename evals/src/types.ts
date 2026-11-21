@@ -66,6 +66,12 @@ export interface LMStudioConfig {
   timeoutMs: number;
   /** Omitted: OpenAI-compatible /v1 (historical identities). "native-v0": /api/v0 with server stats and model_info. */
   endpoint?: "native-v0";
+  /**
+   * Optional load-time Jinja prompt template (repo-relative file and its SHA-256). Used when LM Studio does not forward
+   * the request's reasoning_effort to a model's embedded template (non-hub GGUF imports, #23): the file is the embedded
+   * template with only its default changed. The driver loads through the SDK with it and verifies the loaded hash.
+   */
+  promptTemplate?: { path: string; sha256: string };
 }
 
 /**

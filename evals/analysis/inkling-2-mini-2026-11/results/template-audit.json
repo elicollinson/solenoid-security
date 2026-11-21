@@ -1,0 +1,82 @@
+{
+ "upstream": {
+  "repo": "thinkingmachines/Inkling-2-Mini",
+  "sha256": "53a9035f3255945704b5857657cfb00c1165090c0641c4f782a0cbf268cc16dc",
+  "bytes": 6868,
+  "renders": {
+   "None": {
+    "tokens": 103,
+    "sha256": "b760151257d4f52e5763a174972c0371a89a36d3d9a3734cda428f855ec2d073",
+    "effortLine": "Thinking effort level: 0.9"
+   },
+   "none": {
+    "tokens": 101,
+    "sha256": "8eb7106ad9721995ad5f553c90893f1d71feeb95bfe1060312709f8306af1931",
+    "effortLine": "Thinking effort level: 0"
+   },
+   "minimal": {
+    "tokens": 103,
+    "sha256": "3bd5582f1ec5dfc84ec4960c54b19bf21e3d05d9e01043cc2e8253ede4d663e5",
+    "effortLine": "Thinking effort level: 0.1"
+   },
+   "low": {
+    "tokens": 103,
+    "sha256": "037f059b15278b38fb65c62d85d7b6452bd2d9ca9f8b164e6e8ba08dc6b71e5e",
+    "effortLine": "Thinking effort level: 0.2"
+   },
+   "medium": {
+    "tokens": 103,
+    "sha256": "527d1ff23ed088432a96cda20cd989d87842753f74a57882b79e23429acee5af",
+    "effortLine": "Thinking effort level: 0.7"
+   },
+   "high": {
+    "tokens": 103,
+    "sha256": "b760151257d4f52e5763a174972c0371a89a36d3d9a3734cda428f855ec2d073",
+    "effortLine": "Thinking effort level: 0.9"
+   },
+   "xhigh": {
+    "tokens": 103,
+    "sha256": "b381b33531c39ba03ee411136add52cbfde6e37e321bd7a39b9073d2d36f6106",
+    "effortLine": "Thinking effort level: 0.99"
+   },
+   "max": {
+    "tokens": 103,
+    "sha256": "b381b33531c39ba03ee411136add52cbfde6e37e321bd7a39b9073d2d36f6106",
+    "effortLine": "Thinking effort level: 0.99"
+   },
+   "bogus": {
+    "error": "Unknown reasoning_effort: bogus"
+   }
+  }
+ },
+ "sources": {
+  "lmstudio-community-q8_0": {
+   "repo": "lmstudio-community/Inkling-2-Mini-GGUF",
+   "file": "Inkling-2-Mini-Q8_0.gguf",
+   "sha256": "53a9035f3255945704b5857657cfb00c1165090c0641c4f782a0cbf268cc16dc",
+   "equalsUpstream": true,
+   "renders": "same as upstream"
+  },
+  "ggml-org-q8_0": {
+   "repo": "ggml-org/Inkling-2-Mini-GGUF",
+   "file": "Inkling-2-Mini-Q8_0.gguf",
+   "sha256": "53a9035f3255945704b5857657cfb00c1165090c0641c4f782a0cbf268cc16dc",
+   "equalsUpstream": true,
+   "renders": "same as upstream"
+  },
+  "mlx-community-4bit": {
+   "repo": "mlx-community/Inkling-2-Mini-4bit",
+   "file": "chat_template.jinja",
+   "sha256": "53a9035f3255945704b5857657cfb00c1165090c0641c4f782a0cbf268cc16dc",
+   "equalsUpstream": true,
+   "renders": "same as upstream"
+  },
+  "mlx-community-oq4e-mtp": {
+   "repo": "mlx-community/Inkling-2-Mini-oQ4e-mtp",
+   "file": "chat_template.jinja",
+   "sha256": "53a9035f3255945704b5857657cfb00c1165090c0641c4f782a0cbf268cc16dc",
+   "equalsUpstream": true,
+   "renders": "same as upstream"
+  }
+ }
+}

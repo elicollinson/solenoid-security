@@ -1,0 +1,182 @@
+{
+ "schemaVersion": "inkling-2-mini-studio-plan/v1",
+ "model": {
+  "base": "thinkingmachines/Inkling-2-Mini",
+  "released": "2026-11-20",
+  "license": "Apache-2.0",
+  "architecture": "26.4B MoE, 3.4B active (5.4B effective; looped transformer, middle 12 layers run 3x), multimodal (text+image), 1M context"
+ },
+ "frozen_at": "2026-11-21 (this commit; before any Inkling request to the Studio)",
+ "runDir": "evals/runs/inkling-2-mini-2026-11",
+ "device": "2e1a82366471bc1a78e9b74d2469172d",
+ "toleratedInstance": "google/gemma-4-26b-a4b-qat",
+ "order": [
+  "q8",
+  "mlx4"
+ ],
+ "frozen": {
+  "baseline": {
+   "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-v1.json",
+   "sha256": "60024e05e323d97cf8227f37b250c251afb7c0b2773f53fd7ae826ad9d306051",
+   "runDir": "evals/runs/studio-baseline-t4096-2026-10-07"
+  },
+  "extension": {
+   "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-v1.json",
+   "sha256": "64863c9e5ad0449dbb5e7d36eb91ba67d5913b9f8b29d70449b9d4480e8e1dcd",
+   "runDir": "evals/runs/studio-extension-t4096-2026-10-13"
+  },
+  "templateEngine": "gemma26-q8",
+  "estimateModels": [
+   "gemma26-q8",
+   "qwen36-35b-a3b-q8",
+   "ornith-q8"
+  ]
+ },
+ "reasoning": {
+  "effort": "high",
+  "why": "Every frozen Studio engine requested reasoning_effort high with max_tokens 4096 (the default-thinking protocol). Inkling's template accepts none|minimal|low|medium|high|xhigh|max or a float in [0, 0.99] (unknown strings raise, no silent fallback) and defaults to 0.9 == high, so high is both the frozen request and the model's own default. Reasoning counts against max_tokens 4096 (length abstention if exhausted).",
+  "gate": "binding before the pilot (ink.ts probegate): the probe loads the pinned file on the Studio; on both synthetic inputs native-v0 high and no-effort requests return 200 with a JSON concernScore answer and identical prompt_tokens, reasoning hash and content hash. Not binding, reported: effort forwarding (none = 2 prompt tokens fewer; low/medium/xhigh reasoning differs), unknown-value behaviour, /v1, speculative decoding / MTP state (load-config keys, draft-token counts). A PROBE_FAIL skips the variant (no pilot, no full run)."
+ },
+ "variants": {
+  "q8": {
+   "label": "inkling2mini-q8gguf",
+   "display": "Inkling-2-Mini GGUF Q8_0",
+   "role": "primary (protocol-matched: Q8_0 GGUF, llama.cpp runtime, like every prior Studio model)",
+   "format": "gguf",
+   "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:lmstudio-community/Inkling-2-Mini-GGUF/Inkling-2-Mini-Q8_0.gguf",
+   "pin": {
+    "modelKey": "inkling-2-mini",
+    "indexedModelIdentifier": "2e1a82366471bc1a78e9b74d2469172d:lmstudio-community/Inkling-2-Mini-GGUF/Inkling-2-Mini-Q8_0.gguf",
+    "sizeBytes": 28461905056,
+    "quantization": "Q8_0"
+   },
+   "hf": {
+    "repo": "lmstudio-community/Inkling-2-Mini-GGUF",
+    "revision": "23c938b028945d4b0fa9f71fb603b5cd1a683e71",
+    "recordedAt": "2026-11-21T16:08Z",
+    "files": {
+     "Inkling-2-Mini-Q8_0.gguf": {
+      "size": 27820099168,
+      "sha256": "0689d67d5693af17c6701be70f5fd1bb9f03dbe99b22f2831d7f21c0282c6ea1",
+      "lastCommit": "2026-11-21T00:26:23Z 23c938b028945d4b0fa9f71fb603b5cd1a683e71"
+     },
+     "mmproj-Inkling-2-Mini-BF16.gguf": {
+      "size": 641805888,
+      "sha256": "45fc9cdc581dbf1adfe908ad936bcade13c53a5a47c27caaae83322902c87a6e",
+      "lastCommit": "2026-11-21T00:21:46Z 764c3cdd7406664058015783d59070fa2ae6c6eb"
+     }
+    },
+    "note": "LM Studio sizeBytes 28461905056 = Q8_0 27820099168 + mmproj BF16 641805888; embedded chat template sha256 53a9035f... == upstream thinkingmachines chat_template.jinja (results/template-audit.json)"
+   },
+   "effortMechanism": "lmstudio native-v0 request reasoning_effort high (as every frozen Studio engine); the embedded template (== upstream, sha256 53a9035f) maps high and an absent effort both to 'Thinking effort level: 0.9', so the rendering is 0.9 whether or not LM Studio forwards the field; verified by the pre-run probe (PROBE line)",
+   "speculativeDecoding": "LM Studio default, not set by the driver (as every frozen Studio engine); recorded by the pre-run probe (load config) and per response from usage draft-token counts (#52)",
+   "estimateHours": null,
+   "inventory": {
+    "architecture": "inkling2_loop",
+    "publisher": "lmstudio-community",
+    "displayName": "Inkling 2 Mini",
+    "vision": true,
+    "maxContextLength": 1048576,
+    "probedAt": "2026-11-21T16:07Z"
+   }
+  },
+  "mlx4": {
+   "label": "inkling2mini-mlx4bit",
+   "display": "Inkling-2-Mini MLX 4-bit",
+   "role": "secondary (different runtime: MLX, and different quantization: 4-bit; not protocol-matched)",
+   "format": "safetensors",
+   "indexedModelIdentifier": null,
+   "pin": null,
+   "hf": null,
+   "effortMechanism": "lmstudio native-v0 request reasoning_effort high (as every frozen Studio engine); the bundled chat_template.jinja of every mlx-community candidate equals upstream (sha256 53a9035f), high == absent == 'Thinking effort level: 0.9'; verified by the pre-run probe (PROBE line) on the MLX runtime",
+   "speculativeDecoding": "LM Studio default, not set by the driver (as every frozen Studio engine); recorded by the pre-run probe (load config) and per response from usage draft-token counts (#52)",
+   "estimateHours": null,
+   "autoPin": {
+    "match": "inkling-2-mini",
+    "rule": "used only while plan.json has no mlx4 pin: exactly one Studio inventory entry with format safetensors whose modelKey or indexed identifier contains 'inkling-2-mini', identical on two probes 2 min apart; the chain records the pin and the HF repo file list (sizes, LFS sha256, revision) at that time in <run dir>/pins/mlx4.auto*.json, writes the three suites with ink.ts, and logs a PIN line. Zero matches = defer; several = SKIP (never guessed). The repo/quant identified this way is recorded in the report."
+   }
+  }
+ },
+ "pilot": {
+  "tests": [
+   {
+    "test": "bipia-email-mixed",
+    "cases": 24
+   },
+   {
+    "test": "benign-false-positives",
+    "cases": 8
+   },
+   {
+    "test": "longpi-paper",
+    "cases": 6
+   },
+   {
+    "test": "agentdyn-shopping",
+    "cases": 6
+   },
+   {
+    "test": "browsesafe-mixed",
+    "cases": 6
+   }
+  ],
+  "note": "first N cases of each cohort in dataset order (--max-new-segments); bipia-email-mixed 24 = the drift reference"
+ },
+ "drift": {
+  "suite": "baseline",
+  "test": "bipia-email-mixed",
+  "cases": 24
+ },
+ "cases": {
+  "baseline": {
+   "longpi-paper": 400,
+   "longpi-paper-abstract": 300,
+   "longpi-paper-method": 300,
+   "longpi-resume": 400,
+   "longpi-code": 400,
+   "bipia-email-mixed": 156,
+   "longpi-email": 400,
+   "attempt-detection": 400,
+   "web-mixed": 480,
+   "agentdyn-shopping": 183,
+   "agentdyn-github": 237,
+   "agentdyn-dailylife": 411,
+   "agentdojo-travel-mixed": 21,
+   "agent-injection-bench-mixed": 182,
+   "pids-obfuscated": 405,
+   "encoding-eligible-existing-v1": 229,
+   "encoding-benign-controls-v1": 969,
+   "benign-false-positives": 339,
+   "pids-hard-benign-public": 808,
+   "skill-policy-pairs": 234,
+   "paper-score-counterfactual": 72
+  },
+  "extension": {
+   "bipia-table-mixed": 600,
+   "bipia-code-mixed": 400,
+   "browsesafe-mixed": 400,
+   "nemotron-ipi-attacks": 360,
+   "agentdojo-suites-mixed": 280,
+   "repoguard-mixed": 575,
+   "inj-squad-mixed": 1200,
+   "inj-triviaqa-mixed": 1200,
+   "llmail-pool-attacks": 300,
+   "longpi-email-llmail-mixed": 400,
+   "longpi-subtle-paper-mixed": 220,
+   "longpi-subtle-code-mixed": 220,
+   "longpi-subtle-resume-mixed": 220,
+   "longpi-authorized-benign": 384
+  }
+ },
+ "gates": {
+  "pilotAbstentionMax": 0.25,
+  "abstentionRunaway": 0.25,
+  "cellUsageCoverage": 0.95,
+  "maxTransportReruns": 2,
+  "othersWaitHours": 4,
+  "absentGiveUpHours": 24,
+  "perVariantCapFactor": 2.0,
+  "drift": "first 24 bipia-email-mixed cases of the run condition: finished 24/24, prompt_tokens == the pilot's on the same cases 24/24, identity (response model, model_info.quant, loaded file) 24/24; outcome agreement and identical answers reported",
+  "pilot": "binding before the full run (ink.ts pilotgate): all 50 planned pilot cases finished; identity (response model, model_info.quant, loaded file) and usage on every response; abstentions (length + output) <= 25%; a full-run estimate computable. A PILOT_FAIL skips the variant. Parse rate, abstentions, wall time and the estimate are reported in the PILOT line."
+ }
+}

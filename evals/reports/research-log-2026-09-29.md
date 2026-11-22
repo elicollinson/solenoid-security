@@ -5084,3 +5084,49 @@ requests plus 35 loads).
 - The [report](studio-qwen38-low-2026-10.md).
 - FINDINGS O67 and §2.19, with dated notes on O48, O54, O55, O59, O65 and Appendix B.
 - The README headline row now shows the low numbers, with xhigh in the footnote.
+
+### L159 — 2026-10-27/30: Abliterated Qwen3.8 builds at `low` on the full Studio suites (#23 stage 1, PRE-REGISTERED); both worse, H1/H2 4/4, H3 not supported
+
+**Plan.** [Pre-registration](studio-qwen38-abliterated-low-plan-2026-10.md) (commit `3688376`, pushed before any call).
+heretic-ara and huihui Q8_0 GGUFs ran with the vanilla-low engine (O67), only the identity swapped, on the baseline (21)
+and extension (14) suites. They are compared with the frozen vanilla-low checkpoints. The design has a drift gate per
+build, per-cell `prompt_tokens` and identity checks, and the L141 rule.
+
+**Amendment 1 (before the run).** The v1 heretic-ara drift gate failed: `prompt_tokens` matched its xhigh pilot on
+24/24. A probe showed that LM Studio 0.4.25 does not forward request `reasoning_effort` to these non-hub GGUFs. v2 loads
+the embedded template with its default changed to `low`, hash-pinned. The 24-case v1 checkpoint is kept, not analyzed.
+
+**Run.** 2026-10-27 11:28Z to 2026-10-30 21:27Z, 54.1 h of requests.
+- **Baselines.** heretic-ara 0.898 and huihui 0.899 vs 0.912, without incident.
+- **Transport halt.** At 2026-10-28T21:51Z, one `provider_or_transport_error` stopped heretic-ara `repoguard-mixed` at
+  79/575. The tolerated foreign instance vanished in the same second. The chain then sat idle for 25 h.
+- **Amendment 2.** The cohort reran in full under extension v3: fresh condition, same tests and engine, partial kept
+  and excluded. The cap restarted at 40 h. Transport failures now get automatic fresh-condition reruns (at most 2 per
+  cohort, LM Link plus 5 min). None were needed.
+- **Restart frictions.**
+  - The gate crashed with `ENOENT`: the v3 suites were missing from the main checkout's git-ignored suites.
+  - The huihui drift re-check on `bipia-table-mixed` failed only the reused ≤ 1-abstention clause, with 2 length
+    abstentions (prompt tokens 24/24). It was waived as amendment 3, a post-result deviation.
+  - At the end, an untolerated user instance tripped the post-RUN check after the last cell had completed (restart
+    1d).
+  - The stage 2 chain stood down on each stage 1 halt. It now waits 10 min for a restart and waits for user instances
+    to unload.
+
+**Results (O68).**
+- **H1 4/4.** Baseline ΔBA −0.014 and −0.013 (Holm p = 4×10⁻⁸, 2×10⁻⁷). Extension −0.017 and −0.042 (3×10⁻¹⁴,
+  2×10⁻⁴⁰).
+- **H2 4/4.** Missed attacks dominate. On the baseline, the builds raise fewer false alarms than vanilla-low.
+- **H3 not supported.** The largest group losses are email, long docs, BIPIA and QA. PIDS obfuscated recall replicates
+  O53 (0.728 → 0.670 / 0.611). The encoded benign controls offset the obfuscated group. huihui's AgentDyn false alarms
+  do not replicate.
+- **Heretic-ara vs huihui.** Tied on the baseline. heretic-ara is better on the extension (p = 8×10⁻¹²).
+- **AUROC.** Unchanged or higher (extension 0.945 / 0.951 / 0.977). The loss looks like calibration, not recognition
+  (post hoc).
+- **Cost.** Reasoning tokens 1.13–1.51× vanilla-low.
+
+**Published.**
+- `evals/analysis/studio-qwen38-abliterated-low-2026-10-27/` (scripts, plan, queues, progress log,
+  `abliterated-low-results.json`) and PROVENANCE rows.
+- The [report](studio-qwen38-abliterated-low-2026-10.md).
+- FINDINGS O68 and §2.20, with a dated note on O53.
+- The final stage 1 numbers in the [abliteration summary](abliteration-findings.md) and the README.

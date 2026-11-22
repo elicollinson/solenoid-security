@@ -4,6 +4,7 @@ import { promisify } from "node:util";
 import { appendFileSync, closeSync, existsSync, mkdirSync, openSync, readFileSync, unlinkSync, writeFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
 import { lmsInventoryJson, lmsJson, validateLMStudioConfig, validateLoadedModel } from "../src/lmStudio.js";
 import { validateMatrixSuite, readCompleteJsonl } from "../src/researchMatrix.js";
 import { analyzeCheckpoint, auditPartialCheckpoint, readNativeInputSource, type Event } from "./analyze-research.js";
@@ -25,6 +26,11 @@ function requireDevice(ps: unknown) {
   if (!requiredDevice) return;
   if (!Array.isArray(ps) || ps.some(m => m?.deviceIdentifier !== requiredDevice)) throw new Error("Loaded instance is not on --require-device");
 }
+// Optional pre-existing instances owned by someone else on the same server (e.g. a user's service). Each must be named
+// explicitly; the driver never unloads or validates them as its own and logs their snapshot. Any other loaded model still halts.
+const tolerated = option("tolerate-instance").split(",").filter(Boolean);
+if (cells.some(c => "model" in c.engine && tolerated.includes(c.engine.model))) throw new Error("--tolerate-instance cannot name a selected engine identifier");
+const untolerated = (ps: unknown) => Array.isArray(ps) ? ps.filter(m => !tolerated.includes(m?.identifier)) : ps;
 const limit = option("limit"), tranche = option("max-new-segments"), maxCells = Number(option("max-cells", "100000"));
 const reuseSource = option("reuse-from");
 const inputReuseSource = option("reuse-inputs-from");
@@ -61,12 +67,25 @@ async function command(argv: string[]) {
     throw error;
   }
 }
-async function sdkLoad(modelKey: string, identifier: string, contextLength: number, parallel: number, ttl: number) {
-  const argv = {sdkLoad: {modelKey, identifier, contextLength, parallel, ttl}};
+const sha256 = (text: string) => createHash("sha256").update(text).digest("hex");
+/** Reads and hash-checks an engine's pinned load-time prompt template (lmStudio.promptTemplate). */
+function pinnedTemplate(t: {path: string; sha256: string}) {
+  const text = readFileSync(resolve(root, t.path), "utf8");
+  if (sha256(text) !== t.sha256) throw new Error("Pinned LM Studio prompt template hash mismatch");
+  return text;
+}
+async function sdkLoad(modelKey: string, identifier: string, contextLength: number, parallel: number, ttl: number, template?: {path: string; sha256: string}) {
+  const argv = {sdkLoad: {modelKey, identifier, contextLength, parallel, ttl, ...(template ? {promptTemplate: template} : {})}};
   try {
     const { LMStudioClient } = await import("@lmstudio/sdk");
     const client = new LMStudioClient({ baseUrl: "ws://127.0.0.1:1234" });
-    const model = await client.llm.load(modelKey, { identifier, ttl, verbose: false, config: { contextLength, maxParallelPredictions: parallel } as never });
+    const model = await client.llm.load(modelKey, { identifier, ttl, verbose: false, config: { contextLength, maxParallelPredictions: parallel, ...(template ? {promptTemplate: {type: "jinja", jinjaPromptTemplate: {template: pinnedTemplate(template)}}} : {}) } as never });
+    if (template) {
+      // The runtime must report exactly the pinned template; otherwise the load is treated as a provenance failure.
+      const loaded = (await (model as unknown as {getLoadConfig(): Promise<{promptTemplate?: {jinjaPromptTemplate?: {template?: string}}}>}).getLoadConfig()).promptTemplate?.jinjaPromptTemplate?.template;
+      log({event: "prompt_template_loaded", identifier, sha256: typeof loaded === "string" ? sha256(loaded) : null, expected: template.sha256});
+      if (typeof loaded !== "string" || sha256(loaded) !== template.sha256) throw new Error("Loaded LM Studio prompt template differs from the pinned template");
+    }
     log({...argv, info: await model.getModelInfo(), lmStudioVersion: await client.system.getLMStudioVersion()});
     await client[Symbol.asyncDispose]?.();
   } catch (error) {
@@ -90,6 +109,7 @@ try {
   log({event: "start", suite: suite.id, cells: cells.length});
   const snapshot = await lmsInventoryJson(); const inventory = snapshot.flattened;
   log({event: "inventory", inventory: snapshot.ls, variants: snapshot.variants});
+  if (tolerated.length) { const ps = await lmsJson("ps"); log({event: "tolerated_instances", identifiers: tolerated, loaded: Array.isArray(ps) ? ps.filter(m => tolerated.includes(m?.identifier)) : null}); }
   let executed = 0;
   for (const cell of cells) {
     if (stopping || executed >= maxCells) break;
@@ -111,13 +131,14 @@ try {
     }
     if (active?.id !== engine.id) {
       await unloadOwned();
-      const ps = await lmsJson("ps");
+      const ps = untolerated(await lmsJson("ps"));
       if (!Array.isArray(ps) || ps.length) throw new Error("Another model is loaded; refusing to evict user models or stack memory allocations");
       const c = engine.lmStudio!;
       if (!("model" in engine) || !Array.isArray(inventory) || inventory.filter(m => m.modelKey === c.modelKey && m.deviceIdentifier === c.deviceIdentifier && m.indexedModelIdentifier === c.indexedModelIdentifier && (m.quantization as {name?: string} | undefined)?.name === c.quantization && m.sizeBytes === c.sizeBytes && m.format === c.format).length !== 1) throw new Error("Pinned LM Studio inventory provenance mismatch");
       await command(["link", "set-preferred-device", c.deviceIdentifier]);
       active = engine; // owned from the load attempt on, so a failed validation still unloads it
-      if (c.modelKey.includes("@") && inventory.some(m => m.modelKey === c.modelKey && m.indexedModelIdentifier === c.indexedModelIdentifier && String(m.indexedModelIdentifier).includes("@"))) {
+      if (c.promptTemplate) await sdkLoad(c.modelKey, engine.model, c.contextLength, c.parallel, 600, c.promptTemplate);
+      else if (c.modelKey.includes("@") && inventory.some(m => m.modelKey === c.modelKey && m.indexedModelIdentifier === c.indexedModelIdentifier && String(m.indexedModelIdentifier).includes("@"))) {
         // `lms load` cannot select a hub-artifact variant (it fuzzy-matches base keys); the SDK accepts variant keys.
         await sdkLoad(c.modelKey, engine.model, c.contextLength, c.parallel, 600);
       } else await command(["load", c.modelKey, "--context-length", String(c.contextLength), "--parallel", String(c.parallel), "--ttl", "600", "--identifier", engine.model, "-y"]);

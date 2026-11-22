@@ -1,0 +1,32 @@
+{
+  "v3": {
+    "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v3.json",
+    "sha256": "59a66c9b52cf00931a4359128c3116a9b518a2145bb8a53f02d0ae1c08c9b2f5",
+    "sourceSuite": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v2.json",
+    "sourceSha256": "62cf5e06efdb8d65d9efbcf376185357c11788c8724ccd5dcf73751bac70a6fc",
+    "conditions": [
+      "baseline-qwen38-heretic-ara-q8-lowtmpl-v3-t4096-full",
+      "baseline-qwen38-huihui-abl-q8-lowtmpl-v3-t4096-full"
+    ]
+  },
+  "v4": {
+    "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v4.json",
+    "sha256": "8ede5e6328af8d17c5c8f5d92c7c2f3149c45d1a8c88f0cd019dd295716a5c13",
+    "sourceSuite": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v2.json",
+    "sourceSha256": "62cf5e06efdb8d65d9efbcf376185357c11788c8724ccd5dcf73751bac70a6fc",
+    "conditions": [
+      "baseline-qwen38-heretic-ara-q8-lowtmpl-v4-t4096-full",
+      "baseline-qwen38-huihui-abl-q8-lowtmpl-v4-t4096-full"
+    ]
+  },
+  "v5": {
+    "path": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v5.json",
+    "sha256": "c6d5c39b5f856d319914a6c3834f7857515647044fcf20a6641185fb5840148b",
+    "sourceSuite": "evals/suites/prompt-injection-lmstudio-studio-baseline-q8-t4096-extension-qwen38-abliterated-low-v2.json",
+    "sourceSha256": "62cf5e06efdb8d65d9efbcf376185357c11788c8724ccd5dcf73751bac70a6fc",
+    "conditions": [
+      "baseline-qwen38-heretic-ara-q8-lowtmpl-v5-t4096-full",
+      "baseline-qwen38-huihui-abl-q8-lowtmpl-v5-t4096-full"
+    ]
+  }
+}

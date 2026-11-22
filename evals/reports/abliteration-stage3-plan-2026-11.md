@@ -313,3 +313,11 @@ No data was deleted or overwritten, and no threshold, case or analysis changed.
   prompt-token and identity checks, and are counted in MODEL_DONE (21/21).
 
 No data was deleted or overwritten. No threshold, case or analysis changed.
+
+### Amendment 2026-11-22: LM Link route change counted as transport
+
+1. At 2026-11-22T00:31:34Z, `muse-heretic/baseline/encoding-eligible-existing-v1` stopped at 61 of 229 cases. The request got HTTP 400 `LM Link route changed from personal:neuraldev/… to personal:neuraldev/…`, which means the LM Link connection to the Studio moved to a new route mid-run. The chain didn't treat this as a provider or transport failure. So it logged a SKIP for muse-heretic, which also gave up its remaining datasets, and it went to the give-up WAIT that would have ended in DONE.
+2. I stopped the chain with TERM before the give-up fired (HALTED 00:32:28Z), so no DONE was written and the armed Inkling chain didn't start.
+3. Chain change: `LM Link route changed` now counts as transport in the RETRY classifier. `finished_before` ignores this one SKIP, so it isn't counted as an attempt.
+4. An orchestrator RETRY line reruns the cohort `muse-heretic/encoding-eligible-existing-v1` in full under r1 (L141). The 61-case partial checkpoint is kept and excluded.
+5. The restart at 00:41Z waited for the previous run's study model to unload on its TTL. The chain refuses to start while a study model is loaded. The r1 rerun began at 00:44:20Z. Earlier completed cells are skipped as before.

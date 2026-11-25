@@ -1,4 +1,4 @@
-import type { PermissionMode } from "./permissions.js";
+import { type PermissionMode } from "./permissions.js";
 import type { ToolRequest, ToolVerdict } from "./toolGate.js";
 export type ApprovalOutcome = "approved" | "declined" | "expired";
 export type ApprovalStatus = "open" | "approved" | "declined" | "expired" | "superseded";
@@ -65,7 +65,7 @@ export declare class ApprovalDigestMismatchError extends ApprovalError {
     constructor(approvalId: string, expected: string, actual: string);
 }
 /** Deterministic SHA-256 hex digest over canonicalized JSON arguments. */
-export declare function computeArgsDigest(_args: unknown): string;
+export declare function computeArgsDigest(args: unknown): string;
 export interface CreateApprovalInput {
     mode: "blocking" | "deferred";
     tool: string;
@@ -106,14 +106,22 @@ export interface ApprovalStore {
     recordExecution(approvalId: string, execution: ApprovalExecutionOutcome, note?: string): Promise<ApprovalRecord> | ApprovalRecord;
 }
 export declare class InMemoryApprovalStore implements ApprovalStore {
-    create(_input: CreateApprovalInput): ApprovalRecord;
-    get(_approvalId: string): ApprovalRecord | undefined;
-    findByChoiceId(_choiceId: string): {
+    private readonly records;
+    private readonly choiceIndex;
+    private readonly now;
+    private seq;
+    constructor(options?: {
+        now?: () => Date;
+    });
+    private nextRef;
+    create(input: CreateApprovalInput): ApprovalRecord;
+    get(approvalId: string): ApprovalRecord | undefined;
+    findByChoiceId(choiceId: string): {
         record: ApprovalRecord;
         choice: ApprovalChoice;
     } | undefined;
-    settle(_input: SettleApprovalInput): ApprovalRecord;
-    recordExecution(_approvalId: string, _execution: ApprovalExecutionOutcome, _note?: string): ApprovalRecord;
+    settle(input: SettleApprovalInput): ApprovalRecord;
+    recordExecution(approvalId: string, execution: ApprovalExecutionOutcome, note?: string): ApprovalRecord;
 }
 export interface BlockingAskOptions {
     request: ToolRequest & {
@@ -204,16 +212,26 @@ export interface ApprovalBrokerOptions {
     onExecutionSettled?: (record: ApprovalRecord, execution: ApprovalExecutionOutcome) => void | Promise<void>;
 }
 export declare class ApprovalBroker {
-    constructor(_options: ApprovalBrokerOptions);
-    askBlocking(_options: BlockingAskOptions): Promise<BlockingAskResult>;
-    deferAsk(_options: DeferAskOptions): Promise<DeferAskResult>;
-    answerChoice(_options: AnswerChoiceOptions): Promise<AnswerChoiceResult>;
-    recordExecution(_approvalId: string, _execution: ApprovalExecutionOutcome, _note?: string): Promise<ApprovalRecord>;
-    recheckAndAuthorize(_input: RecheckAndAuthorizeInput): Promise<RecheckAndAuthorizeResult>;
-    isPending(_approvalId: string): boolean;
+    private readonly store;
+    private readonly defaultTimeoutMs?;
+    private readonly defaultHold;
+    private readonly now;
+    private readonly mintChoiceId;
+    private readonly onExecutionSettled?;
+    private readonly pending;
+    private readonly locks;
+    constructor(options: ApprovalBrokerOptions);
+    private withApprovalLock;
+    private buildChoices;
+    askBlocking(options: BlockingAskOptions): Promise<BlockingAskResult>;
+    deferAsk(options: DeferAskOptions): Promise<DeferAskResult>;
+    answerChoice(options: AnswerChoiceOptions): Promise<AnswerChoiceResult>;
+    recordExecution(approvalId: string, execution: ApprovalExecutionOutcome, note?: string): Promise<ApprovalRecord>;
+    recheckAndAuthorize(input: RecheckAndAuthorizeInput): Promise<RecheckAndAuthorizeResult>;
+    isPending(approvalId: string): boolean;
 }
 /** Unattended `ask` strategy that declines writes immediately without persisting a decision. */
-export declare function declineUnattended(_request: Pick<ToolRequest, "tool">): {
+export declare function declineUnattended(request: Pick<ToolRequest, "tool">): {
     allow: false;
     tell: string;
 };

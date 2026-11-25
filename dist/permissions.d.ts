@@ -41,14 +41,14 @@ export interface WithPermissionsOptions {
  * - `remote-create-pages` -> `remote.write`
  * - `standalone` -> `standalone.write`
  */
-export declare function capabilityFor(_tool: string): string;
+export declare function capabilityFor(tool: string): string;
 /**
  * Two-layer standing permission resolution (`person` + `agent`):
  * - `deny` in either layer is final
  * - otherwise `person` decides, then `agent`, then `ask`
  * - within a layer: exact tool name > capability > `*`
  */
-export declare function resolvePermission(_person: PermissionRules, _agent: PermissionRules, _tool: string): PermissionMode;
+export declare function resolvePermission(person: PermissionRules, agent: PermissionRules, tool: string): PermissionMode;
 /**
  * Multi-layer permission resolution across `person`, `workflow`, `global`, `agent`, and `readOnly`.
  * - `readOnly` or `deny` in any layer resolves to `deny`
@@ -56,9 +56,9 @@ export declare function resolvePermission(_person: PermissionRules, _agent: Perm
  * - within each layer: exact tool name > capability > `*`
  * - fallback is `DEFAULT_PERMISSION_MODE` (`ask`) with scope `default`
  */
-export declare function resolveScopedPermission(_input: ScopedPermissionInput): ResolvedPermission;
+export declare function resolveScopedPermission(input: ScopedPermissionInput): ResolvedPermission;
 /**
  * Wraps an `ask` gate with standing permission rules.
  * `read` tools ALWAYS bypass gating (`{ allow: true }`), even under `{ '*': 'deny' }`.
  */
-export declare function withPermissions<Req extends ToolRequest = ToolRequest>(_permission: (tool: string) => PermissionMode, _ask: (request: Req) => ToolVerdict | Promise<ToolVerdict>, _options?: WithPermissionsOptions): (request: Req) => ToolVerdict | Promise<ToolVerdict>;
+export declare function withPermissions<Req extends ToolRequest = ToolRequest>(permission: (tool: string) => PermissionMode, ask: (request: Req) => ToolVerdict | Promise<ToolVerdict>, options?: WithPermissionsOptions): (request: Req) => ToolVerdict | Promise<ToolVerdict>;

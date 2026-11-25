@@ -17,7 +17,8 @@ export class ScreeningError extends Error {
 const PI_FILTER = "pi_and_jailbreak";
 /** True when a filter other than prompt injection matched; that blocks regardless of the aggregator. */
 function contentBlocked(assessment) {
-    return assessment.blocked && (!assessment.flagged || (assessment.matchedFilters ?? []).some((filter) => filter !== PI_FILTER));
+    return ((assessment.blocked && !assessment.flagged) ||
+        (assessment.matchedFilters ?? []).some((filter) => filter !== PI_FILTER));
 }
 /** Creates a provider-configured, text-first security client. */
 export function createSecurity(options) {
@@ -109,7 +110,8 @@ export function createSecurity(options) {
             const inconclusive = !flagged && stages.some(({ verdict }) => verdict.inconclusive);
             const stageScores = stages.map(({ verdict }) => verdict.score).filter((score) => !Number.isNaN(score));
             const score = stages.length === 1 ? deciding.verdict.score : stageScores.length ? Math.max(...stageScores) : Number.NaN;
-            const blocked = flagged || assessments.some(({ assessment }) => contentBlocked(assessment));
+            const hasContentBlock = assessments.some(({ assessment }) => contentBlocked(assessment));
+            const blocked = flagged || hasContentBlock;
             const matchedFilters = [...new Set(assessments.flatMap(({ assessment }) => assessment.matchedFilters ?? []))]
                 .filter((filter) => flagged || filter !== PI_FILTER);
             // Within the pass that flagged; with a cascade that is always the last pass run.
@@ -148,7 +150,7 @@ export function createSecurity(options) {
             if (!flagged && !blocked && !inconclusive) {
                 return { ...screened, decision: "allow" };
             }
-            if (!flagged && blocked) {
+            if (hasContentBlock || (!flagged && blocked)) {
                 return { ...screened, decision: "block" };
             }
             if (!flagged) {

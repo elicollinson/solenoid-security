@@ -40,6 +40,23 @@ export interface WithPermissionsOptions {
   formatDenied?: (request: ToolRequest, capability: string) => string;
 }
 
+function matchRule(
+  rules: PermissionRules | undefined,
+  tool: string,
+  capability: string,
+): { mode: PermissionMode; matchedKey: string } | undefined {
+  if (!rules) return undefined;
+  for (const key of [tool, capability, "*"]) {
+    if (Object.hasOwn(rules, key)) {
+      const mode = rules[key];
+      if (mode !== undefined) {
+        return { mode, matchedKey: key };
+      }
+    }
+  }
+  return undefined;
+}
+
 /**
  * Canonical write-tool capability derivation (`_` checked before `-`):
  * - `okf_create` -> `okf.write`
@@ -48,8 +65,12 @@ export interface WithPermissionsOptions {
  * - `remote-create-pages` -> `remote.write`
  * - `standalone` -> `standalone.write`
  */
-export function capabilityFor(_tool: string): string {
-  throw new Error("Not implemented: capabilityFor");
+export function capabilityFor(tool: string): string {
+  const underscore = tool.indexOf("_");
+  if (underscore > 0) return `${tool.slice(0, underscore)}.write`;
+  const hyphen = tool.indexOf("-");
+  if (hyphen > 0) return `${tool.slice(0, hyphen)}.write`;
+  return `${tool}.write`;
 }
 
 /**
@@ -59,11 +80,18 @@ export function capabilityFor(_tool: string): string {
  * - within a layer: exact tool name > capability > `*`
  */
 export function resolvePermission(
-  _person: PermissionRules,
-  _agent: PermissionRules,
-  _tool: string,
+  person: PermissionRules,
+  agent: PermissionRules,
+  tool: string,
 ): PermissionMode {
-  throw new Error("Not implemented: resolvePermission");
+  const capability = capabilityFor(tool);
+  const personMatch = matchRule(person, tool, capability);
+  const agentMatch = matchRule(agent, tool, capability);
+
+  if (personMatch?.mode === "deny" || agentMatch?.mode === "deny") {
+    return "deny";
+  }
+  return personMatch?.mode ?? agentMatch?.mode ?? DEFAULT_PERMISSION_MODE;
 }
 
 /**
@@ -73,8 +101,54 @@ export function resolvePermission(
  * - within each layer: exact tool name > capability > `*`
  * - fallback is `DEFAULT_PERMISSION_MODE` (`ask`) with scope `default`
  */
-export function resolveScopedPermission(_input: ScopedPermissionInput): ResolvedPermission {
-  throw new Error("Not implemented: resolveScopedPermission");
+export function resolveScopedPermission(input: ScopedPermissionInput): ResolvedPermission {
+  const capability = capabilityFor(input.tool);
+  if (input.readOnly) {
+    return {
+      mode: "deny",
+      scope: "agent",
+      matchedKey: "*",
+      capability,
+    };
+  }
+
+  const agentMatch = matchRule(input.agent, input.tool, capability);
+  const personMatch = matchRule(input.person, input.tool, capability);
+  const workflowMatch = matchRule(input.workflow, input.tool, capability);
+  const globalMatch = matchRule(input.global, input.tool, capability);
+
+  const denyOrder: ReadonlyArray<readonly [PermissionScope, { mode: PermissionMode; matchedKey: string } | undefined]> = [
+    ["agent", agentMatch],
+    ["person", personMatch],
+    ["workflow", workflowMatch],
+    ["global", globalMatch],
+  ];
+  for (const [scope, match] of denyOrder) {
+    if (match?.mode === "deny") {
+      return { mode: "deny", scope, matchedKey: match.matchedKey, capability };
+    }
+  }
+
+  const precedenceOrder: ReadonlyArray<
+    readonly [PermissionScope, { mode: PermissionMode; matchedKey: string } | undefined]
+  > = [
+    ["person", personMatch],
+    ["workflow", workflowMatch],
+    ["global", globalMatch],
+    ["agent", agentMatch],
+  ];
+  for (const [scope, match] of precedenceOrder) {
+    if (match) {
+      return { mode: match.mode, scope, matchedKey: match.matchedKey, capability };
+    }
+  }
+
+  return {
+    mode: DEFAULT_PERMISSION_MODE,
+    scope: "default",
+    matchedKey: null,
+    capability,
+  };
 }
 
 /**
@@ -82,9 +156,25 @@ export function resolveScopedPermission(_input: ScopedPermissionInput): Resolved
  * `read` tools ALWAYS bypass gating (`{ allow: true }`), even under `{ '*': 'deny' }`.
  */
 export function withPermissions<Req extends ToolRequest = ToolRequest>(
-  _permission: (tool: string) => PermissionMode,
-  _ask: (request: Req) => ToolVerdict | Promise<ToolVerdict>,
-  _options?: WithPermissionsOptions,
+  permission: (tool: string) => PermissionMode,
+  ask: (request: Req) => ToolVerdict | Promise<ToolVerdict>,
+  options?: WithPermissionsOptions,
 ): (request: Req) => ToolVerdict | Promise<ToolVerdict> {
-  throw new Error("Not implemented: withPermissions");
+  return (request: Req) => {
+    if (request.kind === "read") {
+      return { allow: true };
+    }
+    const mode = permission(request.tool);
+    if (mode === "allow") {
+      return { allow: true };
+    }
+    if (mode === "deny") {
+      const capability = capabilityFor(request.tool);
+      const tell = options?.formatDenied
+        ? options.formatDenied(request, capability)
+        : `Permission denied for "${request.tool}" (${capability}).`;
+      return { allow: false, tell };
+    }
+    return ask(request);
+  };
 }

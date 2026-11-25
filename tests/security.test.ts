@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import {
   AuthoredTextRegistry,
+  MIN_AUTHORED_LENGTH,
   ModelArmorScanner,
   ScreeningError,
   authorizeTool,
@@ -182,4 +183,154 @@ test("write tools require a gate and use run-scoped approval", async () => {
   expect((await authorizeTool(request)).allow).toBe(false);
   expect((await withToolGate(async () => ({ allow: true }), () => authorizeTool(request))).allow).toBe(true);
   expect((await authorizeTool({ ...request, kind: "read" })).allow).toBe(true);
+});
+
+describe("screening and content-safety edge cases", () => {
+  test("non-PI content-safety match blocks on tool_output and agent origin instead of quarantining or observing", async () => {
+    const contentBlocked: ModelArmorAssessment = {
+      ...clean,
+      blocked: true,
+      label: "CONTENT_BLOCKED",
+      matchedFilters: ["rai"],
+    };
+    const security = createSecurity({ provider: { assess: async () => contentBlocked } });
+
+    const onToolOutput = await security.screen({
+      type: "text",
+      content: "unsafe tool output",
+      boundary: "tool_output",
+    });
+    expect(onToolOutput).toMatchObject({
+      decision: "block",
+      boundary: "tool_output",
+      assessment: { flagged: false, blocked: true, label: "CONTENT_BLOCKED", matchedFilters: ["rai"] },
+    });
+
+    const onAgentOrigin = await security.screen({
+      type: "text",
+      content: "unsafe replayed output",
+      origin: "agent",
+    });
+    expect(onAgentOrigin).toMatchObject({
+      decision: "block",
+      origin: "agent",
+      assessment: { flagged: false, blocked: true, label: "CONTENT_BLOCKED", matchedFilters: ["rai"] },
+    });
+  });
+
+  test("onToolOutputInjection: 'block' blocks flagged tool outputs instead of quarantining", async () => {
+    const security = createSecurity({
+      provider: { assess: async () => injection },
+      onToolOutputInjection: "block",
+    });
+    const res = await security.screen({ type: "text", content: "injected tool result", boundary: "tool_output" });
+    expect(res).toMatchObject({ decision: "block", boundary: "tool_output", origin: "external" });
+  });
+
+  test("observes PI on agent-origin text but blocks model_output under default external origin", async () => {
+    const security = createSecurity({ provider: { assess: async () => injection } });
+    expect((await security.screen({ type: "text", content: "replayed turn", origin: "agent" })).decision).toBe(
+      "observe",
+    );
+    expect((await security.screen({ type: "text", content: "model reply", boundary: "model_output" })).decision).toBe(
+      "block",
+    );
+  });
+
+  test("fully authored text redacts to empty and allows without calling the provider", async () => {
+    const registry = new AuthoredTextRegistry();
+    const authored = "This constant instruction is owned by the application and exceeds forty chars.";
+    registry.register("prompt:system", authored);
+
+    let calls = 0;
+    const security = createSecurity({
+      authoredText: registry,
+      provider: {
+        assess: async () => {
+          calls++;
+          return injection;
+        },
+      },
+    });
+
+    const res = await security.screen({ type: "text", content: authored });
+    expect(res.decision).toBe("allow");
+    expect(res.authoredCharsRedacted).toBe(authored.length - 1);
+    expect(calls).toBe(0);
+  });
+
+  test("AuthoredTextRegistry enforces minimum length on register, ignores short spans on offer, and redacts longest first", () => {
+    const registry = new AuthoredTextRegistry();
+    const shortText = "x".repeat(MIN_AUTHORED_LENGTH - 1);
+    expect(() => registry.register("short", shortText)).toThrow(`${MIN_AUTHORED_LENGTH} is the minimum`);
+    expect(registry.offer("short", shortText)).toBe(false);
+    expect(registry.size).toBe(0);
+
+    const inner = "Inspect calendar events without modifying any user records at all.";
+    const briefing = `Tool group briefing: ${inner} Follow these rules strictly when planning.`;
+    expect(registry.register("tool:inner", inner)).toBe(true);
+    expect(registry.register("group:briefing", briefing)).toBe(true);
+    expect(registry.hasUnauthored(briefing)).toBe(false);
+    expect(registry.redact(`${briefing} untrusted payload`).trim()).toBe("untrusted payload");
+  });
+
+  test("Model Armor parses SDP content matches and fails closed on partial or skipped filter execution", async () => {
+    const sdpScanner = new ModelArmorScanner({
+      projectId: "test-project",
+      getAuthToken: async () => "test-token",
+      fetchFn: async () =>
+        new Response(
+          JSON.stringify({
+            sanitizationResult: {
+              filterMatchState: "MATCH_FOUND",
+              invocationResult: "SUCCESS",
+              filterResults: {
+                sdp: {
+                  sdpFilterResult: {
+                    inspectResult: { executionState: "EXECUTION_SUCCESS", matchState: "MATCH_FOUND" },
+                  },
+                },
+                pi_and_jailbreak: {
+                  piAndJailbreakFilterResult: {
+                    executionState: "EXECUTION_SUCCESS",
+                    matchState: "NO_MATCH_FOUND",
+                  },
+                },
+              },
+            },
+          }),
+          { status: 200 },
+        ),
+    });
+    expect(await sdpScanner.assess(["sensitive payload"])).toMatchObject({
+      flagged: false,
+      blocked: true,
+      label: "CONTENT_BLOCKED",
+      matchedFilters: ["sdp"],
+    });
+
+    const partialScanner = new ModelArmorScanner({
+      projectId: "test-project",
+      getAuthToken: async () => "test-token",
+      fetchFn: async () =>
+        new Response(
+          JSON.stringify({
+            sanitizationResult: {
+              filterMatchState: "NO_MATCH_FOUND",
+              invocationResult: "PARTIAL",
+              filterResults: {
+                pi_and_jailbreak: {
+                  piAndJailbreakFilterResult: {
+                    executionState: "EXECUTION_SUCCESS",
+                    matchState: "NO_MATCH_FOUND",
+                  },
+                },
+              },
+            },
+          }),
+          { status: 200 },
+        ),
+    });
+    await expect(partialScanner.assess(["text"])).rejects.toThrow("screening incomplete");
+  });
 });

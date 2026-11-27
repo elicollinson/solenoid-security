@@ -5,8 +5,9 @@ Only Python's standard library is required. This script never calls a model.
 """
 import argparse
 import hashlib
-import http.client
 import json
+import ssl
+import urllib.request
 from pathlib import Path
 
 
@@ -36,18 +37,15 @@ def read_source(directory, name):
 
 
 def fetch_sources(directory):
+    opener = urllib.request.OpenerDirector()
+    opener.add_handler(urllib.request.HTTPSHandler(context=ssl.create_default_context()))
+    opener.add_handler(urllib.request.HTTPDefaultErrorHandler())
     for name in SOURCE_HASHES:
         path = directory / name
         if not path.exists():
-            conn = http.client.HTTPSConnection("raw.githubusercontent.com", timeout=60)
-            try:
-                conn.request("GET", f"/microsoft/BIPIA/{COMMIT}/{name}")
-                response = conn.getresponse()
-                if response.status != 200:
-                    raise RuntimeError(f"Failed to fetch BIPIA source {name}: HTTP {response.status}")
+            url = f"https://raw.githubusercontent.com/microsoft/BIPIA/{COMMIT}/{name}"
+            with opener.open(url, timeout=60) as response:
                 data = response.read()
-            finally:
-                conn.close()
             if digest(data) != SOURCE_HASHES[name]:
                 raise ValueError(f"Fetched BIPIA source SHA-256 mismatch: {name}")
             path.parent.mkdir(parents=True, exist_ok=True)

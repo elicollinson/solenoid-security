@@ -68,7 +68,8 @@ async function sdkLoad(modelKey: string, identifier: string, contextLength: numb
     const client = new LMStudioClient({ baseUrl: "ws://127.0.0.1:1234" });
     const model = await client.llm.load(modelKey, { identifier, ttl, verbose: false, config: { contextLength, maxParallelPredictions: parallel } as never });
     log({...argv, info: await model.getModelInfo(), lmStudioVersion: await client.system.getLMStudioVersion()});
-    await client[Symbol.asyncDispose]?.();
+    // Scanner false positive: Symbol.asyncDispose is a well-known standard symbol.
+    await client[Symbol.asyncDispose]?.(); // nosemgrep
   } catch (error) {
     log({event: "command_failed", ...argv, message: error instanceof Error ? error.message : String(error)});
     throw error;

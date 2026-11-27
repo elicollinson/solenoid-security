@@ -40,7 +40,10 @@ def fetch_sources(directory):
         path = directory / name
         if not path.exists():
             url = f"https://raw.githubusercontent.com/microsoft/BIPIA/{COMMIT}/{name}"
-            with urllib.request.urlopen(url, timeout=60) as response:
+            if not url.startswith("https://"):
+                raise ValueError(f"Refusing non-HTTPS BIPIA URL: {url}")
+            # Scanner false positive: fixed HTTPS GitHub raw URL verified by SHA-256 below.
+            with urllib.request.urlopen(url, timeout=60) as response:  # nosemgrep
                 data = response.read()
             if digest(data) != SOURCE_HASHES[name]:
                 raise ValueError(f"Fetched BIPIA source SHA-256 mismatch: {name}")

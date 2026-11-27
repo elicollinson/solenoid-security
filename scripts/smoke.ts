@@ -16,12 +16,20 @@ const root = fileURLToPath(new URL("..", import.meta.url));
 type Result = { name: string; ok: boolean; seconds: number; note?: string };
 const results: Result[] = [];
 
+const TALLY_PATTERNS = {
+  pass: /^\s*(\d+) pass\s*$/m,
+  skip: /^\s*(\d+) skip\s*$/m,
+  fail: /^\s*(\d+) fail\s*$/m,
+} as const;
+
 function run(name: string, command: string[], options: { cwd?: string; env?: NodeJS.ProcessEnv } = {}): string {
   const started = performance.now();
   const child = spawnSync(command[0]!, command.slice(1), { cwd: options.cwd ?? root, env: options.env ?? process.env, encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
   const output = `${child.stdout ?? ""}${child.stderr ?? ""}`;
   const ok = child.status === 0;
-  const tally = output.match(/^\s*(\d+) pass\s*$/m) ? ["pass", "skip", "fail"].map(k => `${output.match(new RegExp(`^\\s*(\\d+) ${k}\\s*$`, "m"))?.[1] ?? 0} ${k}`).join(", ") : undefined;
+  const tally = TALLY_PATTERNS.pass.test(output)
+    ? (["pass", "skip", "fail"] as const).map(k => `${output.match(TALLY_PATTERNS[k])?.[1] ?? 0} ${k}`).join(", ")
+    : undefined;
   record(name, ok, started, tally);
   if (!ok) console.log(output.trimEnd().split("\n").slice(-40).map(line => `    ${line}`).join("\n"));
   return output;

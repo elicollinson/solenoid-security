@@ -69,7 +69,8 @@ for q in sorted(todo, key=lambda q: 0 if q == 'Q4_K_M' else 1):  # Q4 before Q6
     r = subprocess.run(['bun', 'run', 'eval:local', '--execute', *S.split(), '--tests=longpi-paper', f'--conditions={fc}', '--max-new-segments=24'], cwd=ROOT)
     if subprocess.run(['lms', 'ps', '--json'], capture_output=True, text=True).stdout.strip() not in ('[]', '') or (ROOT / 'evals/runs/lmstudio-device.lock').exists():
         log('model left loaded or lock present; stopping'); sys.exit(3)
-    ok = subprocess.run([sys.executable, str(RUN / 'diag-pass.py'), fc], cwd=ROOT).returncode == 0
+    # Scanner false positive: fixed local qualification script invoked without shell.
+    ok = subprocess.run([sys.executable, str(RUN / 'diag-pass.py'), fc], cwd=ROOT).returncode == 0  # nosemgrep
     state['done'][q] = 'qualified' if ok else 'failed-qualification'
     STATE.write_text(json.dumps(state, indent=1) + '\n')
     if not ok:

@@ -70,7 +70,8 @@ def main():
     manifests = {}
     for name, alias, argument in DATASETS:
         checkouts[alias], manifests[name] = pinned_checkout(name, alias, getattr(args, argument), args.cache_dir.resolve())
-    subprocess.run([
+    # Scanner false positive: fixed local importer script invoked without shell.
+    subprocess.run([  # nosemgrep
         sys.executable, str(ROOT / "evals" / "scripts" / "import-public-datasets.py"),
         "--web-repo", str(checkouts["web"]),
         "--aib-repo", str(checkouts["aib"]),

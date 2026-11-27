@@ -96,21 +96,27 @@ sha = lambda s: hashlib.sha256(s.encode()).hexdigest()
 
 
 def fetch(url, path):
+    if not url.startswith("https://"):
+        raise ValueError(f"Refusing non-HTTPS URL: {url}")
     if not os.path.exists(path):
         os.makedirs(os.path.dirname(path), exist_ok=True)
         req = urllib.request.Request(url, headers={"User-Agent": "solenoid-effort-audit"})
-        with urllib.request.urlopen(req, timeout=300) as r, open(path, "wb") as f: f.write(r.read())
+        # Scanner false positive: scheme restricted to https:// above for research model metadata.
+        with urllib.request.urlopen(req, timeout=300) as r, open(path, "wb") as f: f.write(r.read())  # nosemgrep
     return path
 
 
 def gguf_chat_template(url):
     """Read tokenizer.chat_template from a remote GGUF by HTTP range requests over its header only."""
+    if not url.startswith("https://"):
+        raise ValueError(f"Refusing non-HTTPS URL: {url}")
     buf, pos, fetched = b"", 0, 0
     def read(n):
         nonlocal buf, pos, fetched
         while len(buf) - pos < n:
             req = urllib.request.Request(url, headers={"Range": f"bytes={fetched}-{fetched + (8 << 20) - 1}", "User-Agent": "solenoid-effort-audit"})
-            data = urllib.request.urlopen(req, timeout=300).read()
+            # Scanner false positive: scheme restricted to https:// above for GGUF header inspection.
+            data = urllib.request.urlopen(req, timeout=300).read()  # nosemgrep
             if not data: raise EOFError(url)
             buf, pos, fetched = buf[pos:] + data, 0, fetched + len(data)
         b = buf[pos:pos + n]; pos += n; return b

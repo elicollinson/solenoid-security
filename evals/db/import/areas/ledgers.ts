@@ -64,24 +64,27 @@ export async function importLedgers(ctx: Ctx): Promise<void> {
     try {
       await ctx.db.tx(async tx => {
         const artifactId = await ensureArtifact(ctx, tx, { ...snap, text });
-        const rows: Record<string, number> = {};
-        if (base === "batch-ledger.jsonl") Object.assign(rows, await batchLedger(ctx, tx, path, text));
-        else if (base.startsWith("armor-budget") && base.endsWith(".jsonl")) rows.spend_ledger_entries = await armorLedger(ctx, tx, path, text);
-        else if (kind === "driver_log") Object.assign(rows, await driverLog(ctx, tx, path, text, artifactId));
-        else if (base === "case-index.jsonl") rows.case_evidence_tags = await caseIndex(ctx, tx, text, artifactId);
+        const rows = new Map<string, number>();
+        const addRows = (counts: Record<string, number>) => {
+          for (const [table, count] of Object.entries(counts)) rows.set(table, count);
+        };
+        if (base === "batch-ledger.jsonl") addRows(await batchLedger(ctx, tx, path, text));
+        else if (base.startsWith("armor-budget") && base.endsWith(".jsonl")) rows.set("spend_ledger_entries", await armorLedger(ctx, tx, path, text));
+        else if (kind === "driver_log") addRows(await driverLog(ctx, tx, path, text, artifactId));
+        else if (base === "case-index.jsonl") rows.set("case_evidence_tags", await caseIndex(ctx, tx, text, artifactId));
         else if (path.endsWith(".json")) {
           let body: any;
           try { body = JSON.parse(text); } catch { body = undefined; }
           if (body !== undefined) {
-            if (body && typeof body === "object" && !Array.isArray(body) && "checkedAt" in body && ("remaining" in body || "limit" in body)) rows.provider_key_snapshots = await keySnapshot(ctx, tx, path, body, artifactId);
-            if (kind === "endpoint_snapshot") Object.assign(rows, await endpointSnapshot(ctx, tx, path, body, artifactId));
-            if (kind === "lmstudio_inventory" && (Array.isArray(body) || Array.isArray(body?.inventory))) Object.assign(rows, await inventory(ctx, tx, path, Array.isArray(body) ? body : body.inventory, artifactId, 0, "inventory_file", base.replace(/\.json$/, ""), mtimeOf(ctx.root, path)));
-            if (base === "artifact-inventory.json") Object.assign(rows, await fileInventory(ctx, tx, path, body, artifactId));
-            if (base === "research-coverage-ledger.json") rows.coverage_cells = await coverage(ctx, tx, body, artifactId);
-            if (kind !== "endpoint_snapshot" && base !== "artifact-inventory.json") Object.assign(rows, await analysisDocument(ctx, tx, path, kind, body, text.length, artifactId, known));
+            if (body && typeof body === "object" && !Array.isArray(body) && "checkedAt" in body && ("remaining" in body || "limit" in body)) rows.set("provider_key_snapshots", await keySnapshot(ctx, tx, path, body, artifactId));
+            if (kind === "endpoint_snapshot") addRows(await endpointSnapshot(ctx, tx, path, body, artifactId));
+            if (kind === "lmstudio_inventory" && (Array.isArray(body) || Array.isArray(body?.inventory))) addRows(await inventory(ctx, tx, path, Array.isArray(body) ? body : body.inventory, artifactId, 0, "inventory_file", base.replace(/\.json$/, ""), mtimeOf(ctx.root, path)));
+            if (base === "artifact-inventory.json") addRows(await fileInventory(ctx, tx, path, body, artifactId));
+            if (base === "research-coverage-ledger.json") rows.set("coverage_cells", await coverage(ctx, tx, body, artifactId));
+            if (kind !== "endpoint_snapshot" && base !== "artifact-inventory.json") addRows(await analysisDocument(ctx, tx, path, kind, body, text.length, artifactId, known));
           }
         }
-        await ctx.db.markImported(tx, "ledgers", path, snap.sha, snap.bytes.byteLength, "complete", rows, null, IMPORTER_VERSION);
+        await ctx.db.markImported(tx, "ledgers", path, snap.sha, snap.bytes.byteLength, "complete", Object.fromEntries(rows), null, IMPORTER_VERSION);
       });
       handled++;
       if (ctx.verbose) ctx.log(`  ${path}`);

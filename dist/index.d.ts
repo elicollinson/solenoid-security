@@ -12,3 +12,7 @@ export { actionFor, DEFAULT_ORIGIN, ORIGIN_ACTION } from "./trust.js";
 export type { ScreenAction, TextOrigin } from "./trust.js";
 export { authorizeTool, currentToolGate, withToolGate, currentConsent, withConsent } from "./toolGate.js";
 export type { ToolGate, ToolKind, ToolRequest, ToolVerdict, ConsentGate, ConsentRequest, ConsentVerdict } from "./toolGate.js";
+export { PERMISSION_MODES, DEFAULT_PERMISSION_MODE, capabilityFor, resolvePermission, resolveScopedPermission, withPermissions } from "./permissions.js";
+export type { PermissionMode, PermissionRules, PermissionScope, ResolvedPermission, ScopedPermissionInput, PermissionStore, WithPermissionsOptions } from "./permissions.js";
+export { ApprovalError, AlreadySettledError, ApprovalNotFoundError, ApprovalDigestMismatchError, computeArgsDigest, InMemoryApprovalStore, ApprovalBroker, declineUnattended } from "./approvals.js";
+export type { ApprovalOutcome, ApprovalStatus, ApprovalChoiceStance, ApprovalFact, ApprovalChoiceSpec, ApprovalChoice, ApprovalExecutionOutcome, ApprovalRecord, ApprovalErrorCode, CreateApprovalInput, SettleApprovalInput, ApprovalStore, BlockingAskOptions, BlockingAskResult, DeferAskOptions, DeferAskResult, AnswerChoiceOptions, AnswerChoiceResult, RecheckToolDescriptor, RecheckAndAuthorizeInput, RecheckAndAuthorizeResult, ApprovalBrokerOptions } from "./approvals.js";

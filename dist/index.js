@@ -5,3 +5,5 @@ export { OpenAICompatibleJudge, SCORE_ONLY_PROMPT, SCORE_ONLY_PROMPT_ID, SCORE_O
 export { AuthoredTextRegistry, MIN_AUTHORED_LENGTH, authoredText } from "./authoredText.js";
 export { actionFor, DEFAULT_ORIGIN, ORIGIN_ACTION } from "./trust.js";
 export { authorizeTool, currentToolGate, withToolGate, currentConsent, withConsent } from "./toolGate.js";
+export { PERMISSION_MODES, DEFAULT_PERMISSION_MODE, capabilityFor, resolvePermission, resolveScopedPermission, withPermissions } from "./permissions.js";
+export { ApprovalError, AlreadySettledError, ApprovalNotFoundError, ApprovalDigestMismatchError, computeArgsDigest, InMemoryApprovalStore, ApprovalBroker, declineUnattended } from "./approvals.js";

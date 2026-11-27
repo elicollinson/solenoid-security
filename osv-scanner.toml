@@ -1,0 +1,4 @@
+[[IgnoredVulns]]
+id = "CVE-2023-54404"
+ignoreUntil = 2027-02-07
+reason = "zod 3.25.76 comes in via @lmstudio/sdk (dev-only eval harness). @lmstudio/sdk requires zod ^3.22.4 while the fix is in zod 4.6.6; nothing in the published library uses zod."

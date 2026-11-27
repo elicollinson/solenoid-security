@@ -65,10 +65,9 @@ async function sdkLoad(modelKey: string, identifier: string, contextLength: numb
   const argv = {sdkLoad: {modelKey, identifier, contextLength, parallel, ttl}};
   try {
     const { LMStudioClient } = await import("@lmstudio/sdk");
-    const client = new LMStudioClient({ baseUrl: "ws://127.0.0.1:1234" });
+    await using client = new LMStudioClient({ baseUrl: "ws://127.0.0.1:1234" });
     const model = await client.llm.load(modelKey, { identifier, ttl, verbose: false, config: { contextLength, maxParallelPredictions: parallel } as never });
     log({...argv, info: await model.getModelInfo(), lmStudioVersion: await client.system.getLMStudioVersion()});
-    await client[Symbol.asyncDispose]?.();
   } catch (error) {
     log({event: "command_failed", ...argv, message: error instanceof Error ? error.message : String(error)});
     throw error;

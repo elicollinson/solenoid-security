@@ -5,9 +5,9 @@ omit it for an offline rebuild. Standard library only; never calls a model.
 --write-manifest records a new manifest revision (use only for a deliberate new version).
 """
 import argparse
+import http.client
 import json
 import sys
-import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -47,12 +47,15 @@ def fetch_sources(directory):
     for name in SOURCE_HASHES:
         path = Path(directory) / name
         if not path.exists():
-            url = f"https://raw.githubusercontent.com/microsoft/BIPIA/{COMMIT}/{name}"
-            if not url.startswith("https://"):
-                raise ValueError(f"Refusing non-HTTPS BIPIA URL: {url}")
-            # Scanner false positive: fixed HTTPS GitHub raw URL verified by SHA-256 below.
-            with urllib.request.urlopen(url, timeout=60) as response:  # nosemgrep
+            conn = http.client.HTTPSConnection("raw.githubusercontent.com", timeout=60)
+            try:
+                conn.request("GET", f"/microsoft/BIPIA/{COMMIT}/{name}")
+                response = conn.getresponse()
+                if response.status != 200:
+                    raise RuntimeError(f"Failed to fetch BIPIA source {name}: HTTP {response.status}")
                 data = response.read()
+            finally:
+                conn.close()
             if digest(data) != SOURCE_HASHES[name]:
                 raise ValueError(f"Fetched BIPIA source SHA-256 mismatch: {name}")
             path.parent.mkdir(parents=True, exist_ok=True)

@@ -31,5 +31,5 @@ for (const [part, source] of [["baseline", "prompt-injection-lmstudio-studio-bas
   const out = resolve(root, `evals/suites/${id}.json`);
   if (existsSync(out) && !process.argv.includes("--force")) throw new Error(`${out} exists (checkpoints pin its hash)`);
   writeFileSync(out, JSON.stringify(suite, null, 2) + "\n");
-  console.log(`${id} ${src.tests.length} tests; w256s256: ${w256.join(",")} | w128s128: ${w128.join(",")}`);
+  console.log(id, src.tests.length, "tests;", "w256s256:", w256.join(","), "| w128s128:", w128.join(","));
 }

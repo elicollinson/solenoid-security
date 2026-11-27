@@ -6,9 +6,9 @@ Requires Git and Python 3 standard library; never calls a model provider.
 """
 import argparse
 import hashlib
+import importlib.util
 import json
 import subprocess
-import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -70,13 +70,15 @@ def main():
     manifests = {}
     for name, alias, argument in DATASETS:
         checkouts[alias], manifests[name] = pinned_checkout(name, alias, getattr(args, argument), args.cache_dir.resolve())
-    # Scanner false positive: fixed local importer script invoked without shell.
-    subprocess.run([  # nosemgrep
-        sys.executable, str(ROOT / "evals" / "scripts" / "import-public-datasets.py"),
-        "--web-repo", str(checkouts["web"]),
-        "--aib-repo", str(checkouts["aib"]),
-        "--dojo-repo", str(checkouts["dojo"]),
-    ], check=True)
+    importer_path = ROOT / "evals" / "scripts" / "import-public-datasets.py"
+    spec = importlib.util.spec_from_file_location("import_public_datasets", importer_path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError(f"Unable to load importer module: {importer_path}")
+    importer = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(importer)
+    importer.write("in-page-wild-sample-v1", importer.web_cases(checkouts["web"]))
+    importer.write("agent-injection-bench-v1", importer.aib_cases(checkouts["aib"]))
+    importer.write("agentdojo-travel-v1", importer.dojo_cases(checkouts["dojo"]))
     for name, _, _ in DATASETS:
         path = ROOT / "evals" / "datasets" / f"{name}.jsonl"
         actual = hashlib.sha256(path.read_bytes()).hexdigest()

@@ -20,6 +20,9 @@ jobs:
       contents: read
       security-events: write
     uses: elicollinson/security-workflows/.github/workflows/scan.yml@d8a9379a5c350ae0883358fc4eb9ceee3a39cc19 # v1.1.0
+    with:
+      # Historical one-off research/analysis scripts (not shipped library code).
+      exclude-paths: "evals/analysis/**"
 
   # Single required check for the ruleset: passes only if every scan job passed.
   security:
